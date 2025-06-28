@@ -9,6 +9,7 @@ import CadastroUsuario from "./pages/CadastroUsuario.jsx";
 import EsqueciSenha from "./pages/EsqueciSenha.jsx";
 import RedefinirSenha from "./pages/RedefinirSenha.jsx";
 import Navbar from "./components/Navbar.jsx";
+import EditarComercio from "./pages/EditarComercio.jsx";
 
 const theme = createTheme({
   palette: {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/registrar" element={<CadastroUsuario />} />
           <Route path="/esqueci-senha" element={<EsqueciSenha />} />
           <Route path="/redefinir-senha/:token" element={<RedefinirSenha />} />
+          <Route path="/comercios/:id/editar" element={<EditarComercio />} />
           {/* Outras rotas futuras */}
           <Route path="/" element={<ListaComercios />} />
           <Route path="/comercios/:id" element={<DetalheComercio />} />

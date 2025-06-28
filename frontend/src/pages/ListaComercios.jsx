@@ -12,6 +12,15 @@ import {
   Button,
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
 
 export default function ListaComercios() {
   const [comercios, setComercios] = useState([]);
@@ -21,6 +30,8 @@ export default function ListaComercios() {
     message: "",
     severity: "success",
   });
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [comercioExcluir, setComercioExcluir] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -49,6 +60,28 @@ export default function ListaComercios() {
       window.history.replaceState({}, document.title); // Limpa o state
     }
   }, [location]);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3333/comercios/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setSnackbar({
+        open: true,
+        message: "Comércio excluído com sucesso!",
+        severity: "success",
+      });
+      fetchComercios();
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.error || "Erro ao excluir comércio.",
+        severity: "error",
+      });
+    }
+    setDialogOpen(false);
+    setComercioExcluir(null);
+  };
 
   if (loading)
     return (
@@ -81,18 +114,86 @@ export default function ListaComercios() {
         {comercios.map((comercio) => (
           <Grid item xs={12} sm={6} md={4} key={comercio.id}>
             <Card
-              component={Link}
-              to={`/comercios/${comercio.id}`}
-              sx={{ textDecoration: "none", cursor: "pointer" }}
+              sx={{
+                position: "relative",
+                textDecoration: "none",
+                cursor: "pointer",
+                borderRadius: 3,
+                boxShadow: 3,
+                transition: "box-shadow 0.2s, transform 0.2s",
+                "&:hover": { boxShadow: 8, transform: "translateY(-4px)" },
+                bgcolor: "#fff",
+                minHeight: 180,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+              onClick={() => navigate(`/comercios/${comercio.id}`)}
             >
-              <CardContent>
-                <Typography variant="h6">{comercio.nome}</Typography>
-                <Typography variant="body2" color="text.secondary">
+              <CardContent sx={{ pb: 1 }}>
+                <Box display="flex" alignItems="center" gap={2} mb={1}>
+                  <Avatar sx={{ bgcolor: "primary.main", fontWeight: 700 }}>
+                    {comercio.nome?.[0]?.toUpperCase() || "?"}
+                  </Avatar>
+                  <Typography
+                    variant="h6"
+                    fontWeight={700}
+                    color="primary.main"
+                  >
+                    {comercio.nome}
+                  </Typography>
+                </Box>
+                <Typography variant="body2" color="text.secondary" mb={0.5}>
                   {comercio.descricao}
                 </Typography>
-                <Typography variant="body2">{comercio.endereco}</Typography>
-                <Typography variant="body2">{comercio.telefone}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {comercio.endereco}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {comercio.telefone}
+                </Typography>
               </CardContent>
+              {token && (
+                <Box
+                  display="flex"
+                  gap={1}
+                  justifyContent="flex-end"
+                  px={2}
+                  pb={2}
+                >
+                  <Tooltip title="Editar">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      startIcon={<EditIcon />}
+                      sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/comercios/${comercio.id}/editar`);
+                      }}
+                    >
+                      Editar
+                    </Button>
+                  </Tooltip>
+                  <Tooltip title="Excluir">
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      startIcon={<DeleteIcon />}
+                      sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setComercioExcluir(comercio);
+                        setDialogOpen(true);
+                      }}
+                    >
+                      Excluir
+                    </Button>
+                  </Tooltip>
+                </Box>
+              )}
             </Card>
           </Grid>
         ))}
@@ -107,6 +208,26 @@ export default function ListaComercios() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Confirmar exclusão</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Tem certeza que deseja excluir o comércio "{comercioExcluir?.nome}"?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)} color="primary">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => handleDelete(comercioExcluir.id)}
+            color="error"
+            autoFocus
+          >
+            Excluir
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
