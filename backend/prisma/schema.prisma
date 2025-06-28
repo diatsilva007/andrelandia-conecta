@@ -39,4 +39,6 @@ model Usuario {
   email     String   @unique
   senha     String
   criadoEm  DateTime @default(now())
+  resetToken        String?   // Token para redefinição de senha
+  resetTokenExpires DateTime? // Expiração do token
 }
