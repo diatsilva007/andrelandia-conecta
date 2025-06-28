@@ -1,0 +1,15 @@
+/* Resetando estilos antigos e garantindo centralização global */
+body,
+#root {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #f4f6fa;
+}
+
+/* Remove estilos antigos do Vite */
+.logo,
+.card,
+.read-the-docs {
+  display: none !important;
+}
