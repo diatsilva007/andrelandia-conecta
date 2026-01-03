@@ -22,3 +22,22 @@
 - [ ] Implementar busca e filtros na listagem de comércios/produtos
 - [ ] Adicionar avatar/imagem para comércios e produtos
 - [ ] Melhorar mensagens de erro e sucesso (mais amigáveis e informativas)
+
+## Funcionalidades importantes
+- [ ] Cadastro e autenticação de usuários (comerciantes e clientes).
+- [ ] Cadastro, edição e exclusão de comércios com informações completas (nome, endereço, contato, descrição, foto/logo).
+- [ ] Listagem pública dos comércios, com busca e filtros (por categoria, localização, produtos/serviços).
+- [ ] Página de detalhes do comércio, mostrando produtos, serviços, horários, avaliações e contato
+- [ ] Cadastro e gerenciamento de produtos/serviços por cada comércio.
+- [ ] Sistema de avaliações e comentários dos clientes.
+- [ ] Integração com WhatsApp, telefone ou formulário para contato direto.
+- [ ] Painel administrativo para o comerciante gerenciar seu negócio.
+- [ ] Responsividade e acessibilidade para uso em qualquer dispositivo.
+- [ ] Segurança de dados e privacidade dos usuários.
+
+## Funcionalidades extras que agregam valor:
+- [ ] Mapa interativo dos comércios.
+- [ ] Destaques/promos e eventos locais.
+- [ ] Notificações (novidades, promoções).
+- [ ] Blog ou mural de notícias/comunicados da cidade.
+- [ ] Integração com redes sociais.
