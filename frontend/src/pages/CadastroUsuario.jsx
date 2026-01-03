@@ -198,6 +198,39 @@ export default function CadastroUsuario() {
               Faça login
             </Button>
           </Typography>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="medium"
+            startIcon={<span style={{ fontSize: 18 }}>🏠</span>}
+            sx={{
+              mt: 2,
+              px: 3,
+              py: 1.2,
+              borderRadius: 3,
+              fontWeight: 600,
+              fontSize: 16,
+              letterSpacing: 0.5,
+              boxShadow: "0 2px 8px #1976d222",
+              background: "#fff",
+              borderColor: "#1976d2",
+              color: "#1976d2",
+              transition: "all 0.2s",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              "&:hover": {
+                background: "linear-gradient(90deg, #e3f2fd 0%, #fff 100%)",
+                boxShadow: "0 4px 16px #1976d222",
+                borderColor: "#1565c0",
+                color: "#1565c0",
+              },
+            }}
+            onClick={() => navigate("/")}
+            aria-label="Voltar para página principal"
+          >
+            Voltar para página principal
+          </Button>
         </Box>
       </Paper>
     </Box>

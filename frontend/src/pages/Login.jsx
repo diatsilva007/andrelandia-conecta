@@ -18,6 +18,36 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
+  <Button
+    variant="outlined"
+    color="primary"
+    size="medium"
+    startIcon={<span style={{ fontSize: 18 }}>🏠</span>}
+    sx={{
+      mt: 2,
+      px: 3,
+      py: 1.2,
+      borderRadius: 3,
+      fontWeight: 600,
+      fontSize: 16,
+      letterSpacing: 0.5,
+      boxShadow: "0 2px 8px #1976d222",
+      background: "#fff",
+      borderColor: "#1976d2",
+      color: "#1976d2",
+      transition: "all 0.2s",
+      "&:hover": {
+        background: "linear-gradient(90deg, #e3f2fd 0%, #fff 100%)",
+        boxShadow: "0 4px 16px #1976d222",
+        borderColor: "#1565c0",
+        color: "#1565c0",
+      },
+    }}
+    onClick={() => navigate("/")}
+    aria-label="Voltar para página principal"
+  >
+    Voltar para página principal
+  </Button>;
   const [showSenha, setShowSenha] = useState(false);
   const navigate = useNavigate();
 
@@ -139,11 +169,41 @@ export default function Login() {
           <Button
             color="primary"
             size="small"
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, mr: 1 }}
             onClick={() => navigate("/esqueci-senha")}
             aria-label="Ir para recuperação de senha"
           >
             Esqueci minha senha
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="medium"
+            startIcon={<span style={{ fontSize: 18 }}>🏠</span>}
+            sx={{
+              mt: 2,
+              px: 3,
+              py: 1.2,
+              borderRadius: 3,
+              fontWeight: 600,
+              fontSize: 16,
+              letterSpacing: 0.5,
+              boxShadow: "0 2px 8px #1976d222",
+              background: "#fff",
+              borderColor: "#1976d2",
+              color: "#1976d2",
+              transition: "all 0.2s",
+              "&:hover": {
+                background: "linear-gradient(90deg, #e3f2fd 0%, #fff 100%)",
+                boxShadow: "0 4px 16px #1976d222",
+                borderColor: "#1565c0",
+                color: "#1565c0",
+              },
+            }}
+            onClick={() => navigate("/")}
+            aria-label="Voltar para página principal"
+          >
+            Voltar para página principal
           </Button>
         </Box>
       </Box>
