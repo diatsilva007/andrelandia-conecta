@@ -40,10 +40,16 @@ export default function EsqueciSenha() {
 
   return (
     <Box
+      position="fixed"
+      top={0}
+      left={0}
+      width="100vw"
+      height="100vh"
       display="flex"
-      justifyContent="center"
       alignItems="center"
-      minHeight="80vh"
+      justifyContent="center"
+      bgcolor="background.default"
+      zIndex={1}
     >
       <Paper sx={{ p: 4, maxWidth: 400, width: "100%" }}>
         <Typography variant="h5" mb={2} align="center">
