@@ -35,6 +35,12 @@ export default function Navbar() {
             color: "#fff",
             textDecoration: "none",
             fontWeight: 700,
+            transition: "color 0.2s, text-shadow 0.2s",
+            "&:hover": {
+              color: "#e0f2f1",
+              textShadow: "0 2px 8px #1976d222",
+              textDecoration: "underline",
+            },
           }}
         >
           Andrelândia Conecta
@@ -50,10 +56,36 @@ export default function Navbar() {
           </Box>
         ) : (
           <>
-            <Button color="inherit" component={Link} to="/login">
+            <Button
+              color="inherit"
+              component={Link}
+              to="/login"
+              sx={{
+                textTransform: "none",
+                fontWeight: 500,
+                transition: "background 0.2s, color 0.2s",
+                "&:hover": {
+                  background: "#e3f2fd",
+                  color: "#1976d2",
+                },
+              }}
+            >
               Entrar
             </Button>
-            <Button color="inherit" component={Link} to="/registrar">
+            <Button
+              color="inherit"
+              component={Link}
+              to="/registrar"
+              sx={{
+                textTransform: "none",
+                fontWeight: 500,
+                transition: "background 0.2s, color 0.2s",
+                "&:hover": {
+                  background: "#e8f5e9",
+                  color: "#43a047",
+                },
+              }}
+            >
               Registrar
             </Button>
           </>

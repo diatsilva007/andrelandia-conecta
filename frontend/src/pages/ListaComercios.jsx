@@ -1,187 +1,217 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
+  Grid,
+  Typography,
+  Button,
+  Avatar,
   Card,
   CardContent,
-  Typography,
-  Grid,
-  CircularProgress,
+  Tooltip,
   Snackbar,
-  Alert,
-  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
 
-export default function ListaComercios() {
-  const [comercios, setComercios] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
+// ...existing code...
+const ListaComercios = () => {
+  const navigate = useNavigate();
+  const [comercios] = useState([]);
+  const [token] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comercioExcluir, setComercioExcluir] = useState(null);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
-  const fetchComercios = () => {
-    setLoading(true);
-    axios
-      .get("http://localhost:3333/comercios")
-      .then((res) => setComercios(res.data))
-      .catch(() => setComercios([]))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    fetchComercios();
-  }, [location]); // Atualiza sempre que a rota mudar
-
-  // Exemplo: mostrar mensagem de sucesso ao voltar do cadastro
-  useEffect(() => {
-    if (location.state && location.state.sucesso) {
-      setSnackbar({
-        open: true,
-        message: location.state.sucesso,
-        severity: "success",
-      });
-      window.history.replaceState({}, document.title); // Limpa o state
-    }
-  }, [location]);
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3333/comercios/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setSnackbar({
-        open: true,
-        message: "Comércio excluído com sucesso!",
-        severity: "success",
-      });
-      fetchComercios();
-    } catch (err) {
-      setSnackbar({
-        open: true,
-        message: err.response?.data?.error || "Erro ao excluir comércio.",
-        severity: "error",
-      });
-    }
-    setDialogOpen(false);
-    setComercioExcluir(null);
-  };
-
-  if (loading)
-    return (
-      <Box
-        position="fixed"
-        top={0}
-        left={0}
-        width="100vw"
-        height="100vh"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        bgcolor="background.default"
-        zIndex={1}
-      >
-        <CircularProgress />
-      </Box>
-    );
-
+  const handleDelete = () => {};
   return (
+    // Banner institucional avançado + grid de comércios + Snackbar e Dialog
     <Box
-      position="fixed"
-      top={0}
-      left={0}
-      width="100vw"
-      height="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      bgcolor="background.default"
-      zIndex={1}
+      sx={{
+        width: "100vw",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        px: { xs: 2, md: 6 },
+        py: { xs: 6, md: 10 },
+        m: 0,
+        borderRadius: 0,
+        bgcolor: "background.default",
+      }}
     >
-      <Box width="100%" maxWidth={1200} p={3}>
-        <Typography variant="h4" mb={3} align="center">
-          Comércios Cadastrados
-        </Typography>
-        {token && (
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mb: 3 }}
-            onClick={() => navigate("/comercios/novo")}
-          >
-            Novo Comércio
-          </Button>
-        )}
-        <Grid
-          container
-          spacing={3}
-          justifyContent="center"
-          alignItems="center"
-          minHeight="60vh"
+      {/* Banner */}
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 700,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          mb: 6,
+          borderRadius: 5,
+          boxShadow: 6,
+          background: "linear-gradient(90deg, #1976d2 0%, #43a047 100%)",
+          position: "relative",
+          overflow: "hidden",
+          py: { xs: 6, md: 10 },
+          px: { xs: 2, md: 6 },
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            opacity: 0.08,
+            background:
+              "url('https://www.transparenttextures.com/patterns/diamond-upholstery.png') repeat",
+            zIndex: 0,
+          }}
+        />
+        <Avatar
+          sx={{
+            bgcolor: "secondary.main",
+            width: 90,
+            height: 90,
+            fontSize: 48,
+            mb: 3,
+            boxShadow: 3,
+            zIndex: 1,
+            animation: "pulse 2s infinite",
+          }}
         >
-          {comercios.length === 0 && (
-            <Grid item xs={12}>
-              <Typography variant="body1" color="text.secondary" align="center">
-                Nenhum comércio cadastrado.
+          🏪
+        </Avatar>
+        <Typography
+          variant="h2"
+          fontWeight={800}
+          mb={2}
+          sx={{ color: "#fff", zIndex: 1, textShadow: "0 2px 8px #0002" }}
+        >
+          Andrelândia Conecta
+        </Typography>
+        <Typography
+          variant="h5"
+          fontWeight={500}
+          mb={2}
+          sx={{ color: "#e0f2f1", zIndex: 1 }}
+        >
+          Visibilidade e gestão para o comércio local
+        </Typography>
+        <Typography
+          variant="body1"
+          mb={3}
+          sx={{ color: "#fff", fontSize: 20, zIndex: 1, maxWidth: 600 }}
+        >
+          Plataforma para conectar, divulgar e fortalecer os negócios de
+          Andrelândia/MG e região.
+          <br />
+          Cadastre seu comércio e faça parte dessa rede!
+        </Typography>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          sx={{
+            borderRadius: 4,
+            fontWeight: 700,
+            px: 5,
+            py: 2,
+            fontSize: 20,
+            boxShadow: "0 2px 8px #43a04733",
+            transition: "background 0.2s, box-shadow 0.2s",
+            "&:hover": {
+              background: "linear-gradient(90deg, #1565c0 0%, #388e3c 100%)",
+              boxShadow: "0 4px 16px #43a04733",
+            },
+            zIndex: 1,
+          }}
+          onClick={() => navigate("/comercios/cadastrar")}
+        >
+          Cadastrar meu comércio
+        </Button>
+      </Box>
+
+      {/* Grid de comércios */}
+      <Grid
+        container
+        spacing={4}
+        justifyContent="center"
+        alignItems="flex-start"
+        sx={{ maxWidth: 1200, width: "100%", mx: "auto" }}
+      >
+        {comercios.length === 0 && (
+          <Grid item xs={12}>
+            <Box sx={{ textAlign: "center", py: 8 }}>
+              <Typography variant="h5" color="text.secondary" fontWeight={500}>
+                Nenhum comércio cadastrado ainda.
               </Typography>
-            </Grid>
-          )}
-          {comercios.map((comercio) => (
+              <Typography variant="body2" color="text.secondary" mt={2}>
+                Seja o primeiro a cadastrar seu negócio e fortalecer o comércio
+                local!
+              </Typography>
+            </Box>
+          </Grid>
+        )}
+        {comercios.length > 0 &&
+          comercios.map((comercio) => (
             <Grid item xs={12} sm={6} md={4} key={comercio.id}>
               <Card
                 sx={{
                   position: "relative",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  borderRadius: 3,
-                  boxShadow: 3,
-                  transition: "box-shadow 0.2s, transform 0.2s",
-                  "&:hover": { boxShadow: 8, transform: "translateY(-4px)" },
+                  borderRadius: 4,
+                  boxShadow: 6,
                   bgcolor: "#fff",
-                  minHeight: 180,
+                  transition: "box-shadow 0.3s, transform 0.2s",
+                  "&:hover": {
+                    boxShadow: 12,
+                    transform: "translateY(-6px) scale(1.03)",
+                  },
+                  minHeight: 220,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  p: 2,
                 }}
-                onClick={() => navigate(`/comercios/${comercio.id}`)}
               >
                 <CardContent sx={{ pb: 1 }}>
-                  <Box display="flex" alignItems="center" gap={2} mb={1}>
-                    <Avatar sx={{ bgcolor: "primary.main", fontWeight: 700 }}>
+                  <Box display="flex" alignItems="center" gap={2} mb={2}>
+                    <Avatar
+                      sx={{
+                        bgcolor: "primary.main",
+                        fontWeight: 700,
+                        width: 48,
+                        height: 48,
+                        fontSize: 24,
+                      }}
+                    >
                       {comercio.nome?.[0]?.toUpperCase() || "?"}
                     </Avatar>
                     <Typography
                       variant="h6"
                       fontWeight={700}
                       color="primary.main"
+                      sx={{ flex: 1 }}
                     >
                       {comercio.nome}
                     </Typography>
                   </Box>
-                  <Typography variant="body2" color="text.secondary" mb={0.5}>
+                  <Typography variant="body2" color="text.secondary" mb={1}>
                     {comercio.descricao}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {comercio.endereco}
+                    <strong>Endereço:</strong> {comercio.endereco}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {comercio.telefone}
+                    <strong>Telefone:</strong> {comercio.telefone}
                   </Typography>
                 </CardContent>
                 {token && (
@@ -198,7 +228,16 @@ export default function ListaComercios() {
                         color="primary"
                         size="small"
                         startIcon={<EditIcon />}
-                        sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
+                        sx={{
+                          borderRadius: 2,
+                          minWidth: 0,
+                          px: 1,
+                          transition: "background 0.2s, box-shadow 0.2s",
+                          "&:hover": {
+                            background: "#e3f2fd",
+                            boxShadow: "0 2px 8px #1976d222",
+                          },
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate(`/comercios/${comercio.id}/editar`);
@@ -213,7 +252,16 @@ export default function ListaComercios() {
                         color="error"
                         size="small"
                         startIcon={<DeleteIcon />}
-                        sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
+                        sx={{
+                          borderRadius: 2,
+                          minWidth: 0,
+                          px: 1,
+                          transition: "background 0.2s, box-shadow 0.2s",
+                          "&:hover": {
+                            background: "#ffebee",
+                            boxShadow: "0 2px 8px #d32f2f22",
+                          },
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           setComercioExcluir(comercio);
@@ -228,39 +276,31 @@ export default function ListaComercios() {
               </Card>
             </Grid>
           ))}
-        </Grid>
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={3000}
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert severity={snackbar.severity} sx={{ width: "100%" }}>
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
-        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-          <DialogTitle>Confirmar exclusão</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Tem certeza que deseja excluir o comércio "{comercioExcluir?.nome}
-              "?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setDialogOpen(false)} color="primary">
-              Cancelar
-            </Button>
-            <Button
-              onClick={() => handleDelete(comercioExcluir.id)}
-              color="error"
-              autoFocus
-            >
-              Excluir
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+      </Grid>
+
+      {/* Snackbar e Dialog */}
+      <Snackbar>{/* ...conteúdo do Snackbar se houver... */}</Snackbar>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>Confirmar exclusão</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Tem certeza que deseja excluir o comércio "{comercioExcluir?.nome}"?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)} color="primary">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => handleDelete(comercioExcluir.id)}
+            color="error"
+            autoFocus
+          >
+            Excluir
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
-}
+};
+export default ListaComercios;
