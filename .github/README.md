@@ -104,4 +104,4 @@ Este projeto está sob a licença MIT.
 
 - Autor: Diogo Ataíde Silva
 - Email: diatsilva007@gmail.com
-- [LinkedIn](https://www.linkedin.com/in/diatsilva007/)
+- [LinkedIn](https://www.linkedin.com/in/diatsilva007)
