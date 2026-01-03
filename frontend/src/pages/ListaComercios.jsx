@@ -91,6 +91,7 @@ const ListaComercios = () => {
           🏪
         </Avatar>
         <Typography
+          
           variant="h2"
           fontWeight={800}
           mb={2}

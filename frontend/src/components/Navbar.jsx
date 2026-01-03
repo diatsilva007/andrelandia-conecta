@@ -1,4 +1,11 @@
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Avatar,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -24,71 +31,136 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="static" color="primary" sx={{ mb: 4 }}>
-      <Toolbar>
-        <Typography
-          variant="h6"
-          component={Link}
-          to="/"
-          sx={{
-            flexGrow: 1,
-            color: "#fff",
-            textDecoration: "none",
-            fontWeight: 700,
-            transition: "color 0.2s, text-shadow 0.2s",
-            "&:hover": {
-              color: "#e0f2f1",
-              textShadow: "0 2px 8px #1976d222",
-              textDecoration: "underline",
-            },
-          }}
-        >
-          Andrelândia Conecta
-        </Typography>
+    <AppBar
+      position="fixed"
+      elevation={0}
+      sx={{
+        background: "linear-gradient(90deg, #1976d2 0%, #43a047 100%)",
+        boxShadow: "0 4px 24px #1976d222",
+        borderRadius: 0,
+        px: { xs: 2, md: 6 },
+        py: 0.5,
+        zIndex: 1201,
+      }}
+    >
+      <Toolbar
+        sx={{
+          minHeight: 64,
+          display: "flex",
+          justifyContent: "space-between",
+          px: 0,
+        }}
+      >
+        <Box display="flex" alignItems="center" gap={2}>
+          <Avatar
+            sx={{
+              bgcolor: "secondary.main",
+              width: 40,
+              height: 40,
+              fontSize: 24,
+              boxShadow: 2,
+            }}
+          >
+            🏪
+          </Avatar>
+          <Typography
+            variant="h5"
+            component={Link}
+            to="/"
+            sx={{
+              color: "#fff",
+              textDecoration: "none",
+              fontWeight: 800,
+              letterSpacing: 1.2,
+              textShadow: "0 2px 8px #0002",
+              transition: "color 0.2s, text-shadow 0.2s",
+              "&:hover": {
+                color: "#e0f2f1",
+                textShadow: "0 2px 8px #1976d222",
+                textDecoration: "none",
+              },
+            }}
+          >
+            Andrelândia Conecta
+          </Typography>
+        </Box>
         {usuario ? (
           <Box display="flex" alignItems="center" gap={2}>
-            <Typography sx={{ color: "#fff", fontWeight: 500 }}>
+            <Typography sx={{ color: "#fff", fontWeight: 500, fontSize: 16 }}>
               Olá, {usuario.nome}
             </Typography>
-            <Button color="inherit" onClick={handleLogout}>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              sx={{
+                borderRadius: 3,
+                fontWeight: 700,
+                px: 2.5,
+                py: 1,
+                fontSize: 15,
+                boxShadow: "0 2px 8px #43a04733",
+                transition: "all 0.2s",
+                "&:hover": {
+                  background: "#388e3c",
+                  color: "#fff",
+                },
+              }}
+              onClick={handleLogout}
+            >
               Sair
             </Button>
           </Box>
         ) : (
-          <>
+          <Box display="flex" alignItems="center" gap={1.5}>
             <Button
+              variant="outlined"
               color="inherit"
               component={Link}
               to="/login"
               sx={{
-                textTransform: "none",
-                fontWeight: 500,
-                transition: "background 0.2s, color 0.2s",
+                borderRadius: 3,
+                fontWeight: 600,
+                px: 2.5,
+                py: 1,
+                fontSize: 15,
+                letterSpacing: 0.5,
+                boxShadow: "0 2px 8px #1976d222",
+                background: "rgba(255,255,255,0.08)",
+                borderColor: "#fff",
+                color: "#fff",
+                transition: "all 0.2s",
                 "&:hover": {
                   background: "#e3f2fd",
                   color: "#1976d2",
+                  borderColor: "#1976d2",
                 },
               }}
             >
               Entrar
             </Button>
             <Button
-              color="inherit"
+              variant="contained"
+              color="secondary"
               component={Link}
               to="/registrar"
               sx={{
-                textTransform: "none",
-                fontWeight: 500,
-                transition: "background 0.2s, color 0.2s",
+                borderRadius: 3,
+                fontWeight: 700,
+                px: 2.5,
+                py: 1,
+                fontSize: 15,
+                boxShadow: "0 2px 8px #43a04733",
+                transition: "all 0.2s",
                 "&:hover": {
-                  background: "#e8f5e9",
-                  color: "#43a047",
+                  background: "#388e3c",
+                  color: "#fff",
                 },
               }}
             >
               Registrar
             </Button>
-          </>
+          </Box>
         )}
       </Toolbar>
     </AppBar>
