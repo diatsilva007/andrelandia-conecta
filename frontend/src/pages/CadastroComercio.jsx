@@ -81,7 +81,7 @@ export default function CadastroComercio() {
           justifyContent: "center",
         }}
       >
-        <Box sx={{ maxWidth: 420, width: "100%" }}>
+        <Box sx={{ maxWidth: { xs: 320, sm: 400, md: 420 }, width: "100%" }}>
           <BreadcrumbNav
             items={[
               { label: "Início", to: "/" },
@@ -92,10 +92,10 @@ export default function CadastroComercio() {
       </Box>
       <Paper
         sx={{
-          p: 4,
-          maxWidth: 400,
+          p: { xs: 2, sm: 3, md: 4 },
+          maxWidth: { xs: 320, sm: 400 },
           width: "100%",
-          borderRadius: 3,
+          borderRadius: { xs: 2, sm: 3 },
           boxShadow: 3,
         }}
       >

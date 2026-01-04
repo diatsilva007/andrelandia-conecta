@@ -128,11 +128,7 @@ export default function CadastroUsuario() {
             {sucesso}
           </Alert>
         )}
-        <form
-          onSubmit={handleSubmit}
-          autoComplete="off"
-          style={{ width: "100%" }}
-        >
+        <form onSubmit={handleSubmit} autoComplete="off">
           <TextField
             label="Nome"
             name="nome"

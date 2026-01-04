@@ -48,7 +48,7 @@ const ListaComercios = () => {
         flexDirection: "column",
         alignItems: "center",
         bgcolor: "background.default",
-        px: { xs: 2, md: 6 },
+        px: { xs: 1, sm: 2, md: 6 },
         py: 0,
       }}
     >
@@ -60,20 +60,20 @@ const ListaComercios = () => {
       <Box
         sx={{
           width: "100%",
-          maxWidth: 700,
+          maxWidth: { xs: 360, sm: 500, md: 700 },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: 5,
+          borderRadius: { xs: 2, sm: 4, md: 5 },
           boxShadow: 6,
           background: "linear-gradient(90deg, #1976d2 0%, #43a047 100%)",
           position: "relative",
           overflow: "hidden",
-          py: { xs: 5, md: 8 },
-          px: { xs: 2, md: 6 },
-          mt: { xs: 10, md: 14 },
-          mb: 8,
+          py: { xs: 3, sm: 5, md: 8 },
+          px: { xs: 1, sm: 3, md: 6 },
+          mt: { xs: 6, sm: 10, md: 14 },
+          mb: { xs: 4, sm: 6, md: 8 },
         }}
       >
         <Box
@@ -167,7 +167,7 @@ const ListaComercios = () => {
       {/* Grid de comércios */}
       <Grid
         container
-        spacing={4}
+        spacing={{ xs: 2, sm: 3, md: 4 }}
         justifyContent="center"
         alignItems="flex-start"
         sx={{ maxWidth: 1200, width: "100%", mx: "auto", mt: 0 }}
@@ -201,7 +201,7 @@ const ListaComercios = () => {
               <Card
                 sx={{
                   position: "relative",
-                  borderRadius: 4,
+                  borderRadius: { xs: 2, sm: 3, md: 4 },
                   boxShadow: 6,
                   bgcolor: "#fff",
                   transition: "box-shadow 0.3s, transform 0.2s",
@@ -209,11 +209,11 @@ const ListaComercios = () => {
                     boxShadow: 12,
                     transform: "translateY(-6px) scale(1.03)",
                   },
-                  minHeight: 220,
+                  minHeight: { xs: 180, sm: 200, md: 220 },
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  p: 2,
+                  p: { xs: 1.5, sm: 2 },
                 }}
               >
                 <CardContent sx={{ pb: 1 }}>
