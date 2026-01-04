@@ -1,12 +1,12 @@
 # ToDo - Plataforma Andrelândia Conecta
 
 ## UX/UI e Padronização
-- [ ] Padronizar formulários de edição de comércio e produto (Paper/Card, loading, helperText, feedback)
-- [ ] Padronizar formulários de cadastro/edição de produto
-- [ ] Adicionar loading global (Backdrop) para operações importantes
-- [ ] Implementar breadcrumbs para navegação contextual
-- [ ] Garantir feedback visual (snackbar) em todas as ações (edição, exclusão, cadastro, erro)
-- [ ] Melhorar responsividade dos cards e formulários
+- [x] Padronizar formulários de edição de comércio e produto (Paper/Card, loading, helperText, feedback)
+- [x] Padronizar formulários de cadastro/edição de produto
+- [x] Adicionar loading global (Backdrop) para operações importantes
+- [x] Implementar breadcrumbs para navegação contextual
+- [x] Garantir feedback visual (snackbar) em todas as ações (edição, exclusão, cadastro, erro)
+- [x] Melhorar responsividade dos cards e formulários
 
 ## Funcionalidades CRUD
 - [ ] Implementar edição e exclusão de produtos (frontend)
