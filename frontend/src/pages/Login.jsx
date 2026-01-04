@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useSnackbar } from "../components/SnackbarContext.jsx";
+import { LoadingContext } from "../App.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -17,7 +19,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { setSnackbar } = useSnackbar();
+  const { setOpen } = useContext(LoadingContext);
   <Button
     variant="outlined"
     color="primary"
@@ -61,7 +64,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro("");
-    setLoading(true);
+    setOpen(true);
     try {
       const res = await axios.post("http://localhost:3333/auth/login", {
         email,
@@ -69,11 +72,18 @@ export default function Login() {
       });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+      setSnackbar({
+        open: true,
+        message: "Login realizado com sucesso!",
+        severity: "success",
+      });
       navigate("/");
     } catch (err) {
-      setErro(err.response?.data?.error || "Erro ao fazer login");
+      const msg = err.response?.data?.error || "Erro ao fazer login";
+      setErro(msg);
+      setSnackbar({ open: true, message: msg, severity: "error" });
     } finally {
-      setLoading(false);
+      setOpen(false);
     }
   };
 
@@ -147,11 +157,9 @@ export default function Login() {
             color="primary"
             fullWidth
             sx={{ mt: 2 }}
-            disabled={loading}
             aria-label="Entrar"
-            endIcon={loading && <CircularProgress size={18} color="inherit" />}
           >
-            {loading ? "Entrando..." : "Entrar"}
+            Entrar
           </Button>
         </form>
         <Box mt={2} textAlign="center">

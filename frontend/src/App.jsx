@@ -1,5 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import LoadingBackdrop from "./components/LoadingBackdrop.jsx";
+import React, { createContext, useState } from "react";
+import { SnackbarProvider } from "./components/SnackbarContext.jsx";
+import GlobalSnackbar from "./components/GlobalSnackbar.jsx";
 import Login from "./pages/Login.jsx";
 import ListaComercios from "./pages/ListaComercios.jsx";
 import DetalheComercio from "./pages/DetalheComercio.jsx";
@@ -33,28 +37,44 @@ const theme = createTheme({
   },
 });
 
+// Contexto para loading global
+export const LoadingContext = createContext({ open: false, setOpen: () => {} });
+
 function App() {
+  const [loading, setLoading] = useState(false);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/registrar" element={<CadastroUsuario />} />
-          <Route path="/esqueci-senha" element={<EsqueciSenha />} />
-          <Route path="/redefinir-senha/:token" element={<RedefinirSenha />} />
-          <Route path="/comercios/:id/editar" element={<EditarComercio />} />
-          {/* Outras rotas futuras */}
-          <Route path="/" element={<ListaComercios />} />
-          <Route path="/comercios/:id" element={<DetalheComercio />} />
-          <Route path="/comercios/novo" element={<CadastroComercio />} />
-          <Route
-            path="/comercios/:id/produtos/novo"
-            element={<CadastroProduto />}
-          />
-        </Routes>
-      </BrowserRouter>
+      <SnackbarProvider>
+        <LoadingContext.Provider value={{ open: loading, setOpen: setLoading }}>
+          <LoadingBackdrop open={loading} />
+          <GlobalSnackbar />
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/registrar" element={<CadastroUsuario />} />
+              <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+              <Route
+                path="/redefinir-senha/:token"
+                element={<RedefinirSenha />}
+              />
+              <Route
+                path="/comercios/:id/editar"
+                element={<EditarComercio />}
+              />
+              {/* Outras rotas futuras */}
+              <Route path="/" element={<ListaComercios />} />
+              <Route path="/comercios/:id" element={<DetalheComercio />} />
+              <Route path="/comercios/novo" element={<CadastroComercio />} />
+              <Route
+                path="/comercios/:id/produtos/novo"
+                element={<CadastroProduto />}
+              />
+            </Routes>
+          </BrowserRouter>
+        </LoadingContext.Provider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }

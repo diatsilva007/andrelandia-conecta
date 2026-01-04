@@ -1,16 +1,3 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Alert,
-  Paper,
-} from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import { useNavigate } from "react-router-dom";
-
 export default function CadastroComercio() {
   const [form, setForm] = useState({
     nome: "",
@@ -20,7 +7,8 @@ export default function CadastroComercio() {
   });
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { setSnackbar } = useSnackbar();
+  const { setOpen } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,13 +26,18 @@ export default function CadastroComercio() {
     e.preventDefault();
     setErro("");
     setSucesso("");
-    setLoading(true);
+    setOpen(true);
     try {
       const token = localStorage.getItem("token");
       await axios.post("http://localhost:3333/comercios", form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSucesso("Comércio cadastrado com sucesso!");
+      setSnackbar({
+        open: true,
+        message: "Comércio cadastrado com sucesso!",
+        severity: "success",
+      });
       setTimeout(
         () =>
           navigate("/", {
@@ -53,9 +46,15 @@ export default function CadastroComercio() {
         1200
       );
     } catch (err) {
-      setErro(err.response?.data?.error || "Erro ao cadastrar comércio");
+      const msg = err.response?.data?.error || "Erro ao cadastrar comércio";
+      setErro(msg);
+      setSnackbar({
+        open: true,
+        message: msg,
+        severity: "error",
+      });
     } finally {
-      setLoading(false);
+      setOpen(false);
     }
   };
 
@@ -72,6 +71,25 @@ export default function CadastroComercio() {
       bgcolor="background.default"
       zIndex={1}
     >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 24,
+          left: 0,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ maxWidth: 420, width: "100%" }}>
+          <BreadcrumbNav
+            items={[
+              { label: "Início", to: "/" },
+              { label: "Cadastrar Comércio" },
+            ]}
+          />
+        </Box>
+      </Box>
       <Paper
         sx={{
           p: 4,
@@ -148,10 +166,8 @@ export default function CadastroComercio() {
             color="primary"
             fullWidth
             sx={{ mt: 2 }}
-            disabled={loading}
-            endIcon={loading && <CircularProgress size={18} color="inherit" />}
           >
-            {loading ? "Cadastrando..." : "Cadastrar"}
+            Cadastrar
           </Button>
         </form>
       </Paper>

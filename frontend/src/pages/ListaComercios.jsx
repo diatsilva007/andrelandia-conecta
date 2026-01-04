@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSnackbar } from "../components/SnackbarContext.jsx";
+import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -26,7 +28,17 @@ const ListaComercios = () => {
   const [token] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comercioExcluir, setComercioExcluir] = useState(null);
-  const handleDelete = () => {};
+  const { setSnackbar } = useSnackbar();
+  // Exemplo de uso do Snackbar para feedback
+  const handleDelete = (id) => {
+    // Aqui você faria a chamada de exclusão (API)
+    setDialogOpen(false);
+    setSnackbar({
+      open: true,
+      message: "Comércio excluído com sucesso!",
+      severity: "success",
+    });
+  };
   return (
     <Box
       sx={{
@@ -40,6 +52,9 @@ const ListaComercios = () => {
         py: 0,
       }}
     >
+      <Box sx={{ width: "100%", maxWidth: 1200, mt: 2, mb: 1 }}>
+        <BreadcrumbNav items={[{ label: "Início" }]} />
+      </Box>
       {/* Banner */}
       {/* Banner centralizado */}
       <Box
@@ -310,8 +325,7 @@ const ListaComercios = () => {
           ))}
       </Grid>
 
-      {/* Snackbar e Dialog */}
-      <Snackbar>{/* ...conteúdo do Snackbar se houver... */}</Snackbar>
+      {/* Dialog de confirmação */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Confirmar exclusão</DialogTitle>
         <DialogContent>

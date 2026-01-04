@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import axios from "axios";
 import {
   Box,
@@ -45,6 +46,14 @@ export default function DetalheComercio() {
 
   return (
     <Box p={3}>
+      <Box sx={{ maxWidth: 1200, mb: 2 }}>
+        <BreadcrumbNav
+          items={[
+            { label: "Início", to: "/" },
+            { label: comercio.nome || "Detalhe do Comércio" },
+          ]}
+        />
+      </Box>
       <Box display="flex" alignItems="center" gap={2} mb={2}>
         <Button component={Link} to="/" variant="outlined">
           Voltar

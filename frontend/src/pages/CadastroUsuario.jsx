@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useSnackbar } from "../components/SnackbarContext.jsx";
+import { LoadingContext } from "../App.jsx";
 import axios from "axios";
 import {
   Box,
@@ -23,9 +25,10 @@ export default function CadastroUsuario() {
   });
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
+  const { setSnackbar } = useSnackbar();
   const [showSenha, setShowSenha] = useState(false);
   const [showSenha2, setShowSenha2] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { setOpen } = useContext(LoadingContext);
   const [senhaForte, setSenhaForte] = useState(true);
   const navigate = useNavigate();
 
@@ -51,14 +54,18 @@ export default function CadastroUsuario() {
     setErro("");
     setSucesso("");
     if (!senhaForte) {
-      setErro("A senha não atende aos requisitos de segurança.");
+      const msg = "A senha não atende aos requisitos de segurança.";
+      setErro(msg);
+      setSnackbar({ open: true, message: msg, severity: "error" });
       return;
     }
     if (form.senha !== form.senha2) {
-      setErro("As senhas não coincidem.");
+      const msg = "As senhas não coincidem.";
+      setErro(msg);
+      setSnackbar({ open: true, message: msg, severity: "error" });
       return;
     }
-    setLoading(true);
+    setOpen(true);
     try {
       await axios.post("http://localhost:3333/usuarios", {
         nome: form.nome,
@@ -66,42 +73,66 @@ export default function CadastroUsuario() {
         senha: form.senha,
       });
       setSucesso("Usuário cadastrado com sucesso! Faça login.");
+      setSnackbar({
+        open: true,
+        message: "Usuário cadastrado com sucesso! Faça login.",
+        severity: "success",
+      });
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
-      setErro(err.response?.data?.error || "Erro ao cadastrar usuário");
+      const msg = err.response?.data?.error || "Erro ao cadastrar usuário";
+      setErro(msg);
+      setSnackbar({ open: true, message: msg, severity: "error" });
     } finally {
-      setLoading(false);
+      setOpen(false);
     }
   };
 
   return (
     <Box
-      position="fixed"
-      top={0}
-      left={0}
-      width="100vw"
-      height="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      bgcolor="background.default"
-      zIndex={1}
+      sx={{
+        minHeight: "100vh",
+        width: "100vw",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        bgcolor: "background.default",
+        py: 4,
+      }}
     >
-      <Paper sx={{ p: 4, maxWidth: 400, width: "100%" }}>
-        <Typography variant="h5" mb={2} align="center">
+      <Paper
+        sx={{
+          p: { xs: 3, md: 5 },
+          maxWidth: 420,
+          width: "100%",
+          borderRadius: 4,
+          boxShadow: 6,
+        }}
+      >
+        <Typography
+          variant="h5"
+          mb={2.5}
+          align="center"
+          fontWeight={700}
+          letterSpacing={0.5}
+        >
           Criar Conta
         </Typography>
         {erro && (
-          <Alert severity="error" sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ mb: 2, fontSize: 15 }}>
             {erro}
           </Alert>
         )}
         {sucesso && (
-          <Alert severity="success" sx={{ mb: 2 }}>
+          <Alert severity="success" sx={{ mb: 2, fontSize: 15 }}>
             {sucesso}
           </Alert>
         )}
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form
+          onSubmit={handleSubmit}
+          autoComplete="off"
+          style={{ width: "100%" }}
+        >
           <TextField
             label="Nome"
             name="nome"
@@ -111,6 +142,7 @@ export default function CadastroUsuario() {
             margin="normal"
             required
             autoFocus
+            inputProps={{ maxLength: 60, "aria-label": "Nome do usuário" }}
           />
           <TextField
             label="E-mail"
@@ -121,7 +153,7 @@ export default function CadastroUsuario() {
             fullWidth
             margin="normal"
             required
-            inputProps={{ "aria-label": "E-mail" }}
+            inputProps={{ maxLength: 80, "aria-label": "E-mail" }}
           />
           <TextField
             label="Senha"
@@ -132,7 +164,7 @@ export default function CadastroUsuario() {
             fullWidth
             margin="normal"
             required
-            inputProps={{ "aria-label": "Senha" }}
+            inputProps={{ maxLength: 40, "aria-label": "Senha" }}
             helperText={requisitosSenha}
             error={!senhaForte && form.senha.length > 0}
             InputProps={{
@@ -158,7 +190,7 @@ export default function CadastroUsuario() {
             fullWidth
             margin="normal"
             required
-            inputProps={{ "aria-label": "Confirmar Senha" }}
+            inputProps={{ maxLength: 40, "aria-label": "Confirmar Senha" }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -178,12 +210,10 @@ export default function CadastroUsuario() {
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2 }}
-            disabled={loading}
+            sx={{ mt: 2, fontWeight: 600, fontSize: 16, borderRadius: 3 }}
             aria-label="Registrar"
-            endIcon={loading && <CircularProgress size={18} color="inherit" />}
           >
-            {loading ? "Registrando..." : "Registrar"}
+            Registrar
           </Button>
         </form>
         <Box mt={2} textAlign="center">
@@ -194,6 +224,7 @@ export default function CadastroUsuario() {
               size="small"
               onClick={() => navigate("/login")}
               aria-label="Ir para login"
+              sx={{ fontWeight: 500, fontSize: 15 }}
             >
               Faça login
             </Button>
