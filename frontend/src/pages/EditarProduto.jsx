@@ -83,15 +83,33 @@ export default function EditarProduto() {
   };
 
   return (
-    <Box maxWidth={500} mx="auto" mt={4}>
-      <BreadcrumbNav
-        items={[{ label: "Início", to: "/" }, { label: "Editar Produto" }]}
-      />
-      <Paper sx={{ p: 3, borderRadius: 3, boxShadow: 2 }}>
-        <Typography variant="h6" mb={2}>
+    <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
+      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
+        <BreadcrumbNav
+          items={[{ label: "Início", to: "/" }, { label: "Editar Produto" }]}
+        />
+      </Box>
+      <Paper
+        sx={{
+          p: { xs: 2, sm: 3, md: 4 },
+          maxWidth: 420,
+          mx: "auto",
+          width: "100%",
+          borderRadius: { xs: 2, sm: 3 },
+          boxShadow: 3,
+        }}
+      >
+        <Typography
+          variant="h5"
+          mb={2}
+          align="center"
+          fontWeight={700}
+          color="primary.main"
+          sx={{ letterSpacing: 1 }}
+        >
           Editar Produto
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <TextField
             label="Nome"
             name="nome"
@@ -101,6 +119,7 @@ export default function EditarProduto() {
             required
             margin="normal"
             inputProps={{ maxLength: 60, "aria-label": "Nome do produto" }}
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Preço"
@@ -116,6 +135,7 @@ export default function EditarProduto() {
               step: 0.01,
               "aria-label": "Preço do produto",
             }}
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Descrição"
@@ -125,11 +145,12 @@ export default function EditarProduto() {
             fullWidth
             margin="normal"
             multiline
-            rows={3}
+            minRows={2}
             inputProps={{
               maxLength: 200,
               "aria-label": "Descrição do produto",
             }}
+            sx={{ mb: 2 }}
           />
           {erro && (
             <Alert severity="error" sx={{ mt: 2 }}>
@@ -145,7 +166,14 @@ export default function EditarProduto() {
             type="submit"
             variant="contained"
             color="primary"
-            sx={{ mt: 2, borderRadius: 2 }}
+            fullWidth
+            sx={{
+              mt: 2,
+              fontWeight: 600,
+              fontSize: 16,
+              letterSpacing: 0.5,
+              borderRadius: 2,
+            }}
             aria-label="Salvar alterações do produto"
           >
             Salvar

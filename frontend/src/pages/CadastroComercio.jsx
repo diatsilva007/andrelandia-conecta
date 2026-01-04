@@ -59,41 +59,20 @@ export default function CadastroComercio() {
   };
 
   return (
-    <Box
-      position="fixed"
-      top={0}
-      left={0}
-      width="100vw"
-      height="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      bgcolor="background.default"
-      zIndex={1}
-    >
-      <Box
-        sx={{
-          position: "absolute",
-          top: 24,
-          left: 0,
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Box sx={{ maxWidth: { xs: 320, sm: 400, md: 420 }, width: "100%" }}>
-          <BreadcrumbNav
-            items={[
-              { label: "Início", to: "/" },
-              { label: "Cadastrar Comércio" },
-            ]}
-          />
-        </Box>
+    <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
+      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
+        <BreadcrumbNav
+          items={[
+            { label: "Início", to: "/" },
+            { label: "Cadastrar Comércio" },
+          ]}
+        />
       </Box>
       <Paper
         sx={{
           p: { xs: 2, sm: 3, md: 4 },
-          maxWidth: { xs: 320, sm: 400 },
+          maxWidth: 420,
+          mx: "auto",
           width: "100%",
           borderRadius: { xs: 2, sm: 3 },
           boxShadow: 3,
@@ -105,6 +84,7 @@ export default function CadastroComercio() {
           align="center"
           fontWeight={700}
           color="primary.main"
+          sx={{ letterSpacing: 1 }}
         >
           Cadastrar Novo Comércio
         </Typography>
@@ -129,6 +109,7 @@ export default function CadastroComercio() {
             margin="normal"
             inputProps={{ maxLength: 60 }}
             helperText="Máx. 60 caracteres"
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Descrição"
@@ -139,6 +120,7 @@ export default function CadastroComercio() {
             margin="normal"
             inputProps={{ maxLength: 120 }}
             helperText="Máx. 120 caracteres"
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Endereço"
@@ -149,6 +131,7 @@ export default function CadastroComercio() {
             margin="normal"
             inputProps={{ maxLength: 80 }}
             helperText="Máx. 80 caracteres"
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Telefone"
@@ -159,13 +142,20 @@ export default function CadastroComercio() {
             margin="normal"
             inputProps={{ maxLength: 20 }}
             helperText="Ex: (35) 99999-9999"
+            sx={{ mb: 2 }}
           />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2,
+              fontWeight: 600,
+              fontSize: 16,
+              letterSpacing: 0.5,
+              borderRadius: 2,
+            }}
           >
             Cadastrar
           </Button>

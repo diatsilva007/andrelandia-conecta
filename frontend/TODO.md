@@ -14,9 +14,9 @@
 - [x] Adicionar confirmação visual para exclusão de produto (Dialog)
 
 ## Experiência do Usuário
-- [ ] Adicionar tooltips e ícones em todos os botões de ação
-- [ ] Garantir acessibilidade (aria-labels, contraste, navegação por teclado)
-- [ ] Revisar e padronizar espaçamentos, fontes e cores em todas as telas
+- [x] Adicionar tooltips e ícones em todos os botões de ação
+- [x] Garantir acessibilidade (aria-labels, contraste, navegação por teclado)
+- [x] Revisar e padronizar espaçamentos, fontes e cores em todas as telas
 
 ## Funcionalidades importantes
 - [ ] Cadastro e autenticação de usuários (comerciantes e clientes).

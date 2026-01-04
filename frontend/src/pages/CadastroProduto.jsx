@@ -68,66 +68,43 @@ export default function CadastroProduto() {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        width: "100vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "background.default",
-        py: 4,
-      }}
-    >
-      <Box
-        sx={{
-          position: "absolute",
-          top: 24,
-          left: 0,
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Box sx={{ maxWidth: { xs: 320, sm: 400, md: 420 }, width: "100%" }}>
-          <BreadcrumbNav
-            items={[{ label: "Início", to: "/" }, { label: "Novo Produto" }]}
-          />
-        </Box>
+    <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
+      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
+        <BreadcrumbNav
+          items={[{ label: "Início", to: "/" }, { label: "Novo Produto" }]}
+        />
       </Box>
       <Paper
         sx={{
           p: { xs: 2, sm: 3, md: 4 },
-          maxWidth: { xs: 320, sm: 400 },
+          maxWidth: 420,
+          mx: "auto",
           width: "100%",
           borderRadius: { xs: 2, sm: 3 },
-          boxShadow: 6,
+          boxShadow: 3,
         }}
       >
         <Typography
           variant="h5"
-          mb={2.5}
+          mb={2}
           align="center"
           fontWeight={700}
-          letterSpacing={0.5}
+          color="primary.main"
+          sx={{ letterSpacing: 1 }}
         >
           Cadastrar Novo Produto
         </Typography>
         {erro && (
-          <Alert severity="error" sx={{ mb: 2, fontSize: 15 }}>
+          <Alert severity="error" sx={{ mb: 2 }}>
             {erro}
           </Alert>
         )}
         {sucesso && (
-          <Alert severity="success" sx={{ mb: 2, fontSize: 15 }}>
+          <Alert severity="success" sx={{ mb: 2 }}>
             {sucesso}
           </Alert>
         )}
-        <form
-          onSubmit={handleSubmit}
-          autoComplete="off"
-          style={{ width: "100%" }}
-        >
+        <form onSubmit={handleSubmit} autoComplete="off">
           <TextField
             label="Nome"
             name="nome"
@@ -137,6 +114,7 @@ export default function CadastroProduto() {
             required
             margin="normal"
             inputProps={{ maxLength: 60, "aria-label": "Nome do produto" }}
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Preço"
@@ -152,6 +130,7 @@ export default function CadastroProduto() {
               step: 0.01,
               "aria-label": "Preço do produto",
             }}
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Descrição"
@@ -166,13 +145,20 @@ export default function CadastroProduto() {
               maxLength: 200,
               "aria-label": "Descrição do produto",
             }}
+            sx={{ mb: 2 }}
           />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2, fontWeight: 600, fontSize: 16, borderRadius: 3 }}
+            sx={{
+              mt: 2,
+              fontWeight: 600,
+              fontSize: 16,
+              letterSpacing: 0.5,
+              borderRadius: 2,
+            }}
             aria-label="Cadastrar produto"
           >
             Cadastrar
