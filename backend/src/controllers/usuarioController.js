@@ -21,6 +21,10 @@ export const criarUsuario = async (req, res) => {
     });
     res.status(201).json({ id: novo.id, nome: novo.nome, email: novo.email });
   } catch (error) {
+    console.error("Erro ao criar usuário:", error);
+    if (error.code === "P2002" && error.meta?.target?.includes("email")) {
+      return res.status(400).json({ error: "E-mail já cadastrado." });
+    }
     res.status(500).json({ error: "Erro ao criar usuário." });
   }
 };

@@ -21,6 +21,7 @@ export const criarComercio = async (req, res) => {
     });
     res.status(201).json(novo);
   } catch (error) {
+    console.error("Erro ao criar comércio:", error);
     res.status(500).json({ error: "Erro ao criar comércio." });
   }
 };
