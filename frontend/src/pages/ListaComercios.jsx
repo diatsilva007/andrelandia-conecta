@@ -28,7 +28,6 @@ const ListaComercios = () => {
   const [comercioExcluir, setComercioExcluir] = useState(null);
   const handleDelete = () => {};
   return (
-    // Banner institucional avançado + grid de comércios + Snackbar e Dialog
     <Box
       sx={{
         width: "100vw",
@@ -36,15 +35,13 @@ const ListaComercios = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        px: { xs: 2, md: 6 },
-        py: { xs: 6, md: 10 },
-        m: 0,
-        borderRadius: 0,
         bgcolor: "background.default",
+        px: { xs: 2, md: 6 },
+        py: 0,
       }}
     >
       {/* Banner */}
+      {/* Banner centralizado */}
       <Box
         sx={{
           width: "100%",
@@ -53,14 +50,15 @@ const ListaComercios = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          mb: 6,
           borderRadius: 5,
           boxShadow: 6,
           background: "linear-gradient(90deg, #1976d2 0%, #43a047 100%)",
           position: "relative",
           overflow: "hidden",
-          py: { xs: 6, md: 10 },
+          py: { xs: 5, md: 8 },
           px: { xs: 2, md: 6 },
+          mt: { xs: 10, md: 14 },
+          mb: 8,
         }}
       >
         <Box
@@ -79,10 +77,10 @@ const ListaComercios = () => {
         <Avatar
           sx={{
             bgcolor: "secondary.main",
-            width: 90,
-            height: 90,
-            fontSize: 48,
-            mb: 3,
+            width: 80,
+            height: 80,
+            fontSize: 44,
+            mb: 2.5,
             boxShadow: 3,
             zIndex: 1,
             animation: "pulse 2s infinite",
@@ -91,31 +89,41 @@ const ListaComercios = () => {
           🏪
         </Avatar>
         <Typography
-          
-          variant="h2"
+          variant="h3"
           fontWeight={800}
-          mb={2}
-          sx={{ color: "#fff", zIndex: 1, textShadow: "0 2px 8px #0002" }}
+          mb={1.5}
+          sx={{
+            color: "#fff",
+            zIndex: 1,
+            textShadow: "0 2px 8px #0002",
+            letterSpacing: 1,
+          }}
         >
           Andrelândia Conecta
         </Typography>
         <Typography
-          variant="h5"
+          variant="h6"
           fontWeight={500}
-          mb={2}
-          sx={{ color: "#e0f2f1", zIndex: 1 }}
+          mb={1.5}
+          sx={{ color: "#e0f2f1", zIndex: 1, letterSpacing: 0.5 }}
         >
           Visibilidade e gestão para o comércio local
         </Typography>
         <Typography
           variant="body1"
-          mb={3}
-          sx={{ color: "#fff", fontSize: 20, zIndex: 1, maxWidth: 600 }}
+          mb={2.5}
+          sx={{
+            color: "#fff",
+            fontSize: 18,
+            zIndex: 1,
+            maxWidth: 600,
+            textAlign: "center",
+          }}
         >
           Plataforma para conectar, divulgar e fortalecer os negócios de
           Andrelândia/MG e região.
           <br />
-          Cadastre seu comércio e faça parte dessa rede!
+          <b>Cadastre seu comércio e faça parte dessa rede!</b>
         </Typography>
         <Button
           variant="contained"
@@ -125,8 +133,8 @@ const ListaComercios = () => {
             borderRadius: 4,
             fontWeight: 700,
             px: 5,
-            py: 2,
-            fontSize: 20,
+            py: 1.5,
+            fontSize: 18,
             boxShadow: "0 2px 8px #43a04733",
             transition: "background 0.2s, box-shadow 0.2s",
             "&:hover": {
@@ -147,15 +155,25 @@ const ListaComercios = () => {
         spacing={4}
         justifyContent="center"
         alignItems="flex-start"
-        sx={{ maxWidth: 1200, width: "100%", mx: "auto" }}
+        sx={{ maxWidth: 1200, width: "100%", mx: "auto", mt: 0 }}
       >
         {comercios.length === 0 && (
           <Grid item xs={12}>
             <Box sx={{ textAlign: "center", py: 8 }}>
-              <Typography variant="h5" color="text.secondary" fontWeight={500}>
+              <Typography
+                variant="h6"
+                color="text.secondary"
+                fontWeight={600}
+                sx={{ letterSpacing: 0.5 }}
+              >
                 Nenhum comércio cadastrado ainda.
               </Typography>
-              <Typography variant="body2" color="text.secondary" mt={2}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                mt={2}
+                sx={{ fontSize: 16 }}
+              >
                 Seja o primeiro a cadastrar seu negócio e fortalecer o comércio
                 local!
               </Typography>
@@ -189,29 +207,42 @@ const ListaComercios = () => {
                       sx={{
                         bgcolor: "primary.main",
                         fontWeight: 700,
-                        width: 48,
-                        height: 48,
-                        fontSize: 24,
+                        width: 44,
+                        height: 44,
+                        fontSize: 22,
                       }}
                     >
                       {comercio.nome?.[0]?.toUpperCase() || "?"}
                     </Avatar>
                     <Typography
-                      variant="h6"
+                      variant="subtitle1"
                       fontWeight={700}
                       color="primary.main"
-                      sx={{ flex: 1 }}
+                      sx={{ flex: 1, fontSize: 20, letterSpacing: 0.5 }}
                     >
                       {comercio.nome}
                     </Typography>
                   </Box>
-                  <Typography variant="body2" color="text.secondary" mb={1}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    mb={1}
+                    sx={{ fontSize: 16 }}
+                  >
                     {comercio.descricao}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontSize: 15 }}
+                  >
                     <strong>Endereço:</strong> {comercio.endereco}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontSize: 15 }}
+                  >
                     <strong>Telefone:</strong> {comercio.telefone}
                   </Typography>
                 </CardContent>
