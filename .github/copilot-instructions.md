@@ -1,4 +1,3 @@
-
 # Copilot Instructions — Andrelândia Conecta
 
 Este monorepo implementa uma plataforma de gestão e visibilidade para o comércio local de Andrelândia/MG e região.
@@ -6,6 +5,7 @@ Este monorepo implementa uma plataforma de gestão e visibilidade para o comérc
 ## Arquitetura e Componentes
 
 - **Frontend** (`/frontend`):
+
   - SPA em React (Vite), Material UI, React Router DOM.
   - Autenticação JWT (armazenado no localStorage), consumo de API REST.
   - Componentes reutilizáveis em `src/components`, páginas em `src/pages`.
@@ -13,6 +13,7 @@ Este monorepo implementa uma plataforma de gestão e visibilidade para o comérc
   - Navegação protegida: páginas como `CadastroComercio.jsx` exigem token, redirecionando para `/login` se ausente.
 
 - **Backend** (`/backend`):
+
   - Node.js (ESM), Express, Prisma ORM, JWT, bcryptjs.
   - API RESTful, autenticação JWT, banco PostgreSQL.
   - Controllers em `src/controllers`, rotas em `src/routes`.
