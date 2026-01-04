@@ -10,7 +10,13 @@ import {
   Button,
   Grid,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
+import { useSnackbar } from "../components/SnackbarContext.jsx";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
@@ -22,13 +28,23 @@ export default function DetalheComercio() {
   const [comercio, setComercio] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { setSnackbar } = useSnackbar();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [produtoExcluir, setProdutoExcluir] = useState(null);
+  const [excluindo, setExcluindo] = useState(false);
 
-  useEffect(() => {
+  const fetchComercio = () => {
+    setLoading(true);
     axios
       .get(`http://localhost:3333/comercios/${id}`)
       .then((res) => setComercio(res.data))
       .catch(() => setComercio(null))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchComercio();
+    // eslint-disable-next-line
   }, [id]);
 
   if (loading)
@@ -156,7 +172,7 @@ export default function DetalheComercio() {
                         sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          // Exemplo: navigate(`/produtos/${produto.id}/editar`)
+                          navigate(`/produtos/${produto.id}/editar`);
                         }}
                       >
                         Editar
@@ -171,12 +187,74 @@ export default function DetalheComercio() {
                         sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          // Exemplo: handleDeleteProduto(produto.id)
+                          setProdutoExcluir(produto);
+                          setDialogOpen(true);
                         }}
+                        disabled={excluindo}
                       >
                         Excluir
                       </Button>
                     </Tooltip>
+                    {/* Dialog de confirmação de exclusão */}
+                    <Dialog
+                      open={dialogOpen}
+                      onClose={() => setDialogOpen(false)}
+                    >
+                      <DialogTitle>Confirmar exclusão</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          Tem certeza que deseja excluir o produto "
+                          {produtoExcluir?.nome}"?
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button
+                          onClick={() => setDialogOpen(false)}
+                          disabled={excluindo}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          onClick={async () => {
+                            if (!produtoExcluir) return;
+                            setExcluindo(true);
+                            try {
+                              const token = localStorage.getItem("token");
+                              await axios.delete(
+                                `http://localhost:3333/produtos/${produtoExcluir.id}`,
+                                {
+                                  headers: { Authorization: `Bearer ${token}` },
+                                }
+                              );
+                              setSnackbar({
+                                open: true,
+                                message: "Produto excluído com sucesso!",
+                                severity: "success",
+                              });
+                              setDialogOpen(false);
+                              setProdutoExcluir(null);
+                              fetchComercio();
+                            } catch (err) {
+                              setSnackbar({
+                                open: true,
+                                message:
+                                  err.response?.data?.error ||
+                                  "Erro ao excluir produto",
+                                severity: "error",
+                              });
+                            } finally {
+                              setExcluindo(false);
+                            }
+                          }}
+                          color="error"
+                          variant="contained"
+                          disabled={excluindo}
+                          aria-label="Confirmar exclusão do produto"
+                        >
+                          Excluir
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </Box>
                 )}
               </Card>

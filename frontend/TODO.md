@@ -9,9 +9,9 @@
 - [x] Melhorar responsividade dos cards e formulários
 
 ## Funcionalidades CRUD
-- [ ] Implementar edição e exclusão de produtos (frontend)
-- [ ] Garantir atualização automática das listas após editar/excluir produto
-- [ ] Adicionar confirmação visual para exclusão de produto (Dialog)
+- [x] Implementar edição e exclusão de produtos (frontend)
+- [x] Garantir atualização automática das listas após editar/excluir produto
+- [x] Adicionar confirmação visual para exclusão de produto (Dialog)
 
 ## Experiência do Usuário
 - [ ] Adicionar tooltips e ícones em todos os botões de ação

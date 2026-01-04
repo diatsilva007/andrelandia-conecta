@@ -14,6 +14,7 @@ import EsqueciSenha from "./pages/EsqueciSenha.jsx";
 import RedefinirSenha from "./pages/RedefinirSenha.jsx";
 import Navbar from "./components/Navbar.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
+import EditarProduto from "./pages/EditarProduto.jsx";
 
 const theme = createTheme({
   palette: {
@@ -71,6 +72,7 @@ function App() {
                 path="/comercios/:id/produtos/novo"
                 element={<CadastroProduto />}
               />
+              <Route path="/produtos/:id/editar" element={<EditarProduto />} />
             </Routes>
           </BrowserRouter>
         </LoadingContext.Provider>
