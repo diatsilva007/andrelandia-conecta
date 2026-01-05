@@ -1,6 +1,7 @@
 # ToDo - Plataforma Andrelândia Conecta
 
 ## UX/UI e Padronização
+
 - [x] Padronizar formulários de edição de comércio e produto (Paper/Card, loading, helperText, feedback)
 - [x] Padronizar formulários de cadastro/edição de produto
 - [x] Adicionar loading global (Backdrop) para operações importantes
@@ -9,35 +10,56 @@
 - [x] Melhorar responsividade dos cards e formulários
 
 ## Funcionalidades CRUD
+
 - [x] Implementar edição e exclusão de produtos (frontend)
 - [x] Garantir atualização automática das listas após editar/excluir produto
 - [x] Adicionar confirmação visual para exclusão de produto (Dialog)
 
 ## Experiência do Usuário
+
 - [x] Adicionar tooltips e ícones em todos os botões de ação
 - [x] Garantir acessibilidade (aria-labels, contraste, navegação por teclado)
 - [x] Revisar e padronizar espaçamentos, fontes e cores em todas as telas
 
-## Funcionalidades importantes
-- [x] Cadastro e autenticação de usuários (comerciantes e clientes).
-- [x] Cadastro, edição e exclusão de comércios com informações completas (nome, endereço, contato, descrição, foto/logo).
-- [x] Listagem pública dos comércios, com busca e filtros (por categoria, localização, produtos/serviços).
-- [ ] Página de detalhes do comércio, mostrando produtos, serviços, horários, avaliações e contato
-- [ ] Cadastro e gerenciamento de produtos/serviços por cada comércio.
-- [ ] Sistema de avaliações e comentários dos clientes.
-- [ ] Integração com WhatsApp, telefone ou formulário para contato direto.
-- [ ] Painel administrativo para o comerciante gerenciar seu negócio.
-- [ ] Responsividade e acessibilidade para uso em qualquer dispositivo.
-- [ ] Segurança de dados e privacidade dos usuários.
+## Funcionalidades essenciais
 
-## (Opcional) Novas Funcionalidades
-- [ ] Implementar busca e filtros na listagem de comércios/produtos
-- [ ] Adicionar avatar/imagem para comércios e produtos
+- [x] Cadastro e autenticação de usuários (comerciantes e clientes)
+- [x] Cadastro, edição e exclusão de comércios (nome, endereço, contato, descrição)
+- [x] Listagem pública dos comércios, com busca
+- [x] Cadastro e gerenciamento de produtos por comércio
+- [x] Sistema de avaliações e comentários dos clientes
+- [ ] Página de detalhes do comércio (produtos, avaliações, contato, horários)
+- [ ] Integração com WhatsApp, telefone ou formulário para contato direto
+- [ ] Painel do comerciante: listar, editar e excluir seus comércios e produtos
+- [ ] Edição/exclusão de comércio/produto com confirmação visual
+- [ ] Página "Meus Produtos" para comerciante
+- [ ] Página "Meus Dados" (perfil do usuário, editar nome/email/senha/tipo)
+- [ ] Permitir cliente favoritar comércios/produtos
+- [ ] Feedback visual em todas as ações (sucesso, erro, loading)
+- [ ] Loading global em todas as requisições
+- [ ] Navbar adaptativa: menus conforme tipo de usuário
+- [ ] Breadcrumbs em todas as páginas
+- [ ] Responsividade total (mobile/tablet)
+- [ ] Segurança: só dono pode editar/excluir seus dados
+- [ ] Validação de campos obrigatórios e formatos
+
+## Funcionalidades avançadas e diferenciais
+
+- [ ] Busca e filtros avançados na listagem de comércios/produtos
+- [ ] Upload de imagem/avatar para comércios e produtos
 - [ ] Melhorar mensagens de erro e sucesso (mais amigáveis e informativas)
+- [ ] Página pública do comércio com link compartilhável
+- [ ] Filtros por categoria, preço, avaliação
+- [ ] Mapa interativo dos comércios
+- [ ] Destaques, promoções e eventos locais
 
-## Funcionalidades extras que agregam valor:
-- [ ] Mapa interativo dos comércios.
-- [ ] Destaques/promos e eventos locais.
+## Sugestões extras para profissionalizar
+
+- [ ] Dashboard do comerciante com estatísticas (produtos, avaliações, vendas)
+- [ ] Notificações para comerciantes (novas avaliações, pedidos, etc.)
+- [ ] Tutorial onboarding para novos usuários
+- [ ] Página de ajuda/FAQ
+- [ ] Políticas de privacidade e termos de uso
 - [ ] Notificações (novidades, promoções).
 - [ ] Blog ou mural de notícias/comunicados da cidade.
 - [ ] Integração com redes sociais.
