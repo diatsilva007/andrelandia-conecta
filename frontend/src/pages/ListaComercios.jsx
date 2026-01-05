@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { useNavigate } from "react-router-dom";
@@ -24,20 +24,63 @@ import DeleteIcon from "@mui/icons-material/Delete";
 // ...existing code...
 const ListaComercios = () => {
   const navigate = useNavigate();
-  const [comercios] = useState([]);
-  const [token] = useState(null);
+  const [comercios, setComercios] = useState([]);
+  const [busca, setBusca] = useState("");
+  const [token] = useState(localStorage.getItem("token"));
+  const [usuario] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("usuario"));
+    } catch {
+      return null;
+    }
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comercioExcluir, setComercioExcluir] = useState(null);
   const { setSnackbar } = useSnackbar();
-  // Exemplo de uso do Snackbar para feedback
-  const handleDelete = (id) => {
-    // Aqui você faria a chamada de exclusão (API)
+  // Carregar comércios da API
+  useEffect(() => {
+    async function fetchComercios() {
+      try {
+        const res = await fetch("http://localhost:3333/comercios");
+        const data = await res.json();
+        setComercios(data);
+      } catch {
+        setSnackbar({
+          open: true,
+          message: "Erro ao carregar comércios",
+          severity: "error",
+        });
+      }
+    }
+    fetchComercios();
+  }, [setSnackbar]);
+
+  // Filtrar comércios por nome
+  const comerciosFiltrados = comercios.filter((c) =>
+    c.nome.toLowerCase().includes(busca.toLowerCase())
+  );
+
+  // Exclusão real via API
+  const handleDelete = async (id) => {
     setDialogOpen(false);
-    setSnackbar({
-      open: true,
-      message: "Comércio excluído com sucesso!",
-      severity: "success",
-    });
+    try {
+      await fetch(`http://localhost:3333/comercios/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setComercios((prev) => prev.filter((c) => c.id !== id));
+      setSnackbar({
+        open: true,
+        message: "Comércio excluído com sucesso!",
+        severity: "success",
+      });
+    } catch {
+      setSnackbar({
+        open: true,
+        message: "Erro ao excluir comércio",
+        severity: "error",
+      });
+    }
   };
   return (
     <Box
@@ -140,30 +183,50 @@ const ListaComercios = () => {
           <br />
           <b>Cadastre seu comércio e faça parte dessa rede!</b>
         </Typography>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="large"
-          sx={{
-            borderRadius: 4,
-            fontWeight: 700,
-            px: 5,
-            py: 1.5,
-            fontSize: 18,
-            boxShadow: "0 2px 8px #43a04733",
-            transition: "background 0.2s, box-shadow 0.2s",
-            "&:hover": {
-              background: "linear-gradient(90deg, #1565c0 0%, #388e3c 100%)",
-              boxShadow: "0 4px 16px #43a04733",
-            },
-            zIndex: 1,
-          }}
-          onClick={() => navigate("/comercios/cadastrar")}
-        >
-          Cadastrar meu comércio
-        </Button>
+        {usuario?.tipo === "comerciante" && (
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            sx={{
+              borderRadius: 4,
+              fontWeight: 700,
+              px: 5,
+              py: 1.5,
+              fontSize: 18,
+              boxShadow: "0 2px 8px #43a04733",
+              transition: "background 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                background: "linear-gradient(90deg, #1565c0 0%, #388e3c 100%)",
+                boxShadow: "0 4px 16px #43a04733",
+              },
+              zIndex: 1,
+            }}
+            onClick={() => navigate("/comercios/cadastrar")}
+          >
+            Cadastrar meu comércio
+          </Button>
+        )}
       </Box>
 
+      {/* Busca */}
+      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
+        <input
+          type="text"
+          placeholder="Buscar comércio por nome..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 8,
+            border: "1px solid #ccc",
+            fontSize: 16,
+            marginBottom: 12,
+          }}
+          aria-label="Buscar comércio por nome"
+        />
+      </Box>
       {/* Grid de comércios */}
       <Grid
         container
@@ -172,7 +235,7 @@ const ListaComercios = () => {
         alignItems="flex-start"
         sx={{ maxWidth: 1200, width: "100%", mx: "auto", mt: 0 }}
       >
-        {comercios.length === 0 && (
+        {comerciosFiltrados.length === 0 && (
           <Grid item xs={12}>
             <Box sx={{ textAlign: "center", py: 8 }}>
               <Typography
@@ -195,8 +258,8 @@ const ListaComercios = () => {
             </Box>
           </Grid>
         )}
-        {comercios.length > 0 &&
-          comercios.map((comercio) => (
+        {comerciosFiltrados.length > 0 &&
+          comerciosFiltrados.map((comercio) => (
             <Grid item xs={12} sm={6} md={4} key={comercio.id}>
               <Card
                 sx={{
@@ -261,7 +324,7 @@ const ListaComercios = () => {
                     <strong>Telefone:</strong> {comercio.telefone}
                   </Typography>
                 </CardContent>
-                {token && (
+                {usuario?.tipo === "comerciante" && token && (
                   <Box
                     display="flex"
                     gap={1}

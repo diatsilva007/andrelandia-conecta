@@ -23,7 +23,12 @@ export const login = async (req, res) => {
     );
     res.json({
       token,
-      usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email },
+      usuario: {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        tipo: usuario.tipo,
+      },
     });
   } catch (error) {
     res.status(500).json({ error: "Erro ao autenticar." });

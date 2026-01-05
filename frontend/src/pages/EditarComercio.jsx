@@ -15,6 +15,13 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditarComercio() {
+  const [usuario] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("usuario"));
+    } catch {
+      return null;
+    }
+  });
   const { id } = useParams();
   const [form, setForm] = useState({
     nome: "",
@@ -31,6 +38,10 @@ export default function EditarComercio() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    if (!localStorage.getItem("token") || usuario?.tipo !== "comerciante") {
+      navigate("/login");
+      return;
+    }
     setOpen(true);
     axios
       .get(`http://localhost:3333/comercios/${id}`)
@@ -40,7 +51,7 @@ export default function EditarComercio() {
         setLoading(false);
         setOpen(false);
       });
-  }, [id, setOpen]);
+  }, [id, setOpen, navigate, usuario]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

@@ -7,11 +7,14 @@ import {
   Avatar,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+
 import { useEffect, useState } from "react";
+import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
+  const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,6 +31,17 @@ export default function Navbar() {
     localStorage.removeItem("usuario");
     setUsuario(null);
     navigate("/login");
+  };
+
+  const handleTipoAtualizado = (novoTipo) => {
+    // Atualiza localStorage e estado
+    const userStr = localStorage.getItem("usuario");
+    if (userStr) {
+      const userObj = JSON.parse(userStr);
+      userObj.tipo = novoTipo;
+      localStorage.setItem("usuario", JSON.stringify(userObj));
+      setUsuario({ ...userObj });
+    }
   };
 
   return (
@@ -87,8 +101,35 @@ export default function Navbar() {
         {usuario ? (
           <Box display="flex" alignItems="center" gap={2}>
             <Typography sx={{ color: "#fff", fontWeight: 500, fontSize: 16 }}>
-              Olá, {usuario.nome}
+              Olá, {usuario.nome}{" "}
+              <span style={{ fontWeight: 400, fontSize: 13, marginLeft: 8 }}>
+                [{usuario.tipo}]
+              </span>
             </Typography>
+            <Button
+              variant="outlined"
+              color="inherit"
+              size="small"
+              sx={{
+                borderRadius: 3,
+                fontWeight: 600,
+                px: 2,
+                py: 0.7,
+                fontSize: 14,
+                borderColor: "#fff",
+                color: "#fff",
+                background: "rgba(255,255,255,0.08)",
+                transition: "all 0.2s",
+                "&:hover": {
+                  background: "#e3f2fd",
+                  color: "#1976d2",
+                  borderColor: "#1976d2",
+                },
+              }}
+              onClick={() => setOpenTrocaTipo(true)}
+            >
+              Trocar tipo
+            </Button>
             <Button
               variant="contained"
               color="secondary"
@@ -110,6 +151,12 @@ export default function Navbar() {
             >
               Sair
             </Button>
+            <TrocaTipoUsuarioDialog
+              open={openTrocaTipo}
+              onClose={() => setOpenTrocaTipo(false)}
+              usuario={usuario}
+              onTipoAtualizado={handleTipoAtualizado}
+            />
           </Box>
         ) : (
           <Box display="flex" alignItems="center" gap={1.5}>

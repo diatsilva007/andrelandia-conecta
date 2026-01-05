@@ -14,13 +14,24 @@ datasource db {
 }
 
 model Comercio {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   nome      String
   descricao String?
   endereco  String?
   telefone  String?
   produtos  Produto[]
-  criadoEm  DateTime @default(now())
+  avaliacoes Avaliacao[]
+  criadoEm  DateTime   @default(now())
+}
+model Avaliacao {
+  id         Int      @id @default(autoincrement())
+  nota       Int
+  comentario String?
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId  Int
+  comercio   Comercio @relation(fields: [comercioId], references: [id])
+  comercioId Int
+  criadoEm   DateTime @default(now())
 }
 
 model Produto {
@@ -34,11 +45,13 @@ model Produto {
 }
 
 model Usuario {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   nome      String
-  email     String   @unique
+  email     String     @unique
   senha     String
-  criadoEm  DateTime @default(now())
+  tipo      String     @default("cliente") // "cliente" ou "comerciante"
+  avaliacoes Avaliacao[]
+  criadoEm  DateTime   @default(now())
   resetToken        String?   // Token para redefinição de senha
   resetTokenExpires DateTime? // Expiração do token
 }

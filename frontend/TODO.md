@@ -19,9 +19,9 @@
 - [x] Revisar e padronizar espaçamentos, fontes e cores em todas as telas
 
 ## Funcionalidades importantes
-- [ ] Cadastro e autenticação de usuários (comerciantes e clientes).
-- [ ] Cadastro, edição e exclusão de comércios com informações completas (nome, endereço, contato, descrição, foto/logo).
-- [ ] Listagem pública dos comércios, com busca e filtros (por categoria, localização, produtos/serviços).
+- [x] Cadastro e autenticação de usuários (comerciantes e clientes).
+- [x] Cadastro, edição e exclusão de comércios com informações completas (nome, endereço, contato, descrição, foto/logo).
+- [x] Listagem pública dos comércios, com busca e filtros (por categoria, localização, produtos/serviços).
 - [ ] Página de detalhes do comércio, mostrando produtos, serviços, horários, avaliações e contato
 - [ ] Cadastro e gerenciamento de produtos/serviços por cada comércio.
 - [ ] Sistema de avaliações e comentários dos clientes.

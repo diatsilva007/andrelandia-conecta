@@ -1,4 +1,22 @@
 import { useEffect, useState } from "react";
+import { Rating, TextField } from "@mui/material";
+const [avaliacoes, setAvaliacoes] = useState([]);
+const [novaAvaliacao, setNovaAvaliacao] = useState({ nota: 0, comentario: "" });
+const [enviandoAvaliacao, setEnviandoAvaliacao] = useState(false);
+const usuario = (() => {
+  try {
+    return JSON.parse(localStorage.getItem("usuario"));
+  } catch {
+    return null;
+  }
+})();
+// Buscar avaliações
+const fetchAvaliacoes = () => {
+  axios
+    .get(`http://localhost:3333/comercios/${id}/avaliacoes`)
+    .then((res) => setAvaliacoes(res.data))
+    .catch(() => setAvaliacoes([]));
+};
 import { useNavigate, useParams, Link } from "react-router-dom";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import axios from "axios";
@@ -44,8 +62,37 @@ export default function DetalheComercio() {
 
   useEffect(() => {
     fetchComercio();
+    fetchAvaliacoes();
     // eslint-disable-next-line
   }, [id]);
+  // Enviar avaliação
+  const handleEnviarAvaliacao = async (e) => {
+    e.preventDefault();
+    setEnviandoAvaliacao(true);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `http://localhost:3333/comercios/${id}/avaliacoes`,
+        { nota: novaAvaliacao.nota, comentario: novaAvaliacao.comentario },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSnackbar({
+        open: true,
+        message: "Avaliação enviada!",
+        severity: "success",
+      });
+      setNovaAvaliacao({ nota: 0, comentario: "" });
+      fetchAvaliacoes();
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.error || "Erro ao enviar avaliação",
+        severity: "error",
+      });
+    } finally {
+      setEnviandoAvaliacao(false);
+    }
+  };
 
   if (loading)
     return (
@@ -171,6 +218,83 @@ export default function DetalheComercio() {
           </Typography>
         </CardContent>
       </Card>
+      {/* Avaliações */}
+      <Typography
+        variant="h6"
+        mb={1.5}
+        sx={{ color: "#222", fontWeight: 700, letterSpacing: 0.5 }}
+      >
+        Avaliações
+      </Typography>
+      <Box mb={3}>
+        {avaliacoes.length === 0 && (
+          <Typography
+            color="text.secondary"
+            fontStyle="italic"
+            fontSize={15}
+            mb={1}
+          >
+            Nenhuma avaliação ainda.
+          </Typography>
+        )}
+        {avaliacoes.map((a) => (
+          <Card
+            key={a.id}
+            sx={{ mb: 1.5, p: 1.5, borderRadius: 2, boxShadow: 1 }}
+          >
+            <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+              <Avatar sx={{ width: 32, height: 32, fontSize: 16 }}>
+                {a.usuario?.nome?.[0]?.toUpperCase() || "U"}
+              </Avatar>
+              <Typography fontWeight={600} fontSize={15}>
+                {a.usuario?.nome || "Usuário"}
+              </Typography>
+              <Rating value={a.nota} readOnly size="small" sx={{ ml: 1 }} />
+              <Typography color="text.secondary" fontSize={13} ml={1}>
+                {new Date(a.criadoEm).toLocaleDateString()}
+              </Typography>
+            </Box>
+            <Typography fontSize={15}>{a.comentario}</Typography>
+          </Card>
+        ))}
+      </Box>
+      {/* Formulário de avaliação */}
+      {usuario && usuario.tipo === "cliente" && (
+        <Box mb={4} component="form" onSubmit={handleEnviarAvaliacao}>
+          <Typography fontWeight={600} mb={1} fontSize={16}>
+            Deixe sua avaliação:
+          </Typography>
+          <Rating
+            name="nota"
+            value={novaAvaliacao.nota}
+            onChange={(_, v) => setNovaAvaliacao((f) => ({ ...f, nota: v }))}
+            size="large"
+            sx={{ mb: 1 }}
+            required
+          />
+          <TextField
+            name="comentario"
+            label="Comentário (opcional)"
+            value={novaAvaliacao.comentario}
+            onChange={(e) =>
+              setNovaAvaliacao((f) => ({ ...f, comentario: e.target.value }))
+            }
+            fullWidth
+            multiline
+            minRows={2}
+            inputProps={{ maxLength: 300 }}
+            sx={{ mb: 1 }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={enviandoAvaliacao || novaAvaliacao.nota < 1}
+          >
+            Enviar Avaliação
+          </Button>
+        </Box>
+      )}
       <Typography
         variant="h6"
         mb={2}

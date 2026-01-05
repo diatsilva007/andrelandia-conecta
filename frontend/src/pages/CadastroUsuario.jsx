@@ -22,6 +22,7 @@ export default function CadastroUsuario() {
     email: "",
     senha: "",
     senha2: "",
+    tipo: "cliente", // padrão
   });
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -71,6 +72,7 @@ export default function CadastroUsuario() {
         nome: form.nome,
         email: form.email,
         senha: form.senha,
+        tipo: form.tipo,
       });
       setSucesso("Usuário cadastrado com sucesso! Faça login.");
       setSnackbar({
@@ -129,6 +131,21 @@ export default function CadastroUsuario() {
           </Alert>
         )}
         <form onSubmit={handleSubmit} autoComplete="off">
+          <TextField
+            select
+            label="Tipo de usuário"
+            name="tipo"
+            value={form.tipo}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+            SelectProps={{ native: true }}
+            inputProps={{ "aria-label": "Tipo de usuário" }}
+          >
+            <option value="cliente">Cliente</option>
+            <option value="comerciante">Comerciante</option>
+          </TextField>
           <TextField
             label="Nome"
             name="nome"

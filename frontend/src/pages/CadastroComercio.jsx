@@ -1,4 +1,11 @@
 export default function CadastroComercio() {
+  const [usuario] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("usuario"));
+    } catch {
+      return null;
+    }
+  });
   const [form, setForm] = useState({
     nome: "",
     descricao: "",
@@ -13,10 +20,10 @@ export default function CadastroComercio() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token || usuario?.tipo !== "comerciante") {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate, usuario]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

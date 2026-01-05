@@ -14,12 +14,17 @@ export const listarUsuarios = async (req, res) => {
 
 export const criarUsuario = async (req, res) => {
   try {
-    const { nome, email, senha } = req.body;
+    const { nome, email, senha, tipo = "cliente" } = req.body;
     const senhaHash = await bcrypt.hash(senha, 10);
     const novo = await prisma.usuario.create({
-      data: { nome, email, senha: senhaHash },
+      data: { nome, email, senha: senhaHash, tipo },
     });
-    res.status(201).json({ id: novo.id, nome: novo.nome, email: novo.email });
+    res.status(201).json({
+      id: novo.id,
+      nome: novo.nome,
+      email: novo.email,
+      tipo: novo.tipo,
+    });
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
     if (error.code === "P2002" && error.meta?.target?.includes("email")) {
@@ -32,9 +37,14 @@ export const criarUsuario = async (req, res) => {
 export const atualizarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, email, senha } = req.body;
+    const { nome, email, senha, tipo } = req.body;
+    // Só permite atualizar o próprio usuário (ou admin futuramente)
+    if (!req.usuario || Number(id) !== req.usuario.id) {
+      return res.status(403).json({ error: "Acesso negado." });
+    }
     const data = { nome, email };
     if (senha) data.senha = await bcrypt.hash(senha, 10);
+    if (tipo) data.tipo = tipo;
     const atualizado = await prisma.usuario.update({
       where: { id: Number(id) },
       data,
@@ -43,6 +53,7 @@ export const atualizarUsuario = async (req, res) => {
       id: atualizado.id,
       nome: atualizado.nome,
       email: atualizado.email,
+      tipo: atualizado.tipo,
     });
   } catch (error) {
     res.status(500).json({ error: "Erro ao atualizar usuário." });
