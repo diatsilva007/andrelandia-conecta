@@ -1,22 +1,5 @@
 import { useEffect, useState } from "react";
 import { Rating, TextField } from "@mui/material";
-const [avaliacoes, setAvaliacoes] = useState([]);
-const [novaAvaliacao, setNovaAvaliacao] = useState({ nota: 0, comentario: "" });
-const [enviandoAvaliacao, setEnviandoAvaliacao] = useState(false);
-const usuario = (() => {
-  try {
-    return JSON.parse(localStorage.getItem("usuario"));
-  } catch {
-    return null;
-  }
-})();
-// Buscar avaliações
-const fetchAvaliacoes = () => {
-  axios
-    .get(`http://localhost:3333/comercios/${id}/avaliacoes`)
-    .then((res) => setAvaliacoes(res.data))
-    .catch(() => setAvaliacoes([]));
-};
 import { useNavigate, useParams, Link } from "react-router-dom";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import axios from "axios";
@@ -45,12 +28,26 @@ export default function DetalheComercio() {
   const token = localStorage.getItem("token");
   const [comercio, setComercio] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const [novaAvaliacao, setNovaAvaliacao] = useState({
+    nota: 0,
+    comentario: "",
+  });
+  const [enviandoAvaliacao, setEnviandoAvaliacao] = useState(false);
+  const usuario = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("usuario"));
+    } catch {
+      return null;
+    }
+  })();
   const navigate = useNavigate();
   const { setSnackbar } = useSnackbar();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [produtoExcluir, setProdutoExcluir] = useState(null);
   const [excluindo, setExcluindo] = useState(false);
 
+  // Buscar comércio
   const fetchComercio = () => {
     setLoading(true);
     axios
@@ -58,6 +55,13 @@ export default function DetalheComercio() {
       .then((res) => setComercio(res.data))
       .catch(() => setComercio(null))
       .finally(() => setLoading(false));
+  };
+  // Buscar avaliações
+  const fetchAvaliacoes = () => {
+    axios
+      .get(`http://localhost:3333/comercios/${id}/avaliacoes`)
+      .then((res) => setAvaliacoes(res.data))
+      .catch(() => setAvaliacoes([]));
   };
 
   useEffect(() => {

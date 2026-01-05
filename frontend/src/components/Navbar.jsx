@@ -41,6 +41,8 @@ export default function Navbar() {
       userObj.tipo = novoTipo;
       localStorage.setItem("usuario", JSON.stringify(userObj));
       setUsuario({ ...userObj });
+      // Força reload para atualizar menus e permissões
+      window.location.reload();
     }
   };
 
@@ -100,12 +102,71 @@ export default function Navbar() {
         </Box>
         {usuario ? (
           <Box display="flex" alignItems="center" gap={2}>
-            <Typography sx={{ color: "#fff", fontWeight: 500, fontSize: 16 }}>
-              Olá, {usuario.nome}{" "}
-              <span style={{ fontWeight: 400, fontSize: 13, marginLeft: 8 }}>
+            <Typography
+              sx={{
+                color: usuario.tipo === "comerciante" ? "#fff" : "#e0f2f1",
+                fontWeight: 500,
+                fontSize: 16,
+                background:
+                  usuario.tipo === "comerciante" ? "#43a047" : "#1976d2",
+                borderRadius: 2,
+                px: 1.5,
+                py: 0.5,
+                boxShadow: 1,
+              }}
+            >
+              Olá, {usuario.nome}
+              <span
+                style={{
+                  fontWeight: 700,
+                  fontSize: 13,
+                  marginLeft: 8,
+                  textTransform: "uppercase",
+                }}
+              >
                 [{usuario.tipo}]
               </span>
             </Typography>
+            {usuario.tipo === "comerciante" && (
+              <>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  sx={{
+                    borderRadius: 3,
+                    fontWeight: 700,
+                    px: 2,
+                    py: 1,
+                    fontSize: 15,
+                    boxShadow: "0 2px 8px #43a04733",
+                    transition: "all 0.2s",
+                  }}
+                  component={Link}
+                  to="/comercios/cadastrar"
+                >
+                  Cadastrar Comércio
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    borderRadius: 3,
+                    fontWeight: 700,
+                    px: 2,
+                    py: 1,
+                    fontSize: 15,
+                    boxShadow: "0 2px 8px #1976d233",
+                    transition: "all 0.2s",
+                  }}
+                  component={Link}
+                  to="/produtos/cadastrar"
+                >
+                  Cadastrar Produto
+                </Button>
+              </>
+            )}
             <Button
               variant="outlined"
               color="inherit"

@@ -1,3 +1,11 @@
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Paper, Box, Typography, TextField, Alert } from "@mui/material";
+import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
+import { LoadingContext } from "../App.jsx";
+import { useSnackbar } from "../components/SnackbarContext.jsx";
+
 export default function CadastroComercio() {
   const [usuario] = useState(() => {
     try {
