@@ -53,7 +53,18 @@
 - [ ] Mapa interativo dos comércios
 - [ ] Destaques, promoções e eventos locais
 
-## Sugestões extras para profissionalizar
+## Melhorias Visuais e UX/UI — Página de Detalhes do Comércio
+
+- [ ] Destaque visual para informações principais (card/box com sombra, cor suave, avatar/ícone do comércio)
+- [ ] Separar visualmente as áreas: informações do comércio, produtos, avaliações e contato
+- [ ] Títulos com hierarquia clara e cor de destaque
+- [ ] Cards de produto mais atrativos (hover, sombra, espaçamento, preço em destaque, miniatura/avatar)
+- [ ] Avaliações mais amigáveis (card com fundo suave, avatar do usuário, nome, nota, data, comentário)
+- [ ] Botões de ação sempre visíveis e acessíveis (editar/cadastrar produto/comércio, contato WhatsApp/telefone)
+- [ ] Responsividade e acessibilidade (centralização, espaçamento, aria-labels, contraste)
+- [ ] Feedback visual consistente (loading global, snackbar para todas as ações)
+- [ ] Pequenos detalhes de UX (tooltip em todos os botões, placeholder e limite de caracteres nos campos, animação sutil nos cards)
+- [ ] Breadcrumb sempre visível e botão de voltar bem posicionado
 
 - [ ] Dashboard do comerciante com estatísticas (produtos, avaliações, vendas)
 - [ ] Notificações para comerciantes (novas avaliações, pedidos, etc.)
