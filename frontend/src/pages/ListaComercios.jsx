@@ -268,6 +268,7 @@ const ListaComercios = () => {
                   boxShadow: 6,
                   bgcolor: "#fff",
                   transition: "box-shadow 0.3s, transform 0.2s",
+                  cursor: "pointer",
                   "&:hover": {
                     boxShadow: 12,
                     transform: "translateY(-6px) scale(1.03)",
@@ -278,6 +279,8 @@ const ListaComercios = () => {
                   justifyContent: "space-between",
                   p: { xs: 1.5, sm: 2 },
                 }}
+                onClick={() => navigate(`/comercios/${comercio.id}`)}
+                aria-label={`Ver detalhes do comércio ${comercio.nome}`}
               >
                 <CardContent sx={{ pb: 1 }}>
                   <Box display="flex" alignItems="center" gap={2} mb={2}>
