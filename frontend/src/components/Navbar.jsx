@@ -143,28 +143,11 @@ export default function Navbar() {
                     transition: "all 0.2s",
                   }}
                   component={Link}
-                  to="/comercios/cadastrar"
+                  to="/comercios/novo"
                 >
                   Cadastrar Comércio
                 </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  sx={{
-                    borderRadius: 3,
-                    fontWeight: 700,
-                    px: 2,
-                    py: 1,
-                    fontSize: 15,
-                    boxShadow: "0 2px 8px #1976d233",
-                    transition: "all 0.2s",
-                  }}
-                  component={Link}
-                  to="/produtos/cadastrar"
-                >
-                  Cadastrar Produto
-                </Button>
+                {/* O botão de cadastrar produto precisa do id do comércio. Recomenda-se mover para dentro da página de detalhes do comércio. */}
               </>
             )}
             <Button

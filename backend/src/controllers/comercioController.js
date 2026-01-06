@@ -1,3 +1,19 @@
+// Buscar comércio por ID
+export const buscarComercioPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const comercio = await prisma.comercio.findUnique({
+      where: { id: Number(id) },
+      include: { produtos: true },
+    });
+    if (!comercio) {
+      return res.status(404).json({ error: "Comércio não encontrado." });
+    }
+    res.json(comercio);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar comércio." });
+  }
+};
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

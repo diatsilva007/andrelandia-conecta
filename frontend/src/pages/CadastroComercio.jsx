@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Paper, Box, Typography, TextField, Alert } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Typography,
+  TextField,
+  Alert,
+  Button,
+} from "@mui/material";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { LoadingContext } from "../App.jsx";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
@@ -74,108 +81,121 @@ export default function CadastroComercio() {
   };
 
   return (
-    <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
-      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
-        <BreadcrumbNav
-          items={[
-            { label: "Início", to: "/" },
-            { label: "Cadastrar Comércio" },
-          ]}
-        />
-      </Box>
-      <Paper
-        sx={{
-          p: { xs: 2, sm: 3, md: 4 },
-          maxWidth: 420,
-          mx: "auto",
-          width: "100%",
-          borderRadius: { xs: 2, sm: 3 },
-          boxShadow: 3,
-        }}
-      >
-        <Typography
-          variant="h5"
-          mb={2}
-          align="center"
-          fontWeight={700}
-          color="primary.main"
-          sx={{ letterSpacing: 1 }}
+    <Box
+      bgcolor="background.default"
+      minHeight="100vh"
+      width="100vw"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box sx={{ width: "100%", maxWidth: 420 }}>
+        <Box sx={{ mb: 3 }}>
+          <BreadcrumbNav
+            items={[
+              { label: "Início", to: "/" },
+              { label: "Cadastrar Comércio" },
+            ]}
+          />
+        </Box>
+        <Paper
+          sx={{
+            p: { xs: 3, sm: 4, md: 5 },
+            borderRadius: { xs: 3, sm: 4 },
+            boxShadow: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          Cadastrar Novo Comércio
-        </Typography>
-        {erro && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {erro}
-          </Alert>
-        )}
-        {sucesso && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {sucesso}
-          </Alert>
-        )}
-        <form onSubmit={handleSubmit} autoComplete="off">
-          <TextField
-            label="Nome"
-            name="nome"
-            value={form.nome}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-            inputProps={{ maxLength: 60 }}
-            helperText="Máx. 60 caracteres"
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Descrição"
-            name="descricao"
-            value={form.descricao}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            inputProps={{ maxLength: 120 }}
-            helperText="Máx. 120 caracteres"
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Endereço"
-            name="endereco"
-            value={form.endereco}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            inputProps={{ maxLength: 80 }}
-            helperText="Máx. 80 caracteres"
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Telefone"
-            name="telefone"
-            value={form.telefone}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            inputProps={{ maxLength: 20 }}
-            helperText="Ex: (35) 99999-9999"
-            sx={{ mb: 2 }}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{
-              mt: 2,
-              fontWeight: 600,
-              fontSize: 16,
-              letterSpacing: 0.5,
-              borderRadius: 2,
-            }}
+          <Typography
+            variant="h5"
+            mb={3}
+            align="center"
+            fontWeight={700}
+            color="primary.main"
+            sx={{ letterSpacing: 1 }}
           >
-            Cadastrar
-          </Button>
-        </form>
-      </Paper>
+            Cadastrar Novo Comércio
+          </Typography>
+          {erro && (
+            <Alert severity="error" sx={{ mb: 2, width: "100%" }}>
+              {erro}
+            </Alert>
+          )}
+          {sucesso && (
+            <Alert severity="success" sx={{ mb: 2, width: "100%" }}>
+              {sucesso}
+            </Alert>
+          )}
+          <form
+            onSubmit={handleSubmit}
+            autoComplete="off"
+            style={{ width: "100%" }}
+          >
+            <TextField
+              label="Nome"
+              name="nome"
+              value={form.nome}
+              onChange={handleChange}
+              fullWidth
+              required
+              margin="normal"
+              inputProps={{ maxLength: 60 }}
+              helperText="Máx. 60 caracteres"
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Descrição"
+              name="descricao"
+              value={form.descricao}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              inputProps={{ maxLength: 120 }}
+              helperText="Máx. 120 caracteres"
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Endereço"
+              name="endereco"
+              value={form.endereco}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              inputProps={{ maxLength: 80 }}
+              helperText="Máx. 80 caracteres"
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Telefone"
+              name="telefone"
+              value={form.telefone}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              inputProps={{ maxLength: 20 }}
+              helperText="Ex: (35) 99999-9999"
+              sx={{ mb: 2 }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                mt: 2,
+                fontWeight: 600,
+                fontSize: 16,
+                letterSpacing: 0.5,
+                borderRadius: 2,
+              }}
+            >
+              Cadastrar
+            </Button>
+          </form>
+        </Paper>
+      </Box>
     </Box>
   );
 }
