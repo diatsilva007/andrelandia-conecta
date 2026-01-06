@@ -217,9 +217,49 @@ export default function DetalheComercio() {
           <Typography variant="body2" color="text.secondary" mb={0.5}>
             <b>Endereço:</b> {comercio.endereco}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" mb={1}>
             <b>Telefone:</b> {comercio.telefone}
           </Typography>
+          <Box display="flex" gap={2} mb={1}>
+            {comercio.telefone && (
+              <Button
+                variant="outlined"
+                color="success"
+                size="small"
+                component="a"
+                href={`https://wa.me/55${comercio.telefone.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={
+                  <img
+                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg"
+                    alt="WhatsApp"
+                    style={{ width: 20, height: 20 }}
+                  />
+                }
+                aria-label="Contato WhatsApp"
+              >
+                WhatsApp
+              </Button>
+            )}
+            {comercio.telefone && (
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                component="a"
+                href={`tel:${comercio.telefone}`}
+                startIcon={
+                  <span role="img" aria-label="Telefone">
+                    📞
+                  </span>
+                }
+                aria-label="Ligar para o comércio"
+              >
+                Ligar
+              </Button>
+            )}
+          </Box>
         </CardContent>
       </Card>
       {/* Avaliações */}
