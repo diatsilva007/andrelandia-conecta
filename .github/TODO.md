@@ -49,7 +49,7 @@
 - [ ] Upload de imagem/avatar para comércios e produtos
 - [ ] Melhorar mensagens de erro e sucesso (mais amigáveis e informativas)
 - [ ] Página pública do comércio com link compartilhável
-- [ ] Filtros por categoria, preço, avaliação
+- [x] Filtros por categoria, preço, avaliação
 - [ ] Mapa interativo dos comércios
 - [ ] Destaques, promoções e eventos locais
 

@@ -89,6 +89,10 @@ frontend/
 
 ## Roadmap de Melhorias
 
+- Filtros avançados por categoria, preço e avaliação na listagem de comércios
+- Exclusão de avaliações restrita ao comerciante dono do comércio
+- Feedback visual global (snackbar, loading, confirmação)
+- Segurança: só o dono pode editar/excluir seus dados e avaliações
 - Testes automatizados (Jest, React Testing Library, Supertest)
 - Dockerização
 - CI/CD (GitHub Actions)
