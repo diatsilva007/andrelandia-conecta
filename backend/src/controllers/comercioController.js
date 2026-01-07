@@ -21,7 +21,12 @@ const prisma = new PrismaClient();
 export const listarComercios = async (req, res) => {
   try {
     const comercios = await prisma.comercio.findMany({
-      include: { produtos: true },
+      include: {
+        produtos: true,
+        avaliacoes: {
+          select: { nota: true },
+        },
+      },
     });
     res.json(comercios);
   } catch (error) {

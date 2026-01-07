@@ -17,6 +17,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Slider,
+  Rating,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
@@ -41,6 +43,9 @@ const ListaComercios = () => {
       return null;
     }
   });
+  // Filtros avançados
+  const [precoRange, setPrecoRange] = useState([0, 1000]);
+  const [avaliacaoMin, setAvaliacaoMin] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comercioExcluir, setComercioExcluir] = useState(null);
   const { setSnackbar } = useSnackbar();
@@ -82,14 +87,44 @@ const ListaComercios = () => {
     "Outros",
   ];
 
-  // Filtrar comércios por nome/categoria (ignora acentos e case)
+  // Utilidades para preço e avaliação
+  function getFaixaPreco(produtos) {
+    if (!produtos || produtos.length === 0) return null;
+    const precos = produtos
+      .map((p) => p.preco)
+      .filter((v) => typeof v === "number");
+    if (precos.length === 0) return null;
+    return [Math.min(...precos), Math.max(...precos)];
+  }
+  function getMediaAvaliacao(avaliacoes) {
+    if (!avaliacoes || avaliacoes.length === 0) return null;
+    const soma = avaliacoes.reduce((acc, a) => acc + (a.nota || 0), 0);
+    return soma / avaliacoes.length;
+  }
+
+  // Determinar faixa global de preços para o Slider
+  const todosPrecos = comercios
+    .flatMap((c) => (c.produtos || []).map((p) => p.preco))
+    .filter((v) => typeof v === "number");
+  const precoMinGlobal = todosPrecos.length ? Math.min(...todosPrecos) : 0;
+  const precoMaxGlobal = todosPrecos.length ? Math.max(...todosPrecos) : 1000;
+
+  // Filtrar comércios por todos os critérios
   const comerciosFiltrados = comercios.filter((c) => {
     const buscaMatch =
       normalizar(c.nome).includes(normalizar(busca)) ||
       normalizar(c.descricao || "").includes(normalizar(busca)) ||
       normalizar(c.categoria || "").includes(normalizar(busca));
     const categoriaMatch = !categoriaFiltro || c.categoria === categoriaFiltro;
-    return buscaMatch && categoriaMatch;
+    // Filtro de preço
+    const faixa = getFaixaPreco(c.produtos);
+    const precoOk =
+      !faixa || (faixa[1] >= precoRange[0] && faixa[0] <= precoRange[1]);
+    // Filtro de avaliação
+    const media = getMediaAvaliacao(c.avaliacoes);
+    const avaliacaoOk =
+      !avaliacaoMin || (media !== null && media >= avaliacaoMin);
+    return buscaMatch && categoriaMatch && precoOk && avaliacaoOk;
   });
 
   // Exclusão real via API
@@ -241,10 +276,10 @@ const ListaComercios = () => {
         )}
       </Box>
 
-      {/* Busca e filtro */}
+      {/* Busca e filtros avançados */}
       <Box
         sx={{
-          maxWidth: 700,
+          maxWidth: 900,
           mx: "auto",
           mb: 4,
           display: "flex",
@@ -331,6 +366,48 @@ const ListaComercios = () => {
             ))}
           </Select>
         </FormControl>
+        <Box sx={{ minWidth: 220, px: 2 }}>
+          <Typography
+            fontWeight={600}
+            fontSize={15}
+            mb={0.5}
+            color="primary.main"
+          >
+            Faixa de preço (R$)
+          </Typography>
+          <Slider
+            value={precoRange}
+            onChange={(_, v) => setPrecoRange(v)}
+            valueLabelDisplay="auto"
+            min={precoMinGlobal}
+            max={precoMaxGlobal}
+            step={1}
+            marks={[
+              { value: precoMinGlobal, label: `R$${precoMinGlobal}` },
+              { value: precoMaxGlobal, label: `R$${precoMaxGlobal}` },
+            ]}
+            sx={{ mt: 1 }}
+            aria-label="Filtrar por faixa de preço"
+          />
+        </Box>
+        <Box sx={{ minWidth: 180, px: 2 }}>
+          <Typography
+            fontWeight={600}
+            fontSize={15}
+            mb={0.5}
+            color="primary.main"
+          >
+            Nota mínima
+          </Typography>
+          <Rating
+            value={avaliacaoMin}
+            onChange={(_, v) => setAvaliacaoMin(v || 0)}
+            precision={1}
+            max={5}
+            sx={{ fontSize: 32 }}
+            aria-label="Filtrar por nota mínima"
+          />
+        </Box>
       </Box>
       {/* Grid de comércios */}
       <Grid
@@ -437,6 +514,43 @@ const ListaComercios = () => {
                       {comercio.categoria}
                     </Typography>
                   )}
+                  {/* Faixa de preço */}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontSize: 15, mt: 0.5 }}
+                  >
+                    <strong>Preço:</strong>{" "}
+                    {getFaixaPreco(comercio.produtos) ? (
+                      `R$${getFaixaPreco(comercio.produtos)[0]} - R$${
+                        getFaixaPreco(comercio.produtos)[1]
+                      }`
+                    ) : (
+                      <em>sem produtos</em>
+                    )}
+                  </Typography>
+                  {/* Média de avaliação */}
+                  <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 15 }}
+                    >
+                      <strong>Avaliação:</strong>
+                    </Typography>
+                    <Rating
+                      value={getMediaAvaliacao(comercio.avaliacoes) || 0}
+                      precision={0.1}
+                      readOnly
+                      size="small"
+                      sx={{ fontSize: 20 }}
+                    />
+                    <Typography variant="caption" color="text.secondary">
+                      {getMediaAvaliacao(comercio.avaliacoes)
+                        ? getMediaAvaliacao(comercio.avaliacoes).toFixed(1)
+                        : "-"}
+                    </Typography>
+                  </Box>
                   <Typography
                     variant="body2"
                     color="text.secondary"
