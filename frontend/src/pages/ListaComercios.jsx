@@ -419,12 +419,20 @@ const ListaComercios = () => {
       >
         {comerciosFiltrados.length === 0 && (
           <Grid item xs={12}>
-            <Box sx={{ textAlign: "center", py: 8 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                py: 8,
+              }}
+            >
               <Typography
                 variant="h6"
                 color="text.secondary"
                 fontWeight={600}
-                sx={{ letterSpacing: 0.5 }}
+                sx={{ letterSpacing: 0.5, textAlign: "center" }}
               >
                 Nenhum comércio cadastrado ainda.
               </Typography>
@@ -432,7 +440,7 @@ const ListaComercios = () => {
                 variant="body2"
                 color="text.secondary"
                 mt={2}
-                sx={{ fontSize: 16 }}
+                sx={{ fontSize: 16, textAlign: "center" }}
               >
                 Seja o primeiro a cadastrar seu negócio e fortalecer o comércio
                 local!
