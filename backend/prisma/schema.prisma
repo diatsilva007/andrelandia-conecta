@@ -16,6 +16,7 @@ datasource db {
 model Comercio {
   id        Int        @id @default(autoincrement())
   nome      String
+  categoria String?    // Ex: "Restaurante", "Mercado", "Serviços", etc.
   descricao String?
   endereco  String?
   telefone  String?

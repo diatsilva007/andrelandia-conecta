@@ -8,6 +8,7 @@ import {
   TextField,
   Alert,
   Button,
+  MenuItem,
 } from "@mui/material";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { LoadingContext } from "../App.jsx";
@@ -26,6 +27,7 @@ export default function CadastroComercio() {
     descricao: "",
     endereco: "",
     telefone: "",
+    categoria: "",
   });
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -43,6 +45,18 @@ export default function CadastroComercio() {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  // Categorias sugeridas (pode ser expandido futuramente)
+  const categorias = [
+    "Alimentação",
+    "Vestuário",
+    "Serviços",
+    "Saúde",
+    "Educação",
+    "Beleza",
+    "Tecnologia",
+    "Outros",
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,6 +162,28 @@ export default function CadastroComercio() {
               helperText="Máx. 60 caracteres"
               sx={{ mb: 2, background: "#f7fafd", borderRadius: 2 }}
             />
+            <Box sx={{ mb: 2 }}>
+              <TextField
+                select
+                label="Categoria"
+                name="categoria"
+                value={form.categoria}
+                onChange={handleChange}
+                fullWidth
+                required={false}
+                sx={{ background: "#f7fafd", borderRadius: 2 }}
+                helperText="Escolha a categoria principal do comércio"
+              >
+                <MenuItem value="">
+                  <em>Selecione</em>
+                </MenuItem>
+                {categorias.map((cat) => (
+                  <MenuItem key={cat} value={cat}>
+                    {cat}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
             <TextField
               label="Descrição"
               name="descricao"

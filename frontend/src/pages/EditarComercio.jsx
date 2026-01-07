@@ -11,6 +11,7 @@ import {
   Paper,
   Alert,
   CircularProgress,
+  MenuItem,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -28,7 +29,19 @@ export default function EditarComercio() {
     descricao: "",
     endereco: "",
     telefone: "",
+    categoria: "",
   });
+  // Categorias sugeridas (pode ser expandido futuramente)
+  const categorias = [
+    "Alimentação",
+    "Vestuário",
+    "Serviços",
+    "Saúde",
+    "Educação",
+    "Beleza",
+    "Tecnologia",
+    "Outros",
+  ];
   const [loading, setLoading] = useState(true);
   const { setOpen } = useContext(LoadingContext);
   const [erro, setErro] = useState("");
@@ -149,6 +162,26 @@ export default function EditarComercio() {
             inputProps={{ maxLength: 60, "aria-label": "Nome do comércio" }}
             sx={{ mb: 2 }}
           />
+          <TextField
+            select
+            label="Categoria"
+            name="categoria"
+            value={form.categoria}
+            onChange={handleChange}
+            fullWidth
+            required={false}
+            sx={{ mb: 2 }}
+            helperText="Escolha a categoria principal do comércio"
+          >
+            <MenuItem value="">
+              <em>Selecione</em>
+            </MenuItem>
+            {categorias.map((cat) => (
+              <MenuItem key={cat} value={cat}>
+                {cat}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             label="Descrição"
             name="descricao"

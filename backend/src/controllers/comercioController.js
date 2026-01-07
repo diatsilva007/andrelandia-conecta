@@ -31,9 +31,9 @@ export const listarComercios = async (req, res) => {
 
 export const criarComercio = async (req, res) => {
   try {
-    const { nome, descricao, endereco, telefone } = req.body;
+    const { nome, categoria, descricao, endereco, telefone } = req.body;
     const novo = await prisma.comercio.create({
-      data: { nome, descricao, endereco, telefone },
+      data: { nome, categoria, descricao, endereco, telefone },
     });
     res.status(201).json(novo);
   } catch (error) {
@@ -45,10 +45,10 @@ export const criarComercio = async (req, res) => {
 export const atualizarComercio = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, descricao, endereco, telefone } = req.body;
+    const { nome, categoria, descricao, endereco, telefone } = req.body;
     const atualizado = await prisma.comercio.update({
       where: { id: Number(id) },
-      data: { nome, descricao, endereco, telefone },
+      data: { nome, categoria, descricao, endereco, telefone },
     });
     res.json(atualizado);
   } catch (error) {

@@ -19,6 +19,10 @@ import {
   DialogActions,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,6 +32,7 @@ const ListaComercios = () => {
   const navigate = useNavigate();
   const [comercios, setComercios] = useState([]);
   const [busca, setBusca] = useState("");
+  const [categoriaFiltro, setCategoriaFiltro] = useState("");
   const [token] = useState(localStorage.getItem("token"));
   const [usuario] = useState(() => {
     try {
@@ -65,10 +70,27 @@ const ListaComercios = () => {
       .toLowerCase();
   }
 
-  // Filtrar comércios por nome (ignora acentos e case)
-  const comerciosFiltrados = comercios.filter((c) =>
-    normalizar(c.nome).includes(normalizar(busca))
-  );
+  // Categorias sugeridas (pode ser expandido futuramente)
+  const categorias = [
+    "Alimentação",
+    "Vestuário",
+    "Serviços",
+    "Saúde",
+    "Educação",
+    "Beleza",
+    "Tecnologia",
+    "Outros",
+  ];
+
+  // Filtrar comércios por nome/categoria (ignora acentos e case)
+  const comerciosFiltrados = comercios.filter((c) => {
+    const buscaMatch =
+      normalizar(c.nome).includes(normalizar(busca)) ||
+      normalizar(c.descricao || "").includes(normalizar(busca)) ||
+      normalizar(c.categoria || "").includes(normalizar(busca));
+    const categoriaMatch = !categoriaFiltro || c.categoria === categoriaFiltro;
+    return buscaMatch && categoriaMatch;
+  });
 
   // Exclusão real via API
   const handleDelete = async (id) => {
@@ -219,8 +241,19 @@ const ListaComercios = () => {
         )}
       </Box>
 
-      {/* Busca */}
-      <Box sx={{ maxWidth: 500, mx: "auto", mb: 4 }}>
+      {/* Busca e filtro */}
+      <Box
+        sx={{
+          maxWidth: 700,
+          mx: "auto",
+          mb: 4,
+          display: "flex",
+          gap: 2,
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <TextField
           fullWidth
           variant="outlined"
@@ -274,24 +307,30 @@ const ListaComercios = () => {
             "aria-label": "Buscar comércio por nome",
             autoComplete: "off",
           }}
+          sx={{ minWidth: 320, flex: 1 }}
         />
-        <Typography
-          variant="caption"
-          sx={{
-            display: "block",
-            color: "#388e3c",
-            fontWeight: 600,
-            mt: 1,
-            textAlign: "right",
-            letterSpacing: 0.2,
-            fontSize: 15,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          Dica: busque por nome, categoria ou palavra-chave
-        </Typography>
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel id="categoria-filtro-label" shrink>
+            Filtrar por categoria
+          </InputLabel>
+          <Select
+            labelId="categoria-filtro-label"
+            value={categoriaFiltro}
+            label="Filtrar por categoria"
+            onChange={(e) => setCategoriaFiltro(e.target.value)}
+            displayEmpty
+            sx={{ background: "#f7fafd", borderRadius: 2 }}
+          >
+            <MenuItem value="">
+              <em>Todas as categorias</em>
+            </MenuItem>
+            {categorias.map((cat) => (
+              <MenuItem key={cat} value={cat}>
+                {cat}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
       {/* Grid de comércios */}
       <Grid
@@ -378,6 +417,26 @@ const ListaComercios = () => {
                   >
                     {comercio.descricao}
                   </Typography>
+                  {comercio.categoria && (
+                    <Typography
+                      variant="caption"
+                      color="primary"
+                      sx={{
+                        fontWeight: 700,
+                        background: "#e3f2fd",
+                        borderRadius: 2,
+                        px: 1.5,
+                        py: 0.5,
+                        fontSize: 14,
+                        display: "inline-block",
+                        mb: 1,
+                        mt: 0.5,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      {comercio.categoria}
+                    </Typography>
+                  )}
                   <Typography
                     variant="body2"
                     color="text.secondary"
