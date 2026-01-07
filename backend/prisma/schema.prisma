@@ -20,6 +20,8 @@ model Comercio {
   descricao String?
   endereco  String?
   telefone  String?
+  usuario   Usuario    @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
   produtos  Produto[]
   avaliacoes Avaliacao[]
   criadoEm  DateTime   @default(now())
@@ -52,6 +54,7 @@ model Usuario {
   senha     String
   tipo      String     @default("cliente") // "cliente" ou "comerciante"
   avaliacoes Avaliacao[]
+  comercios Comercio[]
   criadoEm  DateTime   @default(now())
   resetToken        String?   // Token para redefinição de senha
   resetTokenExpires DateTime? // Expiração do token

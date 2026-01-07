@@ -4,12 +4,16 @@ export const buscarComercioPorId = async (req, res) => {
     const { id } = req.params;
     const comercio = await prisma.comercio.findUnique({
       where: { id: Number(id) },
-      include: { produtos: true },
+      include: {
+        produtos: true,
+        usuario: { select: { id: true, nome: true } },
+      },
     });
     if (!comercio) {
       return res.status(404).json({ error: "Comércio não encontrado." });
     }
-    res.json(comercio);
+    // Para compatibilidade com frontend, incluir usuarioId na resposta
+    res.json({ ...comercio, usuarioId: comercio.usuario?.id });
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar comércio." });
   }
@@ -23,9 +27,7 @@ export const listarComercios = async (req, res) => {
     const comercios = await prisma.comercio.findMany({
       include: {
         produtos: true,
-        avaliacoes: {
-          select: { nota: true },
-        },
+        avaliacoes: true,
       },
     });
     res.json(comercios);
@@ -37,8 +39,12 @@ export const listarComercios = async (req, res) => {
 export const criarComercio = async (req, res) => {
   try {
     const { nome, categoria, descricao, endereco, telefone } = req.body;
+    const usuarioId = req.usuario?.id;
+    if (!usuarioId) {
+      return res.status(401).json({ error: "Usuário não autenticado." });
+    }
     const novo = await prisma.comercio.create({
-      data: { nome, categoria, descricao, endereco, telefone },
+      data: { nome, categoria, descricao, endereco, telefone, usuarioId },
     });
     res.status(201).json(novo);
   } catch (error) {

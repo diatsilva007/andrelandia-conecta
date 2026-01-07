@@ -45,6 +45,11 @@ export default function DetalheComercio() {
   const { setSnackbar } = useSnackbar();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [produtoExcluir, setProdutoExcluir] = useState(null);
+  // Para exclusão de avaliação
+  const [avaliacaoExcluir, setAvaliacaoExcluir] = useState(null);
+  const [dialogAvaliacaoOpen, setDialogAvaliacaoOpen] = useState(false);
+  const [excluindoAvaliacao, setExcluindoAvaliacao] = useState(false);
+  // Para exclusão de produto
   const [excluindo, setExcluindo] = useState(false);
 
   // Buscar comércio
@@ -302,10 +307,88 @@ export default function DetalheComercio() {
               <Typography color="text.secondary" fontSize={13} ml={1}>
                 {new Date(a.criadoEm).toLocaleDateString()}
               </Typography>
+              {/* Botão de exclusão só para comerciante dono */}
+              {usuario &&
+                usuario.tipo === "comerciante" &&
+                comercio &&
+                comercio.usuarioId === usuario.id && (
+                  <Tooltip title="Excluir avaliação">
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      startIcon={<DeleteIcon />}
+                      sx={{ borderRadius: 2, minWidth: 0, px: 1, ml: 2 }}
+                      onClick={() => {
+                        setAvaliacaoExcluir(a);
+                        setDialogAvaliacaoOpen(true);
+                      }}
+                      disabled={excluindoAvaliacao}
+                    >
+                      Excluir
+                    </Button>
+                  </Tooltip>
+                )}
             </Box>
             <Typography fontSize={15}>{a.comentario}</Typography>
           </Card>
         ))}
+        {/* Dialog de confirmação de exclusão de avaliação */}
+        <Dialog
+          open={dialogAvaliacaoOpen}
+          onClose={() => setDialogAvaliacaoOpen(false)}
+        >
+          <DialogTitle>Confirmar exclusão</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Tem certeza que deseja excluir esta avaliação?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setDialogAvaliacaoOpen(false)}
+              disabled={excluindoAvaliacao}
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={async () => {
+                if (!avaliacaoExcluir) return;
+                setExcluindoAvaliacao(true);
+                try {
+                  const token = localStorage.getItem("token");
+                  await axios.delete(
+                    `http://localhost:3333/avaliacoes/${avaliacaoExcluir.id}`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                  );
+                  setSnackbar({
+                    open: true,
+                    message: "Avaliação excluída com sucesso!",
+                    severity: "success",
+                  });
+                  setDialogAvaliacaoOpen(false);
+                  setAvaliacaoExcluir(null);
+                  fetchAvaliacoes();
+                } catch (err) {
+                  setSnackbar({
+                    open: true,
+                    message:
+                      err.response?.data?.error || "Erro ao excluir avaliação",
+                    severity: "error",
+                  });
+                } finally {
+                  setExcluindoAvaliacao(false);
+                }
+              }}
+              color="error"
+              variant="contained"
+              disabled={excluindoAvaliacao}
+              aria-label="Confirmar exclusão da avaliação"
+            >
+              Excluir
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
       {/* Formulário de avaliação */}
       {usuario && usuario.tipo === "cliente" && (
