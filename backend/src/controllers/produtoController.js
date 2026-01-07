@@ -1,3 +1,19 @@
+// Buscar produto por ID
+export const buscarProdutoPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const produto = await prisma.produto.findUnique({
+      where: { id: Number(id) },
+      include: { comercio: true },
+    });
+    if (!produto) {
+      return res.status(404).json({ error: "Produto não encontrado." });
+    }
+    res.json(produto);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar produto." });
+  }
+};
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

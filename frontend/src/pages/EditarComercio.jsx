@@ -92,11 +92,13 @@ export default function EditarComercio() {
     }
   };
 
-  return (
-    <Box display="flex" justifyContent="center" mt={8}>
-      <CircularProgress />
-    </Box>
-  );
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={8}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
