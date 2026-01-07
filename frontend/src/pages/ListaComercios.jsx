@@ -19,6 +19,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -219,40 +220,78 @@ const ListaComercios = () => {
       </Box>
 
       {/* Busca */}
-      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
+      <Box sx={{ maxWidth: 500, mx: "auto", mb: 4 }}>
         <TextField
           fullWidth
           variant="outlined"
-          placeholder="Buscar comércio por nome..."
+          placeholder="Busque por nome, categoria ou palavra-chave..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
           aria-label="Buscar comércio por nome"
           InputProps={{
+            startAdornment: (
+              <SearchIcon sx={{ color: "#1976d2", mr: 1, fontSize: 28 }} />
+            ),
             sx: {
-              backgroundColor: "#f0f4ff",
-              borderRadius: 2,
-              fontSize: 17,
+              background: "linear-gradient(90deg, #e3f2fd 0%, #f1f8e9 100%)",
+              borderRadius: 3,
+              fontSize: 18,
               fontWeight: 500,
               color: "#1a237e",
-              boxShadow: "0 1px 4px #1976d211",
+              boxShadow: "0 2px 12px #1976d222",
+              transition: "box-shadow 0.3s, border-color 0.3s",
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#1976d2",
+                borderWidth: 2,
               },
               "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#1565c0",
+                borderColor: "#43a047",
+                borderWidth: 2,
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#388e3c",
-                borderWidth: 2,
+                borderWidth: 3,
               },
-              "::placeholder": {
+              input: {
+                padding: "14px 12px",
+                fontSize: 18,
+                fontWeight: 500,
+                color: "#1a237e",
+                letterSpacing: 0.5,
+              },
+              "input::placeholder": {
                 color: "#1976d2",
                 opacity: 1,
                 fontWeight: 400,
+                fontStyle: "italic",
+                fontSize: 17,
+                letterSpacing: 0.2,
               },
             },
           }}
+          inputProps={{
+            maxLength: 60,
+            "aria-label": "Buscar comércio por nome",
+            autoComplete: "off",
+          }}
         />
+        <Typography
+          variant="caption"
+          sx={{
+            display: "block",
+            color: "#388e3c",
+            fontWeight: 600,
+            mt: 1,
+            textAlign: "right",
+            letterSpacing: 0.2,
+            fontSize: 15,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          Dica: busque por nome, categoria ou palavra-chave
+        </Typography>
       </Box>
       {/* Grid de comércios */}
       <Grid
