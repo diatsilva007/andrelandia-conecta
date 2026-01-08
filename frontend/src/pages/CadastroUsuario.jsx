@@ -101,6 +101,8 @@ export default function CadastroUsuario() {
         bgcolor: "background.default",
         py: 4,
       }}
+      role="main"
+      aria-label="Cadastro de novo usuário"
     >
       <Paper
         sx={{
@@ -110,6 +112,8 @@ export default function CadastroUsuario() {
           borderRadius: 4,
           boxShadow: 6,
         }}
+        role="form"
+        aria-label="Formulário de cadastro de usuário"
       >
         <Typography
           variant="h5"
@@ -117,6 +121,8 @@ export default function CadastroUsuario() {
           align="center"
           fontWeight={700}
           letterSpacing={0.5}
+          tabIndex={0}
+          sx={{ outline: "none" }}
         >
           Criar Conta
         </Typography>
@@ -130,7 +136,12 @@ export default function CadastroUsuario() {
             {sucesso}
           </Alert>
         )}
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form
+          onSubmit={handleSubmit}
+          autoComplete="off"
+          aria-label="Formulário de cadastro de usuário"
+          tabIndex={0}
+        >
           <TextField
             select
             label="Tipo de usuário"

@@ -68,7 +68,13 @@ export default function CadastroProduto() {
   };
 
   return (
-    <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
+    <Box
+      bgcolor="background.default"
+      minHeight="100vh"
+      py={{ xs: 2, sm: 4 }}
+      role="main"
+      aria-label="Cadastro de novo produto"
+    >
       <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
         <BreadcrumbNav
           items={[{ label: "Início", to: "/" }, { label: "Novo Produto" }]}
@@ -83,6 +89,8 @@ export default function CadastroProduto() {
           borderRadius: { xs: 2, sm: 3 },
           boxShadow: 3,
         }}
+        role="form"
+        aria-label="Formulário de cadastro de produto"
       >
         <Typography
           variant="h5"
@@ -90,7 +98,8 @@ export default function CadastroProduto() {
           align="center"
           fontWeight={700}
           color="primary.main"
-          sx={{ letterSpacing: 1 }}
+          sx={{ letterSpacing: 1, outline: "none" }}
+          tabIndex={0}
         >
           Cadastrar Novo Produto
         </Typography>
@@ -104,7 +113,12 @@ export default function CadastroProduto() {
             {sucesso}
           </Alert>
         )}
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form
+          onSubmit={handleSubmit}
+          autoComplete="off"
+          aria-label="Formulário de cadastro de produto"
+          tabIndex={0}
+        >
           <TextField
             label="Nome"
             name="nome"

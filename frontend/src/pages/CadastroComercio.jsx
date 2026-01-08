@@ -103,6 +103,8 @@ export default function CadastroComercio() {
       justifyContent="center"
       alignItems="center"
       sx={{ p: { xs: 1, sm: 2 } }}
+      role="main"
+      aria-label="Cadastro de novo comércio"
     >
       <Box sx={{ width: "100%", maxWidth: 440 }}>
         <Box sx={{ mb: 3 }}>
@@ -124,6 +126,8 @@ export default function CadastroComercio() {
             background: "#fff",
             gap: 2,
           }}
+          role="form"
+          aria-label="Formulário de cadastro de comércio"
         >
           <Typography
             variant="h4"
@@ -131,7 +135,12 @@ export default function CadastroComercio() {
             align="center"
             fontWeight={800}
             color="primary.main"
-            sx={{ letterSpacing: 1.5, textShadow: "0 2px 8px #1976d222" }}
+            sx={{
+              letterSpacing: 1.5,
+              textShadow: "0 2px 8px #1976d222",
+              outline: "none",
+            }}
+            tabIndex={0}
           >
             Cadastrar Novo Comércio
           </Typography>
@@ -149,6 +158,8 @@ export default function CadastroComercio() {
             onSubmit={handleSubmit}
             autoComplete="off"
             style={{ width: "100%" }}
+            aria-label="Formulário de cadastro de comércio"
+            tabIndex={0}
           >
             <TextField
               label="Nome do comércio"

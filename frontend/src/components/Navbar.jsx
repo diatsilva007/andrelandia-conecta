@@ -50,6 +50,8 @@ export default function Navbar() {
     <AppBar
       position="fixed"
       elevation={0}
+      role="navigation"
+      aria-label="Barra de navegação principal"
       sx={{
         background: "linear-gradient(90deg, #1976d2 0%, #43a047 100%)",
         boxShadow: "0 4px 24px #1976d222",
@@ -76,6 +78,8 @@ export default function Navbar() {
               fontSize: 24,
               boxShadow: 2,
             }}
+            aria-label="Logo do projeto"
+            tabIndex={0}
           >
             🏪
           </Avatar>
@@ -83,6 +87,7 @@ export default function Navbar() {
             variant="h5"
             component={Link}
             to="/"
+            aria-label="Ir para página inicial"
             sx={{
               color: "#fff",
               textDecoration: "none",
@@ -90,12 +95,17 @@ export default function Navbar() {
               letterSpacing: 1.2,
               textShadow: "0 2px 8px #0002",
               transition: "color 0.2s, text-shadow 0.2s",
+              outline: "none",
+              "&:focus": {
+                boxShadow: "0 0 0 3px #1565c055",
+              },
               "&:hover": {
                 color: "#e0f2f1",
                 textShadow: "0 2px 8px #1976d222",
                 textDecoration: "none",
               },
             }}
+            tabIndex={0}
           >
             Andrelândia Conecta
           </Typography>
