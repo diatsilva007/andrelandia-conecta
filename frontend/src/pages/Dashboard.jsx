@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Box,
   Typography,
@@ -19,8 +20,19 @@ export default function Dashboard() {
   useEffect(() => {
     const userStr = localStorage.getItem("usuario");
     if (userStr) setUsuario(JSON.parse(userStr));
-    // Simulação de estatísticas (substituir por chamada à API futuramente)
-    setStats({ comercios: 3, produtos: 12 });
+    // Buscar estatísticas reais do backend
+    const fetchStats = async () => {
+      try {
+        const [comRes, prodRes] = await Promise.all([
+          axios.get("http://localhost:3333/comercios"),
+          axios.get("http://localhost:3333/produtos"),
+        ]);
+        setStats({ comercios: comRes.data.length, produtos: prodRes.data.length });
+      } catch (err) {
+        setStats({ comercios: 0, produtos: 0 });
+      }
+    };
+    fetchStats();
   }, []);
 
   if (!usuario) {
