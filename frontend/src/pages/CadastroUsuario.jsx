@@ -1,4 +1,11 @@
 import { useState, useContext } from "react";
+import {
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import { LoadingContext } from "../App.jsx";
 import axios from "axios";
@@ -17,6 +24,10 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 export default function CadastroUsuario() {
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    // Exibe onboarding apenas na primeira visita
+    return !localStorage.getItem("onboardingUsuario");
+  });
   const [form, setForm] = useState({
     nome: "",
     email: "",
@@ -115,17 +126,6 @@ export default function CadastroUsuario() {
         role="form"
         aria-label="Formulário de cadastro de usuário"
       >
-        <Typography
-          variant="h5"
-          mb={2.5}
-          align="center"
-          fontWeight={700}
-          letterSpacing={0.5}
-          tabIndex={0}
-          sx={{ outline: "none" }}
-        >
-          Criar Conta
-        </Typography>
         {erro && (
           <Alert severity="error" sx={{ mb: 2, fontSize: 15 }}>
             {erro}
@@ -142,102 +142,129 @@ export default function CadastroUsuario() {
           aria-label="Formulário de cadastro de usuário"
           tabIndex={0}
         >
-          <TextField
-            select
-            label="Tipo de usuário"
-            name="tipo"
-            value={form.tipo}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-            SelectProps={{ native: true }}
-            inputProps={{ "aria-label": "Tipo de usuário" }}
-          >
-            <option value="cliente">Cliente</option>
-            <option value="comerciante">Comerciante</option>
-          </TextField>
-          <TextField
-            label="Nome"
-            name="nome"
-            value={form.nome}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-            autoFocus
-            inputProps={{ maxLength: 60, "aria-label": "Nome do usuário" }}
-          />
-          <TextField
-            label="E-mail"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-            inputProps={{ maxLength: 80, "aria-label": "E-mail" }}
-          />
-          <TextField
-            label="Senha"
-            name="senha"
-            type={showSenha ? "text" : "password"}
-            value={form.senha}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-            inputProps={{ maxLength: 40, "aria-label": "Senha" }}
-            helperText={requisitosSenha}
-            error={!senhaForte && form.senha.length > 0}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={showSenha ? "Ocultar senha" : "Mostrar senha"}
-                    onClick={() => setShowSenha((s) => !s)}
-                    edge="end"
-                  >
-                    {showSenha ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            label="Confirmar Senha"
-            name="senha2"
-            type={showSenha2 ? "text" : "password"}
-            value={form.senha2}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-            inputProps={{ maxLength: 40, "aria-label": "Confirmar Senha" }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={showSenha2 ? "Ocultar senha" : "Mostrar senha"}
-                    onClick={() => setShowSenha2((s) => !s)}
-                    edge="end"
-                  >
-                    {showSenha2 ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Tooltip title="Selecione seu perfil: comerciante ou cliente" arrow>
+            <TextField
+              select
+              label="Tipo de usuário"
+              name="tipo"
+              value={form.tipo}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+              SelectProps={{ native: true }}
+              inputProps={{ "aria-label": "Tipo de usuário" }}
+            >
+              <option value="cliente">Cliente</option>
+              <option value="comerciante">Comerciante</option>
+            </TextField>
+          </Tooltip>
+          <Tooltip title="Digite seu nome completo" arrow>
+            <TextField
+              label="Nome"
+              name="nome"
+              value={form.nome}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+              autoFocus
+              inputProps={{ maxLength: 60, "aria-label": "Nome do usuário" }}
+            />
+          </Tooltip>
+          <Tooltip title="Informe um e-mail válido para contato e login" arrow>
+            <TextField
+              label="E-mail"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+              inputProps={{ maxLength: 80, "aria-label": "E-mail" }}
+            />
+          </Tooltip>
+          <Tooltip title="Crie uma senha forte para proteger sua conta" arrow>
+            <TextField
+              label="Senha"
+              name="senha"
+              type={showSenha ? "text" : "password"}
+              value={form.senha}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+              inputProps={{ maxLength: 40, "aria-label": "Senha" }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip
+                      title={showSenha ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      <IconButton
+                        aria-label={
+                          showSenha ? "Ocultar senha" : "Mostrar senha"
+                        }
+                        onClick={() => setShowSenha((v) => !v)}
+                        edge="end"
+                        tabIndex={0}
+                      >
+                        {showSenha ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              }}
+              helperText={
+                senhaForte
+                  ? requisitosSenha
+                  : "A senha deve conter letra maiúscula, minúscula, número e símbolo."
+              }
+            />
+          </Tooltip>
+          <Tooltip title="Repita a senha para confirmação" arrow>
+            <TextField
+              label="Confirmar senha"
+              name="senha2"
+              type={showSenha2 ? "text" : "password"}
+              value={form.senha2}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+              inputProps={{ maxLength: 40, "aria-label": "Confirmar senha" }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip
+                      title={showSenha2 ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      <IconButton
+                        aria-label={
+                          showSenha2 ? "Ocultar senha" : "Mostrar senha"
+                        }
+                        onClick={() => setShowSenha2((v) => !v)}
+                        edge="end"
+                        tabIndex={0}
+                      >
+                        {showSenha2 ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Tooltip>
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2, fontWeight: 600, fontSize: 16, borderRadius: 3 }}
-            aria-label="Registrar"
+            sx={{ mt: 2, fontWeight: 700, fontSize: 17, py: 1.2 }}
+            aria-label="Cadastrar usuário"
           >
-            Registrar
+            Cadastrar
           </Button>
         </form>
         <Box mt={2} textAlign="center">
@@ -253,39 +280,6 @@ export default function CadastroUsuario() {
               Faça login
             </Button>
           </Typography>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="medium"
-            startIcon={<span style={{ fontSize: 18 }}>🏠</span>}
-            sx={{
-              mt: 2,
-              px: 3,
-              py: 1.2,
-              borderRadius: 3,
-              fontWeight: 600,
-              fontSize: 16,
-              letterSpacing: 0.5,
-              boxShadow: "0 2px 8px #1976d222",
-              background: "#fff",
-              borderColor: "#1976d2",
-              color: "#1976d2",
-              transition: "all 0.2s",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              "&:hover": {
-                background: "linear-gradient(90deg, #e3f2fd 0%, #fff 100%)",
-                boxShadow: "0 4px 16px #1976d222",
-                borderColor: "#1565c0",
-                color: "#1565c0",
-              },
-            }}
-            onClick={() => navigate("/")}
-            aria-label="Voltar para página principal"
-          >
-            Voltar para página principal
-          </Button>
         </Box>
       </Paper>
     </Box>
