@@ -1,0 +1,123 @@
+import React, { useState, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import axios from "axios";
+
+function EditarPerfilDialog({ open, onClose, onSuccess }) {
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  useEffect(() => {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (usuario) {
+      setNome(usuario.nome || "");
+      setEmail(usuario.email || "");
+    }
+  }, [open]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      await axios.put(
+        `http://localhost:3333/usuarios/${usuario.id}`,
+        {
+          nome,
+          email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setSnackbar({
+        open: true,
+        message: "Perfil atualizado com sucesso!",
+        severity: "success",
+      });
+      localStorage.setItem(
+        "usuario",
+        JSON.stringify({
+          ...JSON.parse(localStorage.getItem("usuario")),
+          nome,
+          email,
+        })
+      );
+      if (onSuccess) onSuccess();
+      onClose();
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "Erro ao atualizar perfil.",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Editar Perfil</DialogTitle>
+        <form onSubmit={handleSubmit}>
+          <DialogContent>
+            <TextField
+              label="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="E-mail"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose} disabled={loading}>
+              Cancelar
+            </Button>
+            <Button type="submit" variant="contained" disabled={loading}>
+              Salvar
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
+  );
+}
+
+export default EditarPerfilDialog;

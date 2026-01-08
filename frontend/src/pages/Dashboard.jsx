@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import CadastroComercioDialog from "../components/CadastroComercioDialog.jsx";
+import CadastroProdutoDialog from "../components/CadastroProdutoDialog.jsx";
+import EditarPerfilDialog from "../components/EditarPerfilDialog.jsx";
 import {
   Box,
   Typography,
@@ -13,6 +16,11 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  const [openComercioDialog, setOpenComercioDialog] = useState(false);
+  const [openProdutoDialog, setOpenProdutoDialog] = useState(false);
+  const [openPerfilDialog, setOpenPerfilDialog] = useState(false);
+  const [showComercios, setShowComercios] = useState(false);
+  const [showProdutos, setShowProdutos] = useState(false);
   const [usuario, setUsuario] = useState(null);
   const [stats, setStats] = useState({ comercios: 0, produtos: 0 });
   const [ultimosComercios, setUltimosComercios] = useState([]);
@@ -160,85 +168,178 @@ export default function Dashboard() {
               <Grid item xs={12} sm={6}>
                 <Button
                   fullWidth
-                  variant="contained"
+                  variant={showComercios ? "outlined" : "contained"}
                   color="primary"
                   startIcon={
                     <span role="img" aria-label="comércios">
                       🏪
                     </span>
                   }
-                  onClick={() => navigate("/comercios")}
+                  onClick={() => setShowComercios((v) => !v)}
                 >
-                  Ver Comércios
+                  {showComercios ? "Ocultar Comércios" : "Ver Comércios"}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Button
                   fullWidth
-                  variant="contained"
+                  variant={showProdutos ? "outlined" : "contained"}
                   color="secondary"
                   startIcon={
                     <span role="img" aria-label="produtos">
                       🛒
                     </span>
                   }
-                  onClick={() => navigate("/produtos")}
+                  onClick={() => setShowProdutos((v) => !v)}
                 >
-                  Ver Produtos
+                  {showProdutos ? "Ocultar Produtos" : "Ver Produtos"}
                 </Button>
               </Grid>
               {usuario.tipo === "comerciante" && (
-                <Grid item xs={12} sm={6}>
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    color="primary"
-                    startIcon={
-                      <span role="img" aria-label="cadastro comércio">
-                        ➕
-                      </span>
-                    }
-                    onClick={() => navigate("/cadastro-comercio")}
-                  >
-                    Cadastrar Comércio
-                  </Button>
-                </Grid>
+                <>
+                  <Grid item xs={12} sm={6}>
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      color="primary"
+                      startIcon={
+                        <span role="img" aria-label="cadastro comércio">
+                          ➕
+                        </span>
+                      }
+                      onClick={() => setOpenComercioDialog(true)}
+                    >
+                      Cadastrar Comércio
+                    </Button>
+                  </Grid>
+                  <CadastroComercioDialog
+                    open={openComercioDialog}
+                    onClose={() => setOpenComercioDialog(false)}
+                    onSuccess={() => window.location.reload()}
+                  />
+                </>
               )}
               {usuario.tipo === "comerciante" && (
+                <>
+                  <Grid item xs={12} sm={6}>
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      color="secondary"
+                      startIcon={
+                        <span role="img" aria-label="cadastro produto">
+                          ➕
+                        </span>
+                      }
+                      onClick={() => setOpenProdutoDialog(true)}
+                    >
+                      Cadastrar Produto
+                    </Button>
+                  </Grid>
+                  <CadastroProdutoDialog
+                    open={openProdutoDialog}
+                    onClose={() => setOpenProdutoDialog(false)}
+                    onSuccess={() => window.location.reload()}
+                  />
+                </>
+              )}
+              <>
                 <Grid item xs={12} sm={6}>
                   <Button
                     fullWidth
-                    variant="outlined"
-                    color="secondary"
+                    variant="text"
+                    color="info"
                     startIcon={
-                      <span role="img" aria-label="cadastro produto">
-                        ➕
+                      <span role="img" aria-label="editar perfil">
+                        👤
                       </span>
                     }
-                    onClick={() => navigate("/cadastro-produto")}
+                    onClick={() => setOpenPerfilDialog(true)}
                   >
-                    Cadastrar Produto
+                    Editar Perfil
                   </Button>
                 </Grid>
-              )}
-              <Grid item xs={12} sm={6}>
-                <Button
-                  fullWidth
-                  variant="text"
-                  color="info"
-                  startIcon={
-                    <span role="img" aria-label="editar perfil">
-                      👤
-                    </span>
-                  }
-                  onClick={() => navigate("/editar-usuario")}
-                >
-                  Editar Perfil
-                </Button>
-              </Grid>
+                <EditarPerfilDialog
+                  open={openPerfilDialog}
+                  onClose={() => setOpenPerfilDialog(false)}
+                  onSuccess={() => window.location.reload()}
+                />
+              </>
             </Grid>
           </Box>
           <Box mt={4} textAlign="center">
+            {showComercios && (
+              <>
+                <Typography variant="h6" color="primary.main" mb={2}>
+                  Todos os comércios
+                </Typography>
+                <Grid container spacing={2} mb={2}>
+                  {ultimosComercios?.map((com) => (
+                    <Grid item xs={12} sm={4} key={com.id}>
+                      <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                        <CardContent>
+                          <Typography
+                            variant="subtitle1"
+                            fontWeight={700}
+                            color="primary.main"
+                          >
+                            {com.nome}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {com.categoria || "Sem categoria"}
+                          </Typography>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="primary"
+                            sx={{ mt: 1 }}
+                            onClick={() => navigate(`/comercios/${com.id}`)}
+                          >
+                            Visualizar
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </>
+            )}
+            {showProdutos && (
+              <>
+                <Typography variant="h6" color="secondary.main" mb={2}>
+                  Todos os produtos
+                </Typography>
+                <Grid container spacing={2} mb={2}>
+                  {ultimosProdutos?.map((prod) => (
+                    <Grid item xs={12} sm={4} key={prod.id}>
+                      <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                        <CardContent>
+                          <Typography
+                            variant="subtitle1"
+                            fontWeight={700}
+                            color="secondary.main"
+                          >
+                            {prod.nome}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {prod.descricao || "Sem descrição"}
+                          </Typography>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="secondary"
+                            sx={{ mt: 1 }}
+                            onClick={() => navigate(`/produtos/${prod.id}`)}
+                          >
+                            Visualizar
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </>
+            )}
             <Typography variant="h6" color="primary.main" mb={2}>
               Últimos comércios cadastrados
             </Typography>
