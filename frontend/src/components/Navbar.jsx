@@ -112,6 +112,30 @@ export default function Navbar() {
         </Box>
         {usuario ? (
           <Box display="flex" alignItems="center" gap={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              sx={{
+                borderRadius: 3,
+                fontWeight: 700,
+                px: 2,
+                py: 1,
+                fontSize: 15,
+                boxShadow: "0 2px 8px #1565c033",
+                transition: "all 0.2s",
+                background: "#1565c0",
+                color: "#fff",
+                "&:hover": {
+                  background: "#1976d2",
+                  color: "#fff",
+                },
+              }}
+              component={Link}
+              to="/dashboard"
+            >
+              Dashboard
+            </Button>
             <Typography
               sx={{
                 color: usuario.tipo === "comerciante" ? "#fff" : "#e0f2f1",

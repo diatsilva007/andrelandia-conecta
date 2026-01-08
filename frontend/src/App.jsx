@@ -5,6 +5,7 @@ import React, { createContext, useState } from "react";
 import { SnackbarProvider } from "./components/SnackbarContext.jsx";
 import GlobalSnackbar from "./components/GlobalSnackbar.jsx";
 import Login from "./pages/Login.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 import ListaComercios from "./pages/ListaComercios.jsx";
 import DetalheComercio from "./pages/DetalheComercio.jsx";
 import CadastroComercio from "./pages/CadastroComercio.jsx";
@@ -155,7 +156,7 @@ function App() {
                 path="/comercios/:id/editar"
                 element={<EditarComercio />}
               />
-              {/* Outras rotas futuras */}
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/" element={<ListaComercios />} />
               <Route path="/comercios/:id" element={<DetalheComercio />} />
               <Route path="/comercios/novo" element={<CadastroComercio />} />
