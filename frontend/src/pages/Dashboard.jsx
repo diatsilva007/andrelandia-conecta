@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
   const [usuario, setUsuario] = useState(null);
   const [stats, setStats] = useState({ comercios: 0, produtos: 0 });
+  const [ultimosComercios, setUltimosComercios] = useState([]);
+  const [ultimosProdutos, setUltimosProdutos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,9 +29,16 @@ export default function Dashboard() {
           axios.get("http://localhost:3333/comercios"),
           axios.get("http://localhost:3333/produtos"),
         ]);
-        setStats({ comercios: comRes.data.length, produtos: prodRes.data.length });
+        setStats({
+          comercios: comRes.data.length,
+          produtos: prodRes.data.length,
+        });
+        setUltimosComercios(comRes.data.slice(-3).reverse());
+        setUltimosProdutos(prodRes.data.slice(-3).reverse());
       } catch (err) {
         setStats({ comercios: 0, produtos: 0 });
+        setUltimosComercios([]);
+        setUltimosProdutos([]);
       }
     };
     fetchStats();
@@ -44,18 +53,20 @@ export default function Dashboard() {
     <Box
       bgcolor="background.default"
       minHeight="100vh"
-      px={2}
+      width="100vw"
       display="flex"
       alignItems="center"
       justifyContent="center"
+      flexDirection="column"
     >
       <Card
         sx={{
           width: "100%",
-          maxWidth: 480,
+          maxWidth: 900,
           mx: "auto",
           boxShadow: 8,
           borderRadius: 4,
+          bgcolor: "background.paper",
         }}
       >
         <CardContent>
@@ -228,7 +239,71 @@ export default function Dashboard() {
             </Grid>
           </Box>
           <Box mt={4} textAlign="center">
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="h6" color="primary.main" mb={2}>
+              Últimos comércios cadastrados
+            </Typography>
+            <Grid container spacing={2} mb={2}>
+              {ultimosComercios?.map((com) => (
+                <Grid item xs={12} sm={4} key={com.id}>
+                  <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                    <CardContent>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight={700}
+                        color="primary.main"
+                      >
+                        {com.nome}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {com.categoria || "Sem categoria"}
+                      </Typography>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="primary"
+                        sx={{ mt: 1 }}
+                        onClick={() => navigate(`/comercios/${com.id}`)}
+                      >
+                        Visualizar
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+            <Typography variant="h6" color="secondary.main" mb={2}>
+              Últimos produtos cadastrados
+            </Typography>
+            <Grid container spacing={2} mb={2}>
+              {ultimosProdutos?.map((prod) => (
+                <Grid item xs={12} sm={4} key={prod.id}>
+                  <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                    <CardContent>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight={700}
+                        color="secondary.main"
+                      >
+                        {prod.nome}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {prod.descricao || "Sem descrição"}
+                      </Typography>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="secondary"
+                        sx={{ mt: 1 }}
+                        onClick={() => navigate(`/produtos/${prod.id}`)}
+                      >
+                        Visualizar
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+            <Typography variant="body2" color="text.secondary" mt={2}>
               Dica: mantenha seus dados atualizados e aproveite para divulgar
               seus produtos e serviços!
             </Typography>
