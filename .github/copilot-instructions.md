@@ -1,15 +1,15 @@
 # Copilot Instructions — Andrelândia Conecta
 
-Este monorepo implementa uma plataforma de gestão e visibilidade para o comércio local de Andrelândia/MG e região.
+Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região.
 
-## Arquitetura e Componentes
+## Arquitetura
 
 - **Frontend** (`/frontend`):
 
   - SPA React (Vite), Material UI, React Router DOM.
   - Autenticação JWT (armazenado no localStorage), consumo de API REST via Axios.
-  - Componentes globais reutilizáveis em `src/components` (ex: `GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`).
-  - Páginas em `src/pages` (ex: `CadastroComercio.jsx`, `Login.jsx`).
+  - Componentes globais em `src/components` (`GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`, `SnackbarContext.jsx`).
+  - Páginas em `src/pages` (ex: `CadastroComercio.jsx`, `Login.jsx`, `DetalheComercio.jsx`).
   - Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente.
   - Feedback visual padronizado via Snackbar/Alert/Dialog (sempre use os componentes globais).
 
@@ -33,7 +33,7 @@ Este monorepo implementa uma plataforma de gestão e visibilidade para o comérc
   - Backend: `npm start` em `/backend`
 - **Migrations Prisma**: `npx prisma migrate dev` em `/backend` após alterar o schema.
 
-## Convenções e Padrões do Projeto
+## Convenções e Padrões
 
 - **Rotas REST**: CRUD para `/comercios`, `/produtos`, `/usuarios`, `/auth` (login, esqueci-senha, redefinir-senha). Veja exemplos em `src/routes/` e `src/controllers/`.
 - **Autenticação**: JWT obrigatório para rotas protegidas (ex: criar/editar/remover produtos/comércios). Sempre use o middleware de autenticação.
@@ -41,7 +41,7 @@ Este monorepo implementa uma plataforma de gestão e visibilidade para o comérc
   - Formulários padronizados, loading global, navegação protegida por token.
   - Feedback visual consistente (ex: `GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`).
   - Hooks/contextos para estado global (ex: `SnackbarContext.jsx`).
-  - Use Material UI para UI/UX consistente.
+  - Material UI para UI/UX consistente.
 - **Backend**:
   - Controllers e rotas bem separados.
   - Middleware de autenticação sempre aplicado em rotas protegidas.
@@ -61,9 +61,9 @@ Este monorepo implementa uma plataforma de gestão e visibilidade para o comérc
   3. Backend valida, cria registro via Prisma, retorna dados.
 - **Listagem pública**: `/comercios` e `/produtos` são acessíveis sem autenticação.
 
-## Dicas e Observações para Agentes
+## Dicas para Agentes
 
-- Sempre respeite a separação de responsabilidades entre frontend e backend.
+- Respeite a separação de responsabilidades entre frontend e backend.
 - Siga padrões de feedback visual e navegação protegida já presentes nas páginas.
 - Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
 - Use exemplos reais dos arquivos para manter consistência de código e UX.
