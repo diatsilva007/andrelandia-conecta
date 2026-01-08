@@ -1,33 +1,21 @@
-# ToDo - Plataforma Andrelândia Conecta
+# TODO - Plataforma Andrelândia Conecta
 
-## UX/UI e Padronização
+## Melhorias UX/UI e Funcionalidades Avançadas
 
-- [x] Padronizar formulários de edição de comércio e produto (Paper/Card, loading, helperText, feedback)
-- [x] Padronizar formulários de cadastro/edição de produto
-- [x] Adicionar loading global (Backdrop) para operações importantes
-- [x] Implementar breadcrumbs para navegação contextual
-- [x] Garantir feedback visual (snackbar) em todas as ações (edição, exclusão, cadastro, erro)
-- [x] Melhorar responsividade dos cards e formulários
+### Em andamento/próximas tarefas
 
-## Funcionalidades CRUD
+- [ ] Aprimorar design visual: temas personalizados, animações suaves, responsividade avançada
+- [ ] Garantir acessibilidade total: navegação por teclado, labels acessíveis, contraste
+- [ ] Adicionar onboarding para novos usuários, tooltips explicativos, mensagens detalhadas
+- [ ] Criar dashboard inicial para usuários logados (estatísticas, atalhos, recomendações)
+- [ ] Melhorar filtros e busca nas listagens (dinâmicos, ordenação, busca por nome/categoria)
+- [ ] Exibir médias, gráficos ou destaques de avaliações para comércios
+- [ ] Implementar lazy loading e otimização de imagens
+- [ ] Adicionar testes automatizados (unitários e integração)
+- [ ] Expandir README e documentação para onboarding de devs
 
-- [x] Implementar edição e exclusão de produtos (frontend)
-- [x] Garantir atualização automática das listas após editar/excluir produto
-- [x] Adicionar confirmação visual para exclusão de produto (Dialog)
+### Funcionalidades essenciais pendentes
 
-## Experiência do Usuário
-
-- [x] Adicionar tooltips e ícones em todos os botões de ação
-- [x] Garantir acessibilidade (aria-labels, contraste, navegação por teclado)
-- [x] Revisar e padronizar espaçamentos, fontes e cores em todas as telas
-
-## Funcionalidades essenciais
-
-- [x] Cadastro e autenticação de usuários (comerciantes e clientes)
-- [x] Cadastro, edição e exclusão de comércios (nome, endereço, contato, descrição)
-- [x] Listagem pública dos comércios, com busca
-- [x] Cadastro e gerenciamento de produtos por comércio
-- [x] Sistema de avaliações e comentários dos clientes
 - [ ] Página de detalhes do comércio (produtos, avaliações, contato, horários)
 - [ ] Integração com WhatsApp, telefone ou formulário para contato direto
 - [ ] Painel do comerciante: listar, editar e excluir seus comércios e produtos
@@ -38,6 +26,26 @@
 - [ ] Feedback visual em todas as ações (sucesso, erro, loading)
 - [ ] Loading global em todas as requisições
 - [ ] Navbar adaptativa: menus conforme tipo de usuário
+
+### Tarefas já concluídas
+
+- [x] Padronizar formulários de edição de comércio e produto (Paper/Card, loading, helperText, feedback)
+- [x] Padronizar formulários de cadastro/edição de produto
+- [x] Adicionar loading global (Backdrop) para operações importantes
+- [x] Implementar breadcrumbs para navegação contextual
+- [x] Garantir feedback visual (snackbar) em todas as ações (edição, exclusão, cadastro, erro)
+- [x] Melhorar responsividade dos cards e formulários
+- [x] Implementar edição e exclusão de produtos (frontend)
+- [x] Garantir atualização automática das listas após editar/excluir produto
+- [x] Adicionar confirmação visual para exclusão de produto (Dialog)
+- [x] Adicionar tooltips e ícones em todos os botões de ação
+- [x] Garantir acessibilidade (aria-labels, contraste, navegação por teclado)
+- [x] Revisar e padronizar espaçamentos, fontes e cores em todas as telas
+- [x] Cadastro e autenticação de usuários (comerciantes e clientes)
+- [x] Cadastro, edição e exclusão de comércios (nome, endereço, contato, descrição)
+- [x] Listagem pública dos comércios, com busca
+- [x] Cadastro e gerenciamento de produtos por comércio
+- [x] Sistema de avaliações e comentários dos clientes
 - [ ] Breadcrumbs em todas as páginas
 - [ ] Responsividade total (mobile/tablet)
 - [ ] Segurança: só dono pode editar/excluir seus dados
@@ -65,7 +73,6 @@
 - [ ] Feedback visual consistente (loading global, snackbar para todas as ações)
 - [ ] Pequenos detalhes de UX (tooltip em todos os botões, placeholder e limite de caracteres nos campos, animação sutil nos cards)
 - [ ] Breadcrumb sempre visível e botão de voltar bem posicionado
-
 - [ ] Dashboard do comerciante com estatísticas (produtos, avaliações, vendas)
 - [ ] Notificações para comerciantes (novas avaliações, pedidos, etc.)
 - [ ] Tutorial onboarding para novos usuários
