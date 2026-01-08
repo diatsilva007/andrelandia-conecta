@@ -20,20 +20,111 @@ const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#1976d2", // azul forte
+      main: "#1565c0", // azul profundo
+      contrastText: "#fff",
+      gradient: "linear-gradient(90deg, #1565c0 0%, #43a047 100%)",
     },
     secondary: {
-      main: "#43a047", // verde para remeter à natureza/local
+      main: "#43a047", // verde vibrante
+      contrastText: "#fff",
+      gradient: "linear-gradient(90deg, #43a047 0%, #1565c0 100%)",
     },
     background: {
-      default: "#f4f6fa", // fundo claro e limpo
+      default: "#f4f6fa",
+      paper: "#fff",
+      gradient: "linear-gradient(120deg, #e3f2fd 0%, #e8f5e9 100%)",
+    },
+    info: {
+      main: "#0288d1",
+    },
+    success: {
+      main: "#388e3c",
+    },
+    error: {
+      main: "#d32f2f",
+    },
+    warning: {
+      main: "#ffa000",
     },
   },
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
     h5: {
       fontWeight: 700,
+      letterSpacing: 1.2,
+      textShadow: "0 2px 8px #0002",
+    },
+    h6: {
+      fontWeight: 600,
       letterSpacing: 1,
+    },
+    button: {
+      fontWeight: 700,
+      letterSpacing: 0.5,
+      textTransform: "none",
+      transition: "all 0.2s",
+    },
+  },
+  shape: {
+    borderRadius: 12,
+  },
+  transitions: {
+    duration: {
+      shortest: 150,
+      shorter: 200,
+      short: 250,
+      standard: 300,
+      complex: 375,
+      enteringScreen: 225,
+      leavingScreen: 195,
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          boxShadow: "0 2px 8px #43a04733",
+          transition: "all 0.2s",
+          "&:hover": {
+            boxShadow: "0 4px 16px #1565c033",
+            filter: "brightness(1.08)",
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          boxShadow: "0 4px 24px #1976d222",
+          transition: "box-shadow 0.3s",
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          background: "linear-gradient(120deg, #e3f2fd 0%, #e8f5e9 100%)",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: "linear-gradient(90deg, #1565c0 0%, #43a047 100%)",
+        },
+      },
     },
   },
 });
