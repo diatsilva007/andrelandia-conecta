@@ -1,3 +1,18 @@
+## Recomendações e Checklist de UX/UI Profissional
+
+- [ ] Identidade visual consistente: paleta de cores exclusiva, logotipo simples, uso padronizado em todos os elementos.
+- [ ] Tipografia e hierarquia: no máximo 2 famílias de fonte, destaque para títulos/botões, hierarquia visual clara.
+- [ ] Espaçamento e alinhamento: espaçamento consistente entre cards, seções e botões; uso de grids e containers para centralização.
+- [ ] Microinterações e animações suaves: animações de hover em botões/cards, transições suaves em modais/tooltips/navegação.
+- [ ] Navegação clara: navbar sempre visível (fixa ou drawer), breadcrumbs para facilitar retorno em fluxos profundos.
+- [ ] Acessibilidade: contraste suficiente, labels e aria-labels, navegação por teclado em formulários e botões.
+- [ ] Feedback visual: loading, sucesso e erro claros (snackbar, backdrop, alert), uso de ícones e cores para reforço.
+- [ ] Personalização e empatia: modo escuro/claro, mensagens de boas-vindas e dicas contextuais para novos usuários.
+- [ ] Mobile first: todos os fluxos testados em dispositivos móveis, touch targets grandes, menus simplificados.
+- [ ] Testes com usuários reais: coletar feedback de comerciantes e clientes sobre usabilidade e clareza.
+
+> Use esta lista como referência para revisões de design e implementação de novas features. Marque cada item como concluído à medida que for implementando.
+
 # TODO - Andrelândia Conecta
 
 ## Melhorias UX/UI e Funcionalidades Avançadas
