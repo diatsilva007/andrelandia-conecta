@@ -100,6 +100,23 @@ frontend/
 - Monitoramento e logs
 - Validação de dados e segurança
 
+## Observações e melhorias recentes
+
+- Responsividade aprimorada nos principais containers e cards (Dashboard, ListaComercios, DetalheComercio)
+- Correção de bugs críticos de sintaxe e estrutura de componentes (JSX, imports, return)
+- Estrutura dos componentes revisada para garantir funcionamento em todos os dispositivos
+- Próximos passos: revisar acessibilidade, expandir testes e finalizar detalhes de UI/UX
+
+## Dicas para desenvolvedores
+
+- Sempre utilize os componentes globais de feedback visual (`SnackbarContext`, `GlobalSnackbar`, `LoadingBackdrop`)
+- Siga o padrão de responsividade e acessibilidade já implementado nas páginas principais
+- Consulte o arquivo TODO.md para prioridades e próximos passos
+
+---
+
+_Última atualização: 08/01/2026_
+
 ## Licença
 
 Este projeto está sob a licença MIT.
