@@ -13,6 +13,7 @@ import {
   Avatar,
   Tooltip,
 } from "@mui/material";
+import AnimatedCard from "../components/AnimatedCard.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
@@ -110,7 +111,9 @@ export default function Dashboard() {
           </Box>
           <Grid container spacing={2} mb={2}>
             <Grid item xs={12} sm={6}>
-              <Card sx={{ bgcolor: "#e3f2fd", boxShadow: 2, borderRadius: 3 }}>
+              <AnimatedCard
+                sx={{ bgcolor: "#e3f2fd", boxShadow: 2, borderRadius: 3 }}
+              >
                 <CardContent>
                   <Typography
                     variant="h6"
@@ -129,10 +132,12 @@ export default function Dashboard() {
                     {stats.comercios}
                   </Typography>
                 </CardContent>
-              </Card>
+              </AnimatedCard>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Card sx={{ bgcolor: "#e8f5e9", boxShadow: 2, borderRadius: 3 }}>
+              <AnimatedCard
+                sx={{ bgcolor: "#e8f5e9", boxShadow: 2, borderRadius: 3 }}
+              >
                 <CardContent>
                   <Typography
                     variant="h6"
@@ -151,7 +156,7 @@ export default function Dashboard() {
                     {stats.produtos}
                   </Typography>
                 </CardContent>
-              </Card>
+              </AnimatedCard>
             </Grid>
           </Grid>
           <Box mt={3}>
@@ -276,7 +281,7 @@ export default function Dashboard() {
                 <Grid container spacing={2} mb={2}>
                   {ultimosComercios?.map((com) => (
                     <Grid item xs={12} sm={4} key={com.id}>
-                      <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                      <AnimatedCard sx={{ boxShadow: 2, borderRadius: 2 }}>
                         <CardContent>
                           <Typography
                             variant="subtitle1"
@@ -298,7 +303,7 @@ export default function Dashboard() {
                             Visualizar
                           </Button>
                         </CardContent>
-                      </Card>
+                      </AnimatedCard>
                     </Grid>
                   ))}
                 </Grid>
@@ -346,7 +351,7 @@ export default function Dashboard() {
             <Grid container spacing={2} mb={2}>
               {ultimosComercios?.map((com) => (
                 <Grid item xs={12} sm={4} key={com.id}>
-                  <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                  <AnimatedCard sx={{ boxShadow: 2, borderRadius: 2 }}>
                     <CardContent>
                       <Typography
                         variant="subtitle1"
@@ -368,7 +373,7 @@ export default function Dashboard() {
                         Visualizar
                       </Button>
                     </CardContent>
-                  </Card>
+                  </AnimatedCard>
                 </Grid>
               ))}
             </Grid>
@@ -378,7 +383,7 @@ export default function Dashboard() {
             <Grid container spacing={2} mb={2}>
               {ultimosProdutos?.map((prod) => (
                 <Grid item xs={12} sm={4} key={prod.id}>
-                  <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                  <AnimatedCard sx={{ boxShadow: 2, borderRadius: 2 }}>
                     <CardContent>
                       <Typography
                         variant="subtitle1"
@@ -400,7 +405,7 @@ export default function Dashboard() {
                         Visualizar
                       </Button>
                     </CardContent>
-                  </Card>
+                  </AnimatedCard>
                 </Grid>
               ))}
             </Grid>
