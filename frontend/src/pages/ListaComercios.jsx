@@ -450,7 +450,10 @@ const ListaComercios = () => {
         )}
         {comerciosFiltrados.length > 0 &&
           comerciosFiltrados.map((comercio) => (
-            <Grid item xs={12} sm={6} md={4} key={comercio.id}>
+            <Grid
+              gridColumn={{ xs: "span 12", sm: "span 6", md: "span 4" }}
+              key={comercio.id}
+            >
               <AnimatedCard
                 sx={{
                   position: "relative",

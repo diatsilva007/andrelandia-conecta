@@ -109,8 +109,8 @@ export default function Dashboard() {
               {usuario.tipo === "comerciante" ? "Comerciante" : "Cliente"}
             </Typography>
           </Box>
-          <Grid container spacing={2} mb={2}>
-            <Grid item xs={12} sm={6}>
+          <Grid container spacing={2} mb={2} columns={12}>
+            <Grid gridColumn={{ xs: "span 12", sm: "span 6" }}>
               <AnimatedCard
                 sx={{ bgcolor: "#e3f2fd", boxShadow: 2, borderRadius: 3 }}
               >
@@ -134,7 +134,7 @@ export default function Dashboard() {
                 </CardContent>
               </AnimatedCard>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid gridColumn={{ xs: "span 12", sm: "span 6" }}>
               <AnimatedCard
                 sx={{ bgcolor: "#e8f5e9", boxShadow: 2, borderRadius: 3 }}
               >

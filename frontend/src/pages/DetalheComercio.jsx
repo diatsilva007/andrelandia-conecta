@@ -443,7 +443,10 @@ export default function DetalheComercio() {
       >
         {comercio.produtos && comercio.produtos.length > 0 ? (
           comercio.produtos.map((produto) => (
-            <Grid item xs={12} sm={6} md={4} key={produto.id}>
+            <Grid
+              gridColumn={{ xs: "span 12", sm: "span 6", md: "span 4" }}
+              key={produto.id}
+            >
               <Card
                 sx={{
                   borderRadius: 3,
