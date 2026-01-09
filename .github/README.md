@@ -124,5 +124,5 @@ Este projeto está sob a licença MIT.
 ## Contato
 
 - Autor: Diogo Ataíde Silva
-- Email: diatsilva007@gmail.com
+- Email: diogo.ataidee@gmail.com
 - [LinkedIn](https://www.linkedin.com/in/diatsilva)
