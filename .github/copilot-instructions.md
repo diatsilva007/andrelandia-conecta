@@ -8,10 +8,12 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 
   - SPA React (Vite), Material UI, React Router DOM.
   - Autenticação JWT (armazenado no localStorage), consumo de API REST via Axios.
-  - Componentes globais em `src/components` (`GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`, `SnackbarContext.jsx`).
+  - Componentes globais de feedback: `src/components/GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`, `SnackbarContext.jsx`.
   - Páginas em `src/pages` (ex: `CadastroComercio.jsx`, `Login.jsx`, `DetalheComercio.jsx`).
   - Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente.
   - Feedback visual padronizado via Snackbar/Alert/Dialog (sempre use os componentes globais).
+  - Estado global de loading via contexto (`LoadingContext` em `App.jsx`).
+  - Acessibilidade e responsividade são prioridades (ver `/frontend/TODO.md`).
 
 - **Backend** (`/backend`):
 
@@ -32,26 +34,38 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
   - Frontend: `npm run build` em `/frontend`
   - Backend: `npm start` em `/backend`
 - **Migrations Prisma**: `npx prisma migrate dev` em `/backend` após alterar o schema.
+- **Configuração**:
+  - Variáveis de ambiente no backend: `.env` com `DATABASE_URL` e `JWT_SECRET` obrigatórios.
+  - Para rodar local, configure o banco PostgreSQL e execute as migrations.
 
 ## Convenções e Padrões
 
 - **Rotas REST**: CRUD para `/comercios`, `/produtos`, `/usuarios`, `/auth` (login, esqueci-senha, redefinir-senha). Veja exemplos em `src/routes/` e `src/controllers/`.
-- **Autenticação**: JWT obrigatório para rotas protegidas (ex: criar/editar/remover produtos/comércios). Sempre use o middleware de autenticação.
+- **Autenticação**: JWT obrigatório para rotas protegidas (ex: criar/editar/remover produtos/comércios). Sempre use o middleware de autenticação (`src/middlewares/auth.js`).
 - **Frontend**:
-  - Formulários padronizados, loading global, navegação protegida por token.
-  - Feedback visual consistente (ex: `GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`).
-  - Hooks/contextos para estado global (ex: `SnackbarContext.jsx`).
-  - Material UI para UI/UX consistente.
+  - Formulários padronizados, loading global, navegação protegida por token (ver exemplos em `CadastroComercio.jsx`, `Login.jsx`).
+  - Feedback visual consistente: sempre utilize `setSnackbar` do contexto (`SnackbarContext.jsx`) e `GlobalSnackbar.jsx` para mensagens de sucesso/erro.
+  - Use `LoadingBackdrop.jsx` para loading global em requisições assíncronas.
+  - Material UI para UI/UX consistente. Utilize componentes do MUI para acessibilidade e responsividade.
+  - Breadcrumbs e navegação contextual: use `BreadcrumbNav.jsx`.
+  - Sempre consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
 - **Backend**:
   - Controllers e rotas bem separados.
   - Middleware de autenticação sempre aplicado em rotas protegidas.
   - Prisma Client importado por controller, nunca global.
+  - Fluxo de redefinição de senha implementado em `authController.js` e rotas em `routes/auth.js`.
 
 ## Integrações e Comunicação
 
 - **Frontend → Backend**: Axios, endpoints em `http://localhost:3333`.
 - **Env vars**: Configure `.env` no backend (`DATABASE_URL`, `JWT_SECRET`).
-- **Reset de senha**: Fluxo `/auth/esqueci-senha` e `/auth/redefinir-senha/:token`.
+- **Reset de senha**: Fluxo `/auth/esqueci-senha` e `/auth/redefinir-senha/:token` (ver exemplos em `authController.js` e `RedefinirSenha.jsx`).
+- **Exemplo de integração**: ao cadastrar comércio/produto, envie JWT no header Authorization. Exemplo:
+  ```js
+  await axios.post("http://localhost:3333/comercios", form, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  ```
 
 ## Exemplos de Fluxo
 
@@ -60,6 +74,8 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
   2. Formulário envia POST para `/comercios` (token JWT no header).
   3. Backend valida, cria registro via Prisma, retorna dados.
 - **Listagem pública**: `/comercios` e `/produtos` são acessíveis sem autenticação.
+- **Feedback visual**: sempre use `setSnackbar` para mostrar mensagens após ações (sucesso/erro), e `LoadingBackdrop` para loading global.
+- **Exclusão/Edição**: sempre peça confirmação visual (Dialog) antes de excluir, e atualize a listagem após sucesso.
 
 ## Dicas para Agentes
 
@@ -68,9 +84,11 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 - Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
 - Use exemplos reais dos arquivos para manter consistência de código e UX.
 - Prefira comandos e fluxos documentados acima para build/dev/migrations.
-- Para feedback visual, utilize sempre os componentes globais já existentes.
+- Para feedback visual, utilize sempre os componentes globais já existentes (`SnackbarContext`, `GlobalSnackbar`, `LoadingBackdrop`).
 - Ao criar novas rotas protegidas, lembre-se de aplicar o middleware de autenticação.
 - Para novos modelos Prisma, siga o padrão do `schema.prisma` e gere migrations.
 - Para debugging, utilize logs do backend e o feedback visual do frontend.
+- Priorize acessibilidade e responsividade (ver TODO.md e exemplos de uso de MUI).
+- Sempre atualize a documentação e exemplos práticos ao adicionar novos fluxos ou padrões.
 
 <!-- Para mais detalhes: https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
