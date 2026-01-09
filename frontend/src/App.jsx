@@ -13,9 +13,12 @@ import CadastroProduto from "./pages/CadastroProduto.jsx";
 import CadastroUsuario from "./pages/CadastroUsuario.jsx";
 import EsqueciSenha from "./pages/EsqueciSenha.jsx";
 import RedefinirSenha from "./pages/RedefinirSenha.jsx";
+
 import Navbar from "./components/Navbar.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
 import EditarProduto from "./pages/EditarProduto.jsx";
+import PageTransition from "./components/PageTransition.jsx";
+import { useLocation } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
@@ -135,6 +138,7 @@ export const LoadingContext = createContext({ open: false, setOpen: () => {} });
 
 function App() {
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -142,9 +146,9 @@ function App() {
         <LoadingContext.Provider value={{ open: loading, setOpen: setLoading }}>
           <LoadingBackdrop open={loading} />
           <GlobalSnackbar />
-          <BrowserRouter>
-            <Navbar />
-            <Routes>
+          <Navbar />
+          <PageTransition locationKey={location.key}>
+            <Routes location={location}>
               <Route path="/login" element={<Login />} />
               <Route path="/registrar" element={<CadastroUsuario />} />
               <Route path="/esqueci-senha" element={<EsqueciSenha />} />
@@ -166,11 +170,17 @@ function App() {
               />
               <Route path="/produtos/:id/editar" element={<EditarProduto />} />
             </Routes>
-          </BrowserRouter>
+          </PageTransition>
         </LoadingContext.Provider>
       </SnackbarProvider>
     </ThemeProvider>
   );
 }
 
-export default App;
+export default function AppWithRouter() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
