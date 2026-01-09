@@ -28,8 +28,8 @@ import FormControl from "@mui/material/FormControl";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AnimatedCard from "../components/AnimatedCard.jsx";
 
-// ...existing code...
 const ListaComercios = () => {
   const navigate = useNavigate();
   const [comercios, setComercios] = useState([]);
@@ -451,7 +451,7 @@ const ListaComercios = () => {
         {comerciosFiltrados.length > 0 &&
           comerciosFiltrados.map((comercio) => (
             <Grid item xs={12} sm={6} md={4} key={comercio.id}>
-              <Card
+              <AnimatedCard
                 sx={{
                   position: "relative",
                   borderRadius: { xs: 2, sm: 3, md: 4 },
@@ -633,7 +633,7 @@ const ListaComercios = () => {
                     </Tooltip>
                   </Box>
                 )}
-              </Card>
+              </AnimatedCard>
             </Grid>
           ))}
       </Grid>
