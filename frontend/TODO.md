@@ -2,7 +2,7 @@
 
 - [x] Identidade visual consistente: paleta de cores exclusiva, logotipo simples, uso padronizado em todos os elementos.
 - [x] Tipografia e hierarquia: no máximo 2 famílias de fonte, destaque para títulos/botões, hierarquia visual clara.
-- [ ] Espaçamento e alinhamento: espaçamento consistente entre cards, seções e botões; uso de grids e containers para centralização.
+- [x] Espaçamento e alinhamento: espaçamento consistente entre cards, seções e botões; uso de grids e containers para centralização.
 - [ ] Microinterações e animações suaves: animações de hover em botões/cards, transições suaves em modais/tooltips/navegação.
 - [ ] Navegação clara: navbar sempre visível (fixa ou drawer), breadcrumbs para facilitar retorno em fluxos profundos.
 - [ ] Acessibilidade: contraste suficiente, labels e aria-labels, navegação por teclado em formulários e botões.

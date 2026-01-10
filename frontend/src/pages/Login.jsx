@@ -108,11 +108,11 @@ export default function Login() {
         borderRadius={2}
         bgcolor="#fff"
       >
-        <Typography variant="h5" mb={2} align="center">
+        <Typography variant="h5" mb={3} align="center">
           Login
         </Typography>
         {erro && (
-          <Alert severity="error" sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ mb: 3 }}>
             {erro}
           </Alert>
         )}
@@ -127,6 +127,7 @@ export default function Login() {
             required
             autoFocus
             inputProps={{ "aria-label": "E-mail" }}
+            sx={{ mb: 2 }}
           />
           <TextField
             label="Senha"
