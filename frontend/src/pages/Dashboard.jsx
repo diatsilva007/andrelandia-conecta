@@ -16,6 +16,8 @@ import {
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import { useNavigate } from "react-router-dom";
 
+import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
+
 export default function Dashboard() {
   const [openComercioDialog, setOpenComercioDialog] = useState(false);
   const [openProdutoDialog, setOpenProdutoDialog] = useState(false);
@@ -68,6 +70,9 @@ export default function Dashboard() {
       justifyContent="center"
       flexDirection="column"
     >
+      <Box maxWidth={900} mx="auto" px={2} pt={2}>
+        <BreadcrumbNav items={[{ label: "Dashboard" }]} />
+      </Box>
       <Card
         sx={{
           width: "100%",
