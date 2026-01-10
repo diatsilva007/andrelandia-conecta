@@ -230,15 +230,17 @@ const ListaComercios = () => {
           />
         </Box>
         <Typography
-          variant="h3"
+          variant="h1"
           fontWeight={800}
           mb={1.5}
-          sx={{
+          align="center"
+          sx={(theme) => ({
             color: "#fff",
             zIndex: 1,
             textShadow: "0 2px 8px #0002",
             letterSpacing: 1,
-          }}
+            fontFamily: theme.typography.fontFamily,
+          })}
         >
           Andrelândia Conecta
         </Typography>
