@@ -199,20 +199,36 @@ const ListaComercios = () => {
             zIndex: 0,
           }}
         />
-        <Avatar
+        <Box
           sx={{
-            bgcolor: "secondary.main",
-            width: 80,
-            height: 80,
-            fontSize: 44,
-            mb: 2.5,
-            boxShadow: 3,
+            width: 160,
+            height: 160,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            bgcolor: "background.paper",
+            borderRadius: "50%",
+            boxShadow: 4,
+            mb: 3,
             zIndex: 1,
+            border: "3px solid #2563eb",
+            overflow: "hidden",
             animation: "pulse 2s infinite",
           }}
+          aria-label="Logo Andrelândia Conecta"
+          tabIndex={0}
         >
-          🏪
-        </Avatar>
+          <img
+            src="/andrelandia-conecta-logo.png"
+            alt="Logo Andrelândia Conecta"
+            style={{
+              width: 140,
+              height: 140,
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+        </Box>
         <Typography
           variant="h3"
           fontWeight={800}

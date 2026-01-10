@@ -70,19 +70,34 @@ export default function Navbar() {
         }}
       >
         <Box display="flex" alignItems="center" gap={2}>
-          <Avatar
+          <Box
             sx={{
-              bgcolor: "secondary.main",
-              width: 40,
-              height: 40,
-              fontSize: 24,
+              width: 64,
+              height: 64,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              bgcolor: "background.paper",
+              borderRadius: "50%",
               boxShadow: 2,
+              mr: 1,
+              border: "2px solid #2563eb",
+              overflow: "hidden",
             }}
-            aria-label="Logo do projeto"
+            aria-label="Logo Andrelândia Conecta"
             tabIndex={0}
           >
-            🏪
-          </Avatar>
+            <img
+              src="/andrelandia-conecta-logo.png"
+              alt="Logo Andrelândia Conecta"
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            />
+          </Box>
           <Typography
             variant="h5"
             component={Link}
