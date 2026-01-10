@@ -1,0 +1,6 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="60" cy="60" r="54" stroke="#2563eb" stroke-width="8" fill="#f3f4f6"/>
+  <path d="M30 80 Q60 40 90 80" stroke="#22c55e" stroke-width="6" fill="none"/>
+  <circle cx="60" cy="60" r="12" fill="#facc15" stroke="#2563eb" stroke-width="3"/>
+  <text x="60" y="110" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="18" fill="#2563eb">Andrelândia</text>
+</svg>
