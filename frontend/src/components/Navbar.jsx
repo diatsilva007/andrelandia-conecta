@@ -138,12 +138,15 @@ export default function Navbar() {
                 py: 1,
                 fontSize: 15,
                 boxShadow: "0 2px 8px #1565c033",
-                transition: "all 0.2s",
+                transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
                 background: "#1565c0",
                 color: "#fff",
+                transform: "scale(1)",
                 "&:hover": {
                   background: "#1976d2",
                   color: "#fff",
+                  transform: "scale(1.07)",
+                  boxShadow: "0 4px 16px #1565c044",
                 },
               }}
               component={Link}
@@ -189,7 +192,14 @@ export default function Navbar() {
                     py: 1,
                     fontSize: 15,
                     boxShadow: "0 2px 8px #43a04733",
-                    transition: "all 0.2s",
+                    transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
+                    transform: "scale(1)",
+                    "&:hover": {
+                      background: "#388e3c",
+                      color: "#fff",
+                      transform: "scale(1.07)",
+                      boxShadow: "0 4px 16px #43a04744",
+                    },
                   }}
                   component={Link}
                   to="/comercios/novo"
@@ -212,11 +222,14 @@ export default function Navbar() {
                 borderColor: "#fff",
                 color: "#fff",
                 background: "rgba(255,255,255,0.08)",
-                transition: "all 0.2s",
+                transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
+                transform: "scale(1)",
                 "&:hover": {
                   background: "#e3f2fd",
                   color: "#1976d2",
                   borderColor: "#1976d2",
+                  transform: "scale(1.07)",
+                  boxShadow: "0 4px 16px #1976d244",
                 },
               }}
               onClick={() => setOpenTrocaTipo(true)}

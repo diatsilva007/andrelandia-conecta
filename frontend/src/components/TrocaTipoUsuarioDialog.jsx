@@ -50,7 +50,26 @@ export default function TrocaTipoUsuarioDialog({
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      TransitionProps={{
+        appear: true,
+        onEnter: (node) => {
+          node.style.opacity = 0;
+          node.style.transform = "scale(0.96)";
+          setTimeout(() => {
+            node.style.transition = "all 0.32s cubic-bezier(.4,0,.2,1)";
+            node.style.opacity = 1;
+            node.style.transform = "scale(1)";
+          }, 10);
+        },
+        onExited: (node) => {
+          node.style.opacity = 0;
+          node.style.transform = "scale(0.96)";
+        },
+      }}
+    >
       <DialogTitle>Alterar tipo de usuário</DialogTitle>
       <DialogContent>
         <Box mb={2}>

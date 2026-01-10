@@ -7,6 +7,7 @@ export default function AnimatedCard({ children, ...props }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -24 }}
+      whileHover={{ scale: 1.04, boxShadow: "0 8px 32px #1976d244" }}
       transition={{ duration: 0.36, ease: "easeOut" }}
       style={{ height: "100%" }}
     >
