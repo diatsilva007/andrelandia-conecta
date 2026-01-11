@@ -21,6 +21,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import BusinessIcon from "@mui/icons-material/Business";
 import { Link, useLocation } from "react-router-dom";
 import EditarPerfilDialog from "./EditarPerfilDialog.jsx";
+import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog.jsx";
 
 function stringAvatar(name) {
   if (!name) return { children: <PersonIcon fontSize="large" /> };
@@ -36,6 +37,7 @@ function stringAvatar(name) {
 export default function MenuDrawer({ open, onClose, usuario, onLogout }) {
   const location = useLocation();
   const [editarPerfilOpen, setEditarPerfilOpen] = useState(false);
+  const [trocaTipoOpen, setTrocaTipoOpen] = useState(false);
   const menuItems = [
     { text: "Início", icon: <HomeIcon />, to: "/" },
     usuario?.tipo === "comerciante"
@@ -135,6 +137,21 @@ export default function MenuDrawer({ open, onClose, usuario, onLogout }) {
               <ListItemText primary="Editar Perfil" />
             </ListItemButton>
           </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setTrocaTipoOpen(true);
+              }}
+              aria-label="Trocar tipo de usuário"
+              selected={false}
+            >
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText primary="Trocar tipo" />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider sx={{ my: 1 }} />
         <List>
@@ -152,6 +169,25 @@ export default function MenuDrawer({ open, onClose, usuario, onLogout }) {
         open={editarPerfilOpen}
         onClose={() => setEditarPerfilOpen(false)}
         onSuccess={() => setEditarPerfilOpen(false)}
+      />
+      <TrocaTipoUsuarioDialog
+        open={trocaTipoOpen}
+        onClose={() => setTrocaTipoOpen(false)}
+        usuario={usuario}
+        onTipoAtualizado={(novoTipo) => {
+          // Atualiza localStorage
+          const userStr = localStorage.getItem("usuario");
+          if (userStr) {
+            const userObj = JSON.parse(userStr);
+            userObj.tipo = novoTipo;
+            localStorage.setItem("usuario", JSON.stringify(userObj));
+            setTrocaTipoOpen(false);
+            onClose && onClose(); // Fecha o Drawer
+            setTimeout(() => {
+              window.location.reload();
+            }, 250);
+          }
+        }}
       />
     </Drawer>
   );
