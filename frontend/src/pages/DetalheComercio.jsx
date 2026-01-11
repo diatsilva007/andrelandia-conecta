@@ -351,9 +351,9 @@ export default function DetalheComercio() {
         flexDirection="column"
         alignItems="center"
         width="100%"
-        mt={3}
+        mt={7}
       >
-        <Divider sx={{ width: "100%", maxWidth: 600, mb: 2 }} />
+        <Divider sx={{ width: "100%", maxWidth: 600, mb: 4 }} />
         <Box
           display="flex"
           flexDirection="column"
@@ -381,7 +381,7 @@ export default function DetalheComercio() {
             </Typography>
           )}
         </Box>
-        <Box mb={3} width="100%" maxWidth={600}>
+        <Box mb={5} width="100%" maxWidth={600}>
           {avaliacoes.map((a) => (
             <Card
               key={a.id}
