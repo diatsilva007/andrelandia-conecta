@@ -13,6 +13,7 @@ import CadastroProduto from "./pages/CadastroProduto.jsx";
 import CadastroUsuario from "./pages/CadastroUsuario.jsx";
 import EsqueciSenha from "./pages/EsqueciSenha.jsx";
 import RedefinirSenha from "./pages/RedefinirSenha.jsx";
+import DetalheProduto from "./pages/DetalheProduto.jsx";
 
 import Navbar from "./components/Navbar.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
@@ -169,6 +170,7 @@ function App() {
                 element={<CadastroProduto />}
               />
               <Route path="/produtos/:id/editar" element={<EditarProduto />} />
+              <Route path="/produtos/:id" element={<DetalheProduto />} />
             </Routes>
           </PageTransition>
         </LoadingContext.Provider>
