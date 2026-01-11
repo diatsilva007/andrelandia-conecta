@@ -6,16 +6,23 @@ import {
   Box,
   Avatar,
   Tooltip,
+  IconButton,
+  useMediaQuery,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog";
+import MenuDrawer from "./MenuDrawer";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
   const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -48,49 +55,43 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      elevation={0}
-      role="navigation"
-      aria-label="Barra de navegação principal"
-      sx={{
-        background:
-          "linear-gradient(90deg, rgba(25,118,210,0.75) 0%, rgba(67,160,71,0.75) 100%)",
-        backdropFilter: "blur(8px)",
-        boxShadow: "0 4px 24px #1976d222",
-        borderRadius: 0,
-        px: { xs: 2, md: 6 },
-        py: 0.5,
-        zIndex: 1201,
-      }}
-    >
-      <Toolbar
+    <>
+      <AppBar
+        position="fixed"
+        elevation={0}
+        role="navigation"
+        aria-label="Barra de navegação principal"
         sx={{
-          minHeight: 64,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          px: 0,
-          width: "100%",
+          background:
+            "linear-gradient(90deg, rgba(25,118,210,0.75) 0%, rgba(67,160,71,0.75) 100%)",
+          backdropFilter: "blur(8px)",
+          boxShadow: "0 4px 24px #1976d222",
+          borderRadius: 0,
+          px: { xs: 2, md: 6 },
+          py: 0.5,
+          zIndex: 1201,
         }}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          gap={{ xs: 2.5, md: 6 }}
+        <Toolbar
           sx={{
-            width: "100%",
+            minHeight: 64,
+            display: "flex",
             justifyContent: "center",
-            flexWrap: "wrap",
-            maxWidth: 1400,
+            alignItems: "center",
+            px: 0,
+            width: "100%",
           }}
         >
-          {/* Logo + Título + Links/Botões juntos para garantir fechamento correto */}
           <Box
             display="flex"
             alignItems="center"
             gap={{ xs: 2.5, md: 6 }}
-            sx={{ flexWrap: "wrap" }}
+            sx={{
+              width: "100%",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              maxWidth: 1400,
+            }}
           >
             {/* Logo + Título */}
             <Box
@@ -99,6 +100,17 @@ export default function Navbar() {
               gap={1.2}
               sx={{ minWidth: 0 }}
             >
+              {isMobile && (
+                <IconButton
+                  color="inherit"
+                  edge="start"
+                  aria-label="menu"
+                  onClick={() => setDrawerOpen(true)}
+                  sx={{ mr: 1 }}
+                >
+                  <MenuIcon fontSize="large" />
+                </IconButton>
+              )}
               <Box
                 sx={{
                   width: 54,
@@ -155,70 +167,71 @@ export default function Navbar() {
                 Andrelândia Conecta
               </Typography>
             </Box>
-            {/* Links e Botões */}
-            {usuario ? (
-              <Box
-                display="flex"
-                alignItems="center"
-                gap={{ xs: 1, md: 2.5 }}
-                sx={{ flexWrap: "wrap" }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  sx={{
-                    borderRadius: 3,
-                    fontWeight: 700,
-                    minWidth: 48,
-                    minHeight: 48,
-                    px: 3,
-                    py: 1.5,
-                    fontSize: 16,
-                    boxShadow: "0 2px 8px #1565c033",
-                    transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
-                    background: "#1565c0",
-                    color: "#fff",
-                    transform: "scale(1)",
-                    "&:hover": {
-                      background: "#1976d2",
-                      color: "#fff",
-                      transform: "scale(1.07)",
-                      boxShadow: "0 4px 16px #1565c044",
-                    },
-                  }}
-                  component={Link}
-                  to="/dashboard"
+            {/* Navegação: Drawer no mobile, links no desktop */}
+            {!isMobile &&
+              (usuario ? (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  gap={{ xs: 1, md: 2.5 }}
+                  sx={{ flexWrap: "wrap" }}
                 >
-                  Dashboard
-                </Button>
-                <Typography
-                  sx={{
-                    color: usuario.tipo === "comerciante" ? "#fff" : "#e0f2f1",
-                    fontWeight: 500,
-                    fontSize: 16,
-                    background:
-                      usuario.tipo === "comerciante" ? "#43a047" : "#1976d2",
-                    borderRadius: 2,
-                    px: 1.5,
-                    py: 0.5,
-                    boxShadow: 1,
-                  }}
-                >
-                  Olá, {usuario.nome}
-                  <span
-                    style={{
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    sx={{
+                      borderRadius: 3,
                       fontWeight: 700,
-                      fontSize: 13,
-                      marginLeft: 8,
-                      textTransform: "uppercase",
+                      minWidth: 48,
+                      minHeight: 48,
+                      px: 3,
+                      py: 1.5,
+                      fontSize: 16,
+                      boxShadow: "0 2px 8px #1565c033",
+                      transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
+                      background: "#1565c0",
+                      color: "#fff",
+                      transform: "scale(1)",
+                      "&:hover": {
+                        background: "#1976d2",
+                        color: "#fff",
+                        transform: "scale(1.07)",
+                        boxShadow: "0 4px 16px #1565c044",
+                      },
+                    }}
+                    component={Link}
+                    to="/dashboard"
+                  >
+                    Dashboard
+                  </Button>
+                  <Typography
+                    sx={{
+                      color:
+                        usuario.tipo === "comerciante" ? "#fff" : "#e0f2f1",
+                      fontWeight: 500,
+                      fontSize: 16,
+                      background:
+                        usuario.tipo === "comerciante" ? "#43a047" : "#1976d2",
+                      borderRadius: 2,
+                      px: 1.5,
+                      py: 0.5,
+                      boxShadow: 1,
                     }}
                   >
-                    [{usuario.tipo}]
-                  </span>
-                </Typography>
-                {usuario.tipo === "comerciante" && (
-                  <>
+                    Olá, {usuario.nome}
+                    <span
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 13,
+                        marginLeft: 8,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      [{usuario.tipo}]
+                    </span>
+                  </Typography>
+                  {usuario.tipo === "comerciante" && (
                     <Button
                       variant="contained"
                       color="secondary"
@@ -246,133 +259,134 @@ export default function Navbar() {
                     >
                       Cadastrar Comércio
                     </Button>
-                    {/* O botão de cadastrar produto precisa do id do comércio. Recomenda-se mover para dentro da página de detalhes do comércio. */}
-                  </>
-                )}
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  size="large"
-                  sx={{
-                    borderRadius: 3,
-                    fontWeight: 600,
-                    minWidth: 48,
-                    minHeight: 48,
-                    px: 3,
-                    py: 1.5,
-                    fontSize: 15,
-                    borderColor: "#fff",
-                    color: "#fff",
-                    background: "rgba(255,255,255,0.08)",
-                    transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
-                    transform: "scale(1)",
-                    "&:hover": {
-                      background: "#e3f2fd",
-                      color: "#1976d2",
-                      borderColor: "#1976d2",
-                      transform: "scale(1.07)",
-                      boxShadow: "0 4px 16px #1976d244",
-                    },
-                  }}
-                  onClick={() => setOpenTrocaTipo(true)}
-                >
-                  Trocar tipo
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  sx={{
-                    borderRadius: 3,
-                    fontWeight: 700,
-                    minWidth: 48,
-                    minHeight: 48,
-                    px: 3,
-                    py: 1.5,
-                    fontSize: 16,
-                    boxShadow: "0 2px 8px #43a04733",
-                    transition: "all 0.2s",
-                    "&:hover": {
-                      background: "#388e3c",
+                  )}
+                  <Button
+                    variant="outlined"
+                    color="inherit"
+                    size="large"
+                    sx={{
+                      borderRadius: 3,
+                      fontWeight: 600,
+                      minWidth: 48,
+                      minHeight: 48,
+                      px: 3,
+                      py: 1.5,
+                      fontSize: 15,
+                      borderColor: "#fff",
                       color: "#fff",
-                    },
-                  }}
-                  onClick={handleLogout}
+                      background: "rgba(255,255,255,0.08)",
+                      transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
+                      transform: "scale(1)",
+                      "&:hover": {
+                        background: "#e3f2fd",
+                        color: "#1976d2",
+                        borderColor: "#1976d2",
+                        transform: "scale(1.07)",
+                        boxShadow: "0 4px 16px #1976d244",
+                      },
+                    }}
+                    onClick={() => setOpenTrocaTipo(true)}
+                  >
+                    Trocar tipo
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="large"
+                    sx={{
+                      borderRadius: 3,
+                      fontWeight: 700,
+                      minWidth: 48,
+                      minHeight: 48,
+                      px: 3,
+                      py: 1.5,
+                      fontSize: 16,
+                      boxShadow: "0 2px 8px #43a04733",
+                      transition: "all 0.2s",
+                      "&:hover": { background: "#388e3c", color: "#fff" },
+                    }}
+                    onClick={handleLogout}
+                  >
+                    Sair
+                  </Button>
+                  <TrocaTipoUsuarioDialog
+                    open={openTrocaTipo}
+                    onClose={() => setOpenTrocaTipo(false)}
+                    usuario={usuario}
+                    onTipoAtualizado={handleTipoAtualizado}
+                  />
+                </Box>
+              ) : (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  gap={{ xs: 1, md: 2.5 }}
+                  sx={{ flexWrap: "wrap" }}
                 >
-                  Sair
-                </Button>
-                <TrocaTipoUsuarioDialog
-                  open={openTrocaTipo}
-                  onClose={() => setOpenTrocaTipo(false)}
-                  usuario={usuario}
-                  onTipoAtualizado={handleTipoAtualizado}
-                />
-              </Box>
-            ) : (
-              <Box
-                display="flex"
-                alignItems="center"
-                gap={{ xs: 1, md: 2.5 }}
-                sx={{ flexWrap: "wrap" }}
-              >
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  component={Link}
-                  to="/login"
-                  size="large"
-                  sx={{
-                    borderRadius: 3,
-                    fontWeight: 600,
-                    minWidth: 48,
-                    minHeight: 48,
-                    px: 3,
-                    py: 1.5,
-                    fontSize: 15,
-                    letterSpacing: 0.5,
-                    boxShadow: "0 2px 8px #1976d222",
-                    background: "rgba(255,255,255,0.08)",
-                    borderColor: "#fff",
-                    color: "#fff",
-                    transition: "all 0.2s",
-                    "&:hover": {
-                      background: "#e3f2fd",
-                      color: "#1976d2",
-                      borderColor: "#1976d2",
-                    },
-                  }}
-                >
-                  Entrar
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  component={Link}
-                  to="/registrar"
-                  size="large"
-                  sx={{
-                    borderRadius: 3,
-                    fontWeight: 700,
-                    minWidth: 48,
-                    minHeight: 48,
-                    px: 3,
-                    py: 1.5,
-                    fontSize: 15,
-                    boxShadow: "0 2px 8px #43a04733",
-                    transition: "all 0.2s",
-                    "&:hover": {
-                      background: "#388e3c",
+                  <Button
+                    variant="outlined"
+                    color="inherit"
+                    component={Link}
+                    to="/login"
+                    size="large"
+                    sx={{
+                      borderRadius: 3,
+                      fontWeight: 600,
+                      minWidth: 48,
+                      minHeight: 48,
+                      px: 3,
+                      py: 1.5,
+                      fontSize: 15,
+                      letterSpacing: 0.5,
+                      boxShadow: "0 2px 8px #1976d222",
+                      background: "rgba(255,255,255,0.08)",
+                      borderColor: "#fff",
                       color: "#fff",
-                    },
-                  }}
-                >
-                  Registrar
-                </Button>
-              </Box>
-            )}
+                      transition: "all 0.2s",
+                      "&:hover": {
+                        background: "#e3f2fd",
+                        color: "#1976d2",
+                        borderColor: "#1976d2",
+                      },
+                    }}
+                  >
+                    Entrar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    component={Link}
+                    to="/registrar"
+                    size="large"
+                    sx={{
+                      borderRadius: 3,
+                      fontWeight: 700,
+                      minWidth: 48,
+                      minHeight: 48,
+                      px: 3,
+                      py: 1.5,
+                      fontSize: 15,
+                      boxShadow: "0 2px 8px #43a04733",
+                      transition: "all 0.2s",
+                      "&:hover": { background: "#388e3c", color: "#fff" },
+                    }}
+                  >
+                    Registrar
+                  </Button>
+                </Box>
+              ))}
           </Box>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+      {/* Drawer lateral para mobile */}
+      {isMobile && (
+        <MenuDrawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          usuario={usuario}
+          onLogout={handleLogout}
+        />
+      )}
+    </>
   );
 }
