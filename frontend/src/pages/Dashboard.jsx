@@ -69,6 +69,8 @@ export default function Dashboard() {
       alignItems="center"
       justifyContent="center"
       flexDirection="column"
+      // Espaçamento padrão para separar da navbar
+      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
     >
       <Box maxWidth={900} mx="auto" px={2} pt={2}>
         <BreadcrumbNav items={[{ label: "Dashboard" }]} />

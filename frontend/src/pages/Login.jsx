@@ -97,6 +97,8 @@ export default function Login() {
       bgcolor="background.default"
       px={{ xs: 1, sm: 2 }}
       py={{ xs: 2, sm: 4 }}
+      // Espaçamento padrão para separar da navbar
+      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
     >
       <Box
         maxWidth={{ xs: 340, sm: 400, md: 420 }}

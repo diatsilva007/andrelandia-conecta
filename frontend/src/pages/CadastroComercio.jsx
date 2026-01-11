@@ -16,19 +16,18 @@ import { useSnackbar } from "../components/SnackbarContext.jsx";
 
 export default function CadastroComercio() {
   const [usuario] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("usuario"));
-    } catch {
-      return null;
-    }
+    const userStr = localStorage.getItem("usuario");
+    return userStr ? JSON.parse(userStr) : null;
   });
+  // Estado do formulário
   const [form, setForm] = useState({
     nome: "",
+    categoria: "",
     descricao: "",
     endereco: "",
     telefone: "",
-    categoria: "",
   });
+  // Estado de feedback visual
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const { setSnackbar } = useSnackbar();

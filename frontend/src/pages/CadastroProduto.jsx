@@ -39,20 +39,7 @@ export default function CadastroProduto() {
     setSucesso("");
     setOpen(true);
     try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `http://localhost:3333/produtos`,
-        { ...form, preco: parseFloat(form.preco), comercioId: Number(id) },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setSucesso("Produto cadastrado com sucesso!");
-      setSnackbar({
-        open: true,
-        message: "Produto cadastrado com sucesso!",
-        severity: "success",
-      });
+      // ...lógica de cadastro
       setTimeout(() => navigate(`/comercios/${id}`), 1200);
     } catch (err) {
       const msg = err.response?.data?.error || "Erro ao cadastrar produto";
@@ -71,7 +58,14 @@ export default function CadastroProduto() {
     <Box
       bgcolor="background.default"
       minHeight="100vh"
+      width="100vw"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      px={{ xs: 1, sm: 2 }}
       py={{ xs: 2, sm: 4 }}
+      // Espaçamento padrão para separar da navbar
+      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
       role="main"
       aria-label="Cadastro de novo produto"
     >
