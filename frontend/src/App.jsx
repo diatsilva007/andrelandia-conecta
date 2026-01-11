@@ -126,7 +126,25 @@ const theme = createTheme({
         root: {
           borderRadius: 16,
           boxShadow: "0 4px 24px #1976d222",
-          transition: "box-shadow 0.3s",
+          transition: "box-shadow 0.3s, transform 0.22s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
+          opacity: 0,
+          transform: "translateY(24px)",
+          animation: "fadeInCard 0.7s cubic-bezier(.4,0,.2,1) forwards",
+          willChange: "box-shadow, transform, opacity",
+          '@keyframes fadeInCard': {
+            from: { opacity: 0, transform: 'translateY(24px)' },
+            to: { opacity: 1, transform: 'translateY(0)' },
+          },
+          '&:hover': {
+            boxShadow: "0 8px 32px #1976d244",
+            transform: "scale(1.025) translateY(-2px)",
+          },
+          '&:focus-visible': {
+            outline: "2px solid #1976d2",
+            outlineOffset: 2,
+            boxShadow: "0 0 0 4px #1976d244, 0 8px 32px #1976d244",
+            transform: "scale(1.015) translateY(-1px)",
+          },
         },
       },
     },
