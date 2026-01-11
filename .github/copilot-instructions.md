@@ -2,72 +2,50 @@
 
 Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região.
 
-## Arquitetura
+## Visão Geral da Arquitetura
 
-- **Frontend** (`/frontend`):
-
-  - SPA React (Vite), Material UI, React Router DOM.
-  - Autenticação JWT (localStorage), consumo de API REST via Axios.
-  - Componentes globais de feedback: `GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`, `SnackbarContext.jsx`.
-  - Páginas em `src/pages` (ex: `CadastroComercio.jsx`, `Login.jsx`, `DetalheComercio.jsx`).
-  - Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente.
-  - Feedback visual padronizado via Snackbar/Alert/Dialog (sempre use os componentes globais).
-  - Estado global de loading via contexto (`LoadingContext` em `App.jsx`).
-  - Acessibilidade e responsividade são prioridades (ver `/frontend/TODO.md`).
-  - Microinterações e animações suaves em cards, modais, tooltips e navegação são recomendadas (ver TODO.md).
-
-- **Backend** (`/backend`):
-
-  - Node.js (ESM), Express, Prisma ORM, JWT, bcryptjs.
-  - API RESTful, autenticação JWT, banco PostgreSQL.
-  - Controllers em `src/controllers`, rotas em `src/routes`.
-  - Middleware de autenticação JWT em `src/middlewares/auth.js` (obrigatório em rotas protegidas).
-  - Prisma Client importado por controller (nunca global).
-
+- **Frontend** (`/frontend`): SPA React (Vite), Material UI, React Router DOM. Navegação protegida por JWT (armazenado em localStorage), consumo de API REST via Axios. Feedback visual global padronizado (Snackbar, LoadingBackdrop, Dialog). Estado global de loading via contexto (`LoadingContext` em `App.jsx`).
+- **Backend** (`/backend`): Node.js (ESM), Express, Prisma ORM, JWT, bcryptjs. API RESTful, autenticação JWT, banco PostgreSQL. Controllers em `src/controllers`, rotas em `src/routes`. Middleware de autenticação JWT obrigatório em rotas protegidas (`src/middlewares/auth.js`). Prisma Client importado por controller (nunca global).
 - **Banco de dados**: PostgreSQL, modelado via Prisma (`backend/prisma/schema.prisma`).
 
 ## Fluxos e Comandos Essenciais
 
 - **Desenvolvimento**:
-  - Frontend: `npm run dev` em `/frontend` (Vite)
-  - Backend: `npm run dev` em `/backend` (Nodemon)
+  - Frontend: `npm run dev` em `/frontend`
+  - Backend: `npm run dev` em `/backend`
 - **Build**:
   - Frontend: `npm run build` em `/frontend`
   - Backend: `npm start` em `/backend`
 - **Migrations Prisma**: `npx prisma migrate dev` em `/backend` após alterar o schema.
 - **Configuração**:
-  - Variáveis de ambiente no backend: `.env` com `DATABASE_URL` e `JWT_SECRET` obrigatórios.
-  - Para rodar local, configure o banco PostgreSQL e execute as migrations.
+  - `.env` no backend com `DATABASE_URL` e `JWT_SECRET` obrigatórios.
+  - Configure o banco PostgreSQL local e execute as migrations.
 
-## Convenções e Padrões
+## Padrões e Convenções
 
 - **Rotas REST**: CRUD para `/comercios`, `/produtos`, `/usuarios`, `/auth` (login, esqueci-senha, redefinir-senha). Veja exemplos em `src/routes/` e `src/controllers/`.
-- **Autenticação**: JWT obrigatório para rotas protegidas (ex: criar/editar/remover produtos/comércios). Sempre use o middleware de autenticação (`src/middlewares/auth.js`).
+- **Autenticação**: JWT obrigatório para rotas protegidas. Sempre use o middleware de autenticação (`src/middlewares/auth.js`).
 - **Frontend**:
-  - Formulários padronizados, loading global, navegação protegida por token (ver exemplos em `CadastroComercio.jsx`, `Login.jsx`).
-  - Feedback visual consistente: sempre utilize `setSnackbar` do contexto (`SnackbarContext.jsx`) e `GlobalSnackbar.jsx` para mensagens de sucesso/erro.
-  - Use `LoadingBackdrop.jsx` para loading global em requisições assíncronas.
-  - Material UI para UI/UX consistente. Utilize componentes do MUI para acessibilidade e responsividade.
-  - Breadcrumbs e navegação contextual: use `BreadcrumbNav.jsx`.
-  - Microinterações e animações suaves em cards, modais, tooltips e navegação (ver TODO.md).
-  - Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
+  - Sempre utilize os componentes globais de feedback visual: `setSnackbar` (via `SnackbarContext.jsx`), `GlobalSnackbar.jsx` e `LoadingBackdrop.jsx`.
+  - Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente (ver `Login.jsx`, `CadastroComercio.jsx`).
+  - Formulários padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
+  - Material UI para UI/UX consistente e acessível. Siga exemplos de responsividade e microinterações do `/frontend/TODO.md`.
 - **Backend**:
-  - Controllers e rotas bem separados.
+  - Separe controllers e rotas.
   - Middleware de autenticação sempre aplicado em rotas protegidas.
   - Prisma Client importado por controller, nunca global.
-  - Fluxo de redefinição de senha implementado em `authController.js` e rotas em `routes/auth.js`.
+  - Fluxo de redefinição de senha: veja `authController.js` e rotas em `routes/auth.js`.
 
-## Integrações e Comunicação
+## Integração Frontend ↔ Backend
 
-- **Frontend → Backend**: Axios, endpoints em `http://localhost:3333`.
-- **Env vars**: Configure `.env` no backend (`DATABASE_URL`, `JWT_SECRET`).
-- **Reset de senha**: Fluxo `/auth/esqueci-senha` e `/auth/redefinir-senha/:token` (ver exemplos em `authController.js` e `RedefinirSenha.jsx`).
-- **Exemplo de integração**: ao cadastrar comércio/produto, envie JWT no header Authorization. Exemplo:
+- Use Axios para consumir endpoints em `http://localhost:3333`.
+- Sempre envie o JWT no header Authorization para rotas protegidas:
   ```js
   await axios.post("http://localhost:3333/comercios", form, {
     headers: { Authorization: `Bearer ${token}` },
   });
   ```
+- Fluxo de reset de senha: `/auth/esqueci-senha` e `/auth/redefinir-senha/:token` (ver `authController.js` e `RedefinirSenha.jsx`).
 
 ## Exemplos de Fluxo
 
