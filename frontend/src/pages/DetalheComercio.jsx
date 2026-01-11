@@ -499,6 +499,20 @@ export default function DetalheComercio() {
                   >
                     <b>Preço:</b> R$ {produto.preco.toFixed(2)}
                   </Typography>
+                  <Box display="flex" justifyContent="flex-end" mt={2}>
+                    <Tooltip title="Visualizar produto" arrow>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        sx={{ borderRadius: 2, minWidth: 0, px: 2 }}
+                        onClick={() => navigate(`/produtos/${produto.id}`)}
+                        aria-label={`Visualizar produto ${produto.nome}`}
+                      >
+                        Visualizar
+                      </Button>
+                    </Tooltip>
+                  </Box>
                 </CardContent>
                 {token && (
                   <Box

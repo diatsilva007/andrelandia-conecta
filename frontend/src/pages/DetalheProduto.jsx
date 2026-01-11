@@ -54,6 +54,15 @@ export default function DetalheProduto() {
       paddingTop={{ xs: 8, sm: 10, md: 12 }}
     >
       <Box sx={{ maxWidth: 900, mx: "auto", width: "100%", mb: 3 }}>
+        <Button
+          variant="text"
+          color="primary"
+          sx={{ mb: 1, fontWeight: 500, textTransform: "none" }}
+          onClick={() => navigate(-1)}
+          aria-label="Voltar para página anterior"
+        >
+          ← Voltar
+        </Button>
         <BreadcrumbNav
           items={[
             { label: "Início", to: "/" },
