@@ -7,7 +7,7 @@ export default function VoltarButton({ sx = {}, label = "Voltar", ...props }) {
   return (
     <Tooltip title={label} arrow>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowBackIcon sx={{ fontSize: 28 }} />}
         variant="contained"
         color="secondary"
         onClick={() => navigate(-1)}
@@ -19,8 +19,10 @@ export default function VoltarButton({ sx = {}, label = "Voltar", ...props }) {
           boxShadow: 2,
           textTransform: "none",
           alignSelf: "flex-start",
+          minWidth: 48,
+          minHeight: 48,
           px: 2.5,
-          py: 1.2,
+          py: 1.5,
           fontSize: { xs: "1rem", sm: "1.05rem" },
           ...sx,
         }}

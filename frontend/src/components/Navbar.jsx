@@ -166,13 +166,15 @@ export default function Navbar() {
                 <Button
                   variant="contained"
                   color="primary"
-                  size="small"
+                  size="large"
                   sx={{
                     borderRadius: 3,
                     fontWeight: 700,
-                    px: 2,
-                    py: 1,
-                    fontSize: 15,
+                    minWidth: 48,
+                    minHeight: 48,
+                    px: 3,
+                    py: 1.5,
+                    fontSize: 16,
                     boxShadow: "0 2px 8px #1565c033",
                     transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
                     background: "#1565c0",
@@ -220,13 +222,15 @@ export default function Navbar() {
                     <Button
                       variant="contained"
                       color="secondary"
-                      size="small"
+                      size="large"
                       sx={{
                         borderRadius: 3,
                         fontWeight: 700,
-                        px: 2,
-                        py: 1,
-                        fontSize: 15,
+                        minWidth: 48,
+                        minHeight: 48,
+                        px: 3,
+                        py: 1.5,
+                        fontSize: 16,
                         boxShadow: "0 2px 8px #43a04733",
                         transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
                         transform: "scale(1)",
@@ -248,13 +252,15 @@ export default function Navbar() {
                 <Button
                   variant="outlined"
                   color="inherit"
-                  size="small"
+                  size="large"
                   sx={{
                     borderRadius: 3,
                     fontWeight: 600,
-                    px: 2,
-                    py: 0.7,
-                    fontSize: 14,
+                    minWidth: 48,
+                    minHeight: 48,
+                    px: 3,
+                    py: 1.5,
+                    fontSize: 15,
                     borderColor: "#fff",
                     color: "#fff",
                     background: "rgba(255,255,255,0.08)",
@@ -275,13 +281,15 @@ export default function Navbar() {
                 <Button
                   variant="contained"
                   color="secondary"
-                  size="small"
+                  size="large"
                   sx={{
                     borderRadius: 3,
                     fontWeight: 700,
-                    px: 2.5,
-                    py: 1,
-                    fontSize: 15,
+                    minWidth: 48,
+                    minHeight: 48,
+                    px: 3,
+                    py: 1.5,
+                    fontSize: 16,
                     boxShadow: "0 2px 8px #43a04733",
                     transition: "all 0.2s",
                     "&:hover": {
@@ -312,11 +320,14 @@ export default function Navbar() {
                   color="inherit"
                   component={Link}
                   to="/login"
+                  size="large"
                   sx={{
                     borderRadius: 3,
                     fontWeight: 600,
-                    px: 2.5,
-                    py: 1,
+                    minWidth: 48,
+                    minHeight: 48,
+                    px: 3,
+                    py: 1.5,
                     fontSize: 15,
                     letterSpacing: 0.5,
                     boxShadow: "0 2px 8px #1976d222",
@@ -338,11 +349,14 @@ export default function Navbar() {
                   color="secondary"
                   component={Link}
                   to="/registrar"
+                  size="large"
                   sx={{
                     borderRadius: 3,
                     fontWeight: 700,
-                    px: 2.5,
-                    py: 1,
+                    minWidth: 48,
+                    minHeight: 48,
+                    px: 3,
+                    py: 1.5,
                     fontSize: 15,
                     boxShadow: "0 2px 8px #43a04733",
                     transition: "all 0.2s",

@@ -276,8 +276,10 @@ const ListaComercios = () => {
             sx={{
               borderRadius: 4,
               fontWeight: 700,
+              minWidth: 48,
+              minHeight: 48,
               px: 5,
-              py: 1.5,
+              py: 2,
               fontSize: 18,
               boxShadow: "0 2px 8px #43a04733",
               transition: "background 0.2s, box-shadow 0.2s",
@@ -607,12 +609,15 @@ const ListaComercios = () => {
                       <Button
                         variant="outlined"
                         color="primary"
-                        size="small"
-                        startIcon={<EditIcon />}
+                        size="large"
+                        startIcon={<EditIcon sx={{ fontSize: 28 }} />}
                         sx={{
                           borderRadius: 2,
-                          minWidth: 0,
-                          px: 1,
+                          minWidth: 48,
+                          minHeight: 48,
+                          px: 2,
+                          py: 1.2,
+                          fontSize: 16,
                           transition: "background 0.2s, box-shadow 0.2s",
                           "&:hover": {
                             background: "#e3f2fd",
@@ -631,12 +636,15 @@ const ListaComercios = () => {
                       <Button
                         variant="outlined"
                         color="error"
-                        size="small"
-                        startIcon={<DeleteIcon />}
+                        size="large"
+                        startIcon={<DeleteIcon sx={{ fontSize: 28 }} />}
                         sx={{
                           borderRadius: 2,
-                          minWidth: 0,
-                          px: 1,
+                          minWidth: 48,
+                          minHeight: 48,
+                          px: 2,
+                          py: 1.2,
+                          fontSize: 16,
                           transition: "background 0.2s, box-shadow 0.2s",
                           "&:hover": {
                             background: "#ffebee",
