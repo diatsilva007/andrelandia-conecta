@@ -1,6 +1,8 @@
 # TODO - Andrelândia Conecta
 
-## Checklist de Responsividade e Mobile First
+## Checklist Geral
+
+### Responsividade e Mobile First
 
 - [x] Adaptação responsiva incremental (Dashboard, Login, Cadastro, etc.)
 - [x] Usar breakpoints do Material UI (`xs`, `sm`, `md`, `lg`) em containers, grids, cards e botões
@@ -11,12 +13,12 @@
 - [ ] Testar em dispositivos reais e simuladores
 - [ ] Revisar todos os fluxos para mobile antes de novas features complexas
 
-## Checklist de UX/UI Profissional
+### UX/UI Profissional
 
 - [x] Identidade visual consistente: paleta de cores exclusiva, logotipo simples, uso padronizado em todos os elementos.
 - [x] Tipografia e hierarquia: no máximo 2 famílias de fonte, destaque para títulos/botões, hierarquia visual clara.
 - [x] Espaçamento e alinhamento: espaçamento consistente entre cards, seções e botões; uso de grids e containers para centralização.
-- [ ] Microinterações e animações suaves: animações de hover em botões/cards, transições suaves em modais/tooltips/navegação.
+- [ ] Microinterações e animações suaves: hover em botões/cards, transições suaves em modais/tooltips/navegação.
 - [ ] Navegação clara: navbar sempre visível (fixa ou drawer), breadcrumbs para facilitar retorno em fluxos profundos.
 - [ ] Acessibilidade: contraste suficiente, labels e aria-labels, navegação por teclado em formulários e botões.
 - [ ] Feedback visual: loading, sucesso e erro claros (snackbar, backdrop, alert), uso de ícones e cores para reforço.
@@ -24,7 +26,7 @@
 - [ ] Mobile first: todos os fluxos testados em dispositivos móveis, touch targets grandes, menus simplificados.
 - [ ] Testes com usuários reais: coletar feedback de comerciantes e clientes sobre usabilidade e clareza.
 
-## Melhorias em andamento/próximas tarefas
+### Melhorias em andamento/próximas tarefas
 
 - [ ] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
@@ -37,7 +39,7 @@
 - [ ] Dark mode e personalização de temas
 - [ ] Internacionalização (i18n) e suporte multilíngue
 
-## Funcionalidades profissionais sugeridas (Frontend)
+## Funcionalidades sugeridas (Frontend)
 
 - [ ] Busca e filtros avançados (nome, categoria, preço, avaliação, localização)
 - [ ] Página de favoritos (usuário pode favoritar comércios/produtos)
@@ -52,7 +54,7 @@
 - [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
 
-## Funcionalidades profissionais sugeridas (Backend)
+## Funcionalidades sugeridas (Backend)
 
 - [ ] API RESTful completa e versionada
 - [ ] Autenticação OAuth2/social login (Google, Facebook, etc.)
