@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Rating, TextField } from "@mui/material";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
+import VoltarButton from "../components/VoltarButton.jsx";
 import axios from "axios";
 import {
   Box,
@@ -141,18 +142,11 @@ export default function DetalheComercio() {
         role="navigation"
         aria-label="Ações do comércio"
       >
-        <Tooltip title="Voltar para a página inicial">
-          <Button
-            component={Link}
-            to="/"
-            variant="outlined"
-            aria-label="Voltar para a página inicial"
-            tabIndex={0}
-            sx={{ outline: "none", ":focus": { boxShadow: 3 } }}
-          >
-            Voltar
-          </Button>
-        </Tooltip>
+        <VoltarButton
+          label="Voltar para início"
+          sx={{ mr: 2 }}
+          onClick={() => navigate("/")}
+        />
         {token && (
           <Tooltip title="Cadastrar novo produto">
             <Button

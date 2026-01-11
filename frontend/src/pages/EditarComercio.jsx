@@ -14,6 +14,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import VoltarButton from "../components/VoltarButton.jsx";
 
 export default function EditarComercio() {
   const [usuario] = useState(() => {
@@ -238,15 +239,11 @@ export default function EditarComercio() {
             Salvar
           </Button>
         </form>
-        <Button
-          color="primary"
-          fullWidth
-          sx={{ mt: 1, fontWeight: 500, fontSize: 15, borderRadius: 2 }}
+        <VoltarButton
+          label="Cancelar"
           onClick={() => navigate(-1)}
-          aria-label="Cancelar edição"
-        >
-          Cancelar
-        </Button>
+          sx={{ width: "100%", mt: 1 }}
+        />
       </Paper>
     </Box>
   );

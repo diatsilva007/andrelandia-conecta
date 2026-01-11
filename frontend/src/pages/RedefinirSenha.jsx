@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
+import VoltarButton from "../components/VoltarButton.jsx";
 
 export default function RedefinirSenha() {
   const { token } = useParams();
@@ -149,13 +150,11 @@ export default function RedefinirSenha() {
           </Button>
         </form>
         <Box mt={2} textAlign="center">
-          <Button
-            color="primary"
-            size="small"
+          <VoltarButton
+            label="Voltar para login"
             onClick={() => navigate("/login")}
-          >
-            Voltar para login
-          </Button>
+            sx={{ mx: "auto" }}
+          />
         </Box>
       </Paper>
     </Box>

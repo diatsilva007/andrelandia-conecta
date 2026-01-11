@@ -10,6 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import VoltarButton from "../components/VoltarButton.jsx";
 
 export default function EsqueciSenha() {
   const [email, setEmail] = useState("");
@@ -89,13 +90,11 @@ export default function EsqueciSenha() {
           </Button>
         </form>
         <Box mt={2} textAlign="center">
-          <Button
-            color="primary"
-            size="small"
+          <VoltarButton
+            label="Voltar para login"
             onClick={() => navigate("/login")}
-          >
-            Voltar para login
-          </Button>
+            sx={{ mx: "auto" }}
+          />
         </Box>
       </Paper>
     </Box>
