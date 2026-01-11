@@ -9,7 +9,7 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import AnimatedMenuIcon from "./AnimatedMenuIcon.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
@@ -101,15 +101,11 @@ export default function Navbar() {
               sx={{ minWidth: 0 }}
             >
               {isMobile && (
-                <IconButton
-                  color="inherit"
-                  edge="start"
-                  aria-label="menu"
-                  onClick={() => setDrawerOpen(true)}
+                <AnimatedMenuIcon
+                  open={drawerOpen}
+                  onClick={() => setDrawerOpen((open) => !open)}
                   sx={{ mr: 1 }}
-                >
-                  <MenuIcon fontSize="large" />
-                </IconButton>
+                />
               )}
               <Box
                 sx={{
