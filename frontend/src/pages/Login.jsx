@@ -4,6 +4,16 @@ import { useSnackbar } from "../components/SnackbarContext.jsx";
 import { LoadingContext } from "../App.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  Alert,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Login() {
   const [showSenha, setShowSenha] = useState(false);
