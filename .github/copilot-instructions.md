@@ -7,13 +7,14 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 - **Frontend** (`/frontend`):
 
   - SPA React (Vite), Material UI, React Router DOM.
-  - Autenticação JWT (armazenado no localStorage), consumo de API REST via Axios.
-  - Componentes globais de feedback: `src/components/GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`, `SnackbarContext.jsx`.
+  - Autenticação JWT (localStorage), consumo de API REST via Axios.
+  - Componentes globais de feedback: `GlobalSnackbar.jsx`, `LoadingBackdrop.jsx`, `SnackbarContext.jsx`.
   - Páginas em `src/pages` (ex: `CadastroComercio.jsx`, `Login.jsx`, `DetalheComercio.jsx`).
   - Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente.
   - Feedback visual padronizado via Snackbar/Alert/Dialog (sempre use os componentes globais).
   - Estado global de loading via contexto (`LoadingContext` em `App.jsx`).
   - Acessibilidade e responsividade são prioridades (ver `/frontend/TODO.md`).
+  - Microinterações e animações suaves em cards, modais, tooltips e navegação são recomendadas (ver TODO.md).
 
 - **Backend** (`/backend`):
 
@@ -48,7 +49,8 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
   - Use `LoadingBackdrop.jsx` para loading global em requisições assíncronas.
   - Material UI para UI/UX consistente. Utilize componentes do MUI para acessibilidade e responsividade.
   - Breadcrumbs e navegação contextual: use `BreadcrumbNav.jsx`.
-  - Sempre consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
+  - Microinterações e animações suaves em cards, modais, tooltips e navegação (ver TODO.md).
+  - Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
 - **Backend**:
   - Controllers e rotas bem separados.
   - Middleware de autenticação sempre aplicado em rotas protegidas.
