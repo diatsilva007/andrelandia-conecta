@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Tooltip,
   FormControl,
   InputLabel,
   Select,
@@ -98,17 +99,25 @@ export default function TrocaTipoUsuarioDialog({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={loading}>
-          Cancelar
-        </Button>
-        <Button
-          onClick={handleSalvar}
-          variant="contained"
-          color="primary"
-          disabled={loading || tipo === usuario.tipo}
-        >
-          Salvar
-        </Button>
+        <Tooltip title="Cancelar alteração de tipo" arrow>
+          <span>
+            <Button onClick={onClose} disabled={loading}>
+              Cancelar
+            </Button>
+          </span>
+        </Tooltip>
+        <Tooltip title="Salvar novo tipo de usuário" arrow>
+          <span>
+            <Button
+              onClick={handleSalvar}
+              variant="contained"
+              color="primary"
+              disabled={loading || tipo === usuario.tipo}
+            >
+              Salvar
+            </Button>
+          </span>
+        </Tooltip>
       </DialogActions>
     </Dialog>
   );

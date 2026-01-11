@@ -4,6 +4,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
 import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -95,12 +96,20 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={onClose} disabled={loading}>
-              Cancelar
-            </Button>
-            <Button type="submit" variant="contained" disabled={loading}>
-              Salvar
-            </Button>
+            <Tooltip title="Cancelar edição" arrow>
+              <span>
+                <Button onClick={onClose} disabled={loading}>
+                  Cancelar
+                </Button>
+              </span>
+            </Tooltip>
+            <Tooltip title="Salvar alterações do perfil" arrow>
+              <span>
+                <Button type="submit" variant="contained" disabled={loading}>
+                  Salvar
+                </Button>
+              </span>
+            </Tooltip>
           </DialogActions>
         </form>
       </Dialog>

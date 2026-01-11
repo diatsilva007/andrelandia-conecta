@@ -10,6 +10,7 @@ import {
   Alert,
   Box,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import axios from "axios";
 import { LoadingContext } from "../App.jsx";
@@ -130,12 +131,20 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="inherit">
-          Cancelar
-        </Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
-          Cadastrar
-        </Button>
+        <Tooltip title="Cancelar cadastro" arrow>
+          <span>
+            <Button onClick={onClose} color="inherit">
+              Cancelar
+            </Button>
+          </span>
+        </Tooltip>
+        <Tooltip title="Confirmar cadastro de comércio" arrow>
+          <span>
+            <Button onClick={handleSubmit} variant="contained" color="primary">
+              Cadastrar
+            </Button>
+          </span>
+        </Tooltip>
       </DialogActions>
     </Dialog>
   );
