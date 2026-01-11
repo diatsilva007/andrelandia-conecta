@@ -120,13 +120,26 @@ export default function DetalheComercio() {
 
   return (
     <Box
-      p={{ xs: 1, sm: 3 }}
       bgcolor="background.default"
       minHeight="100vh"
-      // Espaçamento padrão para separar da navbar
-      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
+      width="100vw"
+      maxWidth="100vw"
+      boxSizing="border-box"
+      sx={{
+        overflowX: "hidden",
+        paddingTop: { xs: 8, sm: 10, md: 12 },
+        px: { xs: 2, sm: 4, md: 6 }, // espaçamento lateral consistente
+      }}
     >
-      <Box sx={{ maxWidth: 1200, mb: 3, mx: "auto" }}>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 1200,
+          mb: 3,
+          mx: "auto",
+          px: { xs: 0, sm: 2, md: 0 },
+        }}
+      >
         <BreadcrumbNav
           items={[
             { label: "Início", to: "/" },
@@ -136,11 +149,13 @@ export default function DetalheComercio() {
       </Box>
       <Box
         display="flex"
+        flexWrap="wrap"
         alignItems="center"
-        gap={{ xs: 1, sm: 2 }}
+        gap={{ xs: 1.5, sm: 2.5 }}
         mb={3}
         role="navigation"
         aria-label="Ações do comércio"
+        sx={{ width: "100%", px: { xs: 0.5, sm: 2, md: 0 } }}
       >
         <VoltarButton
           label="Voltar para início"
@@ -182,11 +197,13 @@ export default function DetalheComercio() {
           mb: 4,
           borderRadius: 3,
           boxShadow: 3,
-          p: { xs: 1, sm: 2 },
+          p: { xs: 2, sm: 3 },
           backgroundColor: "#fff",
           color: "#222",
           maxWidth: 600,
+          width: "100%",
           mx: "auto",
+          boxSizing: "border-box",
         }}
       >
         <CardContent>
@@ -433,14 +450,19 @@ export default function DetalheComercio() {
       </Typography>
       <Grid
         container
-        spacing={{ xs: 1, sm: 2 }}
+        spacing={{ xs: 1.5, sm: 2.5 }}
         aria-labelledby="produtos-lista"
+        sx={{ width: "100%", mx: 0, px: { xs: 0, sm: 1 } }}
       >
         {comercio.produtos && comercio.produtos.length > 0 ? (
           comercio.produtos.map((produto) => (
             <Grid
-              gridColumn={{ xs: "span 12", sm: "span 6", md: "span 4" }}
+              item
+              xs={12}
+              sm={6}
+              md={4}
               key={produto.id}
+              sx={{ width: "100%" }}
             >
               <Card
                 sx={{
@@ -451,10 +473,13 @@ export default function DetalheComercio() {
                   flexDirection: "column",
                   justifyContent: "space-between",
                   backgroundColor: "#fafbfc",
-                  p: 1,
+                  p: { xs: 1.5, sm: 2 },
+                  width: "100%",
+                  boxSizing: "border-box",
+                  mx: "auto",
                 }}
               >
-                <CardContent sx={{ p: 2 }}>
+                <CardContent sx={{ p: 0 }}>
                   <Box display="flex" alignItems="center" gap={2} mb={1}>
                     <Avatar
                       sx={{
