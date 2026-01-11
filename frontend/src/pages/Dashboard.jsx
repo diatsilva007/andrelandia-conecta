@@ -69,10 +69,13 @@ export default function Dashboard() {
       alignItems="center"
       justifyContent="center"
       flexDirection="column"
-      // Espaçamento padrão para separar da navbar
-      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
+      paddingTop={{ xs: 6, sm: 10, md: 12 }}
+      sx={{
+        overflowX: "hidden",
+        px: { xs: 0, sm: 2 },
+      }}
     >
-      <Box maxWidth={900} mx="auto" px={2} pt={2}>
+      <Box maxWidth={900} width="100%" mx="auto" px={{ xs: 1, sm: 2 }} pt={2}>
         <BreadcrumbNav items={[{ label: "Dashboard" }]} />
       </Box>
       <Card
@@ -81,11 +84,11 @@ export default function Dashboard() {
           maxWidth: 900,
           mx: "auto",
           boxShadow: 8,
-          borderRadius: 4,
+          borderRadius: { xs: 2, sm: 4 },
           bgcolor: "background.paper",
         }}
       >
-        <CardContent>
+        <CardContent sx={{ px: { xs: 1, sm: 3 }, py: { xs: 2, sm: 3 } }}>
           <Box display="flex" justifyContent="flex-end" mb={1}>
             <Button
               variant="contained"
@@ -94,14 +97,16 @@ export default function Dashboard() {
               sx={{
                 borderRadius: 3,
                 fontWeight: 700,
-                px: 2,
-                py: 1,
-                fontSize: 15,
+                px: { xs: 1.5, sm: 2 },
+                py: { xs: 0.7, sm: 1 },
+                fontSize: { xs: 13, sm: 15 },
                 boxShadow: "0 2px 8px #1565c033",
                 transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
                 background: "#1565c0",
                 color: "#fff",
                 transform: "scale(1)",
+                minWidth: 44,
+                minHeight: 44,
                 "&:hover": {
                   background: "#1976d2",
                   color: "#fff",
@@ -115,36 +120,7 @@ export default function Dashboard() {
               Ir para Home
             </Button>
           </Box>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            gap={2}
-            mb={2}
-          >
-            <Avatar
-              sx={{
-                bgcolor: "primary.main",
-                width: 72,
-                height: 72,
-                fontSize: 40,
-              }}
-            >
-              {usuario.nome?.charAt(0).toUpperCase() || "U"}
-            </Avatar>
-            <Typography
-              variant="h5"
-              fontWeight={700}
-              color="primary.main"
-              align="center"
-            >
-              Bem-vindo, {usuario.nome}!
-            </Typography>
-            <Typography variant="body2" color="text.secondary" align="center">
-              Perfil:{" "}
-              {usuario.tipo === "comerciante" ? "Comerciante" : "Cliente"}
-            </Typography>
-          </Box>
+          {/* Banner removido do Dashboard. */}
           <Grid container spacing={2} mb={2} columns={12}>
             <Grid gridColumn={{ xs: "span 12", sm: "span 6" }}>
               <AnimatedCard

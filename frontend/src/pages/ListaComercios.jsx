@@ -170,20 +170,21 @@ const ListaComercios = () => {
       <Box
         sx={{
           width: "100%",
-          maxWidth: { xs: 360, sm: 500, md: 700 },
+          maxWidth: { xs: 380, sm: 520, md: 700 },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: { xs: 2, sm: 4, md: 5 },
+          borderRadius: { xs: 3, sm: 4, md: 5 },
           boxShadow: 6,
           background: "linear-gradient(90deg, #1976d2 0%, #43a047 100%)",
           position: "relative",
           overflow: "hidden",
-          py: { xs: 3, sm: 5, md: 8 },
-          px: { xs: 1, sm: 3, md: 6 },
-          mt: { xs: 6, sm: 10, md: 14 },
-          mb: { xs: 4, sm: 6, md: 8 },
+          py: { xs: 5, sm: 7, md: 10 },
+          px: { xs: 2.5, sm: 5, md: 8 },
+          mt: { xs: 7, sm: 10, md: 14 },
+          mb: { xs: 5, sm: 7, md: 10 },
+          gap: { xs: 2.5, sm: 3, md: 4 },
         }}
       >
         <Box
@@ -232,7 +233,7 @@ const ListaComercios = () => {
         <Typography
           variant="h1"
           fontWeight={800}
-          mb={1.5}
+          mb={2}
           align="center"
           sx={(theme) => ({
             color: "#fff",
@@ -240,6 +241,12 @@ const ListaComercios = () => {
             textShadow: "0 2px 8px #0002",
             letterSpacing: 1,
             fontFamily: theme.typography.fontFamily,
+            fontSize: { xs: "2.1rem", sm: "2.8rem", md: "3.2rem" },
+            lineHeight: 1.18,
+            maxWidth: { xs: "95vw", sm: 600, md: 700 },
+            mx: "auto",
+            wordBreak: "break-word",
+            px: { xs: 1, sm: 0 },
           })}
         >
           Andrelândia Conecta
@@ -247,26 +254,41 @@ const ListaComercios = () => {
         <Typography
           variant="h6"
           fontWeight={500}
-          mb={1.5}
-          sx={{ color: "#e0f2f1", zIndex: 1, letterSpacing: 0.5 }}
+          mb={2}
+          align="center"
+          sx={{
+            color: "#e0f2f1",
+            zIndex: 1,
+            letterSpacing: 0.5,
+            maxWidth: { xs: "90vw", sm: 520, md: 650 },
+            mx: "auto",
+            px: { xs: 1, sm: 0 },
+            textAlign: "center",
+          }}
         >
           Visibilidade e gestão para o comércio local
         </Typography>
         <Typography
           variant="body1"
-          mb={2.5}
+          mb={3}
+          align="center"
           sx={{
             color: "#fff",
-            fontSize: 18,
+            fontSize: { xs: 16, sm: 18 },
             zIndex: 1,
-            maxWidth: 600,
-            textAlign: "center",
+            maxWidth: { xs: "92vw", sm: 520, md: 650 },
+            mx: "auto",
+            px: { xs: 1, sm: 0 },
+            textAlign: { xs: "justify", sm: "center" },
+            lineHeight: 1.6,
           }}
         >
           Plataforma para conectar, divulgar e fortalecer os negócios de
           Andrelândia/MG e região.
           <br />
-          <b>Cadastre seu comércio e faça parte dessa rede!</b>
+          <b style={{ display: "inline-block", marginTop: 16 }}>
+            Cadastre seu comércio e faça parte dessa rede!
+          </b>
         </Typography>
         {usuario?.tipo === "comerciante" && (
           <Button
