@@ -99,10 +99,24 @@ const theme = createTheme({
         root: {
           borderRadius: 8,
           boxShadow: "0 2px 8px #43a04733",
-          transition: "all 0.2s",
+          transition:
+            "background 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1), transform 0.18s cubic-bezier(.4,0,.2,1)",
+          willChange: "background, box-shadow, transform",
           "&:hover": {
             boxShadow: "0 4px 16px #1565c033",
             filter: "brightness(1.08)",
+            transform: "scale(1.045)",
+            backgroundColor: "#e3f2fd",
+          },
+          "&:focus-visible": {
+            outline: "2px solid #1976d2",
+            outlineOffset: 2,
+            boxShadow: "0 0 0 4px #1976d244, 0 4px 16px #1565c033",
+            transform: "scale(1.03)",
+          },
+          "&:active": {
+            filter: "brightness(0.97)",
+            transform: "scale(0.98)",
           },
         },
       },
