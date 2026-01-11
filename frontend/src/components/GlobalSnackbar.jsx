@@ -18,6 +18,9 @@ export default function GlobalSnackbar() {
         sx={{ width: "100%" }}
         elevation={6}
         variant="filled"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
       >
         {message}
       </MuiAlert>

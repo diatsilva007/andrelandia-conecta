@@ -6,6 +6,9 @@ export default function LoadingBackdrop({ open }) {
     <Backdrop
       sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 999 }}
       open={open}
+      role="status"
+      aria-live="polite"
+      aria-label="Carregando"
     >
       <CircularProgress color="inherit" />
     </Backdrop>

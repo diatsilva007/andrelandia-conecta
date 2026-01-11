@@ -120,7 +120,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 16,
-          background: "linear-gradient(120deg, #e3f2fd 0%, #e8f5e9 100%)",
+          // Removido background customizado para não afetar Alert variant='filled'
         },
       },
     },
