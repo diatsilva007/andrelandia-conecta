@@ -462,21 +462,25 @@ export default function DetalheComercio() {
               sm={6}
               md={4}
               key={produto.id}
-              sx={{ width: "100%" }}
+              sx={{ display: "flex", justifyContent: "center" }}
             >
               <Card
                 sx={{
                   borderRadius: 3,
                   boxShadow: 2,
-                  minHeight: 160,
+                  minHeight: { xs: 180, sm: 220, md: 240 },
+                  maxHeight: { xs: 260, sm: 280, md: 320 },
+                  width: { xs: "100%", sm: 320, md: 340 },
+                  maxWidth: { xs: "100%", sm: 340, md: 360 },
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   backgroundColor: "#fafbfc",
                   p: { xs: 1.5, sm: 2 },
-                  width: "100%",
                   boxSizing: "border-box",
                   mx: "auto",
+                  transition: "box-shadow 0.2s",
+                  ":hover": { boxShadow: 5 },
                 }}
               >
                 <CardContent sx={{ p: 0 }}>
