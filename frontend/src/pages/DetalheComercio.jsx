@@ -122,7 +122,8 @@ export default function DetalheComercio() {
       p={{ xs: 1, sm: 3 }}
       bgcolor="background.default"
       minHeight="100vh"
-      mt={{ xs: 7, sm: 8, md: 10 }}
+      // Espaçamento padrão para separar da navbar
+      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
     >
       <Box sx={{ maxWidth: 1200, mb: 3, mx: "auto" }}>
         <BreadcrumbNav
