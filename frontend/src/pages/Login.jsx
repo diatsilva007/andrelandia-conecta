@@ -89,30 +89,35 @@ export default function Login() {
 
   return (
     <Box
-      position="fixed"
-      top={0}
-      left={0}
+      minHeight="100vh"
       width="100vw"
-      height="100vh"
       display="flex"
       alignItems="center"
       justifyContent="center"
       bgcolor="background.default"
-      zIndex={1}
+      px={{ xs: 1, sm: 2 }}
+      py={{ xs: 2, sm: 4 }}
     >
       <Box
-        maxWidth={400}
+        maxWidth={{ xs: 340, sm: 400, md: 420 }}
         width="100%"
-        p={3}
-        boxShadow={2}
-        borderRadius={2}
+        p={{ xs: 2, sm: 3, md: 4 }}
+        boxShadow={3}
+        borderRadius={3}
         bgcolor="#fff"
+        mx="auto"
+        sx={{ transition: "box-shadow 0.2s" }}
       >
-        <Typography variant="h5" mb={3} align="center">
+        <Typography
+          variant="h5"
+          mb={{ xs: 2, sm: 3 }}
+          align="center"
+          fontWeight={700}
+        >
           Login
         </Typography>
         {erro && (
-          <Alert severity="error" sx={{ mb: 3 }}>
+          <Alert severity="error" sx={{ mb: 2 }}>
             {erro}
           </Alert>
         )}
@@ -127,7 +132,7 @@ export default function Login() {
             required
             autoFocus
             inputProps={{ "aria-label": "E-mail" }}
-            sx={{ mb: 2 }}
+            sx={{ mb: 2, fontSize: { xs: 15, sm: 16 } }}
           />
           <TextField
             label="Senha"
@@ -151,26 +156,33 @@ export default function Login() {
                 </InputAdornment>
               ),
             }}
+            sx={{ fontSize: { xs: 15, sm: 16 } }}
           />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2,
+              py: 1.2,
+              fontWeight: 700,
+              fontSize: { xs: 15, sm: 16 },
+            }}
             aria-label="Entrar"
           >
             Entrar
           </Button>
         </form>
         <Box mt={2} textAlign="center">
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ mb: 1 }}>
             Não tem conta?{" "}
             <Button
               color="primary"
               size="small"
               onClick={() => navigate("/registrar")}
               aria-label="Ir para cadastro"
+              sx={{ fontWeight: 600 }}
             >
               Cadastre-se
             </Button>
@@ -178,7 +190,7 @@ export default function Login() {
           <Button
             color="primary"
             size="small"
-            sx={{ mt: 1, mr: 1 }}
+            sx={{ mt: 1, mr: 1, fontWeight: 600, fontSize: { xs: 14, sm: 15 } }}
             onClick={() => navigate("/esqueci-senha")}
             aria-label="Ir para recuperação de senha"
           >
@@ -191,11 +203,11 @@ export default function Login() {
             startIcon={<span style={{ fontSize: 18 }}>🏠</span>}
             sx={{
               mt: 2,
-              px: 3,
+              px: { xs: 2, sm: 3 },
               py: 1.2,
               borderRadius: 3,
-              fontWeight: 600,
-              fontSize: 16,
+              fontWeight: 700,
+              fontSize: { xs: 15, sm: 16 },
               letterSpacing: 0.5,
               boxShadow: "0 2px 8px #1976d222",
               background: "#fff",
