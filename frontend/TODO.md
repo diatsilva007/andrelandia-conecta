@@ -4,7 +4,7 @@
 
 - [x] Adaptação responsiva incremental (Dashboard, Login, Cadastro, etc.)
 - [x] Usar breakpoints do Material UI (`xs`, `sm`, `md`, `lg`) em containers, grids, cards e botões
-- [ ] Garantir touch targets adequados (mínimo 48px)
+- [x] Garantir touch targets adequados (mínimo 48px)
 - [ ] Testar navegação, menus, modais e tooltips em telas pequenas
 - [ ] Validar microinterações e animações em mobile
 - [ ] Ajustar media queries customizadas se necessário (App.css, index.css)

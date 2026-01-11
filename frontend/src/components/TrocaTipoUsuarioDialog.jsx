@@ -101,7 +101,17 @@ export default function TrocaTipoUsuarioDialog({
       <DialogActions>
         <Tooltip title="Cancelar alteração de tipo" arrow>
           <span>
-            <Button onClick={onClose} disabled={loading}>
+            <Button
+              onClick={onClose}
+              disabled={loading}
+              sx={{
+                minWidth: 48,
+                minHeight: 48,
+                px: 2.5,
+                py: 1.5,
+                borderRadius: 3,
+              }}
+            >
               Cancelar
             </Button>
           </span>
@@ -113,6 +123,13 @@ export default function TrocaTipoUsuarioDialog({
               variant="contained"
               color="primary"
               disabled={loading || tipo === usuario.tipo}
+              sx={{
+                minWidth: 48,
+                minHeight: 48,
+                px: 2.5,
+                py: 1.5,
+                borderRadius: 3,
+              }}
             >
               Salvar
             </Button>

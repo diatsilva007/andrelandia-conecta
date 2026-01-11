@@ -133,14 +133,35 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
       <DialogActions>
         <Tooltip title="Cancelar cadastro" arrow>
           <span>
-            <Button onClick={onClose} color="inherit">
+            <Button
+              onClick={onClose}
+              color="inherit"
+              sx={{
+                minWidth: 48,
+                minHeight: 48,
+                px: 2.5,
+                py: 1.5,
+                borderRadius: 3,
+              }}
+            >
               Cancelar
             </Button>
           </span>
         </Tooltip>
         <Tooltip title="Confirmar cadastro de comércio" arrow>
           <span>
-            <Button onClick={handleSubmit} variant="contained" color="primary">
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              color="primary"
+              sx={{
+                minWidth: 48,
+                minHeight: 48,
+                px: 2.5,
+                py: 1.5,
+                borderRadius: 3,
+              }}
+            >
               Cadastrar
             </Button>
           </span>

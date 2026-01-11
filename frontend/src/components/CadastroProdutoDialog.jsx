@@ -145,14 +145,35 @@ function CadastroProdutoDialog({ open, onClose, onSuccess }) {
           <DialogActions>
             <Tooltip title="Cancelar cadastro" arrow>
               <span>
-                <Button onClick={onClose} disabled={loading}>
+                <Button
+                  onClick={onClose}
+                  disabled={loading}
+                  sx={{
+                    minWidth: 48,
+                    minHeight: 48,
+                    px: 2.5,
+                    py: 1.5,
+                    borderRadius: 3,
+                  }}
+                >
                   Cancelar
                 </Button>
               </span>
             </Tooltip>
             <Tooltip title="Confirmar cadastro de produto" arrow>
               <span>
-                <Button type="submit" variant="contained" disabled={loading}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={loading}
+                  sx={{
+                    minWidth: 48,
+                    minHeight: 48,
+                    px: 2.5,
+                    py: 1.5,
+                    borderRadius: 3,
+                  }}
+                >
                   Cadastrar
                 </Button>
               </span>
