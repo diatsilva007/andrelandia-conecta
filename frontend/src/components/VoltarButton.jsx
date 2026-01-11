@@ -23,7 +23,8 @@ export default function VoltarButton({ sx = {}, label = "Voltar", ...props }) {
           minHeight: 48,
           px: 2.5,
           py: 1.5,
-          fontSize: { xs: "1rem", sm: "1.05rem" },
+          fontSize: { xs: "0.97rem", sm: "1.05rem" },
+          whiteSpace: "nowrap",
           ...sx,
         }}
         aria-label={label}

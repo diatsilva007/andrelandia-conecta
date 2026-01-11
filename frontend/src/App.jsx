@@ -102,6 +102,10 @@ const theme = createTheme({
           transition:
             "background 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1), transform 0.18s cubic-bezier(.4,0,.2,1)",
           willChange: "background, box-shadow, transform",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          maxWidth: { xs: "90vw", sm: "none" },
           "&:hover": {
             boxShadow: "0 4px 16px #1565c033",
             filter: "brightness(1.08)",
