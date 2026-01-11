@@ -110,29 +110,37 @@ export default function CadastroUsuario() {
         alignItems: "center",
         justifyContent: "center",
         bgcolor: "background.default",
-        py: 4,
+        px: { xs: 1, sm: 2 },
+        py: { xs: 2, sm: 4 },
+        // Espaçamento padrão para separar da navbar
+        paddingTop: { xs: 8, sm: 10, md: 12 }, // 64px, 80px, 96px
       }}
       role="main"
       aria-label="Cadastro de novo usuário"
     >
       <Paper
         sx={{
-          p: { xs: 3, md: 5 },
-          maxWidth: 420,
+          p: { xs: 2, sm: 3, md: 5 },
+          maxWidth: { xs: 340, sm: 400, md: 420 },
           width: "100%",
           borderRadius: 4,
           boxShadow: 6,
+          mx: "auto",
+          transition: "box-shadow 0.2s",
         }}
         role="form"
         aria-label="Formulário de cadastro de usuário"
       >
         {erro && (
-          <Alert severity="error" sx={{ mb: 2, fontSize: 15 }}>
+          <Alert severity="error" sx={{ mb: 2, fontSize: { xs: 14, sm: 15 } }}>
             {erro}
           </Alert>
         )}
         {sucesso && (
-          <Alert severity="success" sx={{ mb: 2, fontSize: 15 }}>
+          <Alert
+            severity="success"
+            sx={{ mb: 2, fontSize: { xs: 14, sm: 15 } }}
+          >
             {sucesso}
           </Alert>
         )}
@@ -154,6 +162,7 @@ export default function CadastroUsuario() {
               required
               SelectProps={{ native: true }}
               inputProps={{ "aria-label": "Tipo de usuário" }}
+              sx={{ fontSize: { xs: 15, sm: 16 } }}
             >
               <option value="cliente">Cliente</option>
               <option value="comerciante">Comerciante</option>
@@ -170,6 +179,7 @@ export default function CadastroUsuario() {
               required
               autoFocus
               inputProps={{ maxLength: 60, "aria-label": "Nome do usuário" }}
+              sx={{ fontSize: { xs: 15, sm: 16 } }}
             />
           </Tooltip>
           <Tooltip title="Informe um e-mail válido para contato e login" arrow>
@@ -183,6 +193,7 @@ export default function CadastroUsuario() {
               margin="normal"
               required
               inputProps={{ maxLength: 80, "aria-label": "E-mail" }}
+              sx={{ fontSize: { xs: 15, sm: 16 } }}
             />
           </Tooltip>
           <Tooltip title="Crie uma senha forte para proteger sua conta" arrow>
@@ -221,6 +232,7 @@ export default function CadastroUsuario() {
                   ? requisitosSenha
                   : "A senha deve conter letra maiúscula, minúscula, número e símbolo."
               }
+              sx={{ fontSize: { xs: 15, sm: 16 } }}
             />
           </Tooltip>
           <Tooltip title="Repita a senha para confirmação" arrow>
@@ -254,6 +266,7 @@ export default function CadastroUsuario() {
                   </InputAdornment>
                 ),
               }}
+              sx={{ fontSize: { xs: 15, sm: 16 } }}
             />
           </Tooltip>
           <Button
@@ -261,21 +274,26 @@ export default function CadastroUsuario() {
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2, fontWeight: 700, fontSize: 17, py: 1.2 }}
+            sx={{
+              mt: 2,
+              fontWeight: 700,
+              fontSize: { xs: 15, sm: 17 },
+              py: 1.2,
+            }}
             aria-label="Cadastrar usuário"
           >
             Cadastrar
           </Button>
         </form>
         <Box mt={2} textAlign="center">
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ fontSize: { xs: 14, sm: 15 } }}>
             Já tem conta?{" "}
             <Button
               color="primary"
               size="small"
               onClick={() => navigate("/login")}
               aria-label="Ir para login"
-              sx={{ fontWeight: 500, fontSize: 15 }}
+              sx={{ fontWeight: 600, fontSize: { xs: 14, sm: 15 } }}
             >
               Faça login
             </Button>
