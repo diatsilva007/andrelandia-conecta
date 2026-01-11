@@ -1,14 +1,16 @@
-# Copilot Instructions — Andrelândia Conecta
+<!-- Copilot Instructions — Andrelândia Conecta -->
+
+# Guia para Agentes de IA — Andrelândia Conecta
 
 Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região.
 
-## Visão Geral da Arquitetura
+## Arquitetura e Fluxos
 
-- **Frontend** (`/frontend`): SPA React (Vite), Material UI, React Router DOM. Navegação protegida por JWT (armazenado em localStorage), consumo de API REST via Axios. Feedback visual global padronizado (Snackbar, LoadingBackdrop, Dialog). Estado global de loading via contexto (`LoadingContext` em `App.jsx`).
+- **Frontend** (`/frontend`): SPA React (Vite), Material UI, React Router DOM. Navegação protegida por JWT (localStorage), consumo de API REST via Axios. Feedback visual global padronizado: use sempre `SnackbarContext`, `GlobalSnackbar` e `LoadingBackdrop`.
 - **Backend** (`/backend`): Node.js (ESM), Express, Prisma ORM, JWT, bcryptjs. API RESTful, autenticação JWT, banco PostgreSQL. Controllers em `src/controllers`, rotas em `src/routes`. Middleware de autenticação JWT obrigatório em rotas protegidas (`src/middlewares/auth.js`). Prisma Client importado por controller (nunca global).
 - **Banco de dados**: PostgreSQL, modelado via Prisma (`backend/prisma/schema.prisma`).
 
-## Fluxos e Comandos Essenciais
+## Workflows Essenciais
 
 - **Desenvolvimento**:
   - Frontend: `npm run dev` em `/frontend`
@@ -26,10 +28,10 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 - **Rotas REST**: CRUD para `/comercios`, `/produtos`, `/usuarios`, `/auth` (login, esqueci-senha, redefinir-senha). Veja exemplos em `src/routes/` e `src/controllers/`.
 - **Autenticação**: JWT obrigatório para rotas protegidas. Sempre use o middleware de autenticação (`src/middlewares/auth.js`).
 - **Frontend**:
-  - Sempre utilize os componentes globais de feedback visual: `setSnackbar` (via `SnackbarContext.jsx`), `GlobalSnackbar.jsx` e `LoadingBackdrop.jsx`.
+  - Use sempre os componentes globais de feedback visual: `setSnackbar` (via `SnackbarContext.jsx`), `GlobalSnackbar.jsx` e `LoadingBackdrop.jsx`.
   - Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente (ver `Login.jsx`, `CadastroComercio.jsx`).
   - Formulários padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
-  - Material UI para UI/UX consistente e acessível. Siga exemplos de responsividade e microinterações do `/frontend/TODO.md`.
+  - Material UI para UI/UX consistente e acessível. Siga exemplos reais e microinterações do `/frontend/TODO.md`.
 - **Backend**:
   - Separe controllers e rotas.
   - Middleware de autenticação sempre aplicado em rotas protegidas.
@@ -57,7 +59,19 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 - **Feedback visual**: sempre use `setSnackbar` para mostrar mensagens após ações (sucesso/erro), e `LoadingBackdrop` para loading global.
 - **Exclusão/Edição**: sempre peça confirmação visual (Dialog) antes de excluir, e atualize a listagem após sucesso.
 
-## Dicas para Agentes
+## Dicas e Regras para Agentes
+
+- Respeite a separação de responsabilidades entre frontend e backend.
+- Siga padrões de feedback visual e navegação protegida já presentes nas páginas.
+- Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
+- Use exemplos reais dos arquivos para manter consistência de código e UX.
+- Prefira comandos e fluxos documentados acima para build/dev/migrations.
+- Para feedback visual, utilize sempre os componentes globais já existentes (`SnackbarContext`, `GlobalSnackbar`, `LoadingBackdrop`).
+- Ao criar novas rotas protegidas, lembre-se de aplicar o middleware de autenticação.
+- Para novos modelos Prisma, siga o padrão do `schema.prisma` e gere migrations.
+- Para debugging, utilize logs do backend e o feedback visual do frontend.
+- Priorize acessibilidade e responsividade (ver TODO.md e exemplos de uso de MUI).
+- Sempre atualize a documentação e exemplos práticos ao adicionar novos fluxos ou padrões.
 
 - Respeite a separação de responsabilidades entre frontend e backend.
 - Siga padrões de feedback visual e navegação protegida já presentes nas páginas.
