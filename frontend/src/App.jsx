@@ -126,20 +126,21 @@ const theme = createTheme({
         root: {
           borderRadius: 16,
           boxShadow: "0 4px 24px #1976d222",
-          transition: "box-shadow 0.3s, transform 0.22s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
+          transition:
+            "box-shadow 0.3s, transform 0.22s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
           opacity: 0,
           transform: "translateY(24px)",
           animation: "fadeInCard 0.7s cubic-bezier(.4,0,.2,1) forwards",
           willChange: "box-shadow, transform, opacity",
-          '@keyframes fadeInCard': {
-            from: { opacity: 0, transform: 'translateY(24px)' },
-            to: { opacity: 1, transform: 'translateY(0)' },
+          "@keyframes fadeInCard": {
+            from: { opacity: 0, transform: "translateY(24px)" },
+            to: { opacity: 1, transform: "translateY(0)" },
           },
-          '&:hover': {
+          "&:hover": {
             boxShadow: "0 8px 32px #1976d244",
             transform: "scale(1.025) translateY(-2px)",
           },
-          '&:focus-visible': {
+          "&:focus-visible": {
             outline: "2px solid #1976d2",
             outlineOffset: 2,
             boxShadow: "0 0 0 4px #1976d244, 0 8px 32px #1976d244",
@@ -156,10 +157,21 @@ const theme = createTheme({
         },
       },
     },
-    MuiAppBar: {
+    MuiDialog: {
       styleOverrides: {
-        root: {
-          background: "linear-gradient(90deg, #1565c0 0%, #43a047 100%)",
+        paper: {
+          borderRadius: 18,
+          boxShadow: "0 8px 40px #1976d244",
+          transition:
+            "opacity 0.32s cubic-bezier(.4,0,.2,1), transform 0.32s cubic-bezier(.4,0,.2,1)",
+          opacity: 0,
+          transform: "translateY(32px) scale(0.98)",
+          animation: "fadeInDialog 0.5s cubic-bezier(.4,0,.2,1) forwards",
+          willChange: "opacity, transform",
+          "@keyframes fadeInDialog": {
+            from: { opacity: 0, transform: "translateY(32px) scale(0.98)" },
+            to: { opacity: 1, transform: "translateY(0) scale(1)" },
+          },
         },
       },
     },
