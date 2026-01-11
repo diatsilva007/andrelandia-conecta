@@ -354,24 +354,34 @@ export default function DetalheComercio() {
         mt={3}
       >
         <Divider sx={{ width: "100%", maxWidth: 600, mb: 2 }} />
-        <Typography
-          variant="h6"
-          mb={1.5}
-          sx={{ color: "#222", fontWeight: 700, letterSpacing: 0.5 }}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          width="100%"
         >
-          Avaliações
-        </Typography>
-        <Box mb={3} width="100%" maxWidth={600}>
+          <Typography
+            variant="h6"
+            mb={0.5}
+            align="center"
+            sx={{ color: "#222", fontWeight: 700, letterSpacing: 0.5 }}
+          >
+            Avaliações
+          </Typography>
           {avaliacoes.length === 0 && (
             <Typography
               color="text.secondary"
               fontStyle="italic"
               fontSize={15}
-              mb={1}
+              mb={2}
+              align="center"
+              sx={{ width: "100%" }}
             >
               Nenhuma avaliação ainda.
             </Typography>
           )}
+        </Box>
+        <Box mb={3} width="100%" maxWidth={600}>
           {avaliacoes.map((a) => (
             <Card
               key={a.id}
