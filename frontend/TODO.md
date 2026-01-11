@@ -1,4 +1,17 @@
-## Recomendações e Checklist de UX/UI Profissional
+# TODO - Andrelândia Conecta
+
+## Checklist de Responsividade e Mobile First
+
+- [ ] Adaptação responsiva incremental (Dashboard, Login, Cadastro, etc.)
+- [ ] Usar breakpoints do Material UI (`xs`, `sm`, `md`, `lg`) em containers, grids, cards e botões
+- [ ] Garantir touch targets adequados (mínimo 48px)
+- [ ] Testar navegação, menus, modais e tooltips em telas pequenas
+- [ ] Validar microinterações e animações em mobile
+- [ ] Ajustar media queries customizadas se necessário (App.css, index.css)
+- [ ] Testar em dispositivos reais e simuladores
+- [ ] Revisar todos os fluxos para mobile antes de novas features complexas
+
+## Checklist de UX/UI Profissional
 
 - [x] Identidade visual consistente: paleta de cores exclusiva, logotipo simples, uso padronizado em todos os elementos.
 - [x] Tipografia e hierarquia: no máximo 2 famílias de fonte, destaque para títulos/botões, hierarquia visual clara.
@@ -11,17 +24,10 @@
 - [ ] Mobile first: todos os fluxos testados em dispositivos móveis, touch targets grandes, menus simplificados.
 - [ ] Testes com usuários reais: coletar feedback de comerciantes e clientes sobre usabilidade e clareza.
 
-> Use esta lista como referência para revisões de design e implementação de novas features. Marque cada item como concluído à medida que for implementando.
-
-# TODO - Andrelândia Conecta
-
-## Melhorias UX/UI e Funcionalidades Avançadas
-
-### Em andamento/próximas tarefas
+## Melhorias em andamento/próximas tarefas
 
 - [ ] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
-- [ ] Finalizar responsividade avançada em todos os fluxos
 - [ ] Refatorar componentes para máxima reusabilidade
 - [ ] Adicionar onboarding, tooltips e mensagens de ajuda
 - [ ] Implementar CI/CD (GitHub Actions)
@@ -31,9 +37,7 @@
 - [ ] Dark mode e personalização de temas
 - [ ] Internacionalização (i18n) e suporte multilíngue
 
-## Funcionalidades profissionais sugeridas
-
-### Frontend
+## Funcionalidades profissionais sugeridas (Frontend)
 
 - [ ] Busca e filtros avançados (nome, categoria, preço, avaliação, localização)
 - [ ] Página de favoritos (usuário pode favoritar comércios/produtos)
@@ -48,7 +52,7 @@
 - [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
 
-### Backend
+## Funcionalidades profissionais sugeridas (Backend)
 
 - [ ] API RESTful completa e versionada
 - [ ] Autenticação OAuth2/social login (Google, Facebook, etc.)
@@ -82,5 +86,3 @@
 - Validação de vínculo entre produto e comércio
 
 ---
-
-_Última atualização: 08/01/2026_
