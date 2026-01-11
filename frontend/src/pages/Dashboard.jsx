@@ -350,8 +350,10 @@ export default function Dashboard() {
                 </Typography>
                 <Grid container spacing={2} mb={2}>
                   {ultimosProdutos?.map((prod) => (
-                    <Grid item xs={12} sm={4} key={prod.id}>
-                      <Card sx={{ boxShadow: 2, borderRadius: 2 }}>
+                    <Grid item xs={12} sm={6} md={4} key={prod.id}>
+                      <Card
+                        sx={{ boxShadow: 2, borderRadius: { xs: 2, sm: 2 } }}
+                      >
                         <CardContent>
                           <Typography
                             variant="subtitle1"
@@ -384,8 +386,10 @@ export default function Dashboard() {
             </Typography>
             <Grid container spacing={2} mb={2}>
               {ultimosComercios?.map((com) => (
-                <Grid item xs={12} sm={4} key={com.id}>
-                  <AnimatedCard sx={{ boxShadow: 2, borderRadius: 2 }}>
+                <Grid item xs={12} sm={6} md={4} key={com.id}>
+                  <AnimatedCard
+                    sx={{ boxShadow: 2, borderRadius: { xs: 2, sm: 2 } }}
+                  >
                     <CardContent>
                       <Typography
                         variant="subtitle1"
@@ -416,8 +420,10 @@ export default function Dashboard() {
             </Typography>
             <Grid container spacing={2} mb={2}>
               {ultimosProdutos?.map((prod) => (
-                <Grid item xs={12} sm={4} key={prod.id}>
-                  <AnimatedCard sx={{ boxShadow: 2, borderRadius: 2 }}>
+                <Grid item xs={12} sm={6} md={4} key={prod.id}>
+                  <AnimatedCard
+                    sx={{ boxShadow: 2, borderRadius: { xs: 2, sm: 2 } }}
+                  >
                     <CardContent>
                       <Typography
                         variant="subtitle1"
