@@ -9,8 +9,8 @@ export default function VoltarButton({ sx = {}, label = "Voltar", ...props }) {
       <Button
         startIcon={<ArrowBackIcon sx={{ fontSize: 28 }} />}
         variant="contained"
-        color="secondary"
-        onClick={() => navigate(-1)}
+        color="primary"
+        onClick={props.onClick || (() => navigate(-1))}
         sx={{
           mt: { xs: 2, sm: 3, md: 4 },
           mb: 1,
@@ -26,12 +26,15 @@ export default function VoltarButton({ sx = {}, label = "Voltar", ...props }) {
           fontSize: { xs: "0.97rem", sm: "1.05rem" },
           whiteSpace: "nowrap",
           transition: "background 0.2s, box-shadow 0.2s",
+          backgroundColor: "#e3f2fd",
+          color: "#1565c0",
           "&:hover": {
-            background: "#f3e5f5",
-            boxShadow: "0 2px 8px #7b1fa222",
+            backgroundColor: "#bbdefb",
+            color: "#0d47a1",
+            boxShadow: "0 2px 8px #1976d222",
           },
           "&:focus-visible": {
-            outline: "2px solid #7b1fa2",
+            outline: "2px solid #1976d2",
             outlineOffset: 2,
           },
           ...sx,

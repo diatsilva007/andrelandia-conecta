@@ -641,8 +641,13 @@ const ListaComercios = () => {
                           py: 1.2,
                           fontSize: 16,
                           transition: "background 0.2s, box-shadow 0.2s",
+                          backgroundColor: "#f5faff",
+                          color: "#1976d2",
+                          borderColor: "#1976d2",
                           "&:hover": {
-                            background: "#e3f2fd",
+                            backgroundColor: "#e3f2fd",
+                            color: "#1565c0",
+                            borderColor: "#1565c0",
                             boxShadow: "0 2px 8px #1976d222",
                           },
                           "&:focus-visible": {
@@ -672,9 +677,18 @@ const ListaComercios = () => {
                           py: 1.2,
                           fontSize: 16,
                           transition: "background 0.2s, box-shadow 0.2s",
+                          backgroundColor: "#fff5f5",
+                          color: "#d32f2f",
+                          borderColor: "#d32f2f",
                           "&:hover": {
-                            background: "#ffebee",
+                            backgroundColor: "#ffebee",
+                            color: "#b71c1c",
+                            borderColor: "#b71c1c",
                             boxShadow: "0 2px 8px #d32f2f22",
+                          },
+                          "&:focus-visible": {
+                            outline: "2px solid #d32f2f",
+                            outlineOffset: 2,
                           },
                         }}
                         onClick={(e) => {

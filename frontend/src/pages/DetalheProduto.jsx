@@ -110,7 +110,25 @@ export default function DetalheProduto() {
           <Button
             variant="outlined"
             color="primary"
-            sx={{ mt: 2, fontWeight: 600, borderRadius: 3 }}
+            sx={{
+              mt: 2,
+              fontWeight: 600,
+              borderRadius: 3,
+              backgroundColor: "#f5faff",
+              color: "#1976d2",
+              borderColor: "#1976d2",
+              transition: "background 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                backgroundColor: "#e3f2fd",
+                color: "#1565c0",
+                borderColor: "#1565c0",
+                boxShadow: "0 2px 8px #1976d222",
+              },
+              "&:focus-visible": {
+                outline: "2px solid #1976d2",
+                outlineOffset: 2,
+              },
+            }}
             component={Link}
             to={produto.comercio ? `/comercios/${produto.comercio.id}` : "/"}
           >
