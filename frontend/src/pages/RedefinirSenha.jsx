@@ -142,7 +142,23 @@ export default function RedefinirSenha() {
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2,
+              fontWeight: 700,
+              fontSize: 17,
+              borderRadius: 3,
+              boxShadow: 3,
+              transition: "all 0.18s cubic-bezier(.4,0,.2,1)",
+              "&:hover": {
+                boxShadow: 6,
+                backgroundColor: "primary.dark",
+                color: "#fff",
+              },
+              "&:focus-visible": {
+                outline: "2px solid #1976d2",
+                outlineOffset: 2,
+              },
+            }}
             disabled={loading}
             endIcon={loading && <CircularProgress size={18} color="inherit" />}
           >
