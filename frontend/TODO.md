@@ -22,9 +22,9 @@
 - [x] Navegação clara: navbar sempre visível (fixa ou drawer), breadcrumbs para facilitar retorno em fluxos profundos.
 - [x] Acessibilidade: contraste suficiente, labels e aria-labels, navegação por teclado em formulários e botões.
 - [x] Feedback visual: loading, sucesso e erro claros (snackbar, backdrop, alert), uso de ícones e cores para reforço.
-- [ ] Personalização e empatia: modo escuro/claro, mensagens de boas-vindas e dicas contextuais para novos usuários.
 - [x] Mobile first: todos os fluxos testados em dispositivos móveis, touch targets grandes, menus simplificados.
 - [x] Testes com usuários reais: coletar feedback de comerciantes e clientes sobre usabilidade e clareza.
+- [ ] Personalização e empatia: modo escuro/claro, mensagens de boas-vindas e dicas contextuais para novos usuários.
 
 ### Melhorias em andamento/próximas tarefas
 
