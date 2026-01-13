@@ -470,243 +470,224 @@ const ListaComercios = () => {
                 py: 8,
               }}
             >
-              <Typography
-                variant="h6"
-                color="text.secondary"
-                fontWeight={600}
-                sx={{ letterSpacing: 0.5, textAlign: "center" }}
-              >
-                Nenhum comércio cadastrado ainda.
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                mt={2}
-                sx={{ fontSize: 16, textAlign: "center" }}
-              >
-                Seja o primeiro a cadastrar seu negócio e fortalecer o comércio
-                local!
+              <Typography variant="h6" color="text.secondary" align="center">
+                Nenhum comércio encontrado.
               </Typography>
             </Box>
           </Grid>
         )}
-        {comerciosFiltrados.length > 0 &&
-          comerciosFiltrados.map((comercio) => (
-            <Grid
-              gridColumn={{ xs: "span 12", sm: "span 6", md: "span 4" }}
-              key={comercio.id}
+        {comerciosFiltrados.map((comercio) => (
+          <Grid item xs={12} sm={6} md={4} key={comercio.id}>
+            <AnimatedCard
+              sx={{
+                position: "relative",
+                borderRadius: { xs: 2, sm: 3, md: 4 },
+                boxShadow: 6,
+                bgcolor: "#fff",
+                transition: "box-shadow 0.3s, transform 0.2s",
+                cursor: "pointer",
+                "&:hover": {
+                  boxShadow: 12,
+                  transform: "translateY(-6px) scale(1.03)",
+                },
+                minHeight: { xs: 180, sm: 200, md: 220 },
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                p: { xs: 1.5, sm: 2 },
+              }}
+              onClick={() => navigate(`/comercios/${comercio.id}`)}
+              aria-label={`Ver detalhes do comércio ${comercio.nome}`}
             >
-              <AnimatedCard
-                sx={{
-                  position: "relative",
-                  borderRadius: { xs: 2, sm: 3, md: 4 },
-                  boxShadow: 6,
-                  bgcolor: "#fff",
-                  transition: "box-shadow 0.3s, transform 0.2s",
-                  cursor: "pointer",
-                  "&:hover": {
-                    boxShadow: 12,
-                    transform: "translateY(-6px) scale(1.03)",
-                  },
-                  minHeight: { xs: 180, sm: 200, md: 220 },
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  p: { xs: 1.5, sm: 2 },
-                }}
-                onClick={() => navigate(`/comercios/${comercio.id}`)}
-                aria-label={`Ver detalhes do comércio ${comercio.nome}`}
-              >
-                <CardContent sx={{ pb: 1 }}>
-                  <Box display="flex" alignItems="center" gap={2} mb={2}>
-                    <Avatar
-                      sx={{
-                        bgcolor: "primary.main",
-                        fontWeight: 700,
-                        width: 44,
-                        height: 44,
-                        fontSize: 22,
-                      }}
-                    >
-                      {comercio.nome?.[0]?.toUpperCase() || "?"}
-                    </Avatar>
-                    <Typography
-                      variant="subtitle1"
-                      fontWeight={700}
-                      color="primary.main"
-                      sx={{ flex: 1, fontSize: 20, letterSpacing: 0.5 }}
-                    >
-                      {comercio.nome}
-                    </Typography>
-                  </Box>
+              <CardContent sx={{ pb: 1 }}>
+                <Box display="flex" alignItems="center" gap={2} mb={2}>
+                  <Avatar
+                    sx={{
+                      bgcolor: "primary.main",
+                      fontWeight: 700,
+                      width: 44,
+                      height: 44,
+                      fontSize: 22,
+                    }}
+                  >
+                    {comercio.nome?.[0]?.toUpperCase() || "?"}
+                  </Avatar>
                   <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    mb={1}
-                    sx={{ fontSize: 16 }}
+                    variant="subtitle1"
+                    fontWeight={700}
+                    color="primary.main"
+                    sx={{ flex: 1, fontSize: 20, letterSpacing: 0.5 }}
                   >
-                    {comercio.descricao}
+                    {comercio.nome}
                   </Typography>
-                  {comercio.categoria && (
-                    <Typography
-                      variant="caption"
-                      color="primary"
-                      sx={{
-                        fontWeight: 700,
-                        background: "#e3f2fd",
-                        borderRadius: 2,
-                        px: 1.5,
-                        py: 0.5,
-                        fontSize: 14,
-                        display: "inline-block",
-                        mb: 1,
-                        mt: 0.5,
-                        letterSpacing: 0.5,
-                      }}
-                    >
-                      {comercio.categoria}
-                    </Typography>
-                  )}
-                  {/* Faixa de preço */}
+                </Box>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  mb={1}
+                  sx={{ fontSize: 16 }}
+                >
+                  {comercio.descricao}
+                </Typography>
+                {comercio.categoria && (
                   <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ fontSize: 15, mt: 0.5 }}
+                    variant="caption"
+                    color="primary"
+                    sx={{
+                      fontWeight: 700,
+                      background: "#e3f2fd",
+                      borderRadius: 2,
+                      px: 1.5,
+                      py: 0.5,
+                      fontSize: 14,
+                      display: "inline-block",
+                      mb: 1,
+                      mt: 0.5,
+                      letterSpacing: 0.5,
+                    }}
                   >
-                    <strong>Preço:</strong>{" "}
-                    {getFaixaPreco(comercio.produtos) ? (
-                      `R$${getFaixaPreco(comercio.produtos)[0]} - R$${
-                        getFaixaPreco(comercio.produtos)[1]
-                      }`
-                    ) : (
-                      <em>sem produtos</em>
-                    )}
+                    {comercio.categoria}
                   </Typography>
-                  {/* Média de avaliação */}
-                  <Box display="flex" alignItems="center" gap={1} mt={0.5}>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ fontSize: 15 }}
-                    >
-                      <strong>Avaliação:</strong>
-                    </Typography>
-                    <Rating
-                      value={getMediaAvaliacao(comercio.avaliacoes) || 0}
-                      precision={0.1}
-                      readOnly
-                      size="small"
-                      sx={{ fontSize: 20 }}
-                    />
-                    <Typography variant="caption" color="text.secondary">
-                      {getMediaAvaliacao(comercio.avaliacoes)
-                        ? getMediaAvaliacao(comercio.avaliacoes).toFixed(1)
-                        : "-"}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ fontSize: 15 }}
-                  >
-                    <strong>Endereço:</strong> {comercio.endereco}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ fontSize: 15 }}
-                  >
-                    <strong>Telefone:</strong> {comercio.telefone}
-                  </Typography>
-                </CardContent>
-                {usuario?.tipo === "comerciante" && token && (
-                  <Box
-                    display="flex"
-                    gap={1}
-                    justifyContent="flex-end"
-                    px={2}
-                    pb={2}
-                  >
-                    <Tooltip title="Editar">
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size="large"
-                        startIcon={<EditIcon sx={{ fontSize: 28 }} />}
-                        sx={{
-                          borderRadius: 2,
-                          minWidth: 48,
-                          minHeight: 48,
-                          px: 2,
-                          py: 1.2,
-                          fontSize: 16,
-                          transition: "background 0.2s, box-shadow 0.2s",
-                          backgroundColor: "#f5faff",
-                          color: "#1976d2",
-                          borderColor: "#1976d2",
-                          "&:hover": {
-                            backgroundColor: "#e3f2fd",
-                            color: "#1565c0",
-                            borderColor: "#1565c0",
-                            boxShadow: "0 2px 8px #1976d222",
-                          },
-                          "&:focus-visible": {
-                            outline: "2px solid #1976d2",
-                            outlineOffset: 2,
-                          },
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/comercios/${comercio.id}/editar`);
-                        }}
-                      >
-                        Editar
-                      </Button>
-                    </Tooltip>
-                    <Tooltip title="Excluir">
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="large"
-                        startIcon={<DeleteIcon sx={{ fontSize: 28 }} />}
-                        sx={{
-                          borderRadius: 2,
-                          minWidth: 48,
-                          minHeight: 48,
-                          px: 2,
-                          py: 1.2,
-                          fontSize: 16,
-                          transition: "background 0.2s, box-shadow 0.2s",
-                          backgroundColor: "#fff5f5",
-                          color: "#d32f2f",
-                          borderColor: "#d32f2f",
-                          "&:hover": {
-                            backgroundColor: "#ffebee",
-                            color: "#b71c1c",
-                            borderColor: "#b71c1c",
-                            boxShadow: "0 2px 8px #d32f2f22",
-                          },
-                          "&:focus-visible": {
-                            outline: "2px solid #d32f2f",
-                            outlineOffset: 2,
-                          },
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setComercioExcluir(comercio);
-                          setDialogOpen(true);
-                        }}
-                      >
-                        Excluir
-                      </Button>
-                    </Tooltip>
-                  </Box>
                 )}
-              </AnimatedCard>
-            </Grid>
-          ))}
+                {/* Faixa de preço */}
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ fontSize: 15, mt: 0.5 }}
+                >
+                  <strong>Preço:</strong>{" "}
+                  {getFaixaPreco(comercio.produtos) ? (
+                    `R$${getFaixaPreco(comercio.produtos)[0]} - R$${
+                      getFaixaPreco(comercio.produtos)[1]
+                    }`
+                  ) : (
+                    <em>sem produtos</em>
+                  )}
+                </Typography>
+                {/* Média de avaliação */}
+                <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontSize: 15 }}
+                  >
+                    <strong>Avaliação:</strong>
+                  </Typography>
+                  <Rating
+                    value={getMediaAvaliacao(comercio.avaliacoes) || 0}
+                    precision={0.1}
+                    readOnly
+                    size="small"
+                    sx={{ fontSize: 20 }}
+                  />
+                  <Typography variant="caption" color="text.secondary">
+                    {getMediaAvaliacao(comercio.avaliacoes)
+                      ? getMediaAvaliacao(comercio.avaliacoes).toFixed(1)
+                      : "-"}
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ fontSize: 15 }}
+                >
+                  <strong>Endereço:</strong> {comercio.endereco}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ fontSize: 15 }}
+                >
+                  <strong>Telefone:</strong> {comercio.telefone}
+                </Typography>
+              </CardContent>
+              {usuario?.tipo === "comerciante" && token && (
+                <Box
+                  display="flex"
+                  gap={1}
+                  justifyContent="flex-end"
+                  px={2}
+                  pb={2}
+                >
+                  <Tooltip title="Editar">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="large"
+                      startIcon={<EditIcon sx={{ fontSize: 28 }} />}
+                      sx={{
+                        borderRadius: 2,
+                        minWidth: 48,
+                        minHeight: 48,
+                        px: 2,
+                        py: 1.2,
+                        fontSize: 16,
+                        transition: "background 0.2s, box-shadow 0.2s",
+                        backgroundColor: "#f5faff",
+                        color: "#1976d2",
+                        borderColor: "#1976d2",
+                        "&:hover": {
+                          backgroundColor: "#e3f2fd",
+                          color: "#1565c0",
+                          borderColor: "#1565c0",
+                          boxShadow: "0 2px 8px #1976d222",
+                        },
+                        "&:focus-visible": {
+                          outline: "2px solid #1976d2",
+                          outlineOffset: 2,
+                        },
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/comercios/${comercio.id}/editar`);
+                      }}
+                    >
+                      Editar
+                    </Button>
+                  </Tooltip>
+                  <Tooltip title="Excluir">
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="large"
+                      startIcon={<DeleteIcon sx={{ fontSize: 28 }} />}
+                      sx={{
+                        borderRadius: 2,
+                        minWidth: 48,
+                        minHeight: 48,
+                        px: 2,
+                        py: 1.2,
+                        fontSize: 16,
+                        transition: "background 0.2s, box-shadow 0.2s",
+                        backgroundColor: "#fff5f5",
+                        color: "#d32f2f",
+                        borderColor: "#d32f2f",
+                        "&:hover": {
+                          backgroundColor: "#ffebee",
+                          color: "#b71c1c",
+                          borderColor: "#b71c1c",
+                          boxShadow: "0 2px 8px #d32f2f22",
+                        },
+                        "&:focus-visible": {
+                          outline: "2px solid #d32f2f",
+                          outlineOffset: 2,
+                        },
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setComercioExcluir(comercio);
+                        setDialogOpen(true);
+                      }}
+                    >
+                      Excluir
+                    </Button>
+                  </Tooltip>
+                </Box>
+              )}
+            </AnimatedCard>
+          </Grid>
+        ))}
       </Grid>
-
       {/* Dialog de confirmação */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Confirmar exclusão</DialogTitle>
