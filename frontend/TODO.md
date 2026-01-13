@@ -23,7 +23,7 @@
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [ ] Busca e filtros avançados (nome, categoria, preço, avaliação, localização)
+- [x] Busca e filtros avançados (nome, categoria, preço, avaliação, localização)
 - [ ] Página de favoritos (usuário pode favoritar comércios/produtos)
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] Upload e otimização de imagens (compressão, preview, drag & drop)
