@@ -500,6 +500,55 @@ const ListaComercios = () => {
               aria-label={`Ver detalhes do comércio ${comercio.nome}`}
             >
               <CardContent sx={{ pb: 1 }}>
+                {/* Botão Visualizar */}
+                <Box
+                  display="flex"
+                  flexDirection={{ xs: "column", sm: "row" }}
+                  alignItems={{ xs: "stretch", sm: "center" }}
+                  justifyContent="flex-end"
+                  gap={{ xs: 1, sm: 1.5 }}
+                  px={2}
+                  pb={1.5}
+                  mb={{ xs: 1.5, sm: 2 }}
+                >
+                  <Tooltip title="Visualizar detalhes">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      fullWidth={true}
+                      sx={{
+                        borderRadius: 2.5,
+                        minWidth: { xs: "100%", sm: 48 },
+                        minHeight: 44,
+                        px: { xs: 1.5, sm: 2.5 },
+                        py: { xs: 1, sm: 1.2 },
+                        fontSize: { xs: 15, sm: 16 },
+                        fontWeight: 700,
+                        backgroundColor: "#1976d2",
+                        color: "#fff",
+                        boxShadow: "0 2px 8px #1976d222",
+                        transition: "background 0.2s, box-shadow 0.2s",
+                        "&:hover": {
+                          backgroundColor: "#1565c0",
+                          color: "#fff",
+                          boxShadow: "0 4px 16px #1976d244",
+                        },
+                        "&:focus-visible": {
+                          outline: "2px solid #1976d2",
+                          outlineOffset: 2,
+                        },
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/comercios/${comercio.id}`);
+                      }}
+                      aria-label={`Visualizar detalhes do comércio ${comercio.nome}`}
+                    >
+                      Visualizar
+                    </Button>
+                  </Tooltip>
+                </Box>
                 <Box display="flex" alignItems="center" gap={2} mb={2}>
                   <Avatar
                     sx={{
@@ -604,33 +653,39 @@ const ListaComercios = () => {
               {usuario?.tipo === "comerciante" && token && (
                 <Box
                   display="flex"
-                  gap={1}
+                  flexDirection={{ xs: "column", sm: "row" }}
+                  alignItems={{ xs: "stretch", sm: "center" }}
                   justifyContent="flex-end"
+                  gap={{ xs: 1, sm: 1.5 }}
                   px={2}
                   pb={2}
+                  mt={{ xs: 1.5, sm: 2 }}
                 >
                   <Tooltip title="Editar">
                     <Button
                       variant="outlined"
                       color="primary"
                       size="large"
-                      startIcon={<EditIcon sx={{ fontSize: 28 }} />}
+                      startIcon={<EditIcon sx={{ fontSize: 24 }} />}
+                      fullWidth={true}
                       sx={{
-                        borderRadius: 2,
-                        minWidth: 48,
-                        minHeight: 48,
-                        px: 2,
-                        py: 1.2,
-                        fontSize: 16,
-                        transition: "background 0.2s, box-shadow 0.2s",
+                        borderRadius: 2.5,
+                        minWidth: { xs: "100%", sm: 48 },
+                        minHeight: 44,
+                        px: { xs: 1.5, sm: 2.5 },
+                        py: { xs: 1, sm: 1.2 },
+                        fontSize: { xs: 15, sm: 16 },
+                        fontWeight: 700,
                         backgroundColor: "#f5faff",
                         color: "#1976d2",
                         borderColor: "#1976d2",
+                        boxShadow: "0 2px 8px #1976d222",
+                        transition: "background 0.2s, box-shadow 0.2s",
                         "&:hover": {
                           backgroundColor: "#e3f2fd",
                           color: "#1565c0",
                           borderColor: "#1565c0",
-                          boxShadow: "0 2px 8px #1976d222",
+                          boxShadow: "0 4px 16px #1976d244",
                         },
                         "&:focus-visible": {
                           outline: "2px solid #1976d2",
@@ -650,23 +705,26 @@ const ListaComercios = () => {
                       variant="outlined"
                       color="error"
                       size="large"
-                      startIcon={<DeleteIcon sx={{ fontSize: 28 }} />}
+                      startIcon={<DeleteIcon sx={{ fontSize: 24 }} />}
+                      fullWidth={true}
                       sx={{
-                        borderRadius: 2,
-                        minWidth: 48,
-                        minHeight: 48,
-                        px: 2,
-                        py: 1.2,
-                        fontSize: 16,
-                        transition: "background 0.2s, box-shadow 0.2s",
+                        borderRadius: 2.5,
+                        minWidth: { xs: "100%", sm: 48 },
+                        minHeight: 44,
+                        px: { xs: 1.5, sm: 2.5 },
+                        py: { xs: 1, sm: 1.2 },
+                        fontSize: { xs: 15, sm: 16 },
+                        fontWeight: 700,
                         backgroundColor: "#fff5f5",
                         color: "#d32f2f",
                         borderColor: "#d32f2f",
+                        boxShadow: "0 2px 8px #d32f2f22",
+                        transition: "background 0.2s, box-shadow 0.2s",
                         "&:hover": {
                           backgroundColor: "#ffebee",
                           color: "#b71c1c",
                           borderColor: "#b71c1c",
-                          boxShadow: "0 2px 8px #d32f2f22",
+                          boxShadow: "0 4px 16px #d32f2f44",
                         },
                         "&:focus-visible": {
                           outline: "2px solid #d32f2f",

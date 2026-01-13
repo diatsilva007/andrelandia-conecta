@@ -592,7 +592,27 @@ export default function DetalheComercio() {
                           variant="contained"
                           color="primary"
                           size="small"
-                          sx={{ borderRadius: 2, minWidth: 0, px: 2 }}
+                          sx={{
+                            borderRadius: 2,
+                            minWidth: { xs: 36, sm: 48 },
+                            px: { xs: 1.5, sm: 2 },
+                            py: { xs: 0.8, sm: 1.2 },
+                            fontSize: { xs: 14, sm: 16 },
+                            fontWeight: 600,
+                            backgroundColor: "#1976d2",
+                            color: "#fff",
+                            boxShadow: "0 2px 8px #1976d222",
+                            transition: "background 0.2s, box-shadow 0.2s",
+                            "&:hover": {
+                              backgroundColor: "#1565c0",
+                              color: "#fff",
+                              boxShadow: "0 4px 16px #1976d244",
+                            },
+                            "&:focus-visible": {
+                              outline: "2px solid #1976d2",
+                              outlineOffset: 2,
+                            },
+                          }}
                           onClick={() => navigate(`/produtos/${produto.id}`)}
                           aria-label={`Visualizar produto ${produto.nome}`}
                         >
@@ -604,7 +624,9 @@ export default function DetalheComercio() {
                   {token && (
                     <Box
                       display="flex"
-                      gap={1}
+                      gap={{ xs: 0.5, sm: 1 }}
+                      flexDirection={{ xs: "column", sm: "row" }}
+                      alignItems={{ xs: "stretch", sm: "center" }}
                       justifyContent="flex-end"
                       px={2}
                       pb={2}
