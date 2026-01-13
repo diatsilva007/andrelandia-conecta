@@ -1,33 +1,26 @@
 import React, { useState } from "react";
-<List>
-  {menuItems.map((item) => (
-    <ListItem key={item.text} disablePadding>
-      <ListItemButton
-        component={Link}
-        to={item.to}
-        selected={location.pathname === item.to}
-        aria-current={location.pathname === item.to ? "page" : undefined}
-        aria-label={`Ir para ${item.text}`}
-        sx={{
-          minHeight: 56,
-          minWidth: 48,
-          px: 2,
-          py: 1.5,
-          borderRadius: 2,
-          ...(location.pathname === item.to
-            ? { bgcolor: "action.selected" }
-            : {}),
-        }}
-      >
-        <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-        <ListItemText
-          primary={item.text}
-          primaryTypographyProps={{ fontSize: 16 }}
-        />
-      </ListItemButton>
-    </ListItem>
-  ))}
-</List>;
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Box,
+  Avatar,
+  Typography,
+  Chip,
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import StoreIcon from "@mui/icons-material/Store";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import PersonIcon from "@mui/icons-material/Person";
+import EditIcon from "@mui/icons-material/Edit";
+import BusinessIcon from "@mui/icons-material/Business";
+import { Link, useLocation } from "react-router-dom";
+import EditarPerfilDialog from "./EditarPerfilDialog.jsx";
 import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog.jsx";
 
 function stringAvatar(name) {

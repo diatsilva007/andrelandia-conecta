@@ -44,7 +44,7 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setErro("");
     setOpen(true);
     try {
@@ -142,6 +142,15 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
                 px: 2.5,
                 py: 1.5,
                 borderRadius: 3,
+                transition: "all 0.18s cubic-bezier(.4,0,.2,1)",
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
+                  transform: "translateY(-1px) scale(1.02)",
+                },
+                "&:focus-visible": {
+                  outline: "2px solid #1976d2",
+                  outlineOffset: 2,
+                },
               }}
             >
               Cancelar
@@ -160,6 +169,19 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
                 px: 2.5,
                 py: 1.5,
                 borderRadius: 3,
+                fontWeight: 700,
+                fontSize: 17,
+                boxShadow: 3,
+                transition: "all 0.18s cubic-bezier(.4,0,.2,1)",
+                "&:hover": {
+                  boxShadow: 6,
+                  transform: "translateY(-2px) scale(1.03)",
+                  backgroundColor: "primary.dark",
+                },
+                "&:focus-visible": {
+                  outline: "2px solid #1976d2",
+                  outlineOffset: 2,
+                },
               }}
             >
               Cadastrar
