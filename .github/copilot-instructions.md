@@ -4,7 +4,7 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 
 ## Arquitetura
 
-- **Frontend** (`/frontend`): SPA React (Vite), Material UI, React Router DOM. Navegação protegida por JWT (localStorage), consumo de API REST via Axios. Feedback visual global padronizado: use sempre `SnackbarContext`, `GlobalSnackbar` e `LoadingBackdrop`.
+- **Frontend** (`/frontend`): SPA React (Vite), Material UI, React Router DOM. Navegação protegida por JWT (localStorage), consumo de API REST via Axios. Feedback visual global padronizado: use sempre `SnackbarContext`, `GlobalSnackbar` e `LoadingBackdrop`. Microinterações e animações suaves (ver `PageTransition.jsx`, `AnimatedCard.jsx`).
 - **Backend** (`/backend`): Node.js (ESM), Express, Prisma ORM, JWT, bcryptjs. API RESTful, autenticação JWT, banco PostgreSQL. Controllers em `src/controllers`, rotas em `src/routes`. Middleware de autenticação JWT obrigatório em rotas protegidas (`src/middlewares/auth.js`). Prisma Client importado por controller (nunca global).
 - **Banco de dados**: PostgreSQL, modelado via Prisma (`backend/prisma/schema.prisma`).
 
@@ -30,6 +30,8 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
   - Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente (ver `Login.jsx`, `CadastroComercio.jsx`).
   - Formulários padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
   - Material UI para UI/UX consistente e acessível. Siga exemplos reais e microinterações do `/frontend/TODO.md`.
+  - Responsividade e mobile first: siga exemplos de espaçamento, breakpoints e media queries em `App.css`, `index.css` e componentes.
+  - Microinterações: utilize animações suaves em botões, cards, modais e navegação (ver `AnimatedCard.jsx`, `PageTransition.jsx`).
 - **Backend**:
   - Separe controllers e rotas.
   - Middleware de autenticação sempre aplicado em rotas protegidas.
@@ -60,7 +62,7 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 ## Dicas e Regras para Agentes
 
 - Respeite a separação de responsabilidades entre frontend e backend.
-- Siga padrões de feedback visual e navegação protegida já presentes nas páginas.
+- Siga padrões de feedback visual, navegação protegida e responsividade já presentes nas páginas e componentes.
 - Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades reais.
 - Use exemplos reais dos arquivos para manter consistência de código e UX.
 - Prefira comandos e fluxos documentados acima para build/dev/migrations.
@@ -68,7 +70,7 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 - Ao criar novas rotas protegidas, lembre-se de aplicar o middleware de autenticação.
 - Para novos modelos Prisma, siga o padrão do `schema.prisma` e gere migrations.
 - Para debugging, utilize logs do backend e o feedback visual do frontend.
-- Priorize acessibilidade e responsividade (ver TODO.md e exemplos de uso de MUI).
+- Priorize acessibilidade e responsividade (ver TODO.md, exemplos de uso de MUI, breakpoints e media queries).
 - Sempre atualize a documentação e exemplos práticos ao adicionar novos fluxos ou padrões.
 
 <!-- Para mais detalhes: https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
