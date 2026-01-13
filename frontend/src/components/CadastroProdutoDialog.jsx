@@ -155,9 +155,10 @@ function CadastroProdutoDialog({ open, onClose, onSuccess }) {
                     py: 1.5,
                     borderRadius: 3,
                     transition: "all 0.18s cubic-bezier(.4,0,.2,1)",
+                    backgroundColor: "#fafafa",
                     "&:hover": {
-                      backgroundColor: "#f5f5f5",
-                      transform: "translateY(-1px) scale(1.02)",
+                      backgroundColor: "#ececec",
+                      color: "#222",
                     },
                     "&:focus-visible": {
                       outline: "2px solid #1976d2",

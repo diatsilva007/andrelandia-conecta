@@ -110,6 +110,16 @@ export default function TrocaTipoUsuarioDialog({
                 px: 2.5,
                 py: 1.5,
                 borderRadius: 3,
+                transition: "all 0.18s cubic-bezier(.4,0,.2,1)",
+                backgroundColor: "#fafafa",
+                "&:hover": {
+                  backgroundColor: "#ececec",
+                  color: "#222",
+                },
+                "&:focus-visible": {
+                  outline: "2px solid #1976d2",
+                  outlineOffset: 2,
+                },
               }}
             >
               Cancelar

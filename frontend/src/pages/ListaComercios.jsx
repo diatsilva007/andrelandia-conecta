@@ -645,6 +645,10 @@ const ListaComercios = () => {
                             background: "#e3f2fd",
                             boxShadow: "0 2px 8px #1976d222",
                           },
+                          "&:focus-visible": {
+                            outline: "2px solid #1976d2",
+                            outlineOffset: 2,
+                          },
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -705,6 +709,23 @@ const ListaComercios = () => {
             onClick={() => handleDelete(comercioExcluir.id)}
             color="error"
             autoFocus
+            sx={{
+              borderRadius: 2,
+              minWidth: 48,
+              minHeight: 48,
+              px: 2,
+              py: 1.2,
+              fontSize: 16,
+              transition: "background 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                background: "#ffebee",
+                boxShadow: "0 2px 8px #d32f2f22",
+              },
+              "&:focus-visible": {
+                outline: "2px solid #d32f2f",
+                outlineOffset: 2,
+              },
+            }}
           >
             Excluir
           </Button>

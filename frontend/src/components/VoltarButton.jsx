@@ -25,6 +25,15 @@ export default function VoltarButton({ sx = {}, label = "Voltar", ...props }) {
           py: 1.5,
           fontSize: { xs: "0.97rem", sm: "1.05rem" },
           whiteSpace: "nowrap",
+          transition: "background 0.2s, box-shadow 0.2s",
+          "&:hover": {
+            background: "#f3e5f5",
+            boxShadow: "0 2px 8px #7b1fa222",
+          },
+          "&:focus-visible": {
+            outline: "2px solid #7b1fa2",
+            outlineOffset: 2,
+          },
           ...sx,
         }}
         aria-label={label}
