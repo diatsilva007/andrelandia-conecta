@@ -140,6 +140,18 @@ export default function Login() {
               py: 1.2,
               fontWeight: 700,
               fontSize: { xs: 15, sm: 16 },
+              borderRadius: 3,
+              boxShadow: 3,
+              transition: "all 0.18s cubic-bezier(.4,0,.2,1)",
+              "&:hover": {
+                boxShadow: 6,
+                backgroundColor: "primary.dark",
+                color: "#fff",
+              },
+              "&:focus-visible": {
+                outline: "2px solid #1976d2",
+                outlineOffset: 2,
+              },
             }}
             aria-label="Entrar"
           >
