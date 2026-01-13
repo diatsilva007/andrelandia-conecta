@@ -11,7 +11,7 @@
 - [x] Validar microinterações e animações em mobile
 - [x] Ajustar media queries customizadas se necessário (App.css, index.css)
 - [x] Testar em dispositivos reais e simuladores
-- [ ] Revisar todos os fluxos para mobile antes de novas features complexas
+- [x] Revisar todos os fluxos para mobile antes de novas features complexas
 
 ### UX/UI Profissional
 
@@ -30,7 +30,7 @@
 
 - [ ] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
-- [ ] Refatorar componentes para máxima reusabilidade
+- [ ] Refatorar componentes para máxima reusabilidade   
 - [ ] Adicionar onboarding, tooltips e mensagens de ajuda
 - [ ] Implementar CI/CD (GitHub Actions)
 - [ ] Documentação técnica e de API (Swagger/OpenAPI)

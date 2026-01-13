@@ -104,7 +104,23 @@ export default function Navbar() {
                 <AnimatedMenuIcon
                   open={drawerOpen}
                   onClick={() => setDrawerOpen((open) => !open)}
-                  sx={{ mr: 1 }}
+                  sx={{
+                    mr: 1,
+                    minWidth: 48,
+                    minHeight: 48,
+                    p: 1.2,
+                    borderRadius: 2,
+                  }}
+                  aria-label={
+                    drawerOpen
+                      ? "Fechar menu de navegação"
+                      : "Abrir menu de navegação"
+                  }
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ")
+                      setDrawerOpen((open) => !open);
+                  }}
                 />
               )}
               <Box
