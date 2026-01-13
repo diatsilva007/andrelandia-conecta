@@ -35,6 +35,7 @@ const ListaComercios = () => {
   const [comercios, setComercios] = useState([]);
   const [busca, setBusca] = useState("");
   const [categoriaFiltro, setCategoriaFiltro] = useState("");
+  const [localizacaoFiltro, setLocalizacaoFiltro] = useState("");
   const [token] = useState(localStorage.getItem("token"));
   const [usuario] = useState(() => {
     try {
@@ -116,6 +117,10 @@ const ListaComercios = () => {
       normalizar(c.descricao || "").includes(normalizar(busca)) ||
       normalizar(c.categoria || "").includes(normalizar(busca));
     const categoriaMatch = !categoriaFiltro || c.categoria === categoriaFiltro;
+    // Filtro de localização (cidade/bairro)
+    const localizacaoMatch =
+      !localizacaoFiltro ||
+      normalizar(c.endereco || "").includes(normalizar(localizacaoFiltro));
     // Filtro de preço
     const faixa = getFaixaPreco(c.produtos);
     const precoOk =
@@ -124,7 +129,9 @@ const ListaComercios = () => {
     const media = getMediaAvaliacao(c.avaliacoes);
     const avaliacaoOk =
       !avaliacaoMin || (media !== null && media >= avaliacaoMin);
-    return buscaMatch && categoriaMatch && precoOk && avaliacaoOk;
+    return (
+      buscaMatch && categoriaMatch && localizacaoMatch && precoOk && avaliacaoOk
+    );
   });
 
   // Exclusão real via API
@@ -385,6 +392,61 @@ const ListaComercios = () => {
             autoComplete: "off",
           }}
           sx={{ minWidth: 320, flex: 1 }}
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder="Filtrar por endereço (rua, bairro, cidade...)"
+          value={localizacaoFiltro}
+          onChange={(e) => setLocalizacaoFiltro(e.target.value)}
+          aria-label="Filtrar por endereço"
+          InputProps={{
+            startAdornment: (
+              <SearchIcon sx={{ color: "#1976d2", mr: 1, fontSize: 28 }} />
+            ),
+            sx: {
+              background: "linear-gradient(90deg, #e3f2fd 0%, #f1f8e9 100%)",
+              borderRadius: 3,
+              fontSize: 18,
+              fontWeight: 500,
+              color: "#1a237e",
+              boxShadow: "0 2px 12px #1976d222",
+              transition: "box-shadow 0.3s, border-color 0.3s",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#1976d2",
+                borderWidth: 2,
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#43a047",
+                borderWidth: 2,
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#388e3c",
+                borderWidth: 3,
+              },
+              input: {
+                padding: "14px 12px",
+                fontSize: 18,
+                fontWeight: 500,
+                color: "#1a237e",
+                letterSpacing: 0.5,
+              },
+              "input::placeholder": {
+                color: "#1976d2",
+                opacity: 1,
+                fontWeight: 400,
+                fontStyle: "italic",
+                fontSize: 17,
+                letterSpacing: 0.2,
+              },
+            },
+          }}
+          inputProps={{
+            maxLength: 60,
+            "aria-label": "Filtrar por endereço",
+            autoComplete: "off",
+          }}
+          sx={{ minWidth: 220, flex: 1 }}
         />
         <FormControl sx={{ minWidth: 180 }}>
           <InputLabel id="categoria-filtro-label" shrink>
