@@ -1,10 +1,8 @@
-<!-- Copilot Instructions — Andrelândia Conecta -->
-
 # Guia para Agentes de IA — Andrelândia Conecta
 
 Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região.
 
-## Arquitetura e Fluxos
+## Arquitetura
 
 - **Frontend** (`/frontend`): SPA React (Vite), Material UI, React Router DOM. Navegação protegida por JWT (localStorage), consumo de API REST via Axios. Feedback visual global padronizado: use sempre `SnackbarContext`, `GlobalSnackbar` e `LoadingBackdrop`.
 - **Backend** (`/backend`): Node.js (ESM), Express, Prisma ORM, JWT, bcryptjs. API RESTful, autenticação JWT, banco PostgreSQL. Controllers em `src/controllers`, rotas em `src/routes`. Middleware de autenticação JWT obrigatório em rotas protegidas (`src/middlewares/auth.js`). Prisma Client importado por controller (nunca global).
@@ -63,19 +61,7 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 
 - Respeite a separação de responsabilidades entre frontend e backend.
 - Siga padrões de feedback visual e navegação protegida já presentes nas páginas.
-- Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
-- Use exemplos reais dos arquivos para manter consistência de código e UX.
-- Prefira comandos e fluxos documentados acima para build/dev/migrations.
-- Para feedback visual, utilize sempre os componentes globais já existentes (`SnackbarContext`, `GlobalSnackbar`, `LoadingBackdrop`).
-- Ao criar novas rotas protegidas, lembre-se de aplicar o middleware de autenticação.
-- Para novos modelos Prisma, siga o padrão do `schema.prisma` e gere migrations.
-- Para debugging, utilize logs do backend e o feedback visual do frontend.
-- Priorize acessibilidade e responsividade (ver TODO.md e exemplos de uso de MUI).
-- Sempre atualize a documentação e exemplos práticos ao adicionar novos fluxos ou padrões.
-
-- Respeite a separação de responsabilidades entre frontend e backend.
-- Siga padrões de feedback visual e navegação protegida já presentes nas páginas.
-- Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades.
+- Consulte `/frontend/TODO.md` para prioridades de UX/UI e funcionalidades reais.
 - Use exemplos reais dos arquivos para manter consistência de código e UX.
 - Prefira comandos e fluxos documentados acima para build/dev/migrations.
 - Para feedback visual, utilize sempre os componentes globais já existentes (`SnackbarContext`, `GlobalSnackbar`, `LoadingBackdrop`).
