@@ -43,8 +43,21 @@ export const criarComercio = async (req, res) => {
     if (!usuarioId) {
       return res.status(401).json({ error: "Usuário não autenticado." });
     }
+    let imagemUrl = null;
+    if (req.file) {
+      // Caminho relativo para servir a imagem depois
+      imagemUrl = `/uploads/comercios/${req.file.filename}`;
+    }
     const novo = await prisma.comercio.create({
-      data: { nome, categoria, descricao, endereco, telefone, usuarioId },
+      data: {
+        nome,
+        categoria,
+        descricao,
+        endereco,
+        telefone,
+        usuarioId,
+        imagem: imagemUrl,
+      },
     });
     res.status(201).json(novo);
   } catch (error) {

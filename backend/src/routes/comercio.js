@@ -10,10 +10,16 @@ import {
 const router = Router();
 
 import { autenticarToken } from "../middlewares/auth.js";
+import { uploadComercioImage } from "../middlewares/uploadComercioImage.js";
 
 router.get("/", listarComercios);
 router.get("/:id", buscarComercioPorId);
-router.post("/", autenticarToken, criarComercio);
+router.post(
+  "/",
+  autenticarToken,
+  uploadComercioImage.single("imagem"),
+  criarComercio
+);
 router.put("/:id", autenticarToken, atualizarComercio);
 router.delete("/:id", autenticarToken, removerComercio);
 
