@@ -17,7 +17,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Login() {
-  const { setUsuario } = useUser();
+  const { login } = useUser();
   const [showSenha, setShowSenha] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -44,9 +44,7 @@ export default function Login() {
         email,
         senha,
       });
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
-      setUsuario(res.data.usuario);
+      login(res.data.usuario, res.data.token);
       setSnackbar({
         open: true,
         message: "Login realizado com sucesso!",

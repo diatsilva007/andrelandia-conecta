@@ -141,7 +141,12 @@ export default function MenuDrawer({ open, onClose, onLogout }) {
                 {...stringAvatar(usuario?.nome)}
               />
               <Typography
-                sx={{ fontWeight: 700, fontSize: 16, mb: 0.5, textAlign: "center" }}
+                sx={{
+                  fontWeight: 700,
+                  fontSize: 16,
+                  mb: 0.5,
+                  textAlign: "center",
+                }}
               >
                 {usuario?.nome || "Usuário"}
               </Typography>
@@ -245,7 +250,14 @@ export default function MenuDrawer({ open, onClose, onLogout }) {
             />
           </>
         ) : (
-          <Box sx={{ p: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Box
+            sx={{
+              p: 3,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
               Bem-vindo!
             </Typography>
