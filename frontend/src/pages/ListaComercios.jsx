@@ -564,7 +564,15 @@ const ListaComercios = () => {
             >
               <CardContent sx={{ pb: 1, position: "relative" }}>
                 <Box sx={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}>
-                  <FavoriteButton item={{ id: comercio.id, tipo: "comercio", nome: comercio.nome, descricao: comercio.descricao, link: `/comercios/${comercio.id}` }} />
+                  <FavoriteButton
+                    item={{
+                      id: comercio.id,
+                      tipo: "comercio",
+                      nome: comercio.nome,
+                      descricao: comercio.descricao,
+                      link: `/comercios/${comercio.id}`,
+                    }}
+                  />
                 </Box>
                 {/* Botão Visualizar */}
                 <Box

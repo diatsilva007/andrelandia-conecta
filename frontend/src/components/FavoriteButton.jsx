@@ -28,11 +28,15 @@ export default function FavoriteButton({ item }) {
   };
 
   return (
-    <Tooltip title={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}>
+    <Tooltip
+      title={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+    >
       <IconButton
         color={favorited ? "error" : "default"}
         onClick={handleToggle}
-        aria-label={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+        aria-label={
+          favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"
+        }
         sx={{ transition: "color 0.2s", fontSize: 28 }}
       >
         {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
