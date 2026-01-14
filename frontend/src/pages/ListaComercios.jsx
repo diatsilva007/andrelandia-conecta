@@ -29,6 +29,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AnimatedCard from "../components/AnimatedCard.jsx";
+import FavoriteButton from "../components/FavoriteButton.jsx";
 
 const ListaComercios = () => {
   const navigate = useNavigate();
@@ -561,7 +562,10 @@ const ListaComercios = () => {
               onClick={() => navigate(`/comercios/${comercio.id}`)}
               aria-label={`Ver detalhes do comércio ${comercio.nome}`}
             >
-              <CardContent sx={{ pb: 1 }}>
+              <CardContent sx={{ pb: 1, position: "relative" }}>
+                <Box sx={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}>
+                  <FavoriteButton item={{ id: comercio.id, tipo: "comercio", nome: comercio.nome, descricao: comercio.descricao, link: `/comercios/${comercio.id}` }} />
+                </Box>
                 {/* Botão Visualizar */}
                 <Box
                   display="flex"
