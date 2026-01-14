@@ -11,6 +11,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
+import ImageUpload from "../components/ImageUpload.jsx";
 import { LoadingContext } from "../App.jsx";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 
@@ -27,6 +28,8 @@ export default function CadastroComercio() {
     endereco: "",
     telefone: "",
   });
+  // Estado da imagem
+  const [imagem, setImagem] = useState(null);
   // Estado de feedback visual
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -64,8 +67,19 @@ export default function CadastroComercio() {
     setOpen(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:3333/comercios", form, {
-        headers: { Authorization: `Bearer ${token}` },
+      // Monta formData para enviar imagem junto
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      if (imagem) {
+        formData.append("imagem", imagem, "comercio.jpg");
+      }
+      await axios.post("http://localhost:3333/comercios", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
       setSucesso("Comércio cadastrado com sucesso!");
       setSnackbar({
@@ -160,6 +174,11 @@ export default function CadastroComercio() {
             aria-label="Formulário de cadastro de comércio"
             tabIndex={0}
           >
+            <ImageUpload
+              label="Imagem do comércio"
+              onChange={setImagem}
+              value={null}
+            />
             <TextField
               label="Nome do comércio"
               name="nome"
