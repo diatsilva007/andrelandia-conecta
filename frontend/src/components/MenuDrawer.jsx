@@ -22,6 +22,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import BusinessIcon from "@mui/icons-material/Business";
 import { Link, useLocation } from "react-router-dom";
 import EditarPerfilDialog from "./EditarPerfilDialog.jsx";
+import { useUser } from "../contexts/UserContext.jsx";
 import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog.jsx";
 
 function stringAvatar(name) {
@@ -35,7 +36,8 @@ function stringAvatar(name) {
   return { children: initials };
 }
 
-export default function MenuDrawer({ open, onClose, usuario, onLogout }) {
+export default function MenuDrawer({ open, onClose, onLogout }) {
+  const { usuario } = useUser();
   const [favoritosCount, setFavoritosCount] = useState(0);
 
   useEffect(() => {

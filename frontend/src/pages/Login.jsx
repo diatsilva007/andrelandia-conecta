@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import { LoadingContext } from "../App.jsx";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext.jsx";
 import axios from "axios";
 import {
   Box,
@@ -16,6 +17,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Login() {
+  const { setUsuario } = useUser();
   const [showSenha, setShowSenha] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -24,9 +26,11 @@ export default function Login() {
   const navigate = useNavigate();
   const { setSnackbar } = useSnackbar();
 
-  // Redireciona se já estiver logado
+  // Redireciona se já estiver logado (apenas se não está na página de login)
   React.useEffect(() => {
     if (localStorage.getItem("token")) {
+      // Se já está na página de login, não redireciona
+      if (window.location.pathname === "/login") return;
       navigate("/");
     }
   }, [navigate]);
@@ -42,6 +46,7 @@ export default function Login() {
       });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+      setUsuario(res.data.usuario);
       setSnackbar({
         open: true,
         message: "Login realizado com sucesso!",

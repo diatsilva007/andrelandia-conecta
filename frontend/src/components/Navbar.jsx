@@ -14,11 +14,18 @@ import AnimatedMenuIcon from "./AnimatedMenuIcon.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
+import { useUser } from "../contexts/UserContext.jsx";
 import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog";
 import MenuDrawer from "./MenuDrawer";
 
 export default function Navbar() {
+  const { usuario, setUsuario } = useUser();
   const [favoritosCount, setFavoritosCount] = useState(0);
+  const navigate = useNavigate();
+  const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const updateCount = () => {
@@ -33,41 +40,16 @@ export default function Navbar() {
       window.removeEventListener("favoritos-updated", updateCount);
     };
   }, []);
-  const navigate = useNavigate();
-  const [usuario, setUsuario] = useState(null);
-  const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userStr = localStorage.getItem("usuario");
-    if (token && userStr) {
-      setUsuario(JSON.parse(userStr));
-    } else {
-      setUsuario(null);
-    }
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("usuario");
     setUsuario(null);
     navigate("/login");
   };
 
   const handleTipoAtualizado = (novoTipo) => {
-    // Atualiza localStorage e estado
-    const userStr = localStorage.getItem("usuario");
-    if (userStr) {
-      const userObj = JSON.parse(userStr);
-      userObj.tipo = novoTipo;
-      localStorage.setItem("usuario", JSON.stringify(userObj));
-      setUsuario({ ...userObj });
-      // Força reload para atualizar menus e permissões
-      window.location.reload();
-    }
+    // Atualiza contexto e localStorage
+    setUsuario((prev) => ({ ...prev, tipo: novoTipo }));
   };
 
   return (
