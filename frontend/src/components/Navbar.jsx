@@ -18,6 +18,21 @@ import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog";
 import MenuDrawer from "./MenuDrawer";
 
 export default function Navbar() {
+  const [favoritosCount, setFavoritosCount] = useState(0);
+
+  useEffect(() => {
+    const updateCount = () => {
+      const favStr = localStorage.getItem("favoritos");
+      setFavoritosCount(favStr ? JSON.parse(favStr).length : 0);
+    };
+    updateCount();
+    window.addEventListener("storage", updateCount);
+    window.addEventListener("favoritos-updated", updateCount);
+    return () => {
+      window.removeEventListener("storage", updateCount);
+      window.removeEventListener("favoritos-updated", updateCount);
+    };
+  }, []);
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
   const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
@@ -226,10 +241,43 @@ export default function Navbar() {
                       ml: 1,
                       fontSize: 28,
                       transition: "color 0.2s",
+                      position: "relative",
+                      "&:hover": {
+                        color: "#ad1457",
+                        transform: "scale(1.12)",
+                      },
                     }}
                     aria-label="Ver favoritos"
                   >
-                    <FavoriteIcon />
+                    <Tooltip title="Meus Favoritos" arrow>
+                      <Box sx={{ position: "relative", display: "flex" }}>
+                        <FavoriteIcon />
+                        {favoritosCount > 0 && (
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: -6,
+                              right: -8,
+                              bgcolor: "#d32f2f",
+                              color: "#fff",
+                              borderRadius: "50%",
+                              minWidth: 20,
+                              height: 20,
+                              fontSize: 13,
+                              fontWeight: 700,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              boxShadow: 2,
+                              zIndex: 2,
+                              px: 0.7,
+                            }}
+                          >
+                            {favoritosCount}
+                          </Box>
+                        )}
+                      </Box>
+                    </Tooltip>
                   </IconButton>
                   <Typography
                     sx={{

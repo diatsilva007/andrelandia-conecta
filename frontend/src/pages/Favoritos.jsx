@@ -106,13 +106,17 @@ export default function Favoritos() {
       ) : (
         <Grid
           container
-          spacing={{ xs: 2, sm: 3, md: 4 }}
+          columns={12}
+          spacing={2}
           justifyContent="center"
           alignItems="stretch"
           sx={{ maxWidth: 1200, width: "100%", mx: "auto", mt: 0 }}
         >
           {favoritos.map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item.id}>
+            <Grid
+              gridColumn={{ xs: "span 12", sm: "span 6", md: "span 4" }}
+              key={item.id}
+            >
               <AnimatedCard
                 sx={{
                   position: "relative",

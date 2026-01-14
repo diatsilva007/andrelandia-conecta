@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Drawer,
   List,
@@ -36,6 +36,21 @@ function stringAvatar(name) {
 }
 
 export default function MenuDrawer({ open, onClose, usuario, onLogout }) {
+  const [favoritosCount, setFavoritosCount] = useState(0);
+
+  useEffect(() => {
+    const updateCount = () => {
+      const favStr = localStorage.getItem("favoritos");
+      setFavoritosCount(favStr ? JSON.parse(favStr).length : 0);
+    };
+    updateCount();
+    window.addEventListener("storage", updateCount);
+    window.addEventListener("favoritos-updated", updateCount);
+    return () => {
+      window.removeEventListener("storage", updateCount);
+      window.removeEventListener("favoritos-updated", updateCount);
+    };
+  }, []);
   const location = useLocation();
   const [editarPerfilOpen, setEditarPerfilOpen] = useState(false);
   const [trocaTipoOpen, setTrocaTipoOpen] = useState(false);
@@ -51,7 +66,35 @@ export default function MenuDrawer({ open, onClose, usuario, onLogout }) {
     { text: "Dashboard", icon: <ShoppingCartIcon />, to: "/dashboard" },
     {
       text: "Favoritos",
-      icon: <FavoriteBorderIcon sx={{ color: "#d32f2f" }} />,
+      icon: (
+        <Box sx={{ position: "relative", display: "flex" }}>
+          <FavoriteBorderIcon sx={{ color: "#d32f2f" }} />
+          {favoritosCount > 0 && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: -6,
+                right: -8,
+                bgcolor: "#d32f2f",
+                color: "#fff",
+                borderRadius: "50%",
+                minWidth: 20,
+                height: 20,
+                fontSize: 13,
+                fontWeight: 700,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: 2,
+                zIndex: 2,
+                px: 0.7,
+              }}
+            >
+              {favoritosCount}
+            </Box>
+          )}
+        </Box>
+      ),
       to: "/favoritos",
     },
   ].filter(Boolean);
