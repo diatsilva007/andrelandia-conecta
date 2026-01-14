@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import VoltarButton from "../components/VoltarButton.jsx";
+import FavoriteButton from "../components/FavoriteButton.jsx";
 
 export default function DetalheProduto() {
   const { id } = useParams();
@@ -71,9 +72,13 @@ export default function DetalheProduto() {
           boxShadow: 6,
           borderRadius: 4,
           bgcolor: "background.paper",
+          position: "relative",
         }}
       >
         <CardContent>
+          <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 2 }}>
+            <FavoriteButton item={{ id: produto.id, tipo: "produto", nome: produto.nome, descricao: produto.descricao, link: `/produtos/${produto.id}` }} />
+          </Box>
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Avatar
               sx={{
