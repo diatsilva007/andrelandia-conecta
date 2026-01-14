@@ -1,9 +1,5 @@
 # TODO - Andrelândia Conecta
 
-## Checklist Geral
-
-### Responsividade e Mobile First
-
 ### UX/UI Profissional
 
 - [ ] Personalização e empatia: modo escuro/claro, mensagens de boas-vindas e dicas contextuais para novos usuários.
@@ -12,7 +8,7 @@
 
 - [ ] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
-- [ ] Refatorar componentes para máxima reusabilidade   
+- [ ] Refatorar componentes para máxima reusabilidade
 - [ ] Adicionar onboarding, tooltips e mensagens de ajuda
 - [ ] Implementar CI/CD (GitHub Actions)
 - [ ] Documentação técnica e de API (Swagger/OpenAPI)
@@ -35,6 +31,19 @@
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
+
+### Nova página principal moderna e funcional:
+
+- [ ] Header com logo e slogan
+- [ ] Busca rápida centralizada (comércios, produtos, serviços)
+- [ ] Carrossel/grid de destaques: comércios, promoções, novidades
+- [ ] Botões de ação: “Ver todos os comércios”, “Ver produtos”, “Cadastrar meu comércio”
+- [ ] Mapa interativo com localização dos comércios (opcional)
+- [ ] Acesso rápido: Favoritos, Login/Cadastro, Dashboard
+- [ ] Layout 100% responsivo, microinterações suaves
+- [ ] Rodapé com informações de contato, redes sociais, termos de uso
+- [ ] Visual limpo, cores do projeto, imagens reais dos comércios
+- [ ] Chamadas claras para ação e navegação intuitiva
 
 ## Funcionalidades sugeridas (Backend)
 
