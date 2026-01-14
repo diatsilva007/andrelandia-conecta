@@ -14,6 +14,7 @@ import CadastroUsuario from "./pages/CadastroUsuario.jsx";
 import EsqueciSenha from "./pages/EsqueciSenha.jsx";
 import RedefinirSenha from "./pages/RedefinirSenha.jsx";
 import DetalheProduto from "./pages/DetalheProduto.jsx";
+import Favoritos from "./pages/Favoritos.jsx";
 
 import Navbar from "./components/Navbar.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
@@ -219,6 +220,7 @@ function App() {
               />
               <Route path="/produtos/:id/editar" element={<EditarProduto />} />
               <Route path="/produtos/:id" element={<DetalheProduto />} />
+              <Route path="/favoritos" element={<Favoritos />} />
             </Routes>
           </PageTransition>
         </LoadingContext.Provider>

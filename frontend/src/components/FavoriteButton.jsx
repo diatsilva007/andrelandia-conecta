@@ -21,7 +21,19 @@ export default function FavoriteButton({ item }) {
     if (favorited) {
       favs = favs.filter((f) => !(f.id === item.id && f.tipo === item.tipo));
     } else {
-      favs.push(item);
+      // Garante todos os campos necessários
+      const novoItem = {
+        id: item.id,
+        tipo: item.tipo,
+        nome: item.nome || "",
+        descricao: item.descricao || "",
+        link:
+          item.link ||
+          (item.tipo === "comercio"
+            ? `/comercios/${item.id}`
+            : `/produtos/${item.id}`),
+      };
+      favs.push(novoItem);
     }
     localStorage.setItem("favoritos", JSON.stringify(favs));
     setFavorited(!favorited);
@@ -33,7 +45,10 @@ export default function FavoriteButton({ item }) {
     >
       <IconButton
         color={favorited ? "error" : "default"}
-        onClick={handleToggle}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleToggle();
+        }}
         aria-label={
           favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"
         }

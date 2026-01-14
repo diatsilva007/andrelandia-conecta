@@ -9,6 +9,7 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import AnimatedMenuIcon from "./AnimatedMenuIcon.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -217,6 +218,19 @@ export default function Navbar() {
                   >
                     Dashboard
                   </Button>
+                  <IconButton
+                    component={Link}
+                    to="/favoritos"
+                    color="error"
+                    sx={{
+                      ml: 1,
+                      fontSize: 28,
+                      transition: "color 0.2s",
+                    }}
+                    aria-label="Ver favoritos"
+                  >
+                    <FavoriteIcon />
+                  </IconButton>
                   <Typography
                     sx={{
                       color:
