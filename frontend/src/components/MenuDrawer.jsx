@@ -11,6 +11,7 @@ import {
   Avatar,
   Typography,
   Chip,
+  Button,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import HomeIcon from "@mui/icons-material/Home";
@@ -118,128 +119,159 @@ export default function MenuDrawer({ open, onClose, onLogout }) {
   return (
     <Drawer anchor="left" open={open} onClose={onClose}>
       <Box sx={{ width: 260, pt: 2 }} role="presentation" onClick={onClose}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mb: 2,
-          }}
-        >
-          <Avatar
-            sx={{
-              width: 56,
-              height: 56,
-              mb: 1,
-              bgcolor: "primary.main",
-              fontWeight: 700,
-              fontSize: 22,
-            }}
-            {...stringAvatar(usuario?.nome)}
-          />
-          <Typography
-            sx={{ fontWeight: 700, fontSize: 16, mb: 0.5, textAlign: "center" }}
-          >
-            {usuario?.nome || "Usuário"}
-          </Typography>
-          <Chip
-            label={tipoChip.label}
-            color={tipoChip.color}
-            icon={tipoChip.icon}
-            size="small"
-            sx={{ fontWeight: 600, fontSize: 13, mb: 1 }}
-            aria-label={`Tipo de usuário: ${tipoChip.label}`}
-          />
-        </Box>
-        <Divider />
-        <List>
-          {menuItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                component={Link}
-                to={item.to}
-                selected={location.pathname === item.to}
-                aria-current={
-                  location.pathname === item.to ? "page" : undefined
-                }
-                sx={
-                  location.pathname === item.to
-                    ? { bgcolor: "action.selected" }
-                    : {}
-                }
+        {usuario ? (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mb: 2,
+              }}
+            >
+              <Avatar
+                sx={{
+                  width: 56,
+                  height: 56,
+                  mb: 1,
+                  bgcolor: "primary.main",
+                  fontWeight: 700,
+                  fontSize: 22,
+                }}
+                {...stringAvatar(usuario?.nome)}
+              />
+              <Typography
+                sx={{ fontWeight: 700, fontSize: 16, mb: 0.5, textAlign: "center" }}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setEditarPerfilOpen(true);
+                {usuario?.nome || "Usuário"}
+              </Typography>
+              <Chip
+                label={tipoChip.label}
+                color={tipoChip.color}
+                icon={tipoChip.icon}
+                size="small"
+                sx={{ fontWeight: 600, fontSize: 13, mb: 1 }}
+                aria-label={`Tipo de usuário: ${tipoChip.label}`}
+              />
+            </Box>
+            <Divider />
+            <List>
+              {menuItems.map((item) => (
+                <ListItem key={item.text} disablePadding>
+                  <ListItemButton
+                    component={Link}
+                    to={item.to}
+                    selected={location.pathname === item.to}
+                    aria-current={
+                      location.pathname === item.to ? "page" : undefined
+                    }
+                    sx={
+                      location.pathname === item.to
+                        ? { bgcolor: "action.selected" }
+                        : {}
+                    }
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditarPerfilOpen(true);
+                  }}
+                  aria-label="Editar Perfil"
+                  selected={false}
+                >
+                  <ListItemIcon>
+                    <EditIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Editar Perfil" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setTrocaTipoOpen(true);
+                  }}
+                  aria-label="Trocar tipo de usuário"
+                  selected={false}
+                >
+                  <ListItemIcon>
+                    <PersonIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Trocar tipo" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+            <Divider sx={{ my: 1 }} />
+            <List>
+              <ListItem disablePadding>
+                <ListItemButton onClick={onLogout} aria-label="Sair da conta">
+                  <ListItemIcon>
+                    <ExitToAppIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Sair" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+            {/* Só renderiza dialogs se usuario estiver definido */}
+            <EditarPerfilDialog
+              open={editarPerfilOpen}
+              onClose={() => setEditarPerfilOpen(false)}
+              onSuccess={() => setEditarPerfilOpen(false)}
+            />
+            <TrocaTipoUsuarioDialog
+              open={trocaTipoOpen}
+              onClose={() => setTrocaTipoOpen(false)}
+              usuario={usuario}
+              onTipoAtualizado={(novoTipo) => {
+                // Atualiza localStorage
+                const userStr = localStorage.getItem("usuario");
+                if (userStr) {
+                  const userObj = JSON.parse(userStr);
+                  userObj.tipo = novoTipo;
+                  localStorage.setItem("usuario", JSON.stringify(userObj));
+                  setTrocaTipoOpen(false);
+                  onClose && onClose(); // Fecha o Drawer
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 250);
+                }
               }}
-              aria-label="Editar Perfil"
-              selected={false}
+            />
+          </>
+        ) : (
+          <Box sx={{ p: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
+              Bem-vindo!
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to="/login"
+              sx={{ mb: 2, minWidth: 120, fontWeight: 700 }}
+              onClick={onClose}
             >
-              <ListItemIcon>
-                <EditIcon />
-              </ListItemIcon>
-              <ListItemText primary="Editar Perfil" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setTrocaTipoOpen(true);
-              }}
-              aria-label="Trocar tipo de usuário"
-              selected={false}
+              Entrar
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              component={Link}
+              to="/registrar"
+              sx={{ minWidth: 120, fontWeight: 700 }}
+              onClick={onClose}
             >
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary="Trocar tipo" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Divider sx={{ my: 1 }} />
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={onLogout} aria-label="Sair da conta">
-              <ListItemIcon>
-                <ExitToAppIcon />
-              </ListItemIcon>
-              <ListItemText primary="Sair" />
-            </ListItemButton>
-          </ListItem>
-        </List>
+              Registrar
+            </Button>
+          </Box>
+        )}
       </Box>
-      <EditarPerfilDialog
-        open={editarPerfilOpen}
-        onClose={() => setEditarPerfilOpen(false)}
-        onSuccess={() => setEditarPerfilOpen(false)}
-      />
-      <TrocaTipoUsuarioDialog
-        open={trocaTipoOpen}
-        onClose={() => setTrocaTipoOpen(false)}
-        usuario={usuario}
-        onTipoAtualizado={(novoTipo) => {
-          // Atualiza localStorage
-          const userStr = localStorage.getItem("usuario");
-          if (userStr) {
-            const userObj = JSON.parse(userStr);
-            userObj.tipo = novoTipo;
-            localStorage.setItem("usuario", JSON.stringify(userObj));
-            setTrocaTipoOpen(false);
-            onClose && onClose(); // Fecha o Drawer
-            setTimeout(() => {
-              window.location.reload();
-            }, 250);
-          }
-        }}
-      />
     </Drawer>
   );
 }

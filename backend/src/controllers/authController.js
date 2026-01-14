@@ -5,6 +5,29 @@ import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
+export const me = async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: "Token ausente." });
+  const token = authHeader.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "segredo");
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        tipo: true,
+      },
+    });
+    if (!usuario)
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    res.json({ usuario });
+  } catch (err) {
+    res.status(401).json({ error: "Token inválido ou expirado." });
+  }
+};
+
 export const login = async (req, res) => {
   const { email, senha } = req.body;
   try {
