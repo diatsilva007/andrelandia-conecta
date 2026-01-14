@@ -618,17 +618,35 @@ const ListaComercios = () => {
                 </Box>
                 {/* Botão Visualizar removido, agora só existe o conjunto com Favoritar */}
                 <Box display="flex" alignItems="center" gap={2} mb={2}>
-                  <Avatar
-                    sx={{
-                      bgcolor: "primary.main",
-                      fontWeight: 700,
-                      width: 44,
-                      height: 44,
-                      fontSize: 22,
-                    }}
-                  >
-                    {comercio.nome?.[0]?.toUpperCase() || "?"}
-                  </Avatar>
+                  {comercio.imagem ? (
+                    <img
+                      src={
+                        comercio.imagem.startsWith("/uploads")
+                          ? `http://localhost:3333${comercio.imagem}`
+                          : comercio.imagem
+                      }
+                      alt={comercio.nome}
+                      style={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        border: "2px solid #1976d2",
+                      }}
+                    />
+                  ) : (
+                    <Avatar
+                      sx={{
+                        bgcolor: "primary.main",
+                        fontWeight: 700,
+                        width: 44,
+                        height: 44,
+                        fontSize: 22,
+                      }}
+                    >
+                      {comercio.nome?.[0]?.toUpperCase() || "?"}
+                    </Avatar>
+                  )}
                   <Typography
                     variant="subtitle1"
                     fontWeight={700}

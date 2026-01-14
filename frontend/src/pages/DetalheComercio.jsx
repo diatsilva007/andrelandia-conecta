@@ -192,17 +192,35 @@ export default function DetalheComercio() {
         >
           <CardContent>
             <Box display="flex" alignItems="center" gap={2} mb={2}>
-              <Avatar
-                sx={{
-                  bgcolor: "primary.main",
-                  fontWeight: 700,
-                  width: 56,
-                  height: 56,
-                  fontSize: 28,
-                }}
-              >
-                {comercio.nome?.[0]?.toUpperCase() || "?"}
-              </Avatar>
+              {comercio.imagem ? (
+                <img
+                  src={
+                    comercio.imagem.startsWith("/uploads")
+                      ? `http://localhost:3333${comercio.imagem}`
+                      : comercio.imagem
+                  }
+                  alt={comercio.nome}
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: "2px solid #1976d2",
+                  }}
+                />
+              ) : (
+                <Avatar
+                  sx={{
+                    bgcolor: "primary.main",
+                    fontWeight: 700,
+                    width: 56,
+                    height: 56,
+                    fontSize: 28,
+                  }}
+                >
+                  {comercio.nome?.[0]?.toUpperCase() || "?"}
+                </Avatar>
+              )}
               <Box>
                 <Typography
                   variant="h5"
