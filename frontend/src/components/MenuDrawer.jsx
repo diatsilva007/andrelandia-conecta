@@ -12,6 +12,7 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import HomeIcon from "@mui/icons-material/Home";
 import StoreIcon from "@mui/icons-material/Store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -48,6 +49,11 @@ export default function MenuDrawer({ open, onClose, usuario, onLogout }) {
         }
       : null,
     { text: "Dashboard", icon: <ShoppingCartIcon />, to: "/dashboard" },
+    {
+      text: "Favoritos",
+      icon: <FavoriteBorderIcon sx={{ color: "#d32f2f" }} />,
+      to: "/favoritos",
+    },
   ].filter(Boolean);
 
   // Ícone e cor para tipo de usuário
