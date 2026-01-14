@@ -77,15 +77,26 @@ export default function DetalheProduto() {
       >
         <CardContent>
           <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 2 }}>
-            <FavoriteButton
-              item={{
-                id: produto.id,
-                tipo: "produto",
-                nome: produto.nome,
-                descricao: produto.descricao,
-                link: `/produtos/${produto.id}`,
+            <Box
+              sx={{
+                position: "absolute",
+                top: { xs: 10, sm: 12 },
+                right: { xs: 10, sm: 12 },
+                zIndex: 3,
+                p: 0,
               }}
-            />
+            >
+              <FavoriteButton
+                item={{
+                  id: produto.id,
+                  tipo: "produto",
+                  nome: produto.nome,
+                  descricao: produto.descricao,
+                  link: `/produtos/${produto.id}`,
+                }}
+                sx={{ fontSize: 32, p: 0.5 }}
+              />
+            </Box>
           </Box>
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Avatar

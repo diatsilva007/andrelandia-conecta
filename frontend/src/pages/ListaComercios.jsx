@@ -553,7 +553,7 @@ const ListaComercios = () => {
                   boxShadow: 12,
                   transform: "translateY(-6px) scale(1.03)",
                 },
-                minHeight: { xs: 180, sm: 200, md: 220 },
+                minHeight: { xs: 240, sm: 260, md: 280 }, // Mais espaço vertical
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -562,8 +562,49 @@ const ListaComercios = () => {
               onClick={() => navigate(`/comercios/${comercio.id}`)}
               aria-label={`Ver detalhes do comércio ${comercio.nome}`}
             >
-              <CardContent sx={{ pb: 1, position: "relative" }}>
-                <Box sx={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}>
+              <CardContent sx={{ pb: 4, position: "relative" }}>
+                {/* Botão Visualizar e Favoritar lado a lado */}
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="center"
+                  gap={2}
+                  px={2}
+                  pb={1.5}
+                  mb={{ xs: 1.5, sm: 2 }}
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    fullWidth={false}
+                    sx={{
+                      borderRadius: 2.5,
+                      minWidth: 48,
+                      minHeight: 44,
+                      px: 2.5,
+                      py: 1.2,
+                      fontSize: 16,
+                      fontWeight: 700,
+                      boxShadow: 2,
+                      letterSpacing: 0.5,
+                      background: "#1565c0",
+                      color: "#fff",
+                      transition: "background 0.22s, box-shadow 0.22s",
+                      "&:hover": {
+                        background: "#1976d2",
+                        color: "#fff",
+                        boxShadow: 4,
+                      },
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/comercios/${comercio.id}`);
+                    }}
+                  >
+                    Visualizar
+                  </Button>
                   <FavoriteButton
                     item={{
                       id: comercio.id,
@@ -572,57 +613,10 @@ const ListaComercios = () => {
                       descricao: comercio.descricao,
                       link: `/comercios/${comercio.id}`,
                     }}
+                    sx={{ fontSize: 28, ml: 1 }}
                   />
                 </Box>
-                {/* Botão Visualizar */}
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: "column", sm: "row" }}
-                  alignItems={{ xs: "stretch", sm: "center" }}
-                  justifyContent="flex-end"
-                  gap={{ xs: 1, sm: 1.5 }}
-                  px={2}
-                  pb={1.5}
-                  mb={{ xs: 1.5, sm: 2 }}
-                >
-                  <Tooltip title="Visualizar detalhes">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      fullWidth={true}
-                      sx={{
-                        borderRadius: 2.5,
-                        minWidth: { xs: "100%", sm: 48 },
-                        minHeight: 44,
-                        px: { xs: 1.5, sm: 2.5 },
-                        py: { xs: 1, sm: 1.2 },
-                        fontSize: { xs: 15, sm: 16 },
-                        fontWeight: 700,
-                        backgroundColor: "#1976d2",
-                        color: "#fff",
-                        boxShadow: "0 2px 8px #1976d222",
-                        transition: "background 0.2s, box-shadow 0.2s",
-                        "&:hover": {
-                          backgroundColor: "#1565c0",
-                          color: "#fff",
-                          boxShadow: "0 4px 16px #1976d244",
-                        },
-                        "&:focus-visible": {
-                          outline: "2px solid #1976d2",
-                          outlineOffset: 2,
-                        },
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/comercios/${comercio.id}`);
-                      }}
-                      aria-label={`Visualizar detalhes do comércio ${comercio.nome}`}
-                    >
-                      Visualizar
-                    </Button>
-                  </Tooltip>
-                </Box>
+                {/* Botão Visualizar removido, agora só existe o conjunto com Favoritar */}
                 <Box display="flex" alignItems="center" gap={2} mb={2}>
                   <Avatar
                     sx={{

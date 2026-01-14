@@ -12,16 +12,45 @@ export default function Favoritos() {
   const navigate = useNavigate();
   const [favoritos, setFavoritos] = useState([]);
 
+  // Atualiza favoritos ao montar e sempre que localStorage mudar
   useEffect(() => {
-    // Carrega favoritos do localStorage
     const loadFavoritos = () => {
       const favStr = localStorage.getItem("favoritos");
       setFavoritos(favStr ? JSON.parse(favStr) : []);
     };
     loadFavoritos();
     window.addEventListener("storage", loadFavoritos);
-    return () => window.removeEventListener("storage", loadFavoritos);
+    window.addEventListener("favoritos-updated", loadFavoritos);
+    return () => {
+      window.removeEventListener("storage", loadFavoritos);
+      window.removeEventListener("favoritos-updated", loadFavoritos);
+    };
   }, []);
+
+  // Função para atualizar favoritos imediatamente após clique
+  const handleFavoriteToggle = (item) => {
+    const favStr = localStorage.getItem("favoritos");
+    let favs = favStr ? JSON.parse(favStr) : [];
+    const isFav = favs.some((f) => f.id === item.id && f.tipo === item.tipo);
+    if (isFav) {
+      favs = favs.filter((f) => !(f.id === item.id && f.tipo === item.tipo));
+    } else {
+      const novoItem = {
+        id: item.id,
+        tipo: item.tipo,
+        nome: item.nome || "",
+        descricao: item.descricao || "",
+        link:
+          item.link ||
+          (item.tipo === "comercio"
+            ? `/comercios/${item.id}`
+            : `/produtos/${item.id}`),
+      };
+      favs.push(novoItem);
+    }
+    localStorage.setItem("favoritos", JSON.stringify(favs));
+    setFavoritos(favs);
+  };
 
   return (
     <Box
@@ -87,36 +116,51 @@ export default function Favoritos() {
               <AnimatedCard
                 sx={{
                   position: "relative",
-                  borderRadius: { xs: 3, sm: 4, md: 5 },
-                  boxShadow: "0 4px 24px #1976d222",
+                  borderRadius: 4,
+                  boxShadow: "0 2px 12px #1976d222",
                   bgcolor: "#fff",
                   p: { xs: 2, sm: 3 },
                   minHeight: { xs: 220, sm: 260 },
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between",
-                  mb: { xs: 2, sm: 3 }, // Espaço entre cards
+                  justifyContent: "flex-start",
+                  mb: { xs: 2, sm: 3 },
                   transition: "box-shadow 0.3s, transform 0.2s",
+                  overflow: "hidden",
                   "&:hover": {
                     boxShadow: "0 8px 32px #1976d244",
-                    transform: "scale(1.025) translateY(-2px)",
+                    transform: "scale(1.015) translateY(-2px)",
                   },
                 }}
               >
-                <Box sx={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}>
-                  <FavoriteButton item={item} />
-                </Box>
+                {/* Ícone de favoritos no topo direito */}
                 <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                  sx={{ position: "absolute", top: 12, right: 12, zIndex: 2 }}
                 >
+                  <FavoriteButton
+                    item={item}
+                    sx={{ fontSize: 28, p: 0.5, color: "#f50057" }}
+                    onClick={() => handleFavoriteToggle(item)}
+                  />
+                </Box>
+                {/* Informações principais */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.2,
+                    mb: 1.2,
+                    mt: 0.5,
+                  }}
+                >
+                  {item.tipo === "comercio" ? (
+                    <StoreIcon sx={{ color: "primary.main", fontSize: 22 }} />
+                  ) : (
+                    <ShoppingCartIcon
+                      sx={{ color: "secondary.main", fontSize: 22 }}
+                    />
+                  )}
                   <Chip
-                    icon={
-                      item.tipo === "comercio" ? (
-                        <StoreIcon />
-                      ) : (
-                        <ShoppingCartIcon />
-                      )
-                    }
                     label={item.tipo === "comercio" ? "Comércio" : "Produto"}
                     color={item.tipo === "comercio" ? "primary" : "secondary"}
                     sx={{
@@ -133,7 +177,7 @@ export default function Favoritos() {
                   fontWeight={700}
                   color="primary.main"
                   sx={{
-                    fontSize: 22,
+                    fontSize: 20,
                     letterSpacing: 0.5,
                     mb: 0.5,
                     textOverflow: "ellipsis",
@@ -148,7 +192,7 @@ export default function Favoritos() {
                   color="text.secondary"
                   mb={2}
                   sx={{
-                    fontSize: 16,
+                    fontSize: 15,
                     minHeight: 36,
                     textOverflow: "ellipsis",
                     overflow: "hidden",
@@ -156,31 +200,43 @@ export default function Favoritos() {
                 >
                   {item.descricao}
                 </Typography>
-                <Button
-                  variant="contained"
-                  color={item.tipo === "comercio" ? "primary" : "secondary"}
+                {/* Botão de visualizar centralizado na base */}
+                <Box
                   sx={{
-                    mt: 1.5,
-                    fontWeight: 700,
-                    borderRadius: 2,
-                    fontSize: 16,
-                    boxShadow: 2,
-                    py: 1.2,
-                    px: 2.5,
-                    letterSpacing: 0.5,
-                    background:
-                      item.tipo === "comercio" ? "#1565c0" : "#43a047",
-                    color: "#fff",
-                    "&:hover": {
-                      background:
-                        item.tipo === "comercio" ? "#1976d2" : "#388e3c",
-                      color: "#fff",
-                    },
+                    display: "flex",
+                    justifyContent: "center",
+                    mt: "auto",
+                    mb: 0.5,
                   }}
-                  onClick={() => navigate(item.link)}
                 >
-                  Visualizar {item.tipo === "comercio" ? "comércio" : "produto"}
-                </Button>
+                  <Button
+                    variant="contained"
+                    color={item.tipo === "comercio" ? "primary" : "secondary"}
+                    sx={{
+                      fontWeight: 700,
+                      borderRadius: 2,
+                      fontSize: 16,
+                      boxShadow: 2,
+                      py: 1.1,
+                      px: 2.5,
+                      letterSpacing: 0.5,
+                      background:
+                        item.tipo === "comercio" ? "#1565c0" : "#43a047",
+                      color: "#fff",
+                      transition: "background 0.22s, box-shadow 0.22s",
+                      "&:hover": {
+                        background:
+                          item.tipo === "comercio" ? "#1976d2" : "#388e3c",
+                        color: "#fff",
+                        boxShadow: 4,
+                      },
+                    }}
+                    onClick={() => navigate(item.link)}
+                  >
+                    Visualizar{" "}
+                    {item.tipo === "comercio" ? "comércio" : "produto"}
+                  </Button>
+                </Box>
               </AnimatedCard>
             </Grid>
           ))}

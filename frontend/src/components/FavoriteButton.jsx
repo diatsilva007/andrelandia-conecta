@@ -37,6 +37,8 @@ export default function FavoriteButton({ item }) {
     }
     localStorage.setItem("favoritos", JSON.stringify(favs));
     setFavorited(!favorited);
+    // Dispara evento customizado para atualizar Favoritos.jsx
+    window.dispatchEvent(new Event("favoritos-updated"));
   };
 
   return (
