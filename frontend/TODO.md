@@ -32,7 +32,7 @@
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
 
-### Nova página principal moderna e funcional:
+### Nova página principal moderna e funcional
 
 - [ ] Header com logo e slogan
 - [ ] Busca rápida centralizada (comércios, produtos, serviços)
