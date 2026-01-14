@@ -19,7 +19,7 @@ import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog";
 import MenuDrawer from "./MenuDrawer";
 
 export default function Navbar() {
-  const { usuario, setUsuario } = useUser();
+  const { usuario, logout } = useUser();
   const [favoritosCount, setFavoritosCount] = useState(0);
   const navigate = useNavigate();
   const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
@@ -42,8 +42,7 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUsuario(null);
+    logout();
     navigate("/login");
   };
 
