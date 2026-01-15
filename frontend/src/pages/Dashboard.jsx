@@ -333,6 +333,20 @@ export default function Dashboard() {
                         sx={{ boxShadow: 2, borderRadius: { xs: 2, sm: 2 } }}
                       >
                         <CardContent>
+                          {prod.imagem && (
+                            <Box mb={1} display="flex" justifyContent="center">
+                              <img
+                                src={`http://localhost:3333${prod.imagem}`}
+                                alt={prod.nome}
+                                style={{
+                                  maxWidth: "100%",
+                                  maxHeight: 120,
+                                  borderRadius: 8,
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </Box>
+                          )}
                           <Typography
                             variant="subtitle1"
                             fontWeight={700}
@@ -403,6 +417,20 @@ export default function Dashboard() {
                     sx={{ boxShadow: 2, borderRadius: { xs: 2, sm: 2 } }}
                   >
                     <CardContent>
+                      {prod.imagem && (
+                        <Box mb={1} display="flex" justifyContent="center">
+                          <img
+                            src={`http://localhost:3333${prod.imagem}`}
+                            alt={prod.nome}
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: 120,
+                              borderRadius: 8,
+                              objectFit: "cover",
+                            }}
+                          />
+                        </Box>
+                      )}
                       <Typography
                         variant="subtitle1"
                         fontWeight={700}

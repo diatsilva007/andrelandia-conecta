@@ -98,6 +98,21 @@ export default function DetalheProduto() {
               />
             </Box>
           </Box>
+          {produto.imagem && (
+            <Box mb={2} display="flex" justifyContent="center">
+              <img
+                src={`http://localhost:3333${produto.imagem}`}
+                alt={produto.nome}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: 220,
+                  borderRadius: 12,
+                  objectFit: "cover",
+                  boxShadow: "0 2px 8px #0002",
+                }}
+              />
+            </Box>
+          )}
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Avatar
               sx={{
