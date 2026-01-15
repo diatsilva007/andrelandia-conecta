@@ -130,6 +130,8 @@ export default function MenuDrawer({ open, onClose, onLogout }) {
               }}
             >
               <Avatar
+                src={usuario.imagem ? `http://localhost:3333${usuario.imagem}` : undefined}
+                alt={usuario.nome}
                 sx={{
                   width: 56,
                   height: 56,
@@ -138,8 +140,9 @@ export default function MenuDrawer({ open, onClose, onLogout }) {
                   fontWeight: 700,
                   fontSize: 22,
                 }}
-                {...stringAvatar(usuario?.nome)}
-              />
+              >
+                {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
+              </Avatar>
               <Typography
                 sx={{
                   fontWeight: 700,
