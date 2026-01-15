@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import CadastroComercioDialog from "../components/CadastroComercioDialog.jsx";
 import CadastroProdutoDialog from "../components/CadastroProdutoDialog.jsx";
@@ -19,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 
 export default function Dashboard() {
+  const location = useLocation();
   const [openComercioDialog, setOpenComercioDialog] = useState(false);
   const [openProdutoDialog, setOpenProdutoDialog] = useState(false);
   const [openPerfilDialog, setOpenPerfilDialog] = useState(false);
@@ -30,30 +32,42 @@ export default function Dashboard() {
   const [ultimosProdutos, setUltimosProdutos] = useState([]);
   const navigate = useNavigate();
 
+  // Função para buscar dados do backend
+  const fetchStats = async () => {
+    try {
+      const [comRes, prodRes] = await Promise.all([
+        axios.get("http://localhost:3333/comercios"),
+        axios.get("http://localhost:3333/produtos"),
+      ]);
+      setStats({
+        comercios: comRes.data.length,
+        produtos: prodRes.data.length,
+      });
+      setUltimosComercios(comRes.data.slice(-3).reverse());
+      setUltimosProdutos(prodRes.data.slice(-3).reverse());
+    } catch (err) {
+      setStats({ comercios: 0, produtos: 0 });
+      setUltimosComercios([]);
+      setUltimosProdutos([]);
+    }
+  };
+
   useEffect(() => {
     const userStr = localStorage.getItem("usuario");
     if (userStr) setUsuario(JSON.parse(userStr));
-    // Buscar estatísticas reais do backend
-    const fetchStats = async () => {
-      try {
-        const [comRes, prodRes] = await Promise.all([
-          axios.get("http://localhost:3333/comercios"),
-          axios.get("http://localhost:3333/produtos"),
-        ]);
-        setStats({
-          comercios: comRes.data.length,
-          produtos: prodRes.data.length,
-        });
-        setUltimosComercios(comRes.data.slice(-3).reverse());
-        setUltimosProdutos(prodRes.data.slice(-3).reverse());
-      } catch (err) {
-        setStats({ comercios: 0, produtos: 0 });
-        setUltimosComercios([]);
-        setUltimosProdutos([]);
-      }
-    };
     fetchStats();
+    // eslint-disable-next-line
   }, []);
+
+  // Recarrega dados se retornar de edição/cadastro com sucesso
+  useEffect(() => {
+    if (location.state && location.state.sucesso) {
+      fetchStats();
+      // Limpa o state para evitar recarregamento duplo
+      window.history.replaceState({}, document.title);
+    }
+    // eslint-disable-next-line
+  }, [location.state]);
 
   if (!usuario) {
     navigate("/login");
@@ -327,6 +341,24 @@ export default function Dashboard() {
                     <Grid item xs={12} sm={4} key={com.id}>
                       <AnimatedCard sx={{ boxShadow: 2, borderRadius: 2 }}>
                         <CardContent>
+                          {com.imagem && (
+                            <Box mb={1} display="flex" justifyContent="center">
+                              <img
+                                src={
+                                  com.imagem.startsWith("/uploads")
+                                    ? `http://localhost:3333${com.imagem}`
+                                    : com.imagem
+                                }
+                                alt={com.nome}
+                                style={{
+                                  maxWidth: "100%",
+                                  maxHeight: 80,
+                                  borderRadius: 8,
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </Box>
+                          )}
                           <Typography
                             variant="subtitle1"
                             fontWeight={700}
@@ -415,6 +447,24 @@ export default function Dashboard() {
                     sx={{ boxShadow: 2, borderRadius: { xs: 2, sm: 2 } }}
                   >
                     <CardContent>
+                      {com.imagem && (
+                        <Box mb={1} display="flex" justifyContent="center">
+                          <img
+                            src={
+                              com.imagem.startsWith("/uploads")
+                                ? `http://localhost:3333${com.imagem}`
+                                : com.imagem
+                            }
+                            alt={com.nome}
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: 80,
+                              borderRadius: 8,
+                              objectFit: "cover",
+                            }}
+                          />
+                        </Box>
+                      )}
                       <Typography
                         variant="subtitle1"
                         fontWeight={700}
