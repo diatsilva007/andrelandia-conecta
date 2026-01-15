@@ -69,6 +69,17 @@ export default function Dashboard() {
     // eslint-disable-next-line
   }, [location.state]);
 
+  // Atualização automática via evento global (localStorage)
+  useEffect(() => {
+    function handleStorageEvent(e) {
+      if (e.key === "refresh_dashboard") {
+        fetchStats();
+      }
+    }
+    window.addEventListener("storage", handleStorageEvent);
+    return () => window.removeEventListener("storage", handleStorageEvent);
+  }, []);
+
   if (!usuario) {
     navigate("/login");
     return null;

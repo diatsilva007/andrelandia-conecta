@@ -149,6 +149,8 @@ const ListaComercios = () => {
         message: "Comércio excluído com sucesso!",
         severity: "success",
       });
+      // Dispara evento global para atualizar Dashboard
+      localStorage.setItem("refresh_dashboard", Date.now());
     } catch {
       setSnackbar({
         open: true,
