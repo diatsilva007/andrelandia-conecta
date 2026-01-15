@@ -43,6 +43,7 @@ model Produto {
   nome       String
   preco      Float
   descricao  String?
+  imagem     String?  // Caminho relativo da imagem
   comercio   Comercio @relation(fields: [comercioId], references: [id])
   comercioId Int
   criadoEm   DateTime @default(now())

@@ -5,7 +5,9 @@ import {
   atualizarProduto,
   removerProduto,
 } from "../controllers/produtoController.js";
+
 import { autenticarToken } from "../middlewares/auth.js";
+import { uploadProdutoImage } from "../middlewares/uploadProdutoImage.js";
 
 const router = Router();
 
@@ -17,7 +19,12 @@ router.get("/:id", async (req, res, next) => {
   );
   return buscarProdutoPorId(req, res, next);
 });
-router.post("/", autenticarToken, criarProduto);
+router.post(
+  "/",
+  autenticarToken,
+  uploadProdutoImage.single("imagem"),
+  criarProduto
+);
 router.put("/:id", autenticarToken, atualizarProduto);
 router.delete("/:id", autenticarToken, removerProduto);
 

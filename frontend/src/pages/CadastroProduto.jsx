@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import ImageUpload from "../components/ImageUpload.jsx";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { LoadingContext } from "../App.jsx";
@@ -16,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function CadastroProduto() {
   const { id } = useParams(); // id do comércio
   const [form, setForm] = useState({ nome: "", preco: "", descricao: "" });
+  const [imagem, setImagem] = useState(null);
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const { setSnackbar } = useSnackbar();
@@ -39,7 +41,30 @@ export default function CadastroProduto() {
     setSucesso("");
     setOpen(true);
     try {
-      // ...lógica de cadastro
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      if (imagem) {
+        formData.append("imagem", imagem, "produto.jpg");
+      }
+      await axios.post(
+        `http://localhost:3333/produtos?comercioId=${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setSucesso("Produto cadastrado com sucesso!");
+      setSnackbar({
+        open: true,
+        message: "Produto cadastrado com sucesso!",
+        severity: "success",
+      });
       setTimeout(() => navigate(`/comercios/${id}`), 1200);
     } catch (err) {
       const msg = err.response?.data?.error || "Erro ao cadastrar produto";
@@ -113,6 +138,11 @@ export default function CadastroProduto() {
           aria-label="Formulário de cadastro de produto"
           tabIndex={0}
         >
+          <ImageUpload
+            label="Imagem do produto"
+            onChange={setImagem}
+            value={null}
+          />
           <TextField
             label="Nome"
             name="nome"
