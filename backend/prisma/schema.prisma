@@ -33,7 +33,7 @@ model Avaliacao {
   comentario String?
   usuario    Usuario  @relation(fields: [usuarioId], references: [id])
   usuarioId  Int
-  comercio   Comercio @relation(fields: [comercioId], references: [id])
+  comercio   Comercio @relation(fields: [comercioId], references: [id], onDelete: Cascade)
   comercioId Int
   criadoEm   DateTime @default(now())
 }
@@ -44,7 +44,7 @@ model Produto {
   preco      Float
   descricao  String?
   imagem     String?  // Caminho relativo da imagem
-  comercio   Comercio @relation(fields: [comercioId], references: [id])
+  comercio   Comercio @relation(fields: [comercioId], references: [id], onDelete: Cascade)
   comercioId Int
   criadoEm   DateTime @default(now())
 }

@@ -83,9 +83,12 @@ export const atualizarComercio = async (req, res) => {
 export const removerComercio = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("[removerComercio] Tentando remover comércio com id:", id);
     await prisma.comercio.delete({ where: { id: Number(id) } });
+    console.log("[removerComercio] Removido com sucesso id:", id);
     res.status(204).send();
   } catch (error) {
+    console.error("[removerComercio] Erro ao remover:", error);
     res.status(500).json({ error: "Erro ao remover comércio." });
   }
 };
