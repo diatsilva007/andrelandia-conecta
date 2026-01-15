@@ -1,3 +1,14 @@
+// Listar todos os produtos
+export const listarProdutos = async (req, res) => {
+  try {
+    const produtos = await prisma.produto.findMany({
+      include: { comercio: true },
+    });
+    res.json(produtos);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao listar produtos." });
+  }
+};
 // Buscar produto por ID
 export const buscarProdutoPorId = async (req, res) => {
   try {
@@ -18,20 +29,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const listarProdutos = async (req, res) => {
-  try {
-    const produtos = await prisma.produto.findMany({
-      include: { comercio: true },
-    });
-    res.json(produtos);
-  } catch (error) {
-    res.status(500).json({ error: "Erro ao listar produtos." });
-  }
-};
-
 export const criarProduto = async (req, res) => {
   try {
-    const { nome, preco, descricao, comercioId } = req.body;
+    const { nome, preco, descricao } = req.body;
+    // Aceita comercioId do corpo ou da query string
+    let comercioId = req.body.comercioId || req.query.comercioId;
+    comercioId = Number(comercioId);
+    if (!comercioId || isNaN(comercioId)) {
+      return res.status(400).json({ error: "comercioId inválido ou ausente." });
+    }
     let imagemUrl = null;
     if (req.file) {
       imagemUrl = `/uploads/produtos/${req.file.filename}`;
@@ -41,7 +47,7 @@ export const criarProduto = async (req, res) => {
         nome,
         preco: parseFloat(preco),
         descricao,
-        comercioId: Number(comercioId),
+        comercioId,
         imagem: imagemUrl,
       },
     });
@@ -51,6 +57,7 @@ export const criarProduto = async (req, res) => {
     res.status(500).json({ error: "Erro ao criar produto." });
   }
 };
+// ...existing code...
 
 export const atualizarProduto = async (req, res) => {
   try {
