@@ -55,8 +55,8 @@ export const criarComercio = async (req, res) => {
         descricao,
         endereco,
         telefone,
-        usuarioId,
         imagem: imagemUrl,
+        usuarioId,
       },
     });
     res.status(201).json(novo);

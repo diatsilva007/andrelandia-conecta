@@ -21,6 +21,12 @@ router.post(
   criarComercio
 );
 router.put("/:id", autenticarToken, atualizarComercio);
+router.put(
+  "/:id",
+  autenticarToken,
+  uploadComercioImage.single("imagem"),
+  atualizarComercio
+);
 router.delete("/:id", autenticarToken, removerComercio);
 
 export default router;

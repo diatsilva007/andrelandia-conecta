@@ -13,6 +13,7 @@ import {
   CircularProgress,
   MenuItem,
 } from "@mui/material";
+import ImageUpload from "../components/ImageUpload.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import VoltarButton from "../components/VoltarButton.jsx";
 
@@ -31,7 +32,9 @@ export default function EditarComercio() {
     endereco: "",
     telefone: "",
     categoria: "",
+    imagem: null,
   });
+  const [imagemPreview, setImagemPreview] = useState(null);
   // Categorias sugeridas (pode ser expandido futuramente)
   const categorias = [
     "Alimentação",
@@ -59,7 +62,12 @@ export default function EditarComercio() {
     setOpen(true);
     axios
       .get(`http://localhost:3333/comercios/${id}`)
-      .then((res) => setForm(res.data))
+      .then((res) => {
+        setForm(res.data);
+        setImagemPreview(
+          res.data.imagem ? `http://localhost:3333${res.data.imagem}` : null
+        );
+      })
       .catch(() => setErro("Erro ao carregar dados do comércio."))
       .finally(() => {
         setLoading(false);
@@ -77,8 +85,16 @@ export default function EditarComercio() {
     setSucesso("");
     setOpen(true);
     try {
-      await axios.put(`http://localhost:3333/comercios/${id}`, form, {
-        headers: { Authorization: `Bearer ${token}` },
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (key !== "imagem") formData.append(key, value);
+      });
+      if (form.imagem) formData.append("imagem", form.imagem);
+      await axios.put(`http://localhost:3333/comercios/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
       setSucesso("Comércio atualizado com sucesso!");
       setSnackbar({
@@ -152,6 +168,14 @@ export default function EditarComercio() {
           </Alert>
         )}
         <form onSubmit={handleSubmit} autoComplete="off">
+          <ImageUpload
+            label="Imagem do comércio"
+            value={imagemPreview}
+            onChange={(file) => {
+              setForm((f) => ({ ...f, imagem: file }));
+              setImagemPreview(file ? URL.createObjectURL(file) : null);
+            }}
+          />
           <TextField
             label="Nome"
             name="nome"
