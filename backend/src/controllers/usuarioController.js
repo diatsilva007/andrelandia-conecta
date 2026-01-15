@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import path from "path";
 
 const prisma = new PrismaClient();
 
@@ -37,14 +38,18 @@ export const criarUsuario = async (req, res) => {
 export const atualizarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, email, senha, tipo } = req.body;
     // Só permite atualizar o próprio usuário (ou admin futuramente)
     if (!req.usuario || Number(id) !== req.usuario.id) {
       return res.status(403).json({ error: "Acesso negado." });
     }
+    // Suporta multipart/form-data
+    const { nome, email, senha, tipo } = req.body;
     const data = { nome, email };
     if (senha) data.senha = await bcrypt.hash(senha, 10);
     if (tipo) data.tipo = tipo;
+    if (req.file) {
+      data.imagem = `/uploads/perfis/${req.file.filename}`;
+    }
     const atualizado = await prisma.usuario.update({
       where: { id: Number(id) },
       data,
@@ -54,6 +59,7 @@ export const atualizarUsuario = async (req, res) => {
       nome: atualizado.nome,
       email: atualizado.email,
       tipo: atualizado.tipo,
+      imagem: atualizado.imagem,
     });
   } catch (error) {
     res.status(500).json({ error: "Erro ao atualizar usuário." });

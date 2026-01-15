@@ -9,10 +9,13 @@ import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
+import ImageUpload from "./ImageUpload.jsx";
 
 function EditarPerfilDialog({ open, onClose, onSuccess }) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [imagem, setImagem] = useState(null);
+  const [imagemPreview, setImagemPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -25,6 +28,10 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
     if (usuario) {
       setNome(usuario.nome || "");
       setEmail(usuario.email || "");
+      setImagemPreview(
+        usuario.imagem ? `http://localhost:3333${usuario.imagem}` : null
+      );
+      setImagem(null);
     }
   }, [open]);
 
@@ -33,15 +40,17 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
     setLoading(true);
     try {
       const usuario = JSON.parse(localStorage.getItem("usuario"));
-      await axios.put(
+      const formData = new FormData();
+      formData.append("nome", nome);
+      formData.append("email", email);
+      if (imagem) formData.append("imagem", imagem);
+      const response = await axios.put(
         `http://localhost:3333/usuarios/${usuario.id}`,
-        {
-          nome,
-          email,
-        },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -56,6 +65,7 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
           ...JSON.parse(localStorage.getItem("usuario")),
           nome,
           email,
+          imagem: response.data.imagem,
         })
       );
       if (onSuccess) onSuccess();
@@ -77,6 +87,14 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
         <DialogTitle>Editar Perfil</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
+            <ImageUpload
+              label="Foto de perfil"
+              value={imagemPreview}
+              onChange={(file) => {
+                setImagem(file);
+                setImagemPreview(file ? URL.createObjectURL(file) : null);
+              }}
+            />
             <TextField
               label="Nome"
               value={nome}

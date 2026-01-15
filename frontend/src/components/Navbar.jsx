@@ -260,32 +260,53 @@ export default function Navbar() {
                       </Box>
                     </Tooltip>
                   </IconButton>
-                  <Typography
-                    sx={{
-                      color:
-                        usuario.tipo === "comerciante" ? "#fff" : "#e0f2f1",
-                      fontWeight: 500,
-                      fontSize: 16,
-                      background:
-                        usuario.tipo === "comerciante" ? "#43a047" : "#1976d2",
-                      borderRadius: 2,
-                      px: 1.5,
-                      py: 0.5,
-                      boxShadow: 1,
-                    }}
-                  >
-                    Olá, {usuario.nome}
-                    <span
-                      style={{
+                  <Box display="flex" alignItems="center" gap={1.2}>
+                    <Avatar
+                      src={
+                        usuario.imagem
+                          ? `http://localhost:3333${usuario.imagem}`
+                          : undefined
+                      }
+                      alt={usuario.nome}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        bgcolor: "#1976d2",
                         fontWeight: 700,
-                        fontSize: 13,
-                        marginLeft: 8,
-                        textTransform: "uppercase",
+                        fontSize: 22,
                       }}
                     >
-                      [{usuario.tipo}]
-                    </span>
-                  </Typography>
+                      {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
+                    </Avatar>
+                    <Typography
+                      sx={{
+                        color:
+                          usuario.tipo === "comerciante" ? "#fff" : "#e0f2f1",
+                        fontWeight: 500,
+                        fontSize: 16,
+                        background:
+                          usuario.tipo === "comerciante"
+                            ? "#43a047"
+                            : "#1976d2",
+                        borderRadius: 2,
+                        px: 1.5,
+                        py: 0.5,
+                        boxShadow: 1,
+                      }}
+                    >
+                      Olá, {usuario.nome}
+                      <span
+                        style={{
+                          fontWeight: 700,
+                          fontSize: 13,
+                          marginLeft: 8,
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        [{usuario.tipo}]
+                      </span>
+                    </Typography>
+                  </Box>
                   {usuario.tipo === "comerciante" && (
                     <Button
                       variant="contained"

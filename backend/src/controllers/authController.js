@@ -18,6 +18,7 @@ export const me = async (req, res) => {
         nome: true,
         email: true,
         tipo: true,
+        imagem: true,
       },
     });
     if (!usuario)
@@ -51,6 +52,7 @@ export const login = async (req, res) => {
         nome: usuario.nome,
         email: usuario.email,
         tipo: usuario.tipo,
+        imagem: usuario.imagem,
       },
     });
   } catch (error) {

@@ -55,6 +55,7 @@ model Usuario {
   email     String     @unique
   senha     String
   tipo      String     @default("cliente") // "cliente" ou "comerciante"
+  imagem    String?    // Caminho relativo da imagem de perfil
   avaliacoes Avaliacao[]
   comercios Comercio[]
   criadoEm  DateTime   @default(now())
