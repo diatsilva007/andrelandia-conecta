@@ -37,8 +37,14 @@ function stringAvatar(name) {
   return { children: initials };
 }
 
-export default function MenuDrawer({ open, onClose, onLogout }) {
-  const { usuario } = useUser();
+export default function MenuDrawer({
+  open,
+  onClose,
+  onLogout,
+  usuario: usuarioProp,
+}) {
+  const { usuario: usuarioCtx } = useUser();
+  const usuario = usuarioProp || usuarioCtx;
   const [favoritosCount, setFavoritosCount] = useState(0);
 
   useEffect(() => {
@@ -117,8 +123,14 @@ export default function MenuDrawer({ open, onClose, onLogout }) {
         };
 
   return (
-    <Drawer anchor="left" open={open} onClose={onClose}>
-      <Box sx={{ width: 260, pt: 2 }} role="presentation" onClick={onClose}>
+    <Drawer
+      anchor="left"
+      open={open}
+      onClose={onClose}
+      sx={{ zIndex: 1400 }}
+      PaperProps={{ sx: { zIndex: 1400 } }}
+    >
+      <Box sx={{ width: 260, pt: 4 }} role="presentation" onClick={onClose}>
         {usuario ? (
           <>
             <Box
@@ -130,7 +142,11 @@ export default function MenuDrawer({ open, onClose, onLogout }) {
               }}
             >
               <Avatar
-                src={usuario.imagem ? `http://localhost:3333${usuario.imagem}` : undefined}
+                src={
+                  usuario.imagem
+                    ? `http://localhost:3333${usuario.imagem}`
+                    : undefined
+                }
                 alt={usuario.nome}
                 sx={{
                   width: 56,

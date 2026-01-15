@@ -89,12 +89,27 @@ export default function Dashboard() {
         }}
       >
         <CardContent sx={{ px: { xs: 1, sm: 3 }, py: { xs: 2, sm: 3 } }}>
-          <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={2}
+          >
             <Box display="flex" alignItems="center" gap={2}>
               <Avatar
-                src={usuario.imagem ? `http://localhost:3333${usuario.imagem}` : undefined}
+                src={
+                  usuario.imagem
+                    ? `http://localhost:3333${usuario.imagem}`
+                    : undefined
+                }
                 alt={usuario.nome}
-                sx={{ width: 56, height: 56, bgcolor: "#1976d2", fontWeight: 700, fontSize: 28 }}
+                sx={{
+                  width: 56,
+                  height: 56,
+                  bgcolor: "#1976d2",
+                  fontWeight: 700,
+                  fontSize: 28,
+                }}
               >
                 {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
               </Avatar>
