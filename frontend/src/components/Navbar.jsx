@@ -261,23 +261,33 @@ export default function Navbar() {
                     </Tooltip>
                   </IconButton>
                   <Box display="flex" alignItems="center" gap={1.2}>
-                    <Avatar
-                      src={
-                        usuario.imagem
-                          ? `http://localhost:3333${usuario.imagem}`
-                          : undefined
-                      }
-                      alt={usuario.nome}
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        bgcolor: "#1976d2",
-                        fontWeight: 700,
-                        fontSize: 22,
-                      }}
+                    <Box
+                      component={Link}
+                      to={`/perfil/${usuario.id}`}
+                      sx={{ textDecoration: "none", mr: 1, cursor: "pointer" }}
                     >
-                      {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
-                    </Avatar>
+                      <Avatar
+                        src={
+                          usuario.imagem
+                            ? `http://localhost:3333${usuario.imagem}`
+                            : undefined
+                        }
+                        alt={usuario.nome}
+                        sx={{
+                          width: 40,
+                          height: 40,
+                          bgcolor: "#1976d2",
+                          fontWeight: 700,
+                          fontSize: 22,
+                          transition: "box-shadow 0.2s",
+                          boxShadow: 2,
+                          "&:hover": { boxShadow: 4 },
+                        }}
+                      >
+                        {!usuario.imagem &&
+                          usuario.nome?.charAt(0).toUpperCase()}
+                      </Avatar>
+                    </Box>
                     <Typography
                       sx={{
                         color:
@@ -295,16 +305,9 @@ export default function Navbar() {
                       }}
                     >
                       Olá, {usuario.nome}
-                      <span
-                        style={{
-                          fontWeight: 700,
-                          fontSize: 13,
-                          marginLeft: 8,
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        [{usuario.tipo}]
-                      </span>
+                      {usuario.tipo === "comerciante"
+                        ? " (Comerciante)"
+                        : " (Cliente)"}
                     </Typography>
                   </Box>
                   {usuario.tipo === "comerciante" && (
