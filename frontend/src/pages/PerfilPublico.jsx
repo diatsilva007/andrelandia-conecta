@@ -90,14 +90,20 @@ const PerfilPublico = () => {
           }}
         >
           <Avatar
-            src={perfil.imagem || undefined}
+            src={
+              perfil.imagem && perfil.imagem.startsWith("/uploads")
+                ? `${import.meta.env.VITE_API_URL || "http://localhost:3333"}${perfil.imagem}`
+                : perfil.imagem || undefined
+            }
             sx={{
               width: { xs: 72, sm: 96 },
               height: { xs: 72, sm: 96 },
               mb: 2,
-              bgcolor: "#e3f2fd",
+              bgcolor: perfil.imagem ? undefined : "#e3f2fd",
               boxShadow: 2,
+              objectFit: "cover",
             }}
+            imgProps={{ referrerPolicy: "no-referrer" }}
           >
             {!perfil.imagem && perfil.nome?.[0]}
           </Avatar>
@@ -147,6 +153,14 @@ const PerfilPublico = () => {
               px: 3,
               boxShadow: 1,
               fontSize: { xs: 14, sm: 16 },
+              background: "linear-gradient(90deg, #1565c0 0%, #43a047 100%)",
+              color: "#fff",
+              transition: "background 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                background: "linear-gradient(90deg, #43a047 0%, #1565c0 100%)",
+                color: "#fff",
+                boxShadow: 3,
+              },
             }}
             onClick={compartilharPerfil}
           >
@@ -260,14 +274,21 @@ const PerfilPublico = () => {
                       <Card variant="outlined" sx={{ p: 1, boxShadow: 1 }}>
                         <CardContent sx={{ textAlign: "center" }}>
                           <Avatar
-                            src={comercio.imagem || undefined}
+                            src={
+                              comercio.imagem &&
+                              comercio.imagem.startsWith("/uploads")
+                                ? `${import.meta.env.VITE_API_URL || "http://localhost:3333"}${comercio.imagem}`
+                                : comercio.imagem || undefined
+                            }
                             sx={{
                               width: 48,
                               height: 48,
                               mx: "auto",
                               mb: 1,
-                              bgcolor: "#e3f2fd",
+                              bgcolor: comercio.imagem ? undefined : "#e3f2fd",
+                              objectFit: "cover",
                             }}
+                            imgProps={{ referrerPolicy: "no-referrer" }}
                           >
                             {!comercio.imagem && comercio.nome?.[0]}
                           </Avatar>
