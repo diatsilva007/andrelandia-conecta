@@ -25,6 +25,7 @@ import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AnimatedCard from "../components/AnimatedCard.jsx";
+import FavoriteButton from "../components/FavoriteButton.jsx";
 
 export default function DetalheComercio() {
   const { id } = useParams();
@@ -237,6 +238,22 @@ export default function DetalheComercio() {
                 >
                   {comercio.descricao}
                 </Typography>
+              </Box>
+              {/* Botão de favoritos */}
+              <Box ml={2}>
+                {/* Importação do FavoriteButton */}
+                {/* O tipo deve ser "comercio" para garantir consistência */}
+                {comercio && (
+                  <FavoriteButton
+                    item={{
+                      id: comercio.id,
+                      tipo: "comercio",
+                      nome: comercio.nome,
+                      descricao: comercio.descricao,
+                      link: `/comercios/${comercio.id}`,
+                    }}
+                  />
+                )}
               </Box>
             </Box>
             <Typography variant="body2" color="text.secondary" mb={0.5}>
@@ -595,6 +612,18 @@ export default function DetalheComercio() {
                         >
                           {produto.descricao}
                         </Typography>
+                      </Box>
+                      {/* Botão de favoritos para produto */}
+                      <Box ml={1}>
+                        <FavoriteButton
+                          item={{
+                            id: produto.id,
+                            tipo: "produto",
+                            nome: produto.nome,
+                            descricao: produto.descricao,
+                            link: `/produtos/${produto.id}`,
+                          }}
+                        />
                       </Box>
                     </Box>
                     <Typography
