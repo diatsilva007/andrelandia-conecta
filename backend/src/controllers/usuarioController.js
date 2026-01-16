@@ -8,6 +8,7 @@ export const perfilPublico = async (req, res) => {
         nome: true,
         tipo: true,
         imagem: true,
+        descricao: true,
       },
     });
     if (!usuario)
@@ -85,16 +86,17 @@ export const listarUsuarios = async (req, res) => {
 
 export const criarUsuario = async (req, res) => {
   try {
-    const { nome, email, senha, tipo = "cliente" } = req.body;
+    const { nome, email, senha, tipo = "cliente", descricao } = req.body;
     const senhaHash = await bcrypt.hash(senha, 10);
     const novo = await prisma.usuario.create({
-      data: { nome, email, senha: senhaHash, tipo },
+      data: { nome, email, senha: senhaHash, tipo, descricao },
     });
     res.status(201).json({
       id: novo.id,
       nome: novo.nome,
       email: novo.email,
       tipo: novo.tipo,
+      descricao: novo.descricao,
     });
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
@@ -113,8 +115,8 @@ export const atualizarUsuario = async (req, res) => {
       return res.status(403).json({ error: "Acesso negado." });
     }
     // Suporta multipart/form-data
-    const { nome, email, senha, tipo } = req.body;
-    const data = { nome, email };
+    const { nome, email, senha, tipo, descricao } = req.body;
+    const data = { nome, email, descricao };
     if (senha) data.senha = await bcrypt.hash(senha, 10);
     if (tipo) data.tipo = tipo;
     if (req.file) {
@@ -129,6 +131,7 @@ export const atualizarUsuario = async (req, res) => {
       nome: atualizado.nome,
       email: atualizado.email,
       tipo: atualizado.tipo,
+      descricao: atualizado.descricao,
       imagem: atualizado.imagem,
     });
   } catch (error) {

@@ -34,6 +34,7 @@ export default function CadastroUsuario() {
     senha: "",
     senha2: "",
     tipo: "cliente", // padrão
+    descricao: "",
   });
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -84,6 +85,7 @@ export default function CadastroUsuario() {
         email: form.email,
         senha: form.senha,
         tipo: form.tipo,
+        descricao: form.descricao,
       });
       setSucesso("Usuário cadastrado com sucesso! Faça login.");
       setSnackbar({
@@ -181,6 +183,25 @@ export default function CadastroUsuario() {
               inputProps={{ maxLength: 60, "aria-label": "Nome do usuário" }}
               sx={{ fontSize: { xs: 15, sm: 16 } }}
             />
+            <Tooltip title="Conte um pouco sobre você ou seu negócio" arrow>
+              <TextField
+                label="Descrição/Sobre"
+                name="descricao"
+                value={form.descricao}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+                multiline
+                minRows={2}
+                maxRows={5}
+                inputProps={{
+                  maxLength: 280,
+                  "aria-label": "Descrição do usuário",
+                }}
+                placeholder="Conte um pouco sobre você ou seu negócio (máx. 280 caracteres)"
+                sx={{ fontSize: { xs: 15, sm: 16 } }}
+              />
+            </Tooltip>
           </Tooltip>
           <Tooltip title="Informe um e-mail válido para contato e login" arrow>
             <TextField

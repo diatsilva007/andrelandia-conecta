@@ -14,6 +14,7 @@ import ImageUpload from "./ImageUpload.jsx";
 function EditarPerfilDialog({ open, onClose, onSuccess }) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [imagem, setImagem] = useState(null);
   const [imagemPreview, setImagemPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,7 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
     if (usuario) {
       setNome(usuario.nome || "");
       setEmail(usuario.email || "");
+      setDescricao(usuario.descricao || "");
       setImagemPreview(
         usuario.imagem ? `http://localhost:3333${usuario.imagem}` : null
       );
@@ -44,6 +46,7 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
       formData.append("nome", nome);
       formData.append("email", email);
       if (imagem) formData.append("imagem", imagem);
+      formData.append("descricao", descricao);
       const response = await axios.put(
         `http://localhost:3333/usuarios/${usuario.id}`,
         formData,
@@ -65,6 +68,7 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
           ...JSON.parse(localStorage.getItem("usuario")),
           nome,
           email,
+          descricao,
           imagem: response.data.imagem,
         })
       );
@@ -102,6 +106,18 @@ function EditarPerfilDialog({ open, onClose, onSuccess }) {
               fullWidth
               margin="normal"
               required
+            />
+            <TextField
+              label="Descrição/Sobre"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              fullWidth
+              margin="normal"
+              multiline
+              minRows={2}
+              maxRows={5}
+              inputProps={{ maxLength: 280 }}
+              placeholder="Conte um pouco sobre você ou seu negócio (máx. 280 caracteres)"
             />
             <TextField
               label="E-mail"
