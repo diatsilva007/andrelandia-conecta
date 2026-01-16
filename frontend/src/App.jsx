@@ -20,6 +20,7 @@ import Navbar from "./components/Navbar.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
 import EditarProduto from "./pages/EditarProduto.jsx";
 import PageTransition from "./components/PageTransition.jsx";
+import PerfilPublico from "./pages/PerfilPublico.jsx";
 import { useLocation } from "react-router-dom";
 
 const theme = createTheme({
@@ -221,6 +222,7 @@ function App() {
               <Route path="/produtos/:id/editar" element={<EditarProduto />} />
               <Route path="/produtos/:id" element={<DetalheProduto />} />
               <Route path="/favoritos" element={<Favoritos />} />
+              <Route path="/perfil/:id" element={<PerfilPublico />} />
             </Routes>
           </PageTransition>
         </LoadingContext.Provider>

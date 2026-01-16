@@ -1,3 +1,71 @@
+export const perfilPublico = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        nome: true,
+        tipo: true,
+        imagem: true,
+        descricao: true,
+        sobre: true,
+        comercios: (usuario) =>
+          usuario.tipo === "comerciante"
+            ? {
+                select: {
+                  id: true,
+                  nome: true,
+                  categoria: true,
+                  imagem: true,
+                },
+              }
+            : undefined,
+      },
+    });
+    if (!usuario)
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    // Se comerciante, buscar comércios vinculados
+    let comercios = [];
+    if (usuario.tipo === "comerciante") {
+      comercios = await prisma.comercio.findMany({
+        where: { usuarioId: usuario.id },
+        select: {
+          id: true,
+          nome: true,
+          categoria: true,
+          imagem: true,
+        },
+      });
+    }
+    // Buscar avaliações recebidas (de produtos e comércios do usuário)
+    let avaliacoes = [];
+    if (usuario.tipo === "comerciante") {
+      const comercioIds = comercios.map(c => c.id);
+      avaliacoes = await prisma.avaliacao.findMany({
+        where: { comercioId: { in: comercioIds } },
+        select: {
+          id: true,
+          nota: true,
+          comentario: true,
+          createdAt: true,
+          usuario: { select: { nome: true, imagem: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      });
+    }
+    res.json({
+      ...usuario,
+      comercios,
+      avaliacoes,
+      mediaAvaliacao: avaliacoes.length ? (avaliacoes.reduce((acc, a) => acc + a.nota, 0) / avaliacoes.length).toFixed(1) : null,
+      totalAvaliacao: avaliacoes.length,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar perfil público." });
+  }
+};
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import path from "path";
