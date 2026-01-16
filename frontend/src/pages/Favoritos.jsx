@@ -124,7 +124,7 @@ export default function Favoritos() {
                   boxShadow: "0 2px 12px #1976d222",
                   bgcolor: "#fff",
                   p: { xs: 2, sm: 3 },
-                  minHeight: { xs: 220, sm: 260 },
+                  minHeight: { xs: 260, sm: 300 },
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "flex-start",
@@ -147,6 +147,45 @@ export default function Favoritos() {
                     onClick={() => handleFavoriteToggle(item)}
                   />
                 </Box>
+                {/* Imagem do comércio/produto */}
+                {item.tipo === "comercio" && item.imagem && (
+                  <Box mb={1.5} display="flex" justifyContent="center">
+                    <img
+                      src={
+                        item.imagem.startsWith("/uploads")
+                          ? `http://localhost:3333${item.imagem}`
+                          : item.imagem
+                      }
+                      alt={item.nome}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: 120,
+                        borderRadius: 12,
+                        objectFit: "cover",
+                        boxShadow: "0 2px 8px #0002",
+                      }}
+                    />
+                  </Box>
+                )}
+                {item.tipo === "produto" && item.imagem && (
+                  <Box mb={1.5} display="flex" justifyContent="center">
+                    <img
+                      src={
+                        item.imagem.startsWith("/uploads")
+                          ? `http://localhost:3333${item.imagem}`
+                          : item.imagem
+                      }
+                      alt={item.nome}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: 120,
+                        borderRadius: 12,
+                        objectFit: "cover",
+                        boxShadow: "0 2px 8px #0002",
+                      }}
+                    />
+                  </Box>
+                )}
                 {/* Informações principais */}
                 <Box
                   sx={{

@@ -21,7 +21,7 @@ export default function FavoriteButton({ item }) {
     if (favorited) {
       favs = favs.filter((f) => !(f.id === item.id && f.tipo === item.tipo));
     } else {
-      // Garante todos os campos necessários
+      // Garante todos os campos necessários, incluindo imagem
       const novoItem = {
         id: item.id,
         tipo: item.tipo,
@@ -32,6 +32,7 @@ export default function FavoriteButton({ item }) {
           (item.tipo === "comercio"
             ? `/comercios/${item.id}`
             : `/produtos/${item.id}`),
+        imagem: item.imagem || "",
       };
       favs.push(novoItem);
     }

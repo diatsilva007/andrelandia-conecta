@@ -240,9 +240,7 @@ export default function DetalheComercio() {
                 </Typography>
               </Box>
               {/* Botão de favoritos */}
-              <Box ml={2}>
-                {/* Importação do FavoriteButton */}
-                {/* O tipo deve ser "comercio" para garantir consistência */}
+              <Box sx={{ position: "absolute", top: 12, right: 12, zIndex: 2 }}>
                 {comercio && (
                   <FavoriteButton
                     item={{
@@ -251,7 +249,9 @@ export default function DetalheComercio() {
                       nome: comercio.nome,
                       descricao: comercio.descricao,
                       link: `/comercios/${comercio.id}`,
+                      imagem: comercio.imagem || "",
                     }}
+                    sx={{ fontSize: 28, p: 0.5, color: "#f50057" }}
                   />
                 )}
               </Box>
@@ -614,7 +614,14 @@ export default function DetalheComercio() {
                         </Typography>
                       </Box>
                       {/* Botão de favoritos para produto */}
-                      <Box ml={1}>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: 12,
+                          right: 12,
+                          zIndex: 2,
+                        }}
+                      >
                         <FavoriteButton
                           item={{
                             id: produto.id,
@@ -622,7 +629,9 @@ export default function DetalheComercio() {
                             nome: produto.nome,
                             descricao: produto.descricao,
                             link: `/produtos/${produto.id}`,
+                            imagem: produto.imagem || "",
                           }}
+                          sx={{ fontSize: 28, p: 0.5, color: "#f50057" }}
                         />
                       </Box>
                     </Box>

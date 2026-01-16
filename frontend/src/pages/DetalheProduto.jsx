@@ -77,26 +77,17 @@ export default function DetalheProduto() {
       >
         <CardContent>
           <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 2 }}>
-            <Box
-              sx={{
-                position: "absolute",
-                top: { xs: 10, sm: 12 },
-                right: { xs: 10, sm: 12 },
-                zIndex: 3,
-                p: 0,
+            <FavoriteButton
+              item={{
+                id: produto.id,
+                tipo: "produto",
+                nome: produto.nome,
+                descricao: produto.descricao,
+                link: `/produtos/${produto.id}`,
+                imagem: produto.imagem || "",
               }}
-            >
-              <FavoriteButton
-                item={{
-                  id: produto.id,
-                  tipo: "produto",
-                  nome: produto.nome,
-                  descricao: produto.descricao,
-                  link: `/produtos/${produto.id}`,
-                }}
-                sx={{ fontSize: 32, p: 0.5 }}
-              />
-            </Box>
+              sx={{ fontSize: 32, p: 0.5, color: "#f50057" }}
+            />
           </Box>
           {produto.imagem && (
             <Box mb={2} display="flex" justifyContent="center">
@@ -114,21 +105,32 @@ export default function DetalheProduto() {
             </Box>
           )}
           <Box display="flex" alignItems="center" gap={2} mb={2}>
-            <Avatar
-              sx={{
-                bgcolor: "secondary.main",
-                width: 64,
-                height: 64,
-                fontSize: 32,
-              }}
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
             >
-              {produto.nome?.charAt(0).toUpperCase() || "P"}
-            </Avatar>
-            <Box>
-              <Typography variant="h5" fontWeight={700} color="secondary.main">
+              <Avatar
+                sx={{
+                  bgcolor: "secondary.main",
+                  width: 64,
+                  height: 64,
+                  fontSize: 32,
+                  mb: 1,
+                }}
+              >
+                {produto.nome?.charAt(0).toUpperCase() || "P"}
+              </Avatar>
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                color="secondary.main"
+                align="center"
+              >
                 {produto.nome}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" align="center">
                 {produto.descricao || "Sem descrição"}
               </Typography>
             </Box>
@@ -138,11 +140,17 @@ export default function DetalheProduto() {
             color="primary.main"
             fontWeight={600}
             mb={1}
+            align="center"
           >
             Preço: R$ {produto.preco?.toFixed(2)}
           </Typography>
           {produto.comercio && (
-            <Typography variant="body2" color="text.secondary" mb={1}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              mb={1}
+              align="center"
+            >
               Comércio: {produto.comercio.nome}
             </Typography>
           )}
@@ -157,6 +165,16 @@ export default function DetalheProduto() {
               color: "#1976d2",
               borderColor: "#1976d2",
               transition: "background 0.2s, box-shadow 0.2s",
+              px: 4,
+              py: 1.5,
+              minWidth: 120,
+              maxWidth: 220,
+              mx: "auto",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              width: "fit-content",
               "&:hover": {
                 backgroundColor: "#e3f2fd",
                 color: "#1565c0",

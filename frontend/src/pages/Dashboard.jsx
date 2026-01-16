@@ -405,9 +405,42 @@ export default function Dashboard() {
                   {ultimosProdutos?.map((prod) => (
                     <Grid item xs={12} sm={6} md={4} key={prod.id}>
                       <Card
-                        sx={{ boxShadow: 2, borderRadius: { xs: 2, sm: 2 } }}
+                        sx={{
+                          boxShadow: 2,
+                          borderRadius: { xs: 2, sm: 2 },
+                          position: "relative",
+                        }}
                       >
                         <CardContent>
+                          {/* Botão de favoritos no topo direito */}
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: 10,
+                              right: 10,
+                              zIndex: 2,
+                            }}
+                          >
+                            <FavoriteButton
+                              item={{
+                                id: prod.id,
+                                tipo: "produto",
+                                nome: prod.nome,
+                                descricao: prod.descricao,
+                                link: `/produtos/${prod.id}`,
+                                imagem: prod.imagem || "",
+                              }}
+                              sx={{
+                                position: "absolute",
+                                top: 10,
+                                right: 10,
+                                zIndex: 2,
+                                fontSize: 28,
+                                p: 0.5,
+                                color: "#f50057",
+                              }}
+                            />
+                          </Box>
                           {prod.imagem && (
                             <Box mb={1} display="flex" justifyContent="center">
                               <img

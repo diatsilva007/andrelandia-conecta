@@ -614,8 +614,17 @@ const ListaComercios = () => {
                       nome: comercio.nome,
                       descricao: comercio.descricao,
                       link: `/comercios/${comercio.id}`,
+                      imagem: comercio.imagem || "",
                     }}
-                    sx={{ fontSize: 28, ml: 1 }}
+                    sx={{
+                      position: "absolute",
+                      top: 12,
+                      right: 12,
+                      zIndex: 2,
+                      fontSize: 28,
+                      p: 0.5,
+                      color: "#f50057",
+                    }}
                   />
                 </Box>
                 {/* Botão Visualizar removido, agora só existe o conjunto com Favoritar */}
