@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Avatar, Typography, Card, CardContent, Grid, Button } from "@mui/material";
-import axios from "axios";
+import {
+  Box,
+  Avatar,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  Button,
+} from "@mui/material";
+import { Link } from "react-router-dom";
 import LoadingBackdrop from "../components/LoadingBackdrop";
 import GlobalSnackbar from "../components/GlobalSnackbar";
 
@@ -48,22 +56,70 @@ const PerfilPublico = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
-      <Card sx={{ p: 3, boxShadow: 3 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <Box
+      sx={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: { xs: 2, sm: 0 },
+      }}
+    >
+      <Card
+        sx={{
+          maxWidth: 600,
+          width: "100%",
+          mx: "auto",
+          p: { xs: 2, sm: 3 },
+          boxShadow: 4,
+          borderRadius: 4,
+          bgcolor: "background.paper",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
           <Avatar
             src={perfil.imagem || undefined}
-            sx={{ width: 96, height: 96, mb: 2, bgcolor: "#e3f2fd" }}
+            sx={{
+              width: { xs: 72, sm: 96 },
+              height: { xs: 72, sm: 96 },
+              mb: 2,
+              bgcolor: "#e3f2fd",
+              boxShadow: 2,
+            }}
           >
             {!perfil.imagem && perfil.nome?.[0]}
           </Avatar>
-          <Typography variant="h5" fontWeight={700} gutterBottom>
+          <Typography
+            variant="h5"
+            fontWeight={700}
+            gutterBottom
+            sx={{ textAlign: "center", wordBreak: "break-word" }}
+          >
             {perfil.nome}
           </Typography>
           <Typography
             variant="caption"
             color="primary"
-            sx={{ mb: 1, px: 2, py: 0.5, borderRadius: 2, bgcolor: "#e3f2fd" }}
+            sx={{
+              mb: 1,
+              px: 2,
+              py: 0.5,
+              borderRadius: 2,
+              bgcolor: "#e3f2fd",
+              fontWeight: 600,
+              fontSize: { xs: 13, sm: 15 },
+            }}
           >
             {perfil.tipo === "comerciante" ? "Comerciante" : "Cliente"}
           </Typography>
@@ -71,14 +127,26 @@ const PerfilPublico = () => {
             variant="body1"
             color="text.secondary"
             align="center"
-            sx={{ mb: 2 }}
+            sx={{
+              mb: 2,
+              fontSize: { xs: 15, sm: 17 },
+              maxWidth: 420,
+              wordBreak: "break-word",
+            }}
           >
             {perfil.descricao || perfil.sobre || "Sem descrição cadastrada."}
           </Typography>
           <Button
             variant="contained"
             color="primary"
-            sx={{ mb: 2, borderRadius: 3, fontWeight: 600 }}
+            sx={{
+              mb: 2,
+              borderRadius: 3,
+              fontWeight: 600,
+              px: 3,
+              boxShadow: 1,
+              fontSize: { xs: 14, sm: 16 },
+            }}
             onClick={compartilharPerfil}
           >
             Compartilhar perfil
@@ -93,7 +161,11 @@ const PerfilPublico = () => {
                 <Box>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     {/* Adicione renderAvaliacaoEstrelas se necessário */}
-                    <Typography variant="body2" fontWeight={600} color="primary">
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      color="primary"
+                    >
                       {perfil.mediaAvaliacao} / 5
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -102,18 +174,57 @@ const PerfilPublico = () => {
                   </Box>
                   <Box sx={{ mt: 2 }}>
                     {perfil.avaliacoes.map((a) => (
-                      <Card key={a.id} variant="outlined" sx={{ mb: 1, p: 1, boxShadow: 0 }}>
-                        <CardContent sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                          <Avatar src={a.usuario?.imagem || undefined} sx={{ width: 32, height: 32, bgcolor: "#e3f2fd" }}>
-                            {a.usuario?.nome?.[0]}
-                          </Avatar>
-                          <Box>
-                            <Typography variant="body2" fontWeight={600}>{a.usuario?.nome}</Typography>
-                            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: "italic" }}>
+                      <Card
+                        key={a.id}
+                        variant="outlined"
+                        sx={{ mb: 1, p: 1, boxShadow: 0 }}
+                      >
+                        <CardContent
+                          sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                        >
+                          <Link
+                            to={a.usuario ? `/perfil/${a.usuario.id}` : "#"}
+                            style={{
+                              textDecoration: "none",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 8,
+                              marginRight: 8,
+                            }}
+                          >
+                            <Avatar
+                              src={a.usuario?.imagem || undefined}
+                              sx={{
+                                width: 32,
+                                height: 32,
+                                bgcolor: "#e3f2fd",
+                                cursor: "pointer",
+                              }}
+                            >
+                              {a.usuario?.nome?.[0]}
+                            </Avatar>
+                            <Typography
+                              variant="body2"
+                              fontWeight={600}
+                              color="primary"
+                              sx={{ cursor: "pointer" }}
+                            >
+                              {a.usuario?.nome}
+                            </Typography>
+                          </Link>
+                          <Box sx={{ minWidth: 0 }}>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{ fontStyle: "italic" }}
+                            >
                               {a.comentario || "Sem comentário."}
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {new Date(a.createdAt).toLocaleDateString()}
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              {new Date(a.criadoEm).toLocaleDateString()}
                             </Typography>
                           </Box>
                           <Box sx={{ ml: "auto" }}>
@@ -125,7 +236,11 @@ const PerfilPublico = () => {
                   </Box>
                 </Box>
               ) : (
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
                   Nenhuma avaliação recebida ainda.
                 </Typography>
               )}
@@ -143,14 +258,30 @@ const PerfilPublico = () => {
                     <Grid item xs={12} sm={6} key={comercio.id}>
                       <Card variant="outlined" sx={{ p: 1, boxShadow: 1 }}>
                         <CardContent sx={{ textAlign: "center" }}>
-                          <Avatar src={comercio.imagem || undefined} sx={{ width: 48, height: 48, mx: "auto", mb: 1, bgcolor: "#e3f2fd" }}>
+                          <Avatar
+                            src={comercio.imagem || undefined}
+                            sx={{
+                              width: 48,
+                              height: 48,
+                              mx: "auto",
+                              mb: 1,
+                              bgcolor: "#e3f2fd",
+                            }}
+                          >
                             {!comercio.imagem && comercio.nome?.[0]}
                           </Avatar>
-                          <Typography variant="subtitle2" fontWeight={600}>{comercio.nome}</Typography>
+                          <Typography variant="subtitle2" fontWeight={600}>
+                            {comercio.nome}
+                          </Typography>
                           <Typography variant="body2" color="text.secondary">
                             {comercio.categoria || "Sem categoria"}
                           </Typography>
-                          <Button variant="outlined" size="small" sx={{ mt: 1, minWidth: 100 }} href={`/comercios/${comercio.id}`}>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            sx={{ mt: 1, minWidth: 100 }}
+                            href={`/comercios/${comercio.id}`}
+                          >
                             Ver comércio
                           </Button>
                         </CardContent>
@@ -158,7 +289,11 @@ const PerfilPublico = () => {
                     </Grid>
                   ))
                 ) : (
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 1 }}
+                  >
                     Nenhum comércio vinculado.
                   </Typography>
                 )}
@@ -177,11 +312,30 @@ const PerfilPublico = () => {
                     <Grid item xs={12} sm={6} key={fav.id}>
                       <Card variant="outlined" sx={{ p: 1, boxShadow: 1 }}>
                         <CardContent sx={{ textAlign: "center" }}>
-                          <Avatar sx={{ width: 40, height: 40, mx: "auto", mb: 1, bgcolor: "#e3f2fd" }}>
+                          <Avatar
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              mx: "auto",
+                              mb: 1,
+                              bgcolor: "#e3f2fd",
+                            }}
+                          >
                             {fav.nome?.[0]}
                           </Avatar>
-                          <Typography variant="subtitle2" fontWeight={600}>{fav.nome}</Typography>
-                          <Button variant="outlined" size="small" sx={{ mt: 1, minWidth: 100 }} href={fav.tipo === "comercio" ? `/comercios/${fav.id}` : `/produtos/${fav.id}`}>
+                          <Typography variant="subtitle2" fontWeight={600}>
+                            {fav.nome}
+                          </Typography>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            sx={{ mt: 1, minWidth: 100 }}
+                            href={
+                              fav.tipo === "comercio"
+                                ? `/comercios/${fav.id}`
+                                : `/produtos/${fav.id}`
+                            }
+                          >
                             Ver
                           </Button>
                         </CardContent>
@@ -189,7 +343,11 @@ const PerfilPublico = () => {
                     </Grid>
                   ))
                 ) : (
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 1 }}
+                  >
                     Nenhum favorito cadastrado.
                   </Typography>
                 )}
