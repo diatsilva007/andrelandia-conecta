@@ -42,10 +42,17 @@ export const perfilPublico = async (req, res) => {
         take: 5,
       });
     }
+    // Para clientes, buscar favoritos (mock: vazio, pois localStorage é client-side)
+    let favoritos = [];
+    if (usuario.tipo === "cliente") {
+      // Se desejar persistir favoritos, buscar de uma tabela; aqui retorna vazio
+      favoritos = [];
+    }
     res.json({
       ...usuario,
       comercios,
       avaliacoes,
+      favoritos,
       mediaAvaliacao: avaliacoes.length
         ? (
             avaliacoes.reduce((acc, a) => acc + a.nota, 0) / avaliacoes.length
@@ -55,12 +62,10 @@ export const perfilPublico = async (req, res) => {
     });
   } catch (error) {
     console.error("Erro no perfilPublico:", error);
-    res
-      .status(500)
-      .json({
-        error: "Erro ao buscar perfil público.",
-        details: error?.message,
-      });
+    res.status(500).json({
+      error: "Erro ao buscar perfil público.",
+      details: error?.message,
+    });
   }
 };
 import { PrismaClient } from "@prisma/client";
