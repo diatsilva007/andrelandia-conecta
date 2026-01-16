@@ -41,7 +41,7 @@ export const perfilPublico = async (req, res) => {
     // Buscar avaliações recebidas (de produtos e comércios do usuário)
     let avaliacoes = [];
     if (usuario.tipo === "comerciante") {
-      const comercioIds = comercios.map(c => c.id);
+      const comercioIds = comercios.map((c) => c.id);
       avaliacoes = await prisma.avaliacao.findMany({
         where: { comercioId: { in: comercioIds } },
         select: {
@@ -59,7 +59,11 @@ export const perfilPublico = async (req, res) => {
       ...usuario,
       comercios,
       avaliacoes,
-      mediaAvaliacao: avaliacoes.length ? (avaliacoes.reduce((acc, a) => acc + a.nota, 0) / avaliacoes.length).toFixed(1) : null,
+      mediaAvaliacao: avaliacoes.length
+        ? (
+            avaliacoes.reduce((acc, a) => acc + a.nota, 0) / avaliacoes.length
+          ).toFixed(1)
+        : null,
       totalAvaliacao: avaliacoes.length,
     });
   } catch (error) {

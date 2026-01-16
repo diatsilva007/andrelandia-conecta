@@ -16,6 +16,31 @@ import GlobalSnackbar from "../components/GlobalSnackbar";
 
 // Página de perfil público de comerciante ou cliente
 const PerfilPublico = () => {
+  // Função para compartilhar perfil
+  const compartilharPerfil = () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: "Perfil público", url });
+    } else {
+      navigator.clipboard.writeText(url);
+      alert("Link do perfil copiado!");
+    }
+  };
+  const renderAvaliacaoEstrelas = (media) => {
+    const estrelas = [];
+    const nota = Number(media);
+    for (let i = 1; i <= 5; i++) {
+      estrelas.push(
+        <span
+          key={i}
+          style={{ color: i <= nota ? "#FFD700" : "#e0e0e0", fontSize: 22 }}
+        >
+          ★
+        </span>
+      );
+    }
+    return estrelas;
+  };
   const { id } = useParams();
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,7 +59,191 @@ const PerfilPublico = () => {
         setLoading(false);
       });
   }, [id]);
-
+  {
+    /* Botão de compartilhamento */
+  }
+  <Button
+    variant="contained"
+    color="primary"
+    sx={{ mb: 2, mt: 1, borderRadius: 3, fontWeight: 600 }}
+    onClick={compartilharPerfil}
+  >
+    Compartilhar perfil
+  </Button>;
+  {
+    /* Avaliações, comércios e favoritos */
+  }
+  {
+    perfil.tipo === "comerciante" && (
+      <>
+        {/* Avaliações */}
+        <Box sx={{ width: "100%", textAlign: "center", mt: 2, mb: 2 }}>
+          <Typography variant="subtitle1" fontWeight={600}>
+            Avaliações recebidas
+          </Typography>
+          {perfil.totalAvaliacao > 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mt: 1,
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                {renderAvaliacaoEstrelas(perfil.mediaAvaliacao)}
+                <Typography variant="body2" fontWeight={600} color="primary">
+                  {perfil.mediaAvaliacao} / 5
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  ({perfil.totalAvaliacao} avaliações)
+                </Typography>
+              </Box>
+              <Box sx={{ mt: 2, width: "100%" }}>
+                {perfil.avaliacoes.map((a) => (
+                  <Card
+                    key={a.id}
+                    variant="outlined"
+                    sx={{ mb: 1, p: 1, boxShadow: 0 }}
+                  >
+                    <CardContent
+                      sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                    >
+                      <Avatar
+                        src={a.usuario?.imagem || undefined}
+                        sx={{ width: 32, height: 32, bgcolor: "#e3f2fd" }}
+                      >
+                        {a.usuario?.nome?.[0]}
+                      </Avatar>
+                      <Box>
+                        <Typography variant="body2" fontWeight={600}>
+                          {a.usuario?.nome}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ fontStyle: "italic" }}
+                        >
+                          {a.comentario || "Sem comentário."}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {new Date(a.createdAt).toLocaleDateString()}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ ml: "auto" }}>
+                        {renderAvaliacaoEstrelas(a.nota)}
+                      </Box>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Box>
+            </Box>
+          ) : (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Nenhuma avaliação recebida ainda.
+            </Typography>
+          )}
+        </Box>
+        {/* Comércios vinculados */}
+        <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+          Comércios vinculados
+        </Typography>
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          {perfil.comercios?.length ? (
+            perfil.comercios.map((comercio) => (
+              <Grid item xs={12} sm={6} key={comercio.id}>
+                <Card variant="outlined" sx={{ p: 1, boxShadow: 1 }}>
+                  <CardContent sx={{ textAlign: "center" }}>
+                    <Avatar
+                      src={comercio.imagem || undefined}
+                      sx={{
+                        width: 48,
+                        height: 48,
+                        mx: "auto",
+                        mb: 1,
+                        bgcolor: "#e3f2fd",
+                      }}
+                    >
+                      {!comercio.imagem && comercio.nome?.[0]}
+                    </Avatar>
+                    <Typography variant="subtitle2" fontWeight={600}>
+                      {comercio.nome}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {comercio.categoria || "Sem categoria"}
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      sx={{ mt: 1, minWidth: 100 }}
+                      href={`/comercios/${comercio.id}`}
+                    >
+                      Ver comércio
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Nenhum comércio vinculado.
+            </Typography>
+          )}
+        </Grid>
+      </>
+    );
+  }
+  {
+    perfil.tipo === "cliente" && (
+      <>
+        <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }}>
+          Favoritos
+        </Typography>
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          {perfil.favoritos?.length ? (
+            perfil.favoritos.map((fav) => (
+              <Grid item xs={12} sm={6} key={fav.id}>
+                <Card variant="outlined" sx={{ p: 1, boxShadow: 1 }}>
+                  <CardContent sx={{ textAlign: "center" }}>
+                    <Avatar
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        mx: "auto",
+                        mb: 1,
+                        bgcolor: "#e3f2fd",
+                      }}
+                    >
+                      {fav.nome?.[0]}
+                    </Avatar>
+                    <Typography variant="subtitle2" fontWeight={600}>
+                      {fav.nome}
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      sx={{ mt: 1, minWidth: 100 }}
+                      href={
+                        fav.tipo === "comercio"
+                          ? `/comercios/${fav.id}`
+                          : `/produtos/${fav.id}`
+                      }
+                    >
+                      Ver
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Nenhum favorito cadastrado.
+            </Typography>
+          )}
+        </Grid>
+      </>
+    );
+  }
   if (loading) return <LoadingBackdrop open={true} />;
   if (error)
     return (
