@@ -8,19 +8,6 @@ export const perfilPublico = async (req, res) => {
         nome: true,
         tipo: true,
         imagem: true,
-        descricao: true,
-        sobre: true,
-        comercios: (usuario) =>
-          usuario.tipo === "comerciante"
-            ? {
-                select: {
-                  id: true,
-                  nome: true,
-                  categoria: true,
-                  imagem: true,
-                },
-              }
-            : undefined,
       },
     });
     if (!usuario)
@@ -48,10 +35,10 @@ export const perfilPublico = async (req, res) => {
           id: true,
           nota: true,
           comentario: true,
-          createdAt: true,
+          criadoEm: true,
           usuario: { select: { nome: true, imagem: true } },
         },
-        orderBy: { createdAt: "desc" },
+        orderBy: { criadoEm: "desc" },
         take: 5,
       });
     }
@@ -67,7 +54,13 @@ export const perfilPublico = async (req, res) => {
       totalAvaliacao: avaliacoes.length,
     });
   } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar perfil público." });
+    console.error("Erro no perfilPublico:", error);
+    res
+      .status(500)
+      .json({
+        error: "Erro ao buscar perfil público.",
+        details: error?.message,
+      });
   }
 };
 import { PrismaClient } from "@prisma/client";
