@@ -56,6 +56,7 @@ model Usuario {
   senha     String
   tipo      String     @default("cliente") // "cliente" ou "comerciante"
   imagem    String?    // Caminho relativo da imagem de perfil
+  descricao String?    // Descrição/sobre do usuário
   avaliacoes Avaliacao[]
   comercios Comercio[]
   criadoEm  DateTime   @default(now())
