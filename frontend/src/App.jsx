@@ -21,6 +21,7 @@ import EditarComercio from "./pages/EditarComercio.jsx";
 import EditarProduto from "./pages/EditarProduto.jsx";
 import PageTransition from "./components/PageTransition.jsx";
 import PerfilPublico from "./pages/PerfilPublico.jsx";
+import HistoricoUsuario from "./pages/HistoricoUsuario.jsx";
 import { useLocation } from "react-router-dom";
 
 const theme = createTheme({
@@ -223,6 +224,7 @@ function App() {
               <Route path="/produtos/:id" element={<DetalheProduto />} />
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/perfil/:id" element={<PerfilPublico />} />
+              <Route path="/historico" element={<HistoricoUsuario />} />
             </Routes>
           </PageTransition>
         </LoadingContext.Provider>
