@@ -176,7 +176,14 @@ export default function Dashboard() {
         px: { xs: 0, sm: 2 },
       }}
     >
-      <Box maxWidth={900} width="100%" mx="auto" px={{ xs: 1, sm: 2 }} pt={2}>
+      <Box
+        maxWidth={900}
+        width="100%"
+        mx="auto"
+        px={{ xs: 1, sm: 2 }}
+        pt={2}
+        textAlign="center"
+      >
         <BreadcrumbNav items={[{ label: "Dashboard" }]} />
       </Box>
       <Card
@@ -187,41 +194,45 @@ export default function Dashboard() {
           boxShadow: 8,
           borderRadius: { xs: 2, sm: 4 },
           bgcolor: "background.paper",
+          textAlign: "center",
+          mt: 3,
+          mb: 6,
+          py: { xs: 2, sm: 4 },
         }}
       >
-        <CardContent sx={{ px: { xs: 1, sm: 3 }, py: { xs: 2, sm: 3 } }}>
+        <CardContent sx={{ px: { xs: 2, sm: 4 }, py: { xs: 3, sm: 5 } }}>
+          {/* Bloco do usuário no topo */}
           <Box
             display="flex"
             alignItems="center"
-            justifyContent="space-between"
-            mb={2}
+            justifyContent="center"
+            gap={3}
+            mb={5}
           >
-            <Box display="flex" alignItems="center" gap={2}>
-              <Avatar
-                src={
-                  usuario.imagem
-                    ? `http://localhost:3333${usuario.imagem}`
-                    : undefined
-                }
-                alt={usuario.nome}
-                sx={{
-                  width: 56,
-                  height: 56,
-                  bgcolor: "#1976d2",
-                  fontWeight: 700,
-                  fontSize: 28,
-                }}
-              >
-                {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
-              </Avatar>
-              <Box>
-                <Typography variant="h5" fontWeight={700} color="primary.main">
-                  {usuario.nome}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {usuario.email}
-                </Typography>
-              </Box>
+            <Avatar
+              src={
+                usuario.imagem
+                  ? `http://localhost:3333${usuario.imagem}`
+                  : undefined
+              }
+              alt={usuario.nome}
+              sx={{
+                width: 64,
+                height: 64,
+                bgcolor: "#1976d2",
+                fontWeight: 700,
+                fontSize: 32,
+              }}
+            >
+              {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
+            </Avatar>
+            <Box textAlign="left">
+              <Typography variant="h5" fontWeight={700} color="primary.main">
+                {usuario.nome}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {usuario.email}
+              </Typography>
             </Box>
             <Button
               variant="contained"
@@ -230,16 +241,15 @@ export default function Dashboard() {
               sx={{
                 borderRadius: 3,
                 fontWeight: 700,
-                px: { xs: 1.5, sm: 2 },
-                py: { xs: 0.7, sm: 1 },
-                fontSize: { xs: 13, sm: 15 },
+                px: 2,
+                py: 1,
+                fontSize: 15,
+                minWidth: 44,
+                minHeight: 44,
                 boxShadow: "0 2px 8px #1565c033",
                 transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
                 background: "#1565c0",
                 color: "#fff",
-                transform: "scale(1)",
-                minWidth: 44,
-                minHeight: 44,
                 "&:hover": {
                   background: "#1976d2",
                   color: "#fff",
@@ -253,9 +263,9 @@ export default function Dashboard() {
               Ir para Home
             </Button>
           </Box>
-          {/* Banner removido do Dashboard. */}
-          <Grid container spacing={2} mb={2} columns={12}>
-            <Grid gridColumn={{ xs: "span 12", sm: "span 6" }}>
+          {/* Cards de resumo de comércios e produtos */}
+          <Grid container spacing={2} mb={5} justifyContent="center">
+            <Grid item xs={12} sm={6}>
               <AnimatedCard
                 sx={{ bgcolor: "#e3f2fd", boxShadow: 2, borderRadius: 3 }}
               >
@@ -266,7 +276,7 @@ export default function Dashboard() {
                     fontWeight={600}
                     align="center"
                   >
-                    Comércios
+                    Comércios cadastrados
                   </Typography>
                   <Typography
                     variant="h4"
@@ -279,7 +289,7 @@ export default function Dashboard() {
                 </CardContent>
               </AnimatedCard>
             </Grid>
-            <Grid gridColumn={{ xs: "span 12", sm: "span 6" }}>
+            <Grid item xs={12} sm={6}>
               <AnimatedCard
                 sx={{ bgcolor: "#e8f5e9", boxShadow: 2, borderRadius: 3 }}
               >
@@ -290,7 +300,7 @@ export default function Dashboard() {
                     fontWeight={600}
                     align="center"
                   >
-                    Produtos
+                    Produtos cadastrados
                   </Typography>
                   <Typography
                     variant="h4"
@@ -304,101 +314,9 @@ export default function Dashboard() {
               </AnimatedCard>
             </Grid>
           </Grid>
-          {usuario.tipo === "comerciante" && (
-            <Box mb={3}>
-              {/* 1. Cards analíticos no topo */}
-              <Grid container spacing={2} columns={12} mb={2}>
-                <Grid item xs={12} sm={4}>
-                  <AnalyticCard
-                    title="Vendas"
-                    value={loadingAnalytics ? "..." : analytics.vendas}
-                    color="primary"
-                    icon={
-                      <span role="img" aria-label="vendas">
-                        💰
-                      </span>
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <AnalyticCard
-                    title="Acessos"
-                    value={loadingAnalytics ? "..." : analytics.acessos}
-                    color="info"
-                    icon={
-                      <span role="img" aria-label="acessos">
-                        👁️
-                      </span>
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <AnalyticCard
-                    title="Avaliações"
-                    value={loadingAnalytics ? "..." : analytics.avaliacoes}
-                    color="success"
-                    icon={
-                      <span role="img" aria-label="avaliações">
-                        ⭐
-                      </span>
-                    }
-                  />
-                </Grid>
-              </Grid>
-              {/* 2. Filtro de período */}
-              <DateFilter value={periodo} onChange={handlePeriodoChange} />
-              {/* 3. Abas dos gráficos analíticos */}
-              <Tabs
-                value={chartTab}
-                onChange={handleChartTabChange}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="fullWidth"
-                sx={{ mb: 2, bgcolor: "background.paper", borderRadius: 2 }}
-              >
-                <Tab label="Vendas" />
-                <Tab label="Acessos" />
-                <Tab label="Avaliações" />
-              </Tabs>
-              {chartTab === 0 && (
-                <AnalyticLineChart
-                  title={`Vendas por dia (${periodo})`}
-                  labels={chartData.labels}
-                  data={chartData.vendas}
-                  color="#1976d2"
-                />
-              )}
-              {chartTab === 1 && (
-                <AnalyticLineChart
-                  title={`Acessos por dia (${periodo})`}
-                  labels={chartData.labels}
-                  data={chartData.acessos}
-                  color="#388e3c"
-                />
-              )}
-              {chartTab === 2 && (
-                <AnalyticLineChart
-                  title={`Avaliações por dia (${periodo})`}
-                  labels={chartData.labels}
-                  data={chartData.avaliacoes}
-                  color="#fbc02d"
-                />
-              )}
-              {/* 4. Ranking de produtos */}
-              <ProductRankingList
-                products={rankingProdutos}
-                title={`Produtos mais vendidos/avaliados (${periodo})`}
-              />
-            </Box>
-          )}
-          <Box mt={3}>
-            <Typography
-              variant="subtitle1"
-              color="primary.main"
-              fontWeight={600}
-              align="center"
-              mb={1}
-            >
+          {/* Atalhos rápidos logo após os cards de resumo */}
+          <Box mb={5}>
+            <Typography variant="h6" color="primary.main" mb={2}>
               Atalhos rápidos
             </Typography>
             <Grid container spacing={2} justifyContent="center">
@@ -504,146 +422,103 @@ export default function Dashboard() {
               </>
             </Grid>
           </Box>
-          <Box mt={4} textAlign="center">
-            {showComercios && (
-              <>
-                <Typography variant="h6" color="primary.main" mb={2}>
-                  Todos os comércios
-                </Typography>
-                <Grid container spacing={2} mb={2}>
-                  {ultimosComercios?.map((com) => (
-                    <Grid item xs={12} sm={4} key={com.id}>
-                      <AnimatedCard sx={{ boxShadow: 2, borderRadius: 2 }}>
-                        <CardContent>
-                          {com.imagem && (
-                            <Box mb={1} display="flex" justifyContent="center">
-                              <img
-                                src={
-                                  com.imagem.startsWith("/uploads")
-                                    ? `http://localhost:3333${com.imagem}`
-                                    : com.imagem
-                                }
-                                alt={com.nome}
-                                style={{
-                                  maxWidth: "100%",
-                                  maxHeight: 80,
-                                  borderRadius: 8,
-                                  objectFit: "cover",
-                                }}
-                              />
-                            </Box>
-                          )}
-                          <Typography
-                            variant="subtitle1"
-                            fontWeight={700}
-                            color="primary.main"
-                          >
-                            {com.nome}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {com.categoria || "Sem categoria"}
-                          </Typography>
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            color="primary"
-                            sx={{ mt: 1 }}
-                            onClick={() => navigate(`/comercios/${com.id}`)}
-                          >
-                            Visualizar
-                          </Button>
-                        </CardContent>
-                      </AnimatedCard>
-                    </Grid>
-                  ))}
-                </Grid>
-              </>
+          {/* Espaçamento entre seções principais */}
+          <Box mb={4}>
+            {/* Cards analíticos */}
+            <Grid container spacing={2} columns={12} mb={2}>
+              <Grid item xs={12} sm={4}>
+                <AnalyticCard
+                  title="Vendas"
+                  value={loadingAnalytics ? "..." : analytics.vendas}
+                  color="primary"
+                  icon={
+                    <span role="img" aria-label="vendas">
+                      💰
+                    </span>
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <AnalyticCard
+                  title="Acessos"
+                  value={loadingAnalytics ? "..." : analytics.acessos}
+                  color="info"
+                  icon={
+                    <span role="img" aria-label="acessos">
+                      👁️
+                    </span>
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <AnalyticCard
+                  title="Avaliações"
+                  value={loadingAnalytics ? "..." : analytics.avaliacoes}
+                  color="success"
+                  icon={
+                    <span role="img" aria-label="avaliações">
+                      ⭐
+                    </span>
+                  }
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box mb={4}>
+            {/* Filtro de período */}
+            <DateFilter value={periodo} onChange={handlePeriodoChange} />
+          </Box>
+          <Box mb={4}>
+            {/* Abas dos gráficos analíticos */}
+            <Tabs
+              value={chartTab}
+              onChange={handleChartTabChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              sx={{ mb: 2, bgcolor: "background.paper", borderRadius: 2 }}
+            >
+              <Tab label="Vendas" />
+              <Tab label="Acessos" />
+              <Tab label="Avaliações" />
+            </Tabs>
+          </Box>
+          <Box mb={4}>
+            {/* Gráficos analíticos */}
+            {chartTab === 0 && (
+              <AnalyticLineChart
+                title={`Vendas por dia (${periodo})`}
+                labels={chartData.labels}
+                data={chartData.vendas}
+                color="#1976d2"
+              />
             )}
-            {showProdutos && (
-              <>
-                <Typography variant="h6" color="secondary.main" mb={2}>
-                  Todos os produtos
-                </Typography>
-                <Grid container spacing={2} mb={2}>
-                  {ultimosProdutos?.map((prod) => (
-                    <Grid item xs={12} sm={6} md={4} key={prod.id}>
-                      <Card
-                        sx={{
-                          boxShadow: 2,
-                          borderRadius: { xs: 2, sm: 2 },
-                          position: "relative",
-                        }}
-                      >
-                        <CardContent>
-                          {/* Botão de favoritos no topo direito */}
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              top: 10,
-                              right: 10,
-                              zIndex: 2,
-                            }}
-                          >
-                            <FavoriteButton
-                              item={{
-                                id: prod.id,
-                                tipo: "produto",
-                                nome: prod.nome,
-                                descricao: prod.descricao,
-                                link: `/produtos/${prod.id}`,
-                                imagem: prod.imagem || "",
-                              }}
-                              sx={{
-                                position: "absolute",
-                                top: 10,
-                                right: 10,
-                                zIndex: 2,
-                                fontSize: 28,
-                                p: 0.5,
-                                color: "#f50057",
-                              }}
-                            />
-                          </Box>
-                          {prod.imagem && (
-                            <Box mb={1} display="flex" justifyContent="center">
-                              <img
-                                src={`http://localhost:3333${prod.imagem}`}
-                                alt={prod.nome}
-                                style={{
-                                  maxWidth: "100%",
-                                  maxHeight: 120,
-                                  borderRadius: 8,
-                                  objectFit: "cover",
-                                }}
-                              />
-                            </Box>
-                          )}
-                          <Typography
-                            variant="subtitle1"
-                            fontWeight={700}
-                            color="secondary.main"
-                          >
-                            {prod.nome}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {prod.descricao || "Sem descrição"}
-                          </Typography>
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            color="secondary"
-                            sx={{ mt: 1 }}
-                            onClick={() => navigate(`/produtos/${prod.id}`)}
-                          >
-                            Visualizar
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  ))}
-                </Grid>
-              </>
+            {chartTab === 1 && (
+              <AnalyticLineChart
+                title={`Acessos por dia (${periodo})`}
+                labels={chartData.labels}
+                data={chartData.acessos}
+                color="#388e3c"
+              />
             )}
+            {chartTab === 2 && (
+              <AnalyticLineChart
+                title={`Avaliações por dia (${periodo})`}
+                labels={chartData.labels}
+                data={chartData.avaliacoes}
+                color="#fbc02d"
+              />
+            )}
+          </Box>
+          <Box mb={4}>
+            {/* Ranking de produtos */}
+            <ProductRankingList
+              products={rankingProdutos}
+              title={`Produtos mais vendidos/avaliados (${periodo})`}
+            />
+          </Box>
+          <Box mt={5}>
+            {/* Últimos comércios cadastrados */}
             <Typography variant="h6" color="primary.main" mb={2}>
               Últimos comércios cadastrados
             </Typography>
@@ -696,6 +571,9 @@ export default function Dashboard() {
                 </Grid>
               ))}
             </Grid>
+          </Box>
+          <Box mt={5}>
+            {/* Últimos produtos cadastrados */}
             <Typography variant="h6" color="secondary.main" mb={2}>
               Últimos produtos cadastrados
             </Typography>
@@ -744,7 +622,9 @@ export default function Dashboard() {
                 </Grid>
               ))}
             </Grid>
-            <Typography variant="body2" color="text.secondary" mt={2}>
+          </Box>
+          <Box mt={4}>
+            <Typography variant="body2" color="text.secondary">
               Dica: mantenha seus dados atualizados e aproveite para divulgar
               seus produtos e serviços!
             </Typography>
