@@ -22,7 +22,7 @@
 - [x] Busca e filtros avançados (nome, categoria, preço, avaliação, localização)
 - [x] Página de favoritos (usuário pode favoritar comércios/produtos)
 - [x] Upload e otimização de imagens (compressão, preview, drag & drop)
-- [ ] Perfil público de comerciante e cliente
+- [x] Perfil público de comerciante e cliente
 - [ ] Página de histórico de compras/ações do usuário
 - [ ] Dashboard analítico para comerciante (vendas, acessos, avaliações)
 - [ ] Integração com mapas (Google Maps/Leaflet) para localização de comércios
