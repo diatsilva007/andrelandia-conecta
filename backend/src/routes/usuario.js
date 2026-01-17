@@ -28,6 +28,11 @@ router.put(
   uploadPerfilImage.single("imagem"),
   atualizarUsuario
 );
+
+// Histórico do usuário autenticado
+import { historicoUsuario } from "../controllers/usuarioController.js";
+router.get("/me/historico", autenticarToken, historicoUsuario);
+
 router.delete("/:id", autenticarToken, removerUsuario);
 
 export default router;
