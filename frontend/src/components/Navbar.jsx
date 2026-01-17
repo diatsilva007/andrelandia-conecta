@@ -188,24 +188,23 @@ export default function Navbar() {
                   <Button
                     variant="contained"
                     color="primary"
-                    size="large"
+                    size="medium"
                     sx={{
-                      borderRadius: 3,
-                      fontWeight: 700,
-                      minWidth: 48,
-                      minHeight: 48,
-                      px: 3,
-                      py: 1.5,
-                      fontSize: 16,
+                      borderRadius: 2,
+                      fontWeight: 600,
+                      minWidth: 36,
+                      minHeight: 36,
+                      px: 2,
+                      py: 1,
+                      fontSize: 15,
                       boxShadow: "0 2px 8px #1565c033",
                       transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
                       background: "#1565c0",
                       color: "#fff",
-                      transform: "scale(1)",
+                      mr: 0.5,
                       "&:hover": {
                         background: "#1976d2",
                         color: "#fff",
-                        transform: "scale(1.07)",
                         boxShadow: "0 4px 16px #1565c044",
                       },
                     }}
@@ -214,6 +213,36 @@ export default function Navbar() {
                   >
                     Dashboard
                   </Button>
+                  <Tooltip title="Histórico do usuário" arrow>
+                    <IconButton
+                      component={Link}
+                      to="/historico"
+                      sx={{
+                        background: "#e3f2fd",
+                        color: "#1565c0",
+                        ml: 0.5,
+                        p: 0.7,
+                        "&:hover": { background: "#bbdefb" },
+                      }}
+                      size="small"
+                      aria-label="Histórico do usuário"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#1565c0"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                    </IconButton>
+                  </Tooltip>
                   <IconButton
                     component={Link}
                     to="/favoritos"
