@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import AnalyticCard from "../components/AnalyticCard.jsx";
 import AnalyticLineChart from "../components/AnalyticLineChart.jsx";
+import ProductRankingList from "../components/ProductRankingList.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -47,6 +48,7 @@ export default function Dashboard() {
     labels: [],
   });
   const [chartTab, setChartTab] = useState(0);
+  const [rankingProdutos, setRankingProdutos] = useState([]);
   const navigate = useNavigate();
 
   // Função para buscar dados do backend
@@ -95,6 +97,16 @@ export default function Dashboard() {
     });
   };
 
+  const fetchRankingProdutos = async () => {
+    // Exemplo: buscar dados reais do backend
+    // Aqui, mock para demonstração
+    setRankingProdutos([
+      { id: 1, nome: "Produto A", vendas: 15, avaliacoes: 8, imagem: "" },
+      { id: 2, nome: "Produto B", vendas: 12, avaliacoes: 5, imagem: "" },
+      { id: 3, nome: "Produto C", vendas: 9, avaliacoes: 6, imagem: "" },
+    ]);
+  };
+
   useEffect(() => {
     const userStr = localStorage.getItem("usuario");
     if (userStr) setUsuario(JSON.parse(userStr));
@@ -106,6 +118,7 @@ export default function Dashboard() {
     if (usuario?.tipo === "comerciante") {
       fetchAnalytics();
       fetchChartData();
+      fetchRankingProdutos();
     }
     // eslint-disable-next-line
   }, [usuario]);
@@ -360,6 +373,10 @@ export default function Dashboard() {
                   color="#fbc02d"
                 />
               )}
+              <ProductRankingList
+                products={rankingProdutos}
+                title="Produtos mais vendidos/avaliados"
+              />
             </Box>
           )}
           <Box mt={3}>
