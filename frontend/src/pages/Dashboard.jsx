@@ -23,6 +23,7 @@ import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import AnalyticCard from "../components/AnalyticCard.jsx";
 import AnalyticLineChart from "../components/AnalyticLineChart.jsx";
 import ProductRankingList from "../components/ProductRankingList.jsx";
+import DateFilter from "../components/DateFilter.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -49,6 +50,7 @@ export default function Dashboard() {
   });
   const [chartTab, setChartTab] = useState(0);
   const [rankingProdutos, setRankingProdutos] = useState([]);
+  const [periodo, setPeriodo] = useState("Semana");
   const navigate = useNavigate();
 
   // Função para buscar dados do backend
@@ -146,6 +148,12 @@ export default function Dashboard() {
 
   const handleChartTabChange = (event, newValue) => {
     setChartTab(newValue);
+  };
+
+  const handlePeriodoChange = (e) => {
+    setPeriodo(e.target.value);
+    // Aqui você pode disparar nova busca de dados conforme o período selecionado
+    // Exemplo: fetchChartData(e.target.value);
   };
 
   if (!usuario) {
@@ -298,7 +306,8 @@ export default function Dashboard() {
           </Grid>
           {usuario.tipo === "comerciante" && (
             <Box mb={3}>
-              <Grid container spacing={2} columns={12}>
+              {/* 1. Cards analíticos no topo */}
+              <Grid container spacing={2} columns={12} mb={2}>
                 <Grid item xs={12} sm={4}>
                   <AnalyticCard
                     title="Vendas"
@@ -336,7 +345,9 @@ export default function Dashboard() {
                   />
                 </Grid>
               </Grid>
-              {/* Gráficos analíticos */}
+              {/* 2. Filtro de período */}
+              <DateFilter value={periodo} onChange={handlePeriodoChange} />
+              {/* 3. Abas dos gráficos analíticos */}
               <Tabs
                 value={chartTab}
                 onChange={handleChartTabChange}
@@ -351,7 +362,7 @@ export default function Dashboard() {
               </Tabs>
               {chartTab === 0 && (
                 <AnalyticLineChart
-                  title="Vendas por dia"
+                  title={`Vendas por dia (${periodo})`}
                   labels={chartData.labels}
                   data={chartData.vendas}
                   color="#1976d2"
@@ -359,7 +370,7 @@ export default function Dashboard() {
               )}
               {chartTab === 1 && (
                 <AnalyticLineChart
-                  title="Acessos por dia"
+                  title={`Acessos por dia (${periodo})`}
                   labels={chartData.labels}
                   data={chartData.acessos}
                   color="#388e3c"
@@ -367,15 +378,16 @@ export default function Dashboard() {
               )}
               {chartTab === 2 && (
                 <AnalyticLineChart
-                  title="Avaliações por dia"
+                  title={`Avaliações por dia (${periodo})`}
                   labels={chartData.labels}
                   data={chartData.avaliacoes}
                   color="#fbc02d"
                 />
               )}
+              {/* 4. Ranking de produtos */}
               <ProductRankingList
                 products={rankingProdutos}
-                title="Produtos mais vendidos/avaliados"
+                title={`Produtos mais vendidos/avaliados (${periodo})`}
               />
             </Box>
           )}
