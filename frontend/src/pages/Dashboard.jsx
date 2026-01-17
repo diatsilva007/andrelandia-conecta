@@ -13,12 +13,15 @@ import {
   Grid,
   Avatar,
   Tooltip,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import { useNavigate } from "react-router-dom";
 
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import AnalyticCard from "../components/AnalyticCard.jsx";
+import AnalyticLineChart from "../components/AnalyticLineChart.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -37,6 +40,13 @@ export default function Dashboard() {
     avaliacoes: 0,
   });
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
+  const [chartData, setChartData] = useState({
+    vendas: [],
+    acessos: [],
+    avaliacoes: [],
+    labels: [],
+  });
+  const [chartTab, setChartTab] = useState(0);
   const navigate = useNavigate();
 
   // Função para buscar dados do backend
@@ -74,6 +84,17 @@ export default function Dashboard() {
     }
   };
 
+  const fetchChartData = async () => {
+    // Exemplo: buscar dados reais do backend
+    // Aqui, mock para demonstração
+    setChartData({
+      vendas: [5, 8, 12, 7, 10, 15, 9],
+      acessos: [20, 30, 25, 40, 35, 50, 45],
+      avaliacoes: [1, 2, 1, 3, 2, 4, 3],
+      labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+    });
+  };
+
   useEffect(() => {
     const userStr = localStorage.getItem("usuario");
     if (userStr) setUsuario(JSON.parse(userStr));
@@ -84,6 +105,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (usuario?.tipo === "comerciante") {
       fetchAnalytics();
+      fetchChartData();
     }
     // eslint-disable-next-line
   }, [usuario]);
@@ -108,6 +130,10 @@ export default function Dashboard() {
     window.addEventListener("storage", handleStorageEvent);
     return () => window.removeEventListener("storage", handleStorageEvent);
   }, []);
+
+  const handleChartTabChange = (event, newValue) => {
+    setChartTab(newValue);
+  };
 
   if (!usuario) {
     navigate("/login");
@@ -297,6 +323,43 @@ export default function Dashboard() {
                   />
                 </Grid>
               </Grid>
+              {/* Gráficos analíticos */}
+              <Tabs
+                value={chartTab}
+                onChange={handleChartTabChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="fullWidth"
+                sx={{ mb: 2, bgcolor: "background.paper", borderRadius: 2 }}
+              >
+                <Tab label="Vendas" />
+                <Tab label="Acessos" />
+                <Tab label="Avaliações" />
+              </Tabs>
+              {chartTab === 0 && (
+                <AnalyticLineChart
+                  title="Vendas por dia"
+                  labels={chartData.labels}
+                  data={chartData.vendas}
+                  color="#1976d2"
+                />
+              )}
+              {chartTab === 1 && (
+                <AnalyticLineChart
+                  title="Acessos por dia"
+                  labels={chartData.labels}
+                  data={chartData.acessos}
+                  color="#388e3c"
+                />
+              )}
+              {chartTab === 2 && (
+                <AnalyticLineChart
+                  title="Avaliações por dia"
+                  labels={chartData.labels}
+                  data={chartData.avaliacoes}
+                  color="#fbc02d"
+                />
+              )}
             </Box>
           )}
           <Box mt={3}>
