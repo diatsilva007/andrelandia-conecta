@@ -18,6 +18,7 @@ import AnimatedCard from "../components/AnimatedCard.jsx";
 import { useNavigate } from "react-router-dom";
 
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
+import AnalyticCard from "../components/AnalyticCard.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -30,6 +31,12 @@ export default function Dashboard() {
   const [stats, setStats] = useState({ comercios: 0, produtos: 0 });
   const [ultimosComercios, setUltimosComercios] = useState([]);
   const [ultimosProdutos, setUltimosProdutos] = useState([]);
+  const [analytics, setAnalytics] = useState({
+    vendas: 0,
+    acessos: 0,
+    avaliacoes: 0,
+  });
+  const [loadingAnalytics, setLoadingAnalytics] = useState(false);
   const navigate = useNavigate();
 
   // Função para buscar dados do backend
@@ -52,12 +59,34 @@ export default function Dashboard() {
     }
   };
 
+  const fetchAnalytics = async () => {
+    setLoadingAnalytics(true);
+    try {
+      // Exemplo: endpoint analítico (ajuste conforme backend)
+      const res = await axios.get(
+        `http://localhost:3333/comercios/${usuario?.id}/analytics`,
+      );
+      setAnalytics(res.data);
+    } catch (err) {
+      setAnalytics({ vendas: 0, acessos: 0, avaliacoes: 0 });
+    } finally {
+      setLoadingAnalytics(false);
+    }
+  };
+
   useEffect(() => {
     const userStr = localStorage.getItem("usuario");
     if (userStr) setUsuario(JSON.parse(userStr));
     fetchStats();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (usuario?.tipo === "comerciante") {
+      fetchAnalytics();
+    }
+    // eslint-disable-next-line
+  }, [usuario]);
 
   // Recarrega dados se retornar de edição/cadastro com sucesso
   useEffect(() => {
@@ -228,6 +257,48 @@ export default function Dashboard() {
               </AnimatedCard>
             </Grid>
           </Grid>
+          {usuario.tipo === "comerciante" && (
+            <Box mb={3}>
+              <Grid container spacing={2} columns={12}>
+                <Grid item xs={12} sm={4}>
+                  <AnalyticCard
+                    title="Vendas"
+                    value={loadingAnalytics ? "..." : analytics.vendas}
+                    color="primary"
+                    icon={
+                      <span role="img" aria-label="vendas">
+                        💰
+                      </span>
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <AnalyticCard
+                    title="Acessos"
+                    value={loadingAnalytics ? "..." : analytics.acessos}
+                    color="info"
+                    icon={
+                      <span role="img" aria-label="acessos">
+                        👁️
+                      </span>
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <AnalyticCard
+                    title="Avaliações"
+                    value={loadingAnalytics ? "..." : analytics.avaliacoes}
+                    color="success"
+                    icon={
+                      <span role="img" aria-label="avaliações">
+                        ⭐
+                      </span>
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          )}
           <Box mt={3}>
             <Typography
               variant="subtitle1"
