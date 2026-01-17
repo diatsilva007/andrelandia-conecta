@@ -95,4 +95,58 @@
 - [x] Mobile first: todos os fluxos testados em dispositivos móveis, touch targets grandes, menus simplificados.
 - [x] Testes com usuários reais: coletar feedback de comerciantes e clientes sobre usabilidade e clareza.
 
+# Checklist de Prontidão para Produção (Deploy)
+
+## Funcionalidades
+
+- [ ] Login, cadastro e autenticação JWT funcionando
+- [ ] CRUD completo de comércio, produto e usuário
+- [ ] Redefinição de senha testada
+- [ ] Feedback visual global (snackbar, loading, erros)
+- [ ] Navegação protegida (redireciona para login se não autenticado)
+
+## Qualidade e UX
+
+- [ ] Responsividade em mobile/tablet/desktop
+- [ ] Acessibilidade básica (labels, navegação por teclado)
+- [ ] Microinterações e animações principais
+- [ ] Textos e mensagens revisados
+
+## Backend
+
+- [ ] Todas as rotas protegidas corretamente
+- [ ] Validação de dados no backend
+- [ ] Prisma Client importado apenas por controller
+- [ ] Variáveis de ambiente (.env) configuradas
+- [ ] Migrations aplicadas e banco consistente
+
+## Segurança
+
+- [ ] Dados sensíveis não expostos em logs ou respostas
+- [ ] Senhas sempre criptografadas
+- [ ] Uploads de imagem validados (tipo/tamanho)
+
+## Infraestrutura
+
+- [ ] Scripts de build/teste funcionam
+- [ ] Dockerfile e docker-compose revisados (se usar Docker)
+- [ ] Documentação de deploy (README ou Wiki)
+- [ ] Variáveis de ambiente para produção separadas
+
+## Testes
+
+- [ ] Fluxos principais testados manualmente
+- [ ] Testes automatizados básicos (se possível)
+
+## Monitoramento e Logs
+
+- [ ] Logs de erro e acesso configurados
+- [ ] Monitoramento básico (ex: uptime, erros)
+
+## CI/CD (opcional)
+
+- [ ] Pipeline de build/deploy automatizado
+
 ---
+
+> Marque cada item conforme for validating. Quando todos estiverem completos, o projeto estará pronto para produção!
