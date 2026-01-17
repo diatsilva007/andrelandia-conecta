@@ -261,9 +261,89 @@ const PerfilPublico = () => {
               )}
             </Box>
           </Box>
-          {/* Bloco de comércios vinculados */}
+          {/* Bloco de estatísticas e galeria para comerciante */}
           {perfil.tipo === "comerciante" && (
             <Box sx={{ mt: 3, width: "100%" }}>
+              {/* Estatísticas públicas */}
+              <Box
+                sx={{
+                  mb: 3,
+                  display: "flex",
+                  gap: 3,
+                  justifyContent: "center",
+                }}
+              >
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="primary"
+                    fontWeight={700}
+                  >
+                    Produtos
+                  </Typography>
+                  <Typography variant="h6" fontWeight={700}>
+                    {perfil.produtos?.length ?? 0}
+                  </Typography>
+                </Box>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="primary"
+                    fontWeight={700}
+                  >
+                    Vendas
+                  </Typography>
+                  <Typography variant="h6" fontWeight={700}>
+                    {perfil.totalVendas ?? 0}
+                  </Typography>
+                </Box>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="primary"
+                    fontWeight={700}
+                  >
+                    Avaliações
+                  </Typography>
+                  <Typography variant="h6" fontWeight={700}>
+                    {perfil.totalAvaliacao ?? 0}
+                  </Typography>
+                </Box>
+              </Box>
+              {/* Galeria de fotos do comércio */}
+              {perfil.galeria?.length > 0 && (
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" fontWeight={600} mb={1}>
+                    Galeria de fotos
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {perfil.galeria.map((img, idx) => (
+                      <Grid item xs={6} sm={4} key={idx}>
+                        <Card sx={{ boxShadow: 2 }}>
+                          <CardContent sx={{ p: 1 }}>
+                            <Avatar
+                              src={
+                                img.startsWith("/uploads")
+                                  ? `${import.meta.env.VITE_API_URL || "http://localhost:3333"}${img}`
+                                  : img
+                              }
+                              sx={{
+                                width: "100%",
+                                height: 100,
+                                objectFit: "cover",
+                                borderRadius: 2,
+                              }}
+                              variant="rounded"
+                              imgProps={{ referrerPolicy: "no-referrer" }}
+                            />
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              )}
+              {/* Comércios vinculados */}
               <Typography variant="subtitle1" fontWeight={600}>
                 Comércios vinculados
               </Typography>
@@ -322,10 +402,109 @@ const PerfilPublico = () => {
               </Grid>
             </Box>
           )}
-          {/* Bloco de favoritos para cliente */}
+          {/* Bloco de histórico de avaliações e badges para cliente */}
           {perfil.tipo === "cliente" && (
             <Box sx={{ mt: 3, width: "100%" }}>
-              <Typography variant="subtitle1" fontWeight={600}>
+              {/* Badges/conquistas */}
+              {perfil.badges?.length > 0 && (
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" fontWeight={600} mb={1}>
+                    Conquistas
+                  </Typography>
+                  <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                    {perfil.badges.map((badge, idx) => (
+                      <Box
+                        key={idx}
+                        sx={{
+                          bgcolor: "#e0f7fa",
+                          px: 2,
+                          py: 1,
+                          borderRadius: 2,
+                          fontWeight: 600,
+                          color: "#1565c0",
+                        }}
+                      >
+                        {badge}
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+              {/* Histórico de avaliações feitas */}
+              <Typography variant="subtitle1" fontWeight={600} mb={1}>
+                Histórico de avaliações
+              </Typography>
+              <Box sx={{ mb: 3 }}>
+                {perfil.avaliacoesFeitas?.length ? (
+                  perfil.avaliacoesFeitas.map((a) => (
+                    <Card
+                      key={a.id}
+                      variant="outlined"
+                      sx={{ mb: 1, p: 1, boxShadow: 0 }}
+                    >
+                      <CardContent
+                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                      >
+                        <Link
+                          to={a.comercio ? `/comercios/${a.comercio.id}` : "#"}
+                          style={{
+                            textDecoration: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            marginRight: 8,
+                          }}
+                        >
+                          <Avatar
+                            src={a.comercio?.imagem || undefined}
+                            sx={{
+                              width: 32,
+                              height: 32,
+                              bgcolor: "#e3f2fd",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {a.comercio?.nome?.[0]}
+                          </Avatar>
+                          <Typography
+                            variant="body2"
+                            fontWeight={600}
+                            color="primary"
+                            sx={{ cursor: "pointer" }}
+                          >
+                            {a.comercio?.nome}
+                          </Typography>
+                        </Link>
+                        <Box sx={{ minWidth: 0 }}>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ fontStyle: "italic" }}
+                          >
+                            {a.comentario || "Sem comentário."}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {new Date(a.criadoEm).toLocaleDateString()}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ ml: "auto" }}>
+                          {/* Adicione renderAvaliacaoEstrelas(a.nota) se necessário */}
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 1 }}
+                  >
+                    Nenhuma avaliação feita ainda.
+                  </Typography>
+                )}
+              </Box>
+              {/* Favoritos */}
+              <Typography variant="subtitle1" fontWeight={600} mb={1}>
                 Favoritos
               </Typography>
               <Grid container spacing={2} sx={{ mt: 1 }}>
