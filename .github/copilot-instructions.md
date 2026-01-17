@@ -1,33 +1,38 @@
 # Guia para Agentes de IA — Andrelândia Conecta
 
-Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região.
+Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região, reunindo frontend (React/Vite) e backend (Node.js/Express/Prisma).
 
-## Arquitetura
+## Arquitetura & Fluxos
+
+- **Frontend**: React (Vite), Material UI, componentes globais para feedback visual e navegação.
+- **Backend**: Node.js, Express, Prisma ORM, PostgreSQL.
+- **Integração**: Comunicação via REST, autenticação JWT obrigatória em rotas protegidas.
+- **Banco de dados**: PostgreSQL, migrations via Prisma.
 
 ## Workflows Essenciais
 
-- Frontend: `npm run dev` em `/frontend`
-- Backend: `npm run dev` em `/backend`
-- Frontend: `npm run build` em `/frontend`
-- Backend: `npm start` em `/backend`
-- `.env` no backend com `DATABASE_URL` e `JWT_SECRET` obrigatórios.
-- Configure o banco PostgreSQL local e execute as migrations.
+- Instale dependências em `/backend` e `/frontend`.
+- Configure `.env` no backend com `DATABASE_URL` e `JWT_SECRET`.
+- Execute migrations Prisma: `npx prisma migrate dev` em `/backend`.
+- Inicie o backend: `npm run dev` em `/backend`.
+- Inicie o frontend: `npm run dev` em `/frontend`.
 - Consulte `/frontend/TODO.md` para prioridades reais de UX/UI e funcionalidades.
 
 ## Padrões e Convenções
 
-- Feedback visual global: sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (nunca componentes locais).
-- Navegação protegida: páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente.
-- Formulários padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
-- Material UI para UI/UX consistente e acessível.
-- Responsividade e mobile first: siga exemplos de espaçamento, breakpoints e media queries.
-- Microinterações: utilize animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
-- Separe controllers e rotas (exemplos em `src/controllers/` e `src/routes/`).
-- Middleware de autenticação sempre aplicado em rotas protegidas.
-- Prisma Client importado por controller, nunca global.
-- Fluxo de redefinição de senha: veja `authController.js` e rotas em `routes/auth.js`.
+- **Feedback visual global**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (nunca componentes locais).
+- **Navegação protegida**: Páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente.
+- **Formulários**: Padronizados, com loading global e breadcrumbs (`BreadcrumbNav.jsx`).
+- **Responsividade**: Mobile first, siga exemplos de espaçamento, breakpoints e media queries.
+- **Microinterações**: Utilize animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
+- **Controllers e rotas**: Separe lógica em `src/controllers/` e `src/routes/` no backend.
+- **Prisma Client**: Importe por controller, nunca global.
+- **Autenticação**: Middleware obrigatório em rotas protegidas.
+- **Redefinição de senha**: Veja `authController.js` e rotas em `routes/auth.js`.
 
 ## Integração Frontend ↔ Backend
+
+Exemplo de requisição autenticada:
 
 ```js
 await axios.post("http://localhost:3333/comercios", form, {
@@ -41,6 +46,13 @@ await axios.post("http://localhost:3333/comercios", form, {
 2. Formulário envia POST para `/comercios` (token JWT no header).
 3. Backend valida, cria registro via Prisma, retorna dados.
 
-## Dicas para Agentes
+## Dicas e Observações
 
-<!-- Para mais detalhes: https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
+- Use sempre componentes globais para feedback e loading.
+- Siga padrões de responsividade e acessibilidade já implementados.
+- Consulte `/frontend/TODO.md` para próximos passos e prioridades.
+- Para produção, recomenda-se uso de Docker para orquestração.
+
+---
+
+Seções pouco claras ou incompletas? Peça feedback para refinar as instruções!
