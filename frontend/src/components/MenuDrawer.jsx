@@ -74,6 +74,28 @@ export default function MenuDrawer({
       : null,
     { text: "Dashboard", icon: <ShoppingCartIcon />, to: "/dashboard" },
     {
+      text: "Histórico",
+      icon: (
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#1565c0"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+        </Box>
+      ),
+      to: "/historico",
+    },
+    {
       text: "Favoritos",
       icon: (
         <Box sx={{ position: "relative", display: "flex" }}>
