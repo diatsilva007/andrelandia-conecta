@@ -2,24 +2,47 @@
 export const historicoUsuario = async (req, res) => {
   try {
     const usuarioId = req.usuario.id;
-    // Compras: produtos comprados pelo usuário (mock, pois não há modelo de compra)
-    const compras = [];
-    // Avaliações feitas pelo usuário
-    const avaliacoes = await prisma.avaliacao.findMany({
+    // Compras: mock com campos esperados
+    const compras = [
+      {
+        id: 1,
+        produtoNome: "Produto Exemplo",
+        data: new Date().toISOString(),
+        valor: 99.9,
+        comercioNome: "Comércio Exemplo",
+      },
+    ];
+    // Avaliações feitas pelo usuário, ajustando campos
+    const avaliacoesRaw = await prisma.avaliacao.findMany({
       where: { usuarioId },
       select: {
         id: true,
         nota: true,
         comentario: true,
         criadoEm: true,
-        comercio: { select: { nome: true, imagem: true } },
+        comercio: { select: { nome: true } },
       },
       orderBy: { criadoEm: "desc" },
     });
-    // Ações: últimas atualizações do perfil (mock)
+    const avaliacoes = avaliacoesRaw.map((a) => ({
+      id: a.id,
+      comercioNome: a.comercio?.nome || "",
+      data: a.criadoEm,
+      nota: a.nota,
+      comentario: a.comentario,
+    }));
+    // Ações: mock com campos esperados
     const acoes = [
-      { tipo: "login", data: new Date().toISOString() },
-      { tipo: "atualizacao", data: new Date().toISOString() },
+      {
+        tipo: "login",
+        data: new Date().toISOString(),
+        descricao: "Login realizado",
+      },
+      {
+        tipo: "atualizacao",
+        data: new Date().toISOString(),
+        descricao: "Perfil atualizado",
+      },
     ];
     res.json({ compras, avaliacoes, acoes });
   } catch (error) {
