@@ -38,7 +38,7 @@ export const listarComercios = async (req, res) => {
 
 export const criarComercio = async (req, res) => {
   try {
-    const { nome, categoria, descricao, endereco, telefone } = req.body;
+    const { nome, categoria, descricao, endereco, telefone, latitude, longitude } = req.body;
     const usuarioId = req.usuario?.id;
     if (!usuarioId) {
       return res.status(401).json({ error: "Usuário não autenticado." });
@@ -56,6 +56,8 @@ export const criarComercio = async (req, res) => {
         endereco,
         telefone,
         imagem: imagemUrl,
+        latitude: latitude ? Number(latitude) : null,
+        longitude: longitude ? Number(longitude) : null,
         usuarioId,
       },
     });
@@ -69,10 +71,18 @@ export const criarComercio = async (req, res) => {
 export const atualizarComercio = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, categoria, descricao, endereco, telefone } = req.body;
+    const { nome, categoria, descricao, endereco, telefone, latitude, longitude } = req.body;
     const atualizado = await prisma.comercio.update({
       where: { id: Number(id) },
-      data: { nome, categoria, descricao, endereco, telefone },
+      data: {
+        nome,
+        categoria,
+        descricao,
+        endereco,
+        telefone,
+        latitude: latitude ? Number(latitude) : null,
+        longitude: longitude ? Number(longitude) : null,
+      },
     });
     res.json(atualizado);
   } catch (error) {

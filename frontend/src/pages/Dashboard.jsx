@@ -24,6 +24,7 @@ import AnalyticCard from "../components/AnalyticCard.jsx";
 import AnalyticLineChart from "../components/AnalyticLineChart.jsx";
 import ProductRankingList from "../components/ProductRankingList.jsx";
 import DateFilter from "../components/DateFilter.jsx";
+import ComercioMap from "../components/ComercioMap.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -314,6 +315,13 @@ export default function Dashboard() {
               </AnimatedCard>
             </Grid>
           </Grid>
+          {/* Mapa dos comércios cadastrados */}
+          <Box mb={5}>
+            <Typography variant="h6" color="primary.main" mb={2}>
+              Mapa dos comércios
+            </Typography>
+            <ComercioMap comercios={ultimosComercios} />
+          </Box>
           {/* Atalhos rápidos logo após os cards de resumo */}
           <Box mb={5}>
             <Typography variant="h6" color="primary.main" mb={2}>
