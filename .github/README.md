@@ -14,6 +14,8 @@ Facilitar a divulgação, gestão e conexão entre comerciantes e consumidores d
 - **backend/**: API REST em Node.js (Express + Prisma)
 - **Banco de dados**: PostgreSQL
 
+> Para instruções detalhadas de cada módulo, consulte os READMEs em `frontend/README.md` e `backend/README.md`.
+
 ## Tecnologias Utilizadas
 
 - React, Vite, JavaScript/JSX
@@ -115,7 +117,7 @@ frontend/
 
 ---
 
-_Última atualização: 08/01/2026_
+_Última atualização: 17/01/2026_
 
 ## Licença
 
@@ -123,6 +125,6 @@ Este projeto está sob a licença MIT.
 
 ## Contato
 
-- Autor: Diogo Ataíde Silva
+- Autor: Diogo Ataide Silva
 - Email: diogo.ataidee@gmail.com
 - [LinkedIn](https://www.linkedin.com/in/diatsilva)
