@@ -19,12 +19,6 @@
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [x] Busca e filtros avançados (nome, categoria, preço, avaliação, localização)
-- [x] Página de favoritos (usuário pode favoritar comércios/produtos)
-- [x] Upload e otimização de imagens (compressão, preview, drag & drop)
-- [x] Perfil público de comerciante e cliente
-- [x] Página de histórico de compras/ações do usuário
-- [ ] Dashboard analítico para comerciante (vendas, acessos, avaliações)
 - [ ] Integração com mapas (Google Maps/Leaflet) para localização de comércios
 - [ ] Compartilhamento social (WhatsApp, Facebook, Instagram)
 - [ ] Skeleton loading e lazy loading de listas
@@ -94,6 +88,12 @@
 - [x] Feedback visual: loading, sucesso e erro claros (snackbar, backdrop, alert), uso de ícones e cores para reforço.
 - [x] Mobile first: todos os fluxos testados em dispositivos móveis, touch targets grandes, menus simplificados.
 - [x] Testes com usuários reais: coletar feedback de comerciantes e clientes sobre usabilidade e clareza.
+- [x] Busca e filtros avançados (nome, categoria, preço, avaliação, localização)
+- [x] Página de favoritos (usuário pode favoritar comércios/produtos)
+- [x] Upload e otimização de imagens (compressão, preview, drag & drop)
+- [x] Perfil público de comerciante e cliente
+- [x] Página de histórico de compras/ações do usuário
+- [x] Dashboard analítico para comerciante (vendas, acessos, avaliações)
 
 # Checklist de Prontidão para Produção (Deploy)
 
