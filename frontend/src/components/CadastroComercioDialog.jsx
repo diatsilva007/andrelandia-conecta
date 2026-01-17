@@ -23,6 +23,8 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
     endereco: "",
     telefone: "",
     categoria: "",
+    latitude: "",
+    longitude: "",
   });
   const [erro, setErro] = useState("");
   const { setSnackbar } = useSnackbar();
@@ -123,6 +125,28 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
               </MenuItem>
             ))}
           </TextField>
+          <TextField
+            label="Latitude"
+            name="latitude"
+            value={form.latitude}
+            onChange={handleChange}
+            fullWidth
+            sx={{ mb: 2 }}
+            type="number"
+            inputProps={{ step: "any" }}
+            placeholder="-21.7417"
+          />
+          <TextField
+            label="Longitude"
+            name="longitude"
+            value={form.longitude}
+            onChange={handleChange}
+            fullWidth
+            sx={{ mb: 2 }}
+            type="number"
+            inputProps={{ step: "any" }}
+            placeholder="-44.3111"
+          />
           {erro && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {erro}

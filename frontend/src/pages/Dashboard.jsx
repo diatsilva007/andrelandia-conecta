@@ -36,6 +36,7 @@ export default function Dashboard() {
   const [usuario, setUsuario] = useState(null);
   const [stats, setStats] = useState({ comercios: 0, produtos: 0 });
   const [ultimosComercios, setUltimosComercios] = useState([]);
+  const [todosComercios, setTodosComercios] = useState([]);
   const [ultimosProdutos, setUltimosProdutos] = useState([]);
   const [analytics, setAnalytics] = useState({
     vendas: 0,
@@ -65,10 +66,12 @@ export default function Dashboard() {
         comercios: comRes.data.length,
         produtos: prodRes.data.length,
       });
+      setTodosComercios(comRes.data);
       setUltimosComercios(comRes.data.slice(-3).reverse());
       setUltimosProdutos(prodRes.data.slice(-3).reverse());
-    } catch (err) {
+    } catch {
       setStats({ comercios: 0, produtos: 0 });
+      setTodosComercios([]);
       setUltimosComercios([]);
       setUltimosProdutos([]);
     }
@@ -82,7 +85,7 @@ export default function Dashboard() {
         `http://localhost:3333/comercios/${usuario?.id}/analytics`,
       );
       setAnalytics(res.data);
-    } catch (err) {
+    } catch {
       setAnalytics({ vendas: 0, acessos: 0, avaliacoes: 0 });
     } finally {
       setLoadingAnalytics(false);
@@ -114,7 +117,6 @@ export default function Dashboard() {
     const userStr = localStorage.getItem("usuario");
     if (userStr) setUsuario(JSON.parse(userStr));
     fetchStats();
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -123,7 +125,6 @@ export default function Dashboard() {
       fetchChartData();
       fetchRankingProdutos();
     }
-    // eslint-disable-next-line
   }, [usuario]);
 
   // Recarrega dados se retornar de edição/cadastro com sucesso
@@ -320,7 +321,7 @@ export default function Dashboard() {
             <Typography variant="h6" color="primary.main" mb={2}>
               Mapa dos comércios
             </Typography>
-            <ComercioMap comercios={ultimosComercios} />
+            <ComercioMap comercios={todosComercios} />
           </Box>
           {/* Atalhos rápidos logo após os cards de resumo */}
           <Box mb={5}>

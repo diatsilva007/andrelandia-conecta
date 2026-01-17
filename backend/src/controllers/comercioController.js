@@ -38,7 +38,15 @@ export const listarComercios = async (req, res) => {
 
 export const criarComercio = async (req, res) => {
   try {
-    const { nome, categoria, descricao, endereco, telefone, latitude, longitude } = req.body;
+    const {
+      nome,
+      categoria,
+      descricao,
+      endereco,
+      telefone,
+      latitude,
+      longitude,
+    } = req.body;
     const usuarioId = req.usuario?.id;
     if (!usuarioId) {
       return res.status(401).json({ error: "Usuário não autenticado." });
@@ -71,7 +79,15 @@ export const criarComercio = async (req, res) => {
 export const atualizarComercio = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nome, categoria, descricao, endereco, telefone, latitude, longitude } = req.body;
+    const {
+      nome,
+      categoria,
+      descricao,
+      endereco,
+      telefone,
+      latitude,
+      longitude,
+    } = req.body;
     const atualizado = await prisma.comercio.update({
       where: { id: Number(id) },
       data: {
