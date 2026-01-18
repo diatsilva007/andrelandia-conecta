@@ -737,7 +737,10 @@ const ListaComercios = () => {
                   color="text.secondary"
                   sx={{ fontSize: 15 }}
                 >
-                  <strong>Endereço:</strong> {comercio.endereco}
+                  <strong>Endereço:</strong>{" "}
+                  {comercio.endereco && comercio.endereco.trim() !== ""
+                    ? comercio.endereco
+                    : "Endereço não informado"}
                 </Typography>
                 <Typography
                   variant="body2"

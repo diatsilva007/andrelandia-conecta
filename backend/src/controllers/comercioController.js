@@ -94,13 +94,24 @@ export const atualizarComercio = async (req, res) => {
       latitude,
       longitude,
     } = req.body;
+    // Se endereco vier como array, pega o último valor string válido
+    let enderecoFinal = endereco;
+    if (Array.isArray(endereco)) {
+      enderecoFinal =
+        endereco.find((v) => typeof v === "string" && v !== "null") ||
+        endereco[endereco.length - 1];
+    }
+    console.log(
+      "[atualizarComercio] Valor recebido para endereco:",
+      enderecoFinal,
+    );
     const atualizado = await prisma.comercio.update({
       where: { id: Number(id) },
       data: {
         nome,
         categoria,
         descricao,
-        endereco,
+        endereco: enderecoFinal,
         telefone,
         latitude: latitude ? Number(latitude) : null,
         longitude: longitude ? Number(longitude) : null,

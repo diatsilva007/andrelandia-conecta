@@ -18,14 +18,14 @@ router.post(
   "/",
   autenticarToken,
   uploadComercioImage.single("imagem"),
-  criarComercio
+  criarComercio,
 );
-router.put("/:id", autenticarToken, atualizarComercio);
+// Removido rota duplicada sem middleware de upload
 router.put(
   "/:id",
   autenticarToken,
   uploadComercioImage.single("imagem"),
-  atualizarComercio
+  atualizarComercio,
 );
 router.delete("/:id", autenticarToken, removerComercio);
 

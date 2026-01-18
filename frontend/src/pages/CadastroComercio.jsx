@@ -72,11 +72,13 @@ export default function CadastroComercio() {
     setOpen(true);
     try {
       const token = localStorage.getItem("token");
-      // Monta formData para enviar imagem junto
+      // Monta o campo 'endereco' concatenando os campos separados
+      const enderecoCompleto = `${form.logradouro}, ${form.numero} - ${form.bairro}, ${form.cidade} - ${form.estado}, CEP: ${form.cep}`;
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) => {
         formData.append(key, value);
       });
+      formData.append("endereco", enderecoCompleto);
       if (imagem) {
         formData.append("imagem", imagem, "comercio.jpg");
       }

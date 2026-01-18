@@ -98,9 +98,40 @@ export default function EditarComercio() {
     axios
       .get(`http://localhost:3333/comercios/${id}`)
       .then((res) => {
-        setForm(res.data);
+        const comercio = res.data;
+        // Se existir campo endereco, faz parsing para preencher granularizados
+        let logradouro = "";
+        let numero = "";
+        let bairro = "";
+        let cidade = "";
+        let estado = "";
+        let cep = "";
+        if (comercio.endereco) {
+          // Exemplo: "Rua X, 123 - Centro, Andrelândia - MG, CEP: 37300-000"
+          const regex =
+            /^(.*?),\s*(.*?)\s*-\s*(.*?),\s*(.*?)\s*-\s*(.*?),\s*CEP:\s*(.*)$/;
+          const match = comercio.endereco.match(regex);
+          if (match) {
+            logradouro = match[1] || "";
+            numero = match[2] || "";
+            bairro = match[3] || "";
+            cidade = match[4] || "";
+            estado = match[5] || "";
+            cep = match[6] || "";
+          }
+        }
+        setForm((prev) => ({
+          ...prev,
+          ...comercio,
+          logradouro,
+          numero,
+          bairro,
+          cidade,
+          estado,
+          cep,
+        }));
         setImagemPreview(
-          res.data.imagem ? `http://localhost:3333${res.data.imagem}` : null,
+          comercio.imagem ? `http://localhost:3333${comercio.imagem}` : null,
         );
       })
       .catch(() => setErro("Erro ao carregar dados do comércio."))
@@ -120,10 +151,16 @@ export default function EditarComercio() {
     setSucesso("");
     setOpen(true);
     try {
+      const enderecoCompleto = `${form.logradouro}, ${form.numero} - ${form.bairro}, ${form.cidade} - ${form.estado}, CEP: ${form.cep}`;
+      console.log(
+        "[EditarComercio] Valor do campo endereco a ser enviado:",
+        enderecoCompleto,
+      );
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) => {
         if (key !== "imagem") formData.append(key, value);
       });
+      formData.append("endereco", enderecoCompleto);
       if (form.imagem) formData.append("imagem", form.imagem);
       await axios.put(`http://localhost:3333/comercios/${id}`, formData, {
         headers: {

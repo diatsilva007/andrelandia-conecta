@@ -87,7 +87,7 @@ export default function DetalheComercio() {
       await axios.post(
         `http://localhost:3333/comercios/${id}/avaliacoes`,
         { nota: novaAvaliacao.nota, comentario: novaAvaliacao.comentario },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setSnackbar({
         open: true,
@@ -257,7 +257,10 @@ export default function DetalheComercio() {
               </Box>
             </Box>
             <Typography variant="body2" color="text.secondary" mb={0.5}>
-              <b>Endereço:</b> {comercio.endereco}
+              <b>Endereço:</b>{" "}
+              {comercio.endereco && comercio.endereco.trim() !== ""
+                ? comercio.endereco
+                : "Endereço não informado"}
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={1}>
               <b>Telefone:</b> {comercio.telefone}
@@ -271,7 +274,7 @@ export default function DetalheComercio() {
                   component="a"
                   href={`https://wa.me/55${comercio.telefone.replace(
                     /\D/g,
-                    ""
+                    "",
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -457,7 +460,7 @@ export default function DetalheComercio() {
                     const token = localStorage.getItem("token");
                     await axios.delete(
                       `http://localhost:3333/avaliacoes/${avaliacaoExcluir.id}`,
-                      { headers: { Authorization: `Bearer ${token}` } }
+                      { headers: { Authorization: `Bearer ${token}` } },
                     );
                     setSnackbar({
                       open: true,
@@ -750,7 +753,7 @@ export default function DetalheComercio() {
                                     headers: {
                                       Authorization: `Bearer ${token}`,
                                     },
-                                  }
+                                  },
                                 );
                                 setSnackbar({
                                   open: true,
