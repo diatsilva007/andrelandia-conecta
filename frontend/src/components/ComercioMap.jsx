@@ -20,10 +20,28 @@ export default function ComercioMap({ comercios = [] }) {
         {comercios.map((com) =>
           com.latitude && com.longitude ? (
             <Marker key={com.id} position={[com.latitude, com.longitude]}>
-              <Popup>
-                <strong>{com.nome}</strong>
-                <br />
-                {com.categoria || "Sem categoria"}
+              <Popup minWidth={220} maxWidth={320}>
+                <Box>
+                  <Typography variant="subtitle1" fontWeight={700} color="primary.main">
+                    {com.nome}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" mb={0.5}>
+                    {com.categoria || "Sem categoria"}
+                  </Typography>
+                  {com.imagem && (
+                    <img
+                      src={`http://localhost:3333${com.imagem}`}
+                      alt={com.nome}
+                      style={{ width: "100%", maxHeight: 100, objectFit: "cover", borderRadius: 8, marginBottom: 6 }}
+                    />
+                  )}
+                  <Typography variant="body2" color="text.secondary" mb={0.5}>
+                    {com.endereco || "Endereço não informado"}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" fontSize={12}>
+                    Tel: {com.telefone || "Não informado"}
+                  </Typography>
+                </Box>
               </Popup>
             </Marker>
           ) : null,
