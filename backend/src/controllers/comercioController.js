@@ -30,7 +30,13 @@ export const listarComercios = async (req, res) => {
         avaliacoes: true,
       },
     });
-    res.json(comercios);
+    // Corrige tipos para o frontend (Leaflet exige número)
+    const comerciosCorrigidos = comercios.map((com) => ({
+      ...com,
+      latitude: com.latitude !== null ? Number(com.latitude) : null,
+      longitude: com.longitude !== null ? Number(com.longitude) : null,
+    }));
+    res.json(comerciosCorrigidos);
   } catch (error) {
     res.status(500).json({ error: "Erro ao listar comércios." });
   }
