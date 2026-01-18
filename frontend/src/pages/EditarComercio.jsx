@@ -1,4 +1,6 @@
 import { useEffect, useState, useContext } from "react";
+// import axios from "axios";
+// ...existing code...
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { LoadingContext } from "../App.jsx";
@@ -18,6 +20,52 @@ import { useNavigate, useParams } from "react-router-dom";
 import VoltarButton from "../components/VoltarButton.jsx";
 
 export default function EditarComercio() {
+  const [loadingCoords, setLoadingCoords] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState("");
+  const [imagemPreview, setImagemPreview] = useState(null);
+  const [categorias] = useState([
+    "Alimentação",
+    "Vestuário",
+    "Serviços",
+    "Saúde",
+    "Educação",
+    "Beleza",
+    "Tecnologia",
+    "Outros",
+  ]);
+  const { setOpen } = useContext(LoadingContext);
+  const { setSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  // Busca latitude/longitude pelo endereço usando Nominatim (OpenStreetMap)
+  const buscarCoordenadas = async () => {
+    if (!form.endereco) {
+      setErro("Preencha o endereço para buscar coordenadas.");
+      return;
+    }
+    setLoadingCoords(true);
+    setErro("");
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(form.endereco)}`,
+      );
+      if (res.data && res.data.length > 0) {
+        setForm((f) => ({
+          ...f,
+          latitude: res.data[0].lat,
+          longitude: res.data[0].lon,
+        }));
+      } else {
+        setErro("Endereço não encontrado. Tente ser mais específico.");
+      }
+    } catch {
+      setErro("Erro ao buscar coordenadas. Tente novamente.");
+    } finally {
+      setLoadingCoords(false);
+    }
+  };
   const [usuario] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("usuario"));
@@ -33,27 +81,9 @@ export default function EditarComercio() {
     telefone: "",
     categoria: "",
     imagem: null,
+    latitude: "",
+    longitude: "",
   });
-  const [imagemPreview, setImagemPreview] = useState(null);
-  // Categorias sugeridas (pode ser expandido futuramente)
-  const categorias = [
-    "Alimentação",
-    "Vestuário",
-    "Serviços",
-    "Saúde",
-    "Educação",
-    "Beleza",
-    "Tecnologia",
-    "Outros",
-  ];
-  const [loading, setLoading] = useState(true);
-  const { setOpen } = useContext(LoadingContext);
-  const [erro, setErro] = useState("");
-  const [sucesso, setSucesso] = useState("");
-  const { setSnackbar } = useSnackbar();
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
   useEffect(() => {
     if (!localStorage.getItem("token") || usuario?.tipo !== "comerciante") {
       navigate("/login");
@@ -65,7 +95,7 @@ export default function EditarComercio() {
       .then((res) => {
         setForm(res.data);
         setImagemPreview(
-          res.data.imagem ? `http://localhost:3333${res.data.imagem}` : null
+          res.data.imagem ? `http://localhost:3333${res.data.imagem}` : null,
         );
       })
       .catch(() => setErro("Erro ao carregar dados do comércio."))
@@ -107,7 +137,7 @@ export default function EditarComercio() {
           navigate("/", {
             state: { sucesso: "Comércio atualizado com sucesso!" },
           }),
-        1200
+        1200,
       );
     } catch (err) {
       const msg = err.response?.data?.error || "Erro ao atualizar comércio";
@@ -246,6 +276,39 @@ export default function EditarComercio() {
             inputProps={{ maxLength: 20, "aria-label": "Telefone do comércio" }}
             sx={{ mb: 2 }}
           />
+          <Box display="flex" gap={2} alignItems="center" mb={2}>
+            <TextField
+              label="Latitude"
+              name="latitude"
+              value={form.latitude || ""}
+              onChange={handleChange}
+              fullWidth
+              type="number"
+              inputProps={{ step: "any", "aria-label": "Latitude do comércio" }}
+              placeholder="-21.7417"
+            />
+            <TextField
+              label="Longitude"
+              name="longitude"
+              value={form.longitude || ""}
+              onChange={handleChange}
+              fullWidth
+              type="number"
+              inputProps={{
+                step: "any",
+                "aria-label": "Longitude do comércio",
+              }}
+              placeholder="-44.3111"
+            />
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={buscarCoordenadas}
+              sx={{ minWidth: 44, height: 56 }}
+            >
+              Buscar pelo endereço
+            </Button>
+          </Box>
           <Button
             type="submit"
             variant="contained"

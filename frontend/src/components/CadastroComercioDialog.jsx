@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+// import axios from "axios";
 import {
   Dialog,
   DialogTitle,
@@ -27,6 +28,7 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
     longitude: "",
   });
   const [erro, setErro] = useState("");
+  const [loadingCoords, setLoadingCoords] = useState(false);
   const { setSnackbar } = useSnackbar();
   const { setOpen } = useContext(LoadingContext);
 
@@ -45,6 +47,33 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Busca latitude/longitude pelo endereço usando Nominatim (OpenStreetMap)
+  const buscarCoordenadas = async () => {
+    if (!form.endereco) {
+      setErro("Preencha o endereço para buscar coordenadas.");
+      return;
+    }
+    setLoadingCoords(true);
+    setErro("");
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(form.endereco)}`,
+      );
+      if (res.data && res.data.length > 0) {
+        setForm((f) => ({
+          ...f,
+          latitude: res.data[0].lat,
+          longitude: res.data[0].lon,
+        }));
+      } else {
+        setErro("Endereço não encontrado. Tente ser mais específico.");
+      }
+    } catch {
+      setErro("Erro ao buscar coordenadas. Tente novamente.");
+    } finally {
+      setLoadingCoords(false);
+    }
+  };
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     setErro("");
@@ -125,28 +154,37 @@ export default function CadastroComercioDialog({ open, onClose, onSuccess }) {
               </MenuItem>
             ))}
           </TextField>
-          <TextField
-            label="Latitude"
-            name="latitude"
-            value={form.latitude}
-            onChange={handleChange}
-            fullWidth
-            sx={{ mb: 2 }}
-            type="number"
-            inputProps={{ step: "any" }}
-            placeholder="-21.7417"
-          />
-          <TextField
-            label="Longitude"
-            name="longitude"
-            value={form.longitude}
-            onChange={handleChange}
-            fullWidth
-            sx={{ mb: 2 }}
-            type="number"
-            inputProps={{ step: "any" }}
-            placeholder="-44.3111"
-          />
+          <Box display="flex" gap={2} alignItems="center" mb={2}>
+            <TextField
+              label="Latitude"
+              name="latitude"
+              value={form.latitude}
+              onChange={handleChange}
+              fullWidth
+              type="number"
+              inputProps={{ step: "any" }}
+              placeholder="-21.7417"
+            />
+            <TextField
+              label="Longitude"
+              name="longitude"
+              value={form.longitude}
+              onChange={handleChange}
+              fullWidth
+              type="number"
+              inputProps={{ step: "any" }}
+              placeholder="-44.3111"
+            />
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={buscarCoordenadas}
+              sx={{ minWidth: 44, height: 56 }}
+              disabled={loadingCoords}
+            >
+              {loadingCoords ? "Buscando..." : "Buscar pelo endereço"}
+            </Button>
+          </Box>
           {erro && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {erro}
