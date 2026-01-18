@@ -19,7 +19,7 @@
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [ ] Integração com mapas (Google Maps/Leaflet) para localização de comércios
+- [x] Integração com mapas (Google Maps/Leaflet) para localização de comércios
 - [ ] Compartilhamento social (WhatsApp, Facebook, Instagram)
 - [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
