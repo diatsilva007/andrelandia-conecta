@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { categoriaIcons } from "../assets/markerIcons";
 
 export default function ComercioMap({ comercios = [] }) {
   // Posição central padrão (Andrelândia/MG)
@@ -17,12 +18,21 @@ export default function ComercioMap({ comercios = [] }) {
         style={{ height: 400, width: "100%", borderRadius: 12 }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {comercios.map((com) =>
-          com.latitude && com.longitude ? (
-            <Marker key={com.id} position={[com.latitude, com.longitude]}>
+        {comercios.map((com) => {
+          if (!(com.latitude && com.longitude)) return null;
+          return (
+            <Marker
+              key={com.id}
+              position={[com.latitude, com.longitude]}
+              icon={categoriaIcons.Padrao}
+            >
               <Popup minWidth={220} maxWidth={320}>
                 <Box>
-                  <Typography variant="subtitle1" fontWeight={700} color="primary.main">
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight={700}
+                    color="primary.main"
+                  >
                     {com.nome}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" mb={0.5}>
@@ -32,20 +42,30 @@ export default function ComercioMap({ comercios = [] }) {
                     <img
                       src={`http://localhost:3333${com.imagem}`}
                       alt={com.nome}
-                      style={{ width: "100%", maxHeight: 100, objectFit: "cover", borderRadius: 8, marginBottom: 6 }}
+                      style={{
+                        width: "100%",
+                        maxHeight: 100,
+                        objectFit: "cover",
+                        borderRadius: 8,
+                        marginBottom: 6,
+                      }}
                     />
                   )}
                   <Typography variant="body2" color="text.secondary" mb={0.5}>
                     {com.endereco || "Endereço não informado"}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" fontSize={12}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontSize={12}
+                  >
                     Tel: {com.telefone || "Não informado"}
                   </Typography>
                 </Box>
               </Popup>
             </Marker>
-          ) : null,
-        )}
+          );
+        })}
       </MapContainer>
     </Box>
   );
