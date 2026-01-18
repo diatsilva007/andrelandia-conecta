@@ -25,7 +25,12 @@ export default function CadastroComercio() {
     nome: "",
     categoria: "",
     descricao: "",
-    endereco: "",
+    logradouro: "",
+    numero: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
+    cep: "",
     telefone: "",
   });
   // Estado da imagem
@@ -92,7 +97,7 @@ export default function CadastroComercio() {
           navigate("/", {
             state: { sucesso: "Comércio cadastrado com sucesso!" },
           }),
-        1200
+        1200,
       );
     } catch (err) {
       const msg = err.response?.data?.error || "Erro ao cadastrar comércio";
@@ -212,29 +217,67 @@ export default function CadastroComercio() {
                   </MenuItem>
                 ))}
               </TextField>
+              <TextField
+                label="Logradouro"
+                name="logradouro"
+                value={form.logradouro}
+                onChange={handleChange}
+                fullWidth
+                sx={{ mb: 2 }}
+                placeholder="Rua, Avenida, etc."
+              />
+              <Box display="flex" gap={2} mb={2}>
+                <TextField
+                  label="Número"
+                  name="numero"
+                  value={form.numero}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                  placeholder="123"
+                />
+                <TextField
+                  label="Bairro"
+                  name="bairro"
+                  value={form.bairro}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                  placeholder="Centro"
+                />
+              </Box>
+              <Box display="flex" gap={2} mb={2}>
+                <TextField
+                  label="Cidade"
+                  name="cidade"
+                  value={form.cidade}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                  placeholder="Andrelândia"
+                />
+                <TextField
+                  label="Estado"
+                  name="estado"
+                  value={form.estado}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                  placeholder="MG"
+                />
+                <TextField
+                  label="CEP"
+                  name="cep"
+                  value={form.cep}
+                  onChange={handleChange}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                  placeholder="37300-000"
+                />
+              </Box>
             </Box>
-            <TextField
-              label="Descrição"
-              name="descricao"
-              value={form.descricao}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-              inputProps={{ maxLength: 120 }}
-              helperText="Máx. 120 caracteres"
-              sx={{ mb: 2, background: "#f7fafd", borderRadius: 2 }}
-            />
-            <TextField
-              label="Endereço"
-              name="endereco"
-              value={form.endereco}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-              inputProps={{ maxLength: 80 }}
-              helperText="Máx. 80 caracteres"
-              sx={{ mb: 2, background: "#f7fafd", borderRadius: 2 }}
-            />
+            {/* Removido bloco de atributos JSX soltos após <Box> */}
+            {/* Campo antigo de endereço removido */}
             <TextField
               label="Telefone"
               name="telefone"
