@@ -32,6 +32,8 @@ export default function CadastroComercio() {
     estado: "",
     cep: "",
     telefone: "",
+    latitude: "",
+    longitude: "",
   });
   // Estado da imagem
   const [imagem, setImagem] = useState(null);
@@ -50,7 +52,35 @@ export default function CadastroComercio() {
   }, [navigate, usuario]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const novoForm = { ...form, [e.target.name]: e.target.value };
+    setForm(novoForm);
+    // Se o campo alterado for parte do endereço, busca coordenadas automaticamente
+    const camposEndereco = [
+      "logradouro",
+      "numero",
+      "bairro",
+      "cidade",
+      "estado",
+      "cep",
+    ];
+    if (camposEndereco.includes(e.target.name)) {
+      const enderecoCompleto = `${novoForm.logradouro}, ${novoForm.numero} - ${novoForm.bairro}, ${novoForm.cidade} - ${novoForm.estado}, CEP: ${novoForm.cep}`;
+      if (enderecoCompleto.replace(/[,\-CEP: ]/g, "").length > 0) {
+        axios
+          .get(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`,
+          )
+          .then((res) => {
+            if (res.data && res.data.length > 0) {
+              setForm((f) => ({
+                ...f,
+                latitude: res.data[0].lat,
+                longitude: res.data[0].lon,
+              }));
+            }
+          });
+      }
+    }
   };
 
   // Categorias sugeridas (pode ser expandido futuramente)
@@ -78,6 +108,9 @@ export default function CadastroComercio() {
       Object.entries(form).forEach(([key, value]) => {
         formData.append(key, value);
       });
+      // Garante que latitude/longitude sejam enviados
+      if (form.latitude) formData.set("latitude", form.latitude);
+      if (form.longitude) formData.set("longitude", form.longitude);
       formData.append("endereco", enderecoCompleto);
       if (imagem) {
         formData.append("imagem", imagem, "comercio.jpg");

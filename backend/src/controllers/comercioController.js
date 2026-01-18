@@ -57,6 +57,12 @@ export const criarComercio = async (req, res) => {
     if (!usuarioId) {
       return res.status(401).json({ error: "Usuário não autenticado." });
     }
+    console.log(
+      "[criarComercio] Latitude recebida:",
+      latitude,
+      "Longitude recebida:",
+      longitude,
+    );
     let imagemUrl = null;
     if (req.file) {
       // Caminho relativo para servir a imagem depois

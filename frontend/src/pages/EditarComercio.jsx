@@ -142,7 +142,36 @@ export default function EditarComercio() {
   }, [id, setOpen, navigate, usuario]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const novoForm = { ...form, [e.target.name]: e.target.value };
+    setForm(novoForm);
+    // Se o campo alterado for parte do endereço, busca coordenadas automaticamente
+    const camposEndereco = [
+      "logradouro",
+      "numero",
+      "bairro",
+      "cidade",
+      "estado",
+      "cep",
+    ];
+    if (camposEndereco.includes(e.target.name)) {
+      const enderecoCompleto = `${novoForm.logradouro}, ${novoForm.numero} - ${novoForm.bairro}, ${novoForm.cidade} - ${novoForm.estado}, CEP: ${novoForm.cep}`;
+      if (enderecoCompleto.replace(/[,\-CEP: ]/g, "").length > 0) {
+        // Busca coordenadas
+        axios
+          .get(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`,
+          )
+          .then((res) => {
+            if (res.data && res.data.length > 0) {
+              setForm((f) => ({
+                ...f,
+                latitude: res.data[0].lat,
+                longitude: res.data[0].lon,
+              }));
+            }
+          });
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
