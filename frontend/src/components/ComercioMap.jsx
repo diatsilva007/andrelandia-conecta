@@ -54,6 +54,11 @@ export default function ComercioMap({ comercios = [] }) {
                   <Typography variant="body2" color="text.secondary" mb={0.5}>
                     {com.endereco || "Endereço não informado"}
                   </Typography>
+                  {com.descricao && (
+                    <Typography variant="body2" color="secondary" mb={0.5}>
+                      {com.descricao}
+                    </Typography>
+                  )}
                   <Typography
                     variant="body2"
                     color="text.secondary"
