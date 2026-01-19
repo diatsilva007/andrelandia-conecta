@@ -19,7 +19,6 @@
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [ ] Compartilhamento social (WhatsApp, Facebook, Instagram)
 - [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
 - [ ] Notificações em tempo real (WebSocket ou polling)
@@ -94,6 +93,7 @@
 - [x] Página de histórico de compras/ações do usuário
 - [x] Dashboard analítico para comerciante (vendas, acessos, avaliações)
 - [x] Integração com mapas (Google Maps/Leaflet) para localização de comércios
+- [x] Compartilhamento social (WhatsApp, Facebook, Instagram)
 
 # Checklist de Prontidão para Produção (Deploy)
 
