@@ -28,6 +28,25 @@ import AnimatedCard from "../components/AnimatedCard.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 
 export default function DetalheComercio() {
+  // Compartilhamento profissional
+  const compartilharComercio = () => {
+    const url = window.location.href;
+    const texto = `Confira o comércio ${comercio?.nome} em Andrelândia!`;
+    if (navigator.share) {
+      navigator.share({
+        title: comercio?.nome || "Comércio",
+        text: texto,
+        url,
+      });
+    } else {
+      navigator.clipboard.writeText(url);
+      setSnackbar({
+        open: true,
+        message: "Link do comércio copiado!",
+        severity: "info",
+      });
+    }
+  };
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const [comercio, setComercio] = useState(null);
@@ -307,6 +326,29 @@ export default function DetalheComercio() {
                   Ligar
                 </Button>
               )}
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={compartilharComercio}
+                sx={{
+                  fontWeight: 700,
+                  px: 2.5,
+                  py: 1.1,
+                  fontSize: { xs: 15, sm: 16 },
+                  borderRadius: 3,
+                  background:
+                    "linear-gradient(90deg, #43a047 0%, #1565c0 100%)",
+                  color: "#fff",
+                  boxShadow: 3,
+                  ":hover": {
+                    background:
+                      "linear-gradient(90deg, #1565c0 0%, #43a047 100%)",
+                  },
+                }}
+                aria-label="Compartilhar comércio"
+              >
+                Compartilhar comércio
+              </Button>
             </Box>
           </CardContent>
         </Card>
