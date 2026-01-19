@@ -16,10 +16,10 @@
 - [ ] Monitoramento de erros (Sentry, LogRocket)
 - [ ] Dark mode e personalização de temas
 - [ ] Internacionalização (i18n) e suporte multilíngue
+- [ ] Skeleton loading e lazy loading de listas
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
