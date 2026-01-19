@@ -28,44 +28,61 @@ export default function ComercioMap({ comercios = [] }) {
             >
               <Popup minWidth={220} maxWidth={320}>
                 <Box>
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight={700}
-                    color="primary.main"
-                  >
-                    {com.nome}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" mb={0.5}>
-                    {com.categoria || "Sem categoria"}
-                  </Typography>
-                  {com.imagem && (
-                    <img
-                      src={`http://localhost:3333${com.imagem}`}
-                      alt={com.nome}
-                      style={{
-                        width: "100%",
-                        maxHeight: 100,
-                        objectFit: "cover",
-                        borderRadius: 8,
-                        marginBottom: 6,
-                      }}
-                    />
-                  )}
-                  <Typography variant="body2" color="text.secondary" mb={0.5}>
-                    {com.endereco || "Endereço não informado"}
-                  </Typography>
-                  {com.descricao && (
-                    <Typography variant="body2" color="secondary" mb={0.5}>
-                      {com.descricao}
+                  <Box sx={{ p: 1.5, minWidth: 200, maxWidth: 300 }}>
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight={700}
+                      color="primary.main"
+                      sx={{ mb: 0.5, fontSize: 18, textAlign: "center" }}
+                    >
+                      {com.nome}
                     </Typography>
-                  )}
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    fontSize={12}
-                  >
-                    Tel: {com.telefone || "Não informado"}
-                  </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 0.5, textAlign: "center" }}
+                    >
+                      {com.categoria || "Sem categoria"}
+                    </Typography>
+                    {com.imagem && (
+                      <img
+                        src={`http://localhost:3333${com.imagem}`}
+                        alt={com.nome}
+                        style={{
+                          width: "100%",
+                          maxHeight: 90,
+                          objectFit: "cover",
+                          borderRadius: 8,
+                          marginBottom: 8,
+                          boxShadow: "0 2px 8px #1565c033",
+                        }}
+                      />
+                    )}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 0.5 }}
+                    >
+                      {com.endereco || "Endereço não informado"}
+                    </Typography>
+                    {com.descricao && (
+                      <Typography
+                        variant="body2"
+                        color="secondary"
+                        sx={{ mb: 0.5, fontStyle: "italic", textAlign: "left" }}
+                      >
+                        {com.descricao}
+                      </Typography>
+                    )}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      fontSize={13}
+                      sx={{ mt: 0.5, textAlign: "right" }}
+                    >
+                      Tel: {com.telefone || "Não informado"}
+                    </Typography>
+                  </Box>
                 </Box>
               </Popup>
             </Marker>
