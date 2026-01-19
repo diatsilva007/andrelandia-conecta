@@ -318,9 +318,6 @@ export default function Dashboard() {
           </Grid>
           {/* Mapa dos comércios cadastrados */}
           <Box mb={5}>
-            <Typography variant="h6" color="primary.main" mb={2}>
-              Mapa dos comércios
-            </Typography>
             <ComercioMap comercios={todosComercios} />
           </Box>
           {/* Atalhos rápidos logo após os cards de resumo */}
