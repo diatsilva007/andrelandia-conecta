@@ -150,3 +150,32 @@
 ---
 
 > Marque cada item conforme for validating. Quando todos estiverem completos, o projeto estará pronto para produção!
+
+## Planejamento de melhorias para exibição de comércios/produtos
+
+- Grid responsivo com cards (1 dia)
+  - [] Ajustar layout dos cards para adaptação perfeita em mobile, tablet e desktop.
+  - [] Testar visual em diferentes tamanhos de tela.
+
+- Filtros avançados + busca instantânea (2 a 3 dias)
+  - [] Implementar filtros por categoria, preço, avaliação, localização, etc.
+  - [] Adicionar campo de busca que filtra resultados em tempo real.
+  - [] Garantir integração dos filtros com a paginação.
+
+- Paginação tradicional (1 dia)
+  - [] Dividir resultados em páginas, com navegação intuitiva.
+  - [] Integrar com filtros e busca.
+
+- Skeleton loading (0,5 dia)
+  - [] Exibir skeletons enquanto dados reais carregam.
+  - [] Melhorar percepção de velocidade e evitar tela vazia.
+
+- Destaques/ordenadores (1 dia)
+  - [] Permitir ordenação por mais avaliados, recentes, menor preço, etc.
+  - [] Destacar promoções ou favoritos no topo.
+
+Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
+
+> Essas tarefas podem ser implementadas separadamente, trazendo valor incremental ao projeto. Priorizar conforme demanda e feedback dos usuários.
+
+---
