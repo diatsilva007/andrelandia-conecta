@@ -19,7 +19,6 @@
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [x] Integração com mapas (Google Maps/Leaflet) para localização de comércios
 - [ ] Compartilhamento social (WhatsApp, Facebook, Instagram)
 - [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
@@ -94,6 +93,7 @@
 - [x] Perfil público de comerciante e cliente
 - [x] Página de histórico de compras/ações do usuário
 - [x] Dashboard analítico para comerciante (vendas, acessos, avaliações)
+- [x] Integração com mapas (Google Maps/Leaflet) para localização de comércios
 
 # Checklist de Prontidão para Produção (Deploy)
 
