@@ -2,7 +2,7 @@
 
 # Andrelândia Conecta
 
-Plataforma de gestão e visibilidade para o comércio local de Andrelândia/MG e região. Este projeto é um monorepo que reúne frontend e backend para facilitar o desenvolvimento e manutenção.
+Plataforma para gestão, visibilidade e fortalecimento do comércio local de Andrelândia/MG e região. Monorepo com frontend e backend integrados, focado em UX profissional, integração segura e evolução contínua.
 
 ## Objetivo
 
@@ -10,8 +10,8 @@ Facilitar a divulgação, gestão e conexão entre comerciantes e consumidores d
 
 ## Estrutura do Projeto
 
-- **frontend/**: Aplicação web em React (Vite)
-- **backend/**: API REST em Node.js (Express + Prisma)
+- **frontend/**: React (Vite), Material UI, animações, responsividade mobile-first, feedback global, navegação protegida, filtros avançados, dashboard analítico, integração com mapas e uploads de imagem.
+- **backend/**: Node.js, Express, Prisma ORM, PostgreSQL. Autenticação JWT, controllers organizados, uploads validados, migrations via Prisma.
 - **Banco de dados**: PostgreSQL
 
 > Para instruções detalhadas de cada módulo, consulte os READMEs em `frontend/README.md` e `backend/README.md`.
@@ -62,9 +62,23 @@ Facilitar a divulgação, gestão e conexão entre comerciantes e consumidores d
   npm run dev
   ```
 
+Acesse o frontend em `http://localhost:5173` (ou porta configurada).
+
 ### Ambiente de Produção
 
 Sugestão: Utilize Docker para orquestrar os serviços.
+
+## Funcionalidades principais
+
+- Cadastro, edição e exclusão de comércios, produtos e usuários
+- Autenticação JWT e rotas protegidas
+- Dashboard analítico para comerciantes
+- Busca e filtros avançados
+- Upload e otimização de imagens
+- Página de favoritos
+- Integração com mapas (Google Maps/Leaflet)
+- Responsividade total e acessibilidade básica
+- Feedback visual global (snackbar, loading, erros)
 
 ## Estrutura das Pastas
 
@@ -91,10 +105,14 @@ frontend/
 
 ## Roadmap de Melhorias
 
-- Filtros avançados por categoria, preço e avaliação na listagem de comércios
-- Exclusão de avaliações restrita ao comerciante dono do comércio
-- Feedback visual global (snackbar, loading, confirmação)
-- Segurança: só o dono pode editar/excluir seus dados e avaliações
+- Grid responsivo com cards
+- Filtros avançados + busca instantânea
+- Paginação tradicional
+- Skeleton loading
+- Destaques/ordenadores
+- Acessibilidade aprimorada
+- PWA e notificações em tempo real
+- Internacionalização (i18n)
 - Testes automatizados (Jest, React Testing Library, Supertest)
 - Dockerização
 - CI/CD (GitHub Actions)
@@ -102,11 +120,14 @@ frontend/
 - Monitoramento e logs
 - Validação de dados e segurança
 
+> Consulte `/frontend/TODO.md` para planejamento detalhado e próximos passos.
+
 ## Observações e melhorias recentes
 
 - Responsividade aprimorada nos principais containers e cards (Dashboard, ListaComercios, DetalheComercio)
 - Correção de bugs críticos de sintaxe e estrutura de componentes (JSX, imports, return)
 - Estrutura dos componentes revisada para garantir funcionamento em todos os dispositivos
+- Feedback visual global (snackbar, loading, confirmação)
 - Próximos passos: revisar acessibilidade, expandir testes e finalizar detalhes de UI/UX
 
 ## Dicas para desenvolvedores
@@ -117,7 +138,7 @@ frontend/
 
 ---
 
-_Última atualização: 17/01/2026_
+_Última atualização: 18/01/2026_
 
 ## Licença
 
