@@ -177,52 +177,83 @@ export default function Navbar() {
             alignItems="center"
             gap={{ xs: 0.5, md: 1.5 }}
           >
+            {/* Botão de favoritos */}
+            <Tooltip title="Meus favoritos" arrow>
+              <IconButton
+                component={Link}
+                to="/favoritos"
+                sx={{
+                  position: "relative",
+                  mx: 0.5,
+                  color: "#e53935", // sempre vermelho
+                  transition: "color 0.2s, background 0.2s",
+                  background:
+                    favoritosCount > 0 ? "rgba(229,57,53,0.08)" : "transparent",
+                  "&:hover": {
+                    background: "#fff", // fundo branco no hover
+                  },
+                }}
+                aria-label="Favoritos"
+              >
+                <FavoriteIcon fontSize="medium" />
+                {favoritosCount > 0 && (
+                  <Box
+                    sx={{
+                      minWidth: 18,
+                      height: 18,
+                      bgcolor: "#e53935",
+                      color: "#fff",
+                      borderRadius: "50%",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      px: 0.5,
+                      position: "absolute",
+                      top: 2,
+                      right: 2,
+                      border: "2px solid #fff",
+                    }}
+                  >
+                    {favoritosCount}
+                  </Box>
+                )}
+              </IconButton>
+            </Tooltip>
+            {/* Botão Dashboard (apenas autenticado) */}
             {usuario && (
               <Button
-                color="inherit"
+                color="primary"
                 component={Link}
                 to="/dashboard"
+                startIcon={
+                  <span style={{ fontWeight: 700, fontSize: 18 }}>📊</span>
+                }
                 sx={{
-                  fontWeight: 600,
-                  px: 2,
-                  display: { xs: "none", sm: "inline-flex" },
+                  fontWeight: 700,
+                  px: 2.5,
+                  py: 1,
+                  borderRadius: 2,
+                  background: "#fff",
+                  color: "#1976d2",
+                  boxShadow: "0 2px 8px #1976d222",
+                  textTransform: "none",
+                  fontSize: 15,
+                  letterSpacing: 0.5,
+                  ml: 1,
+                  border: "2px solid #1976d2",
+                  transition: "background 0.2s, color 0.2s, border 0.2s",
+                  "&:hover": {
+                    background: "#1976d2",
+                    color: "#fff",
+                    border: "2px solid #1565c0",
+                  },
                 }}
               >
                 Dashboard
               </Button>
             )}
-            <IconButton
-              color="inherit"
-              component={Link}
-              to="/favoritos"
-              sx={{ position: "relative", mx: 0.5 }}
-              aria-label="Favoritos"
-            >
-              <FavoriteIcon fontSize="medium" />
-              {favoritosCount > 0 && (
-                <Box
-                  sx={{
-                    minWidth: 18,
-                    height: 18,
-                    bgcolor: "#e53935",
-                    color: "#fff",
-                    borderRadius: "50%",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    px: 0.5,
-                    position: "absolute",
-                    top: 2,
-                    right: 2,
-                    border: "2px solid #fff",
-                  }}
-                >
-                  {favoritosCount}
-                </Box>
-              )}
-            </IconButton>
             {usuario ? (
               <>
                 {usuario.tipo === "comerciante" && (
