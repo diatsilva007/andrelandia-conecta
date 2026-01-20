@@ -180,6 +180,98 @@ export default function Navbar() {
             alignItems="center"
             gap={{ xs: 0.5, md: 1.5 }}
           >
+            {/* Dashboard sempre primeiro */}
+            {usuario && (
+              <Button
+                color="primary"
+                component={Link}
+                to="/dashboard"
+                startIcon={
+                  <span style={{ fontWeight: 700, fontSize: 18 }}>📊</span>
+                }
+                sx={{
+                  fontWeight: 700,
+                  px: 2.5,
+                  py: 1,
+                  borderRadius: 2,
+                  background: "#fff",
+                  color: "#1976d2",
+                  boxShadow: "0 2px 8px #1976d222",
+                  textTransform: "none",
+                  fontSize: 15,
+                  letterSpacing: 0.5,
+                  ml: 1,
+                  border: "2px solid #1976d2",
+                  transition: "background 0.2s, color 0.2s, border 0.2s",
+                  "&:hover": {
+                    background: "#1976d2",
+                    color: "#fff",
+                    border: "2px solid #1565c0",
+                  },
+                }}
+              >
+                Dashboard
+              </Button>
+            )}
+            {/* Cadastrar (comerciante) */}
+            {usuario?.tipo === "comerciante" && (
+              <Button
+                variant="contained"
+                size="medium"
+                startIcon={<AddBusinessIcon />}
+                sx={{
+                  borderRadius: 2,
+                  fontWeight: 700,
+                  px: 2.5,
+                  py: 1,
+                  fontSize: 15,
+                  background: "#fff",
+                  color: "#1976d2",
+                  boxShadow: "0 2px 8px #1976d222",
+                  textTransform: "none",
+                  letterSpacing: 0.5,
+                  ml: 1,
+                  border: "2px solid #1976d2",
+                  transition: "background 0.2s, color 0.2s, border 0.2s",
+                  "&:hover": {
+                    background: "#1976d2",
+                    color: "#fff",
+                    border: "2px solid #1565c0",
+                  },
+                }}
+                component={Link}
+                to="/comercios/novo"
+              >
+                Cadastrar
+              </Button>
+            )}
+            {/* Trocar tipo */}
+            <Button
+              variant="outlined"
+              size="medium"
+              startIcon={<SwapHorizIcon />}
+              sx={{
+                borderRadius: 2,
+                fontWeight: 600,
+                px: 2,
+                fontSize: 15,
+                border: "2px solid #1976d2",
+                color: "#1976d2",
+                background: "#fff",
+                textTransform: "none",
+                letterSpacing: 0.5,
+                ml: 1,
+                transition: "background 0.2s, color 0.2s, border 0.2s",
+                "&:hover": {
+                  background: "#1976d2",
+                  color: "#fff",
+                  border: "2px solid #1565c0",
+                },
+              }}
+              onClick={() => setOpenTrocaTipo(true)}
+            >
+              Trocar tipo
+            </Button>
             {/* Botão de favoritos */}
             <Tooltip title="Meus favoritos" arrow>
               <IconButton
@@ -224,248 +316,106 @@ export default function Navbar() {
                 )}
               </IconButton>
             </Tooltip>
-            {/* Botão Dashboard (apenas autenticado) */}
-            {usuario && (
-              <Button
-                color="primary"
+            {/* Sair */}
+            <Button
+              variant="contained"
+              color="error"
+              size="medium"
+              startIcon={<LogoutIcon />}
+              sx={{
+                borderRadius: 2,
+                fontWeight: 700,
+                px: 2.5,
+                fontSize: 15,
+                background: "#e53935",
+                color: "#fff",
+                textTransform: "none",
+                letterSpacing: 0.5,
+                ml: 1,
+                transition: "background 0.2s",
+                "&:hover": {
+                  background: "#b71c1c",
+                },
+              }}
+              onClick={handleLogout}
+            >
+              Sair
+            </Button>
+            {/* Avatar + tipo de usuário */}
+            <Tooltip title={usuario.nome} arrow>
+              <Box
                 component={Link}
-                to="/dashboard"
-                startIcon={
-                  <span style={{ fontWeight: 700, fontSize: 18 }}>📊</span>
-                }
+                to={`/perfil/${usuario.id}`}
                 sx={{
-                  fontWeight: 700,
-                  px: 2.5,
-                  py: 1,
-                  borderRadius: 2,
-                  background: "#fff",
-                  color: "#1976d2",
-                  boxShadow: "0 2px 8px #1976d222",
-                  textTransform: "none",
-                  fontSize: 15,
-                  letterSpacing: 0.5,
-                  ml: 1,
-                  border: "2px solid #1976d2",
-                  transition: "background 0.2s, color 0.2s, border 0.2s",
-                  "&:hover": {
-                    background: "#1976d2",
-                    color: "#fff",
-                    border: "2px solid #1565c0",
-                  },
+                  textDecoration: "none",
+                  ml: 1.5,
+                  mr: 0.5,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                Dashboard
-              </Button>
-            )}
-            {usuario ? (
-              <>
-                {usuario.tipo === "comerciante" && (
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    startIcon={<AddBusinessIcon />}
+                <Avatar
+                  src={
+                    usuario.imagem
+                      ? `http://localhost:3333${usuario.imagem}`
+                      : undefined
+                  }
+                  alt={usuario.nome}
+                  sx={{
+                    width: 38,
+                    height: 38,
+                    bgcolor: "#1976d2",
+                    fontWeight: 700,
+                    fontSize: 20,
+                    boxShadow: 2,
+                    border: "2px solid #fff",
+                    transition: "box-shadow 0.2s",
+                    "&:hover": { boxShadow: 4 },
+                  }}
+                >
+                  {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
+                </Avatar>
+                <Box
+                  sx={{
+                    ml: 1,
+                    display: { xs: "none", sm: "flex" },
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <Typography
                     sx={{
-                      borderRadius: 2,
+                      color: usuario.tipo === "comerciante" ? "#fff" : "#fff",
                       fontWeight: 700,
-                      px: 2.5,
-                      py: 1,
-                      fontSize: 15,
-                      background: "#fff",
-                      color: "#1976d2",
-                      boxShadow: "0 2px 8px #1976d222",
-                      textTransform: "none",
+                      fontSize: 14,
+                      px: 1.5,
+                      py: 0.5,
+                      borderRadius: 2,
+                      background:
+                        usuario.tipo === "comerciante"
+                          ? "linear-gradient(90deg, #43a047 60%, #1976d2 100%)"
+                          : "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
+                      boxShadow: 2,
+                      border:
+                        usuario.tipo === "comerciante"
+                          ? "2px solid #43a047"
+                          : "2px solid #1976d2",
                       letterSpacing: 0.5,
-                      ml: 1,
-                      border: "2px solid #1976d2",
-                      transition: "background 0.2s, color 0.2s, border 0.2s",
-                      "&:hover": {
-                        background: "#1976d2",
-                        color: "#fff",
-                        border: "2px solid #1565c0",
-                      },
-                    }}
-                    component={Link}
-                    to="/comercios/novo"
-                  >
-                    Cadastrar
-                  </Button>
-                )}
-                <Button
-                  variant="outlined"
-                  size="medium"
-                  startIcon={<SwapHorizIcon />}
-                  sx={{
-                    borderRadius: 2,
-                    fontWeight: 600,
-                    px: 2,
-                    fontSize: 15,
-                    border: "2px solid #1976d2",
-                    color: "#1976d2",
-                    background: "#fff",
-                    textTransform: "none",
-                    letterSpacing: 0.5,
-                    ml: 1,
-                    transition: "background 0.2s, color 0.2s, border 0.2s",
-                    "&:hover": {
-                      background: "#1976d2",
-                      color: "#fff",
-                      border: "2px solid #1565c0",
-                    },
-                  }}
-                  onClick={() => setOpenTrocaTipo(true)}
-                >
-                  Trocar tipo
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  size="medium"
-                  startIcon={<LogoutIcon />}
-                  sx={{
-                    borderRadius: 2,
-                    fontWeight: 700,
-                    px: 2.5,
-                    fontSize: 15,
-                    background: "#e53935",
-                    color: "#fff",
-                    textTransform: "none",
-                    letterSpacing: 0.5,
-                    ml: 1,
-                    transition: "background 0.2s",
-                    "&:hover": {
-                      background: "#b71c1c",
-                    },
-                  }}
-                  onClick={handleLogout}
-                >
-                  Sair
-                </Button>
-                <Tooltip title={usuario.nome} arrow>
-                  <Box
-                    component={Link}
-                    to={`/perfil/${usuario.id}`}
-                    sx={{
-                      textDecoration: "none",
-                      ml: 1.5,
-                      mr: 0.5,
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
+                      textShadow: "0 2px 8px #0002",
                     }}
                   >
-                    <Avatar
-                      src={
-                        usuario.imagem
-                          ? `http://localhost:3333${usuario.imagem}`
-                          : undefined
-                      }
-                      alt={usuario.nome}
-                      sx={{
-                        width: 38,
-                        height: 38,
-                        bgcolor: "#1976d2",
-                        fontWeight: 700,
-                        fontSize: 20,
-                        boxShadow: 2,
-                        border: "2px solid #fff",
-                        transition: "box-shadow 0.2s",
-                        "&:hover": { boxShadow: 4 },
-                      }}
-                    >
-                      {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
-                    </Avatar>
-                    <Box
-                      sx={{
-                        ml: 1,
-                        display: { xs: "none", sm: "flex" },
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          color:
-                            usuario.tipo === "comerciante" ? "#fff" : "#fff",
-                          fontWeight: 700,
-                          fontSize: 14,
-                          px: 1.5,
-                          py: 0.5,
-                          borderRadius: 2,
-                          background:
-                            usuario.tipo === "comerciante"
-                              ? "linear-gradient(90deg, #43a047 60%, #1976d2 100%)"
-                              : "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
-                          boxShadow: 2,
-                          border:
-                            usuario.tipo === "comerciante"
-                              ? "2px solid #43a047"
-                              : "2px solid #1976d2",
-                          letterSpacing: 0.5,
-                          textShadow: "0 2px 8px #0002",
-                        }}
-                      >
-                        {usuario.tipo === "comerciante"
-                          ? "Comerciante"
-                          : "Cliente"}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Tooltip>
-                <TrocaTipoUsuarioDialog
-                  open={openTrocaTipo}
-                  onClose={() => setOpenTrocaTipo(false)}
-                  usuario={usuario}
-                  onTipoAtualizado={handleTipoAtualizado}
-                />
-              </>
-            ) : (
-              <Box display="flex" alignItems="center" gap={1}>
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  component={Link}
-                  to="/login"
-                  size="medium"
-                  sx={{
-                    borderRadius: 2,
-                    fontWeight: 600,
-                    px: 2,
-                    fontSize: 15,
-                    letterSpacing: 0.5,
-                    boxShadow: "0 2px 8px #1976d222",
-                    background: "rgba(255,255,255,0.08)",
-                    borderColor: "#fff",
-                    color: "#fff",
-                    transition: "all 0.2s",
-                    "&:hover": {
-                      background: "#e3f2fd",
-                      color: "#1976d2",
-                      borderColor: "#1976d2",
-                    },
-                  }}
-                >
-                  Entrar
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  component={Link}
-                  to="/registrar"
-                  size="medium"
-                  sx={{
-                    borderRadius: 2,
-                    fontWeight: 700,
-                    px: 2.5,
-                    fontSize: 15,
-                    boxShadow: "0 2px 8px #43a04733",
-                    transition: "all 0.2s",
-                    ml: 0.5,
-                  }}
-                >
-                  Registrar
-                </Button>
+                    {usuario.tipo === "comerciante" ? "Comerciante" : "Cliente"}
+                  </Typography>
+                </Box>
               </Box>
-            )}
+            </Tooltip>
+            <TrocaTipoUsuarioDialog
+              open={openTrocaTipo}
+              onClose={() => setOpenTrocaTipo(false)}
+              usuario={usuario}
+              onTipoAtualizado={handleTipoAtualizado}
+            />
           </Box>
         </Toolbar>
       </AppBar>
