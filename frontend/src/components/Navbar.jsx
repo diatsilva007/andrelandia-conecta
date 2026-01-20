@@ -323,12 +323,14 @@ export default function Navbar() {
                 component={Link}
                 to="/historico"
                 sx={{
+                  position: "relative",
                   mx: 0.5,
-                  color: "#1976d2",
+                  color: "#222", // preto discreto
                   transition: "color 0.2s, background 0.2s",
                   background: "transparent",
+                  borderRadius: 2,
                   "&:hover": {
-                    background: "#e3f2fd",
+                    background: "#f5f5f5", // cinza claro no hover
                   },
                 }}
                 aria-label="Histórico"
