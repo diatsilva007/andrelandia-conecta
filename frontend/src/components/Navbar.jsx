@@ -18,6 +18,9 @@ import { useEffect, useState } from "react";
 import { useUser } from "../contexts/UserContext.jsx";
 import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog";
 import MenuDrawer from "./MenuDrawer";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Navbar() {
   const { usuario, logout, setUsuario } = useUser();
@@ -259,18 +262,27 @@ export default function Navbar() {
                 {usuario.tipo === "comerciante" && (
                   <Button
                     variant="contained"
-                    color="secondary"
                     size="medium"
+                    startIcon={<AddBusinessIcon />}
                     sx={{
                       borderRadius: 2,
                       fontWeight: 700,
                       px: 2.5,
                       py: 1,
                       fontSize: 15,
-                      boxShadow: "0 2px 8px #43a04733",
-                      transition: "all 0.2s",
-                      ml: 0.5,
-                      display: { xs: "none", md: "inline-flex" },
+                      background: "#fff",
+                      color: "#1976d2",
+                      boxShadow: "0 2px 8px #1976d222",
+                      textTransform: "none",
+                      letterSpacing: 0.5,
+                      ml: 1,
+                      border: "2px solid #1976d2",
+                      transition: "background 0.2s, color 0.2s, border 0.2s",
+                      "&:hover": {
+                        background: "#1976d2",
+                        color: "#fff",
+                        border: "2px solid #1565c0",
+                      },
                     }}
                     component={Link}
                     to="/comercios/novo"
@@ -280,23 +292,24 @@ export default function Navbar() {
                 )}
                 <Button
                   variant="outlined"
-                  color="inherit"
                   size="medium"
+                  startIcon={<SwapHorizIcon />}
                   sx={{
                     borderRadius: 2,
                     fontWeight: 600,
                     px: 2,
                     fontSize: 15,
-                    borderColor: "#fff",
-                    color: "#fff",
-                    background: "rgba(255,255,255,0.08)",
-                    transition: "all 0.2s",
-                    ml: 0.5,
-                    display: { xs: "none", sm: "inline-flex" },
+                    border: "2px solid #1976d2",
+                    color: "#1976d2",
+                    background: "#fff",
+                    textTransform: "none",
+                    letterSpacing: 0.5,
+                    ml: 1,
+                    transition: "background 0.2s, color 0.2s, border 0.2s",
                     "&:hover": {
-                      background: "#e3f2fd",
-                      color: "#1976d2",
-                      borderColor: "#1976d2",
+                      background: "#1976d2",
+                      color: "#fff",
+                      border: "2px solid #1565c0",
                     },
                   }}
                   onClick={() => setOpenTrocaTipo(true)}
@@ -305,16 +318,23 @@ export default function Navbar() {
                 </Button>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="error"
                   size="medium"
+                  startIcon={<LogoutIcon />}
                   sx={{
                     borderRadius: 2,
                     fontWeight: 700,
                     px: 2.5,
                     fontSize: 15,
-                    boxShadow: "0 2px 8px #43a04733",
-                    transition: "all 0.2s",
-                    ml: 0.5,
+                    background: "#e53935",
+                    color: "#fff",
+                    textTransform: "none",
+                    letterSpacing: 0.5,
+                    ml: 1,
+                    transition: "background 0.2s",
+                    "&:hover": {
+                      background: "#b71c1c",
+                    },
                   }}
                   onClick={handleLogout}
                 >
@@ -356,20 +376,24 @@ export default function Navbar() {
                     </Avatar>
                     <Typography
                       sx={{
-                        color: "#fff",
-                        fontWeight: 500,
-                        fontSize: 15,
-                        ml: 1,
-                        display: { xs: "none", md: "block" },
-                        background:
+                        color:
                           usuario.tipo === "comerciante"
                             ? "#43a047"
                             : "#1976d2",
+                        fontWeight: 700,
+                        fontSize: 15,
+                        ml: 1,
+                        display: { xs: "none", sm: "block" },
+                        background: "rgba(25,118,210,0.08)",
                         borderRadius: 2,
                         px: 1.2,
                         py: 0.3,
                         boxShadow: 1,
                         whiteSpace: "nowrap",
+                        border:
+                          usuario.tipo === "comerciante"
+                            ? "2px solid #43a047"
+                            : "2px solid #1976d2",
                       }}
                     >
                       {usuario.tipo === "comerciante"
