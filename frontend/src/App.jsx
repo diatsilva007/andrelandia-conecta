@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { ThemeProviderCustom, useThemeMode } from "./contexts/ThemeContext.jsx";
 import LoadingBackdrop from "./components/LoadingBackdrop.jsx";
 import React, { createContext, useState } from "react";
 import { SnackbarProvider } from "./components/SnackbarContext.jsx";
@@ -24,166 +25,173 @@ import PerfilPublico from "./pages/PerfilPublico.jsx";
 import HistoricoUsuario from "./pages/HistoricoUsuario.jsx";
 import { useLocation } from "react-router-dom";
 
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#1565c0", // azul profundo
-      contrastText: "#fff",
-      gradient: "linear-gradient(90deg, #1565c0 0%, #43a047 100%)",
+function getTheme(mode) {
+  return createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: "#1565c0",
+        contrastText: "#fff",
+        gradient: "linear-gradient(90deg, #1565c0 0%, #43a047 100%)",
+      },
+      secondary: {
+        main: "#43a047",
+        contrastText: "#fff",
+        gradient: "linear-gradient(90deg, #43a047 0%, #1565c0 100%)",
+      },
+      background:
+        mode === "dark"
+          ? {
+              default: "#181c22",
+              paper: "#23272f",
+              gradient: "linear-gradient(120deg, #23272f 0%, #181c22 100%)",
+            }
+          : {
+              default: "#f4f6fa",
+              paper: "#fff",
+              gradient: "linear-gradient(120deg, #e3f2fd 0%, #e8f5e9 100%)",
+            },
+      info: { main: "#0288d1" },
+      success: { main: "#388e3c" },
+      error: { main: "#d32f2f" },
+      warning: { main: "#ffa000" },
     },
-    secondary: {
-      main: "#43a047", // verde vibrante
-      contrastText: "#fff",
-      gradient: "linear-gradient(90deg, #43a047 0%, #1565c0 100%)",
+    typography: {
+      fontFamily: "Roboto, Arial, sans-serif",
+      h5: {
+        fontWeight: 700,
+        letterSpacing: 1.2,
+        textShadow: mode === "dark" ? "0 2px 8px #0008" : "0 2px 8px #0002",
+      },
+      h6: {
+        fontWeight: 600,
+        letterSpacing: 1,
+      },
+      button: {
+        fontWeight: 700,
+        letterSpacing: 0.5,
+        textTransform: "none",
+        transition: "all 0.2s",
+      },
     },
-    background: {
-      default: "#f4f6fa",
-      paper: "#fff",
-      gradient: "linear-gradient(120deg, #e3f2fd 0%, #e8f5e9 100%)",
+    shape: { borderRadius: 12 },
+    transitions: {
+      duration: {
+        shortest: 150,
+        shorter: 200,
+        short: 250,
+        standard: 300,
+        complex: 375,
+        enteringScreen: 225,
+        leavingScreen: 195,
+      },
     },
-    info: {
-      main: "#0288d1",
+    breakpoints: {
+      values: { xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536 },
     },
-    success: {
-      main: "#388e3c",
-    },
-    error: {
-      main: "#d32f2f",
-    },
-    warning: {
-      main: "#ffa000",
-    },
-  },
-  typography: {
-    fontFamily: "Roboto, Arial, sans-serif",
-    h5: {
-      fontWeight: 700,
-      letterSpacing: 1.2,
-      textShadow: "0 2px 8px #0002",
-    },
-    h6: {
-      fontWeight: 600,
-      letterSpacing: 1,
-    },
-    button: {
-      fontWeight: 700,
-      letterSpacing: 0.5,
-      textTransform: "none",
-      transition: "all 0.2s",
-    },
-  },
-  shape: {
-    borderRadius: 12,
-  },
-  transitions: {
-    duration: {
-      shortest: 150,
-      shorter: 200,
-      short: 250,
-      standard: 300,
-      complex: 375,
-      enteringScreen: 225,
-      leavingScreen: 195,
-    },
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          boxShadow: "0 2px 8px #43a04733",
-          transition:
-            "background 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1), transform 0.18s cubic-bezier(.4,0,.2,1)",
-          willChange: "background, box-shadow, transform",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          maxWidth: { xs: "90vw", sm: "none" },
-          "&:hover": {
-            boxShadow: "0 4px 16px #1565c033",
-            filter: "brightness(1.08)",
-            transform: "scale(1.045)",
-            backgroundColor: "#e3f2fd",
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: 8,
+            boxShadow:
+              mode === "dark" ? "0 2px 8px #1565c055" : "0 2px 8px #43a04733",
+            transition:
+              "background 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1), transform 0.18s cubic-bezier(.4,0,.2,1)",
+            willChange: "background, box-shadow, transform",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: { xs: "90vw", sm: "none" },
+            "&:hover": {
+              boxShadow:
+                mode === "dark"
+                  ? "0 4px 16px #1565c088"
+                  : "0 4px 16px #1565c033",
+              filter: "brightness(1.08)",
+              transform: "scale(1.045)",
+              backgroundColor: mode === "dark" ? "#23272f" : "#e3f2fd",
+            },
+            "&:focus-visible": {
+              outline: "2px solid #1976d2",
+              outlineOffset: 2,
+              boxShadow:
+                mode === "dark"
+                  ? "0 0 0 4px #1976d288, 0 4px 16px #1565c088"
+                  : "0 0 0 4px #1976d244, 0 4px 16px #1565c033",
+              transform: "scale(1.03)",
+            },
+            "&:active": {
+              filter: "brightness(0.97)",
+              transform: "scale(0.98)",
+            },
           },
-          "&:focus-visible": {
-            outline: "2px solid #1976d2",
-            outlineOffset: 2,
-            boxShadow: "0 0 0 4px #1976d244, 0 4px 16px #1565c033",
-            transform: "scale(1.03)",
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: 16,
+            boxShadow:
+              mode === "dark" ? "0 4px 24px #1976d244" : "0 4px 24px #1976d222",
+            transition:
+              "box-shadow 0.3s, transform 0.22s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
+            opacity: 0,
+            transform: "translateY(24px)",
+            animation: "fadeInCard 0.7s cubic-bezier(.4,0,.2,1) forwards",
+            willChange: "box-shadow, transform, opacity",
+            "@keyframes fadeInCard": {
+              from: { opacity: 0, transform: "translateY(24px)" },
+              to: { opacity: 1, transform: "translateY(0)" },
+            },
+            "&:hover": {
+              boxShadow:
+                mode === "dark"
+                  ? "0 8px 32px #1976d288"
+                  : "0 8px 32px #1976d244",
+              transform: "scale(1.025) translateY(-2px)",
+            },
+            "&:focus-visible": {
+              outline: "2px solid #1976d2",
+              outlineOffset: 2,
+              boxShadow:
+                mode === "dark"
+                  ? "0 0 0 4px #1976d288, 0 8px 32px #1976d288"
+                  : "0 0 0 4px #1976d244, 0 8px 32px #1976d244",
+              transform: "scale(1.015) translateY(-1px)",
+            },
           },
-          "&:active": {
-            filter: "brightness(0.97)",
-            transform: "scale(0.98)",
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            borderRadius: 16,
+          },
+        },
+      },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            borderRadius: 18,
+            boxShadow:
+              mode === "dark" ? "0 8px 40px #1976d288" : "0 8px 40px #1976d244",
+            transition:
+              "opacity 0.32s cubic-bezier(.4,0,.2,1), transform 0.32s cubic-bezier(.4,0,.2,1)",
+            opacity: 0,
+            transform: "translateY(32px) scale(0.98)",
+            animation: "fadeInDialog 0.5s cubic-bezier(.4,0,.2,1) forwards",
+            willChange: "opacity, transform",
+            "@keyframes fadeInDialog": {
+              from: { opacity: 0, transform: "translateY(32px) scale(0.98)" },
+              to: { opacity: 1, transform: "translateY(0) scale(1)" },
+            },
           },
         },
       },
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          boxShadow: "0 4px 24px #1976d222",
-          transition:
-            "box-shadow 0.3s, transform 0.22s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
-          opacity: 0,
-          transform: "translateY(24px)",
-          animation: "fadeInCard 0.7s cubic-bezier(.4,0,.2,1) forwards",
-          willChange: "box-shadow, transform, opacity",
-          "@keyframes fadeInCard": {
-            from: { opacity: 0, transform: "translateY(24px)" },
-            to: { opacity: 1, transform: "translateY(0)" },
-          },
-          "&:hover": {
-            boxShadow: "0 8px 32px #1976d244",
-            transform: "scale(1.025) translateY(-2px)",
-          },
-          "&:focus-visible": {
-            outline: "2px solid #1976d2",
-            outlineOffset: 2,
-            boxShadow: "0 0 0 4px #1976d244, 0 8px 32px #1976d244",
-            transform: "scale(1.015) translateY(-1px)",
-          },
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          // Removido background customizado para não afetar Alert variant='filled'
-        },
-      },
-    },
-    MuiDialog: {
-      styleOverrides: {
-        paper: {
-          borderRadius: 18,
-          boxShadow: "0 8px 40px #1976d244",
-          transition:
-            "opacity 0.32s cubic-bezier(.4,0,.2,1), transform 0.32s cubic-bezier(.4,0,.2,1)",
-          opacity: 0,
-          transform: "translateY(32px) scale(0.98)",
-          animation: "fadeInDialog 0.5s cubic-bezier(.4,0,.2,1) forwards",
-          willChange: "opacity, transform",
-          "@keyframes fadeInDialog": {
-            from: { opacity: 0, transform: "translateY(32px) scale(0.98)" },
-            to: { opacity: 1, transform: "translateY(0) scale(1)" },
-          },
-        },
-      },
-    },
-  },
-});
+  });
+}
 
 // Contexto para loading global
 export const LoadingContext = createContext({ open: false, setOpen: () => {} });
@@ -191,6 +199,8 @@ export const LoadingContext = createContext({ open: false, setOpen: () => {} });
 function App() {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const { mode } = useThemeMode();
+  const theme = getTheme(mode);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -236,7 +246,9 @@ function App() {
 export default function AppWithRouter() {
   return (
     <BrowserRouter>
-      <App />
+      <ThemeProviderCustom>
+        <App />
+      </ThemeProviderCustom>
     </BrowserRouter>
   );
 }

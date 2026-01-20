@@ -12,6 +12,7 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AnimatedMenuIcon from "./AnimatedMenuIcon.jsx";
 import { Link, useNavigate } from "react-router-dom";
+import ThemeToggleButton from "./ThemeToggleButton.jsx";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { useUser } from "../contexts/UserContext.jsx";
@@ -60,435 +61,347 @@ export default function Navbar() {
         aria-label="Barra de navegação principal"
         sx={{
           background:
-            "linear-gradient(90deg, rgba(25,118,210,0.75) 0%, rgba(67,160,71,0.75) 100%)",
+            "linear-gradient(90deg, rgba(25,118,210,0.85) 0%, rgba(67,160,71,0.85) 100%)",
           backdropFilter: "blur(8px)",
-          boxShadow: "0 4px 24px #1976d222",
+          boxShadow: "0 2px 8px #1976d222",
           borderRadius: 0,
-          px: { xs: 2, md: 6 },
-          py: 0.5,
+          px: { xs: 1, md: 3 },
+          py: 0,
+          minHeight: 56,
           zIndex: 1201,
         }}
       >
         <Toolbar
           sx={{
-            minHeight: 64,
+            minHeight: 56,
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
             px: 0,
             width: "100%",
           }}
         >
-          <Box
-            display="flex"
-            alignItems="center"
-            gap={{ xs: 2.5, md: 6 }}
-            sx={{
-              width: "100%",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              maxWidth: 1400,
-            }}
-          >
-            {/* Logo + Título */}
+          {/* Bloco esquerdo: logo, título, toggle */}
+          <Box display="flex" alignItems="center" gap={2} sx={{ minWidth: 0 }}>
+            {isMobile && (
+              <AnimatedMenuIcon
+                open={drawerOpen}
+                onClick={() => setDrawerOpen((open) => !open)}
+                sx={{
+                  mr: 1,
+                  minWidth: 48,
+                  minHeight: 48,
+                  p: 1.2,
+                  borderRadius: 2,
+                }}
+                aria-label={
+                  drawerOpen
+                    ? "Fechar menu de navegação"
+                    : "Abrir menu de navegação"
+                }
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ")
+                    setDrawerOpen((open) => !open);
+                }}
+              />
+            )}
             <Box
-              display="flex"
-              alignItems="center"
-              gap={1.2}
-              sx={{ minWidth: 0 }}
+              sx={{
+                width: { xs: 40, sm: 48 },
+                height: { xs: 40, sm: 48 },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                bgcolor: "background.paper",
+                borderRadius: "50%",
+                boxShadow: 2,
+                border: "2px solid #2563eb",
+                overflow: "hidden",
+                mr: { xs: 1, md: 0 },
+                flexShrink: 0,
+              }}
+              aria-label="Logo Andrelândia Conecta"
+              tabIndex={0}
             >
-              {isMobile && (
-                <AnimatedMenuIcon
-                  open={drawerOpen}
-                  onClick={() => setDrawerOpen((open) => !open)}
-                  sx={{
-                    mr: 1,
-                    minWidth: 48,
-                    minHeight: 48,
-                    p: 1.2,
-                    borderRadius: 2,
-                  }}
-                  aria-label={
-                    drawerOpen
-                      ? "Fechar menu de navegação"
-                      : "Abrir menu de navegação"
-                  }
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ")
-                      setDrawerOpen((open) => !open);
-                  }}
-                />
-              )}
-              <Box
-                sx={{
-                  width: 54,
-                  height: 54,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  bgcolor: "background.paper",
+              <img
+                src="/andrelandia-conecta-logo.png"
+                alt="Logo Andrelândia Conecta"
+                style={{
+                  width: "100%",
+                  height: "100%",
                   borderRadius: "50%",
-                  boxShadow: 2,
-                  border: "2px solid #2563eb",
-                  overflow: "hidden",
+                  objectFit: "cover",
+                  display: "block",
                 }}
-                aria-label="Logo Andrelândia Conecta"
-                tabIndex={0}
-              >
-                <img
-                  src="/andrelandia-conecta-logo.png"
-                  alt="Logo Andrelândia Conecta"
-                  style={{
-                    width: 46,
-                    height: 46,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                  }}
-                />
-              </Box>
-              <Typography
-                variant="h5"
-                component={Link}
-                to="/"
-                aria-label="Ir para página inicial"
-                sx={{
-                  color: "#fff",
-                  textDecoration: "none",
-                  fontWeight: 800,
-                  letterSpacing: 1.2,
-                  textShadow: "0 2px 8px #0002",
-                  transition: "color 0.2s, text-shadow 0.2s",
-                  outline: "none",
-                  whiteSpace: "nowrap",
-                  fontSize: { xs: 18, md: 24 },
-                  "&:focus": {
-                    boxShadow: "0 0 0 3px #1565c055",
-                  },
-                  "&:hover": {
-                    color: "#e0f2f1",
-                    textShadow: "0 2px 8px #1976d222",
-                    textDecoration: "none",
-                  },
-                }}
-                tabIndex={0}
-              >
-                Andrelândia Conecta
-              </Typography>
+              />
             </Box>
-            {/* Navegação: Drawer no mobile, links no desktop */}
-            {!isMobile &&
-              (usuario ? (
+            <Typography
+              variant="h5"
+              component={Link}
+              to="/"
+              aria-label="Ir para página inicial"
+              sx={{
+                color: "#fff",
+                textDecoration: "none",
+                fontWeight: 800,
+                letterSpacing: 1.2,
+                textShadow: "0 2px 8px #0002",
+                transition: "color 0.2s, text-shadow 0.2s",
+                outline: "none",
+                whiteSpace: "nowrap",
+                fontSize: { xs: 15, sm: 18, md: 24 },
+                ml: 1,
+                display: "block",
+                alignSelf: "center",
+                "&:focus": {
+                  boxShadow: "0 0 0 3px #1565c055",
+                },
+                "&:hover": {
+                  color: "#e0f2f1",
+                  textShadow: "0 2px 8px #1976d222",
+                  textDecoration: "none",
+                },
+              }}
+              tabIndex={0}
+            >
+              Andrelândia Conecta
+            </Typography>
+            <Box sx={{ ml: { xs: 0.5, md: 2 } }}>
+              <ThemeToggleButton />
+            </Box>
+          </Box>
+          {/* Bloco direito: ações e perfil */}
+          <Box
+            display={{ xs: "none", sm: "flex" }}
+            alignItems="center"
+            gap={{ xs: 0.5, md: 1.5 }}
+          >
+            {usuario && (
+              <Button
+                color="inherit"
+                component={Link}
+                to="/dashboard"
+                sx={{
+                  fontWeight: 600,
+                  px: 2,
+                  display: { xs: "none", sm: "inline-flex" },
+                }}
+              >
+                Dashboard
+              </Button>
+            )}
+            <IconButton
+              color="inherit"
+              component={Link}
+              to="/favoritos"
+              sx={{ position: "relative", mx: 0.5 }}
+              aria-label="Favoritos"
+            >
+              <FavoriteIcon fontSize="medium" />
+              {favoritosCount > 0 && (
                 <Box
-                  display="flex"
-                  alignItems="center"
-                  gap={{ xs: 1, md: 2.5 }}
-                  sx={{ flexWrap: "wrap" }}
+                  sx={{
+                    minWidth: 18,
+                    height: 18,
+                    bgcolor: "#e53935",
+                    color: "#fff",
+                    borderRadius: "50%",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    px: 0.5,
+                    position: "absolute",
+                    top: 2,
+                    right: 2,
+                    border: "2px solid #fff",
+                  }}
                 >
+                  {favoritosCount}
+                </Box>
+              )}
+            </IconButton>
+            {usuario ? (
+              <>
+                {usuario.tipo === "comerciante" && (
                   <Button
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     size="medium"
                     sx={{
                       borderRadius: 2,
-                      fontWeight: 600,
-                      minWidth: 36,
-                      minHeight: 36,
-                      px: 2,
+                      fontWeight: 700,
+                      px: 2.5,
                       py: 1,
                       fontSize: 15,
-                      boxShadow: "0 2px 8px #1565c033",
-                      transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
-                      background: "#1565c0",
-                      color: "#fff",
-                      mr: 0.5,
-                      "&:hover": {
-                        background: "#1976d2",
-                        color: "#fff",
-                        boxShadow: "0 4px 16px #1565c044",
-                      },
+                      boxShadow: "0 2px 8px #43a04733",
+                      transition: "all 0.2s",
+                      ml: 0.5,
+                      display: { xs: "none", md: "inline-flex" },
                     }}
                     component={Link}
-                    to="/dashboard"
+                    to="/comercios/novo"
                   >
-                    Dashboard
+                    Cadastrar
                   </Button>
-                  <Tooltip title="Histórico do usuário" arrow>
-                    <IconButton
-                      component={Link}
-                      to="/historico"
-                      sx={{
-                        background: "#e3f2fd",
-                        color: "#1565c0",
-                        ml: 0.5,
-                        p: 0.7,
-                        "&:hover": { background: "#bbdefb" },
-                      }}
-                      size="small"
-                      aria-label="Histórico do usuário"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#1565c0"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />
-                      </svg>
-                    </IconButton>
-                  </Tooltip>
-                  <IconButton
+                )}
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  size="medium"
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    px: 2,
+                    fontSize: 15,
+                    borderColor: "#fff",
+                    color: "#fff",
+                    background: "rgba(255,255,255,0.08)",
+                    transition: "all 0.2s",
+                    ml: 0.5,
+                    display: { xs: "none", sm: "inline-flex" },
+                    "&:hover": {
+                      background: "#e3f2fd",
+                      color: "#1976d2",
+                      borderColor: "#1976d2",
+                    },
+                  }}
+                  onClick={() => setOpenTrocaTipo(true)}
+                >
+                  Trocar tipo
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="medium"
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 700,
+                    px: 2.5,
+                    fontSize: 15,
+                    boxShadow: "0 2px 8px #43a04733",
+                    transition: "all 0.2s",
+                    ml: 0.5,
+                  }}
+                  onClick={handleLogout}
+                >
+                  Sair
+                </Button>
+                <Tooltip title={usuario.nome} arrow>
+                  <Box
                     component={Link}
-                    to="/favoritos"
-                    color="error"
+                    to={`/perfil/${usuario.id}`}
                     sx={{
-                      ml: 1,
-                      fontSize: 28,
-                      transition: "color 0.2s",
-                      position: "relative",
-                      "&:hover": {
-                        color: "#ad1457",
-                        transform: "scale(1.12)",
-                      },
+                      textDecoration: "none",
+                      ml: 1.5,
+                      mr: 0.5,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
                     }}
-                    aria-label="Ver favoritos"
                   >
-                    <Tooltip title="Meus Favoritos" arrow>
-                      <Box sx={{ position: "relative", display: "flex" }}>
-                        <FavoriteIcon />
-                        {favoritosCount > 0 && (
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              top: -6,
-                              right: -8,
-                              bgcolor: "#d32f2f",
-                              color: "#fff",
-                              borderRadius: "50%",
-                              minWidth: 20,
-                              height: 20,
-                              fontSize: 13,
-                              fontWeight: 700,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              boxShadow: 2,
-                              zIndex: 2,
-                              px: 0.7,
-                            }}
-                          >
-                            {favoritosCount}
-                          </Box>
-                        )}
-                      </Box>
-                    </Tooltip>
-                  </IconButton>
-                  <Box display="flex" alignItems="center" gap={1.2}>
-                    <Tooltip title="Meu perfil" arrow>
-                      <Box
-                        component={Link}
-                        to={`/perfil/${usuario.id}`}
-                        sx={{
-                          textDecoration: "none",
-                          mr: 1,
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Avatar
-                          src={
-                            usuario.imagem
-                              ? `http://localhost:3333${usuario.imagem}`
-                              : undefined
-                          }
-                          alt={usuario.nome}
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            bgcolor: "#1976d2",
-                            fontWeight: 700,
-                            fontSize: 22,
-                            transition: "box-shadow 0.2s",
-                            boxShadow: 2,
-                            "&:hover": { boxShadow: 4 },
-                          }}
-                        >
-                          {!usuario.imagem &&
-                            usuario.nome?.charAt(0).toUpperCase()}
-                        </Avatar>
-                      </Box>
-                    </Tooltip>
+                    <Avatar
+                      src={
+                        usuario.imagem
+                          ? `http://localhost:3333${usuario.imagem}`
+                          : undefined
+                      }
+                      alt={usuario.nome}
+                      sx={{
+                        width: 38,
+                        height: 38,
+                        bgcolor: "#1976d2",
+                        fontWeight: 700,
+                        fontSize: 20,
+                        boxShadow: 2,
+                        border: "2px solid #fff",
+                        transition: "box-shadow 0.2s",
+                        "&:hover": { boxShadow: 4 },
+                      }}
+                    >
+                      {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
+                    </Avatar>
                     <Typography
                       sx={{
-                        color:
-                          usuario.tipo === "comerciante" ? "#fff" : "#e0f2f1",
+                        color: "#fff",
                         fontWeight: 500,
-                        fontSize: 16,
+                        fontSize: 15,
+                        ml: 1,
+                        display: { xs: "none", md: "block" },
                         background:
                           usuario.tipo === "comerciante"
                             ? "#43a047"
                             : "#1976d2",
                         borderRadius: 2,
-                        px: 1.5,
-                        py: 0.5,
+                        px: 1.2,
+                        py: 0.3,
                         boxShadow: 1,
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      Olá, {usuario.nome}
                       {usuario.tipo === "comerciante"
-                        ? " (Comerciante)"
-                        : " (Cliente)"}
+                        ? "Comerciante"
+                        : "Cliente"}
                     </Typography>
                   </Box>
-                  {usuario.tipo === "comerciante" && (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="large"
-                      sx={{
-                        borderRadius: 3,
-                        fontWeight: 700,
-                        minWidth: 48,
-                        minHeight: 48,
-                        px: 3,
-                        py: 1.5,
-                        fontSize: 16,
-                        boxShadow: "0 2px 8px #43a04733",
-                        transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
-                        transform: "scale(1)",
-                        "&:hover": {
-                          background: "#388e3c",
-                          color: "#fff",
-                          transform: "scale(1.07)",
-                          boxShadow: "0 4px 16px #43a04744",
-                        },
-                      }}
-                      component={Link}
-                      to="/comercios/novo"
-                    >
-                      Cadastrar Comércio
-                    </Button>
-                  )}
-                  <Button
-                    variant="outlined"
-                    color="inherit"
-                    size="large"
-                    sx={{
-                      borderRadius: 3,
-                      fontWeight: 600,
-                      minWidth: 48,
-                      minHeight: 48,
-                      px: 3,
-                      py: 1.5,
-                      fontSize: 15,
-                      borderColor: "#fff",
-                      color: "#fff",
-                      background: "rgba(255,255,255,0.08)",
-                      transition: "all 0.25s cubic-bezier(.4,0,.2,1)",
-                      transform: "scale(1)",
-                      "&:hover": {
-                        background: "#e3f2fd",
-                        color: "#1976d2",
-                        borderColor: "#1976d2",
-                        transform: "scale(1.07)",
-                        boxShadow: "0 4px 16px #1976d244",
-                      },
-                    }}
-                    onClick={() => setOpenTrocaTipo(true)}
-                  >
-                    Trocar tipo
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="large"
-                    sx={{
-                      borderRadius: 3,
-                      fontWeight: 700,
-                      minWidth: 48,
-                      minHeight: 48,
-                      px: 3,
-                      py: 1.5,
-                      fontSize: 16,
-                      boxShadow: "0 2px 8px #43a04733",
-                      transition: "all 0.2s",
-                      "&:hover": { background: "#388e3c", color: "#fff" },
-                    }}
-                    onClick={handleLogout}
-                  >
-                    Sair
-                  </Button>
-                  <TrocaTipoUsuarioDialog
-                    open={openTrocaTipo}
-                    onClose={() => setOpenTrocaTipo(false)}
-                    usuario={usuario}
-                    onTipoAtualizado={handleTipoAtualizado}
-                  />
-                </Box>
-              ) : (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  gap={{ xs: 1, md: 2.5 }}
-                  sx={{ flexWrap: "wrap" }}
+                </Tooltip>
+                <TrocaTipoUsuarioDialog
+                  open={openTrocaTipo}
+                  onClose={() => setOpenTrocaTipo(false)}
+                  usuario={usuario}
+                  onTipoAtualizado={handleTipoAtualizado}
+                />
+              </>
+            ) : (
+              <Box display="flex" alignItems="center" gap={1}>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  component={Link}
+                  to="/login"
+                  size="medium"
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    px: 2,
+                    fontSize: 15,
+                    letterSpacing: 0.5,
+                    boxShadow: "0 2px 8px #1976d222",
+                    background: "rgba(255,255,255,0.08)",
+                    borderColor: "#fff",
+                    color: "#fff",
+                    transition: "all 0.2s",
+                    "&:hover": {
+                      background: "#e3f2fd",
+                      color: "#1976d2",
+                      borderColor: "#1976d2",
+                    },
+                  }}
                 >
-                  <Button
-                    variant="outlined"
-                    color="inherit"
-                    component={Link}
-                    to="/login"
-                    size="large"
-                    sx={{
-                      borderRadius: 3,
-                      fontWeight: 600,
-                      minWidth: 48,
-                      minHeight: 48,
-                      px: 3,
-                      py: 1.5,
-                      fontSize: 15,
-                      letterSpacing: 0.5,
-                      boxShadow: "0 2px 8px #1976d222",
-                      background: "rgba(255,255,255,0.08)",
-                      borderColor: "#fff",
-                      color: "#fff",
-                      transition: "all 0.2s",
-                      "&:hover": {
-                        background: "#e3f2fd",
-                        color: "#1976d2",
-                        borderColor: "#1976d2",
-                      },
-                    }}
-                  >
-                    Entrar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    component={Link}
-                    to="/registrar"
-                    size="large"
-                    sx={{
-                      borderRadius: 3,
-                      fontWeight: 700,
-                      minWidth: 48,
-                      minHeight: 48,
-                      px: 3,
-                      py: 1.5,
-                      fontSize: 15,
-                      boxShadow: "0 2px 8px #43a04733",
-                      transition: "all 0.2s",
-                      "&:hover": { background: "#388e3c", color: "#fff" },
-                    }}
-                  >
-                    Registrar
-                  </Button>
-                </Box>
-              ))}
+                  Entrar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  component={Link}
+                  to="/registrar"
+                  size="medium"
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 700,
+                    px: 2.5,
+                    fontSize: 15,
+                    boxShadow: "0 2px 8px #43a04733",
+                    transition: "all 0.2s",
+                    ml: 0.5,
+                  }}
+                >
+                  Registrar
+                </Button>
+              </Box>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
