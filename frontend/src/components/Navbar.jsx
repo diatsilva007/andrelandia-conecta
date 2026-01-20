@@ -374,32 +374,41 @@ export default function Navbar() {
                     >
                       {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
                     </Avatar>
-                    <Typography
+                    <Box
                       sx={{
-                        color:
-                          usuario.tipo === "comerciante"
-                            ? "#43a047"
-                            : "#1976d2",
-                        fontWeight: 700,
-                        fontSize: 15,
                         ml: 1,
-                        display: { xs: "none", sm: "block" },
-                        background: "rgba(25,118,210,0.08)",
-                        borderRadius: 2,
-                        px: 1.2,
-                        py: 0.3,
-                        boxShadow: 1,
-                        whiteSpace: "nowrap",
-                        border:
-                          usuario.tipo === "comerciante"
-                            ? "2px solid #43a047"
-                            : "2px solid #1976d2",
+                        display: { xs: "none", sm: "flex" },
+                        alignItems: "center",
+                        gap: 1,
                       }}
                     >
-                      {usuario.tipo === "comerciante"
-                        ? "Comerciante"
-                        : "Cliente"}
-                    </Typography>
+                      <Typography
+                        sx={{
+                          color:
+                            usuario.tipo === "comerciante" ? "#fff" : "#fff",
+                          fontWeight: 700,
+                          fontSize: 14,
+                          px: 1.5,
+                          py: 0.5,
+                          borderRadius: 2,
+                          background:
+                            usuario.tipo === "comerciante"
+                              ? "linear-gradient(90deg, #43a047 60%, #1976d2 100%)"
+                              : "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
+                          boxShadow: 2,
+                          border:
+                            usuario.tipo === "comerciante"
+                              ? "2px solid #43a047"
+                              : "2px solid #1976d2",
+                          letterSpacing: 0.5,
+                          textShadow: "0 2px 8px #0002",
+                        }}
+                      >
+                        {usuario.tipo === "comerciante"
+                          ? "Comerciante"
+                          : "Cliente"}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Tooltip>
                 <TrocaTipoUsuarioDialog
