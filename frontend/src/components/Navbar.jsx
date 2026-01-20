@@ -342,80 +342,76 @@ export default function Navbar() {
               Sair
             </Button>
             {/* Avatar + tipo de usuário */}
-            <Tooltip title={usuario.nome} arrow>
-              <Box
-                component={Link}
-                to={`/perfil/${usuario.id}`}
-                sx={{
-                  textDecoration: "none",
-                  ml: 1.5,
-                  mr: 0.5,
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Avatar
-                  src={
-                    usuario.imagem
-                      ? `http://localhost:3333${usuario.imagem}`
-                      : undefined
-                  }
-                  alt={usuario.nome}
-                  sx={{
-                    width: 38,
-                    height: 38,
-                    bgcolor: "#1976d2",
-                    fontWeight: 700,
-                    fontSize: 20,
-                    boxShadow: 2,
-                    border: "2px solid #fff",
-                    transition: "box-shadow 0.2s",
-                    "&:hover": { boxShadow: 4 },
-                  }}
-                >
-                  {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
-                </Avatar>
+            {usuario && (
+              <><Tooltip title={usuario?.nome || "Usuário"} arrow>
                 <Box
+                  component={Link}
+                  to={usuario?.id ? `/perfil/${usuario.id}` : "#"}
                   sx={{
-                    ml: 1,
-                    display: { xs: "none", sm: "flex" },
+                    textDecoration: "none",
+                    ml: 1.5,
+                    mr: 0.5,
+                    cursor: "pointer",
+                    display: "flex",
                     alignItems: "center",
-                    gap: 1,
                   }}
                 >
-                  <Typography
+                  <Avatar
+                    src={usuario?.imagem
+                      ? `http://localhost:3333${usuario.imagem}`
+                      : undefined}
+                    alt={usuario?.nome || "Usuário"}
                     sx={{
-                      color: usuario.tipo === "comerciante" ? "#fff" : "#fff",
+                      width: 38,
+                      height: 38,
+                      bgcolor: "#1976d2",
                       fontWeight: 700,
-                      fontSize: 14,
-                      px: 1.5,
-                      py: 0.5,
-                      borderRadius: 2,
-                      background:
-                        usuario.tipo === "comerciante"
-                          ? "linear-gradient(90deg, #43a047 60%, #1976d2 100%)"
-                          : "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
+                      fontSize: 20,
                       boxShadow: 2,
-                      border:
-                        usuario.tipo === "comerciante"
-                          ? "2px solid #43a047"
-                          : "2px solid #1976d2",
-                      letterSpacing: 0.5,
-                      textShadow: "0 2px 8px #0002",
+                      border: "2px solid #fff",
+                      transition: "box-shadow 0.2s",
+                      "&:hover": { boxShadow: 4 },
                     }}
                   >
-                    {usuario.tipo === "comerciante" ? "Comerciante" : "Cliente"}
-                  </Typography>
+                    {!usuario?.imagem && usuario?.nome?.charAt(0)?.toUpperCase()}
+                  </Avatar>
+                  <Box
+                    sx={{
+                      ml: 1,
+                      display: { xs: "none", sm: "flex" },
+                      alignItems: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: usuario?.tipo === "comerciante" ? "#fff" : "#fff",
+                        fontWeight: 700,
+                        fontSize: 14,
+                        px: 1.5,
+                        py: 0.5,
+                        borderRadius: 2,
+                        background: usuario?.tipo === "comerciante"
+                          ? "linear-gradient(90deg, #43a047 60%, #1976d2 100%)"
+                          : "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
+                        boxShadow: 2,
+                        border: usuario?.tipo === "comerciante"
+                          ? "2px solid #43a047"
+                          : "2px solid #1976d2",
+                        letterSpacing: 0.5,
+                        textShadow: "0 2px 8px #0002",
+                      }}
+                    >
+                      {usuario?.tipo === "comerciante" ? "Comerciante" : "Cliente"}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </Tooltip>
-            <TrocaTipoUsuarioDialog
-              open={openTrocaTipo}
-              onClose={() => setOpenTrocaTipo(false)}
-              usuario={usuario}
-              onTipoAtualizado={handleTipoAtualizado}
-            />
+              </Tooltip><TrocaTipoUsuarioDialog
+                  open={openTrocaTipo}
+                  onClose={() => setOpenTrocaTipo(false)}
+                  usuario={usuario}
+                  onTipoAtualizado={handleTipoAtualizado} /></>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
