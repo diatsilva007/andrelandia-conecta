@@ -17,6 +17,7 @@
 
 ## Funcionalidades sugeridas (Frontend)
 
+- [ ] Mensagens de boas-vindas e dicas contextuais para novos usuários.
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
 
@@ -119,7 +120,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Dashboard analítico para comerciante (vendas, acessos, avaliações)
 - [x] Integração com mapas (Google Maps/Leaflet) para localização de comércios
 - [x] Compartilhamento social (WhatsApp, Facebook, Instagram)
-- [x] Personalização e empatia: modo escuro/claro, mensagens de boas-vindas e dicas contextuais para novos usuários.
+- [x] Personalização e empatia: modo escuro/claro.
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 
