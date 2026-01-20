@@ -1,29 +1,29 @@
 # Guia para Agentes de IA — Andrelândia Conecta
 
-> Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região. O objetivo é garantir UX profissional, integração segura e padrões consistentes para evoluir rapidamente.
+> Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região. O objetivo é garantir UX profissional, integração segura e evolução rápida.
 
-## Arquitetura
+## Visão Geral da Arquitetura
 
-- **Frontend**: React (Vite), Material UI, animações (framer-motion), componentes globais para feedback (`GlobalSnackbar`, `LoadingBackdrop`), navegação (`BreadcrumbNav.jsx`, `MenuDrawer.jsx`), responsividade mobile-first (ver `App.css`).
-- **Backend**: Node.js, Express, Prisma ORM, PostgreSQL. Lógica separada em `src/controllers/` e rotas em `src/routes/`. Autenticação JWT obrigatória em rotas protegidas (`middlewares/auth.js`).
-- **Integração**: Comunicação via REST, sempre com JWT no header. Uploads de imagem validados e salvos em `/uploads`.
+- **Frontend**: React (Vite), Material UI, animações (framer-motion), feedback global (`GlobalSnackbar`, `LoadingBackdrop`), navegação protegida (`BreadcrumbNav.jsx`, `MenuDrawer.jsx`), responsividade mobile-first (`App.css`).
+- **Backend**: Node.js, Express, Prisma ORM, PostgreSQL. Lógica em `src/controllers/`, rotas em `src/routes/`, autenticação JWT obrigatória (`middlewares/auth.js`).
+- **Integração**: REST com JWT no header. Uploads validados e salvos em `/uploads`.
 - **Banco de dados**: PostgreSQL, migrations via Prisma (`prisma/migrations/`).
 
-## Workflows Essenciais
+## Fluxo de Desenvolvimento
 
 1. Instale dependências em `/backend` e `/frontend`.
 2. Configure `.env` no backend (`DATABASE_URL`, `JWT_SECRET`).
-3. Execute migrations Prisma: `npx prisma migrate dev` em `/backend`.
+3. Rode migrations Prisma: `npx prisma migrate dev` em `/backend`.
 4. Inicie backend: `npm run dev` em `/backend`.
 5. Inicie frontend: `npm run dev` em `/frontend`.
-6. Consulte `/frontend/TODO.md` para prioridades reais de UX/UI e funcionalidades.
+6. Consulte `/frontend/TODO.md` para prioridades reais de UX/UI.
 
-## Padrões e Convenções
+## Padrões e Convenções do Projeto
 
-- **Feedback visual global**: Use sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (evite componentes locais de feedback).
-- **Navegação protegida**: Páginas sensíveis exigem token JWT, redirecionando para `/login` se ausente.
+- **Feedback visual global**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (evite feedback local).
+- **Navegação protegida**: Páginas sensíveis exigem JWT, redirecionando para `/login` se ausente.
 - **Formulários**: Padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
-- **Responsividade**: Mobile first, espaçamento e breakpoints conforme exemplos em `App.css` e componentes.
+- **Responsividade**: Mobile first, siga exemplos de `App.css` e componentes.
 - **Microinterações**: Animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
 - **Controllers e rotas**: Lógica em `src/controllers/`, rotas em `src/routes/`.
 - **Prisma Client**: Importe por controller, nunca global.
@@ -41,13 +41,13 @@ await axios.post("http://localhost:3333/comercios", form, {
 });
 ```
 
-## Exemplos de Fluxo
+## Fluxos Típicos
 
 1. Usuário logado acessa `/cadastro-comercio`.
-2. Formulário envia POST para `/comercios` (token JWT no header).
+2. Formulário envia POST para `/comercios` (JWT no header).
 3. Backend valida, cria registro via Prisma, retorna dados.
 
-## Checklist de Prontidão (Deploy)
+## Checklist de Deploy
 
 - Scripts de build/teste funcionam (`npm run dev`, `npm start`)
 - Migrations aplicadas e banco consistente
