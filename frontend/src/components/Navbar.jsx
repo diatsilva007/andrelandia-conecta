@@ -52,7 +52,6 @@ export default function Navbar() {
   };
 
   const handleTipoAtualizado = (novoTipo) => {
-    // Atualiza contexto e localStorage
     setUsuario((prev) => ({ ...prev, tipo: novoTipo }));
   };
 
@@ -181,191 +180,191 @@ export default function Navbar() {
             alignItems="center"
             gap={{ xs: 0.5, md: 1.5 }}
           >
-            {/* Dashboard sempre primeiro */}
-            {usuario && (
-              <Button
-                color="primary"
-                component={Link}
-                to="/dashboard"
-                startIcon={
-                  <span style={{ fontWeight: 700, fontSize: 18 }}>📊</span>
-                }
-                sx={{
-                  fontWeight: 700,
-                  px: 2.5,
-                  py: 1,
-                  borderRadius: 2,
-                  background: "#fff",
-                  color: "#1976d2",
-                  boxShadow: "0 2px 8px #1976d222",
-                  textTransform: "none",
-                  fontSize: 15,
-                  letterSpacing: 0.5,
-                  ml: 1,
-                  border: "2px solid #1976d2",
-                  transition: "background 0.2s, color 0.2s, border 0.2s",
-                  "&:hover": {
-                    background: "#1976d2",
-                    color: "#fff",
-                    border: "2px solid #1565c0",
-                  },
-                }}
-              >
-                Dashboard
-              </Button>
-            )}
-            {/* Cadastrar (comerciante) */}
-            {usuario?.tipo === "comerciante" && (
-              <Button
-                variant="contained"
-                size="medium"
-                startIcon={<AddBusinessIcon />}
-                sx={{
-                  borderRadius: 2,
-                  fontWeight: 700,
-                  px: 2.5,
-                  py: 1,
-                  fontSize: 15,
-                  background: "#fff",
-                  color: "#1976d2",
-                  boxShadow: "0 2px 8px #1976d222",
-                  textTransform: "none",
-                  letterSpacing: 0.5,
-                  ml: 1,
-                  border: "2px solid #1976d2",
-                  transition: "background 0.2s, color 0.2s, border 0.2s",
-                  "&:hover": {
-                    background: "#1976d2",
-                    color: "#fff",
-                    border: "2px solid #1565c0",
-                  },
-                }}
-                component={Link}
-                to="/comercios/novo"
-              >
-                Cadastrar
-              </Button>
-            )}
-            {/* Trocar tipo */}
-            <Button
-              variant="outlined"
-              size="medium"
-              startIcon={<SwapHorizIcon />}
-              sx={{
-                borderRadius: 2,
-                fontWeight: 600,
-                px: 2,
-                fontSize: 15,
-                border: "2px solid #1976d2",
-                color: "#1976d2",
-                background: "#fff",
-                textTransform: "none",
-                letterSpacing: 0.5,
-                ml: 1,
-                transition: "background 0.2s, color 0.2s, border 0.2s",
-                "&:hover": {
-                  background: "#1976d2",
-                  color: "#fff",
-                  border: "2px solid #1565c0",
-                },
-              }}
-              onClick={() => setOpenTrocaTipo(true)}
-            >
-              Trocar tipo
-            </Button>
-            {/* Botão de favoritos */}
-            <Tooltip title="Meus favoritos" arrow>
-              <IconButton
-                component={Link}
-                to="/favoritos"
-                sx={{
-                  position: "relative",
-                  mx: 0.5,
-                  color: "#e53935", // sempre vermelho
-                  transition: "color 0.2s, background 0.2s",
-                  background:
-                    favoritosCount > 0 ? "rgba(229,57,53,0.08)" : "transparent",
-                  "&:hover": {
-                    background: "#fff", // fundo branco no hover
-                  },
-                }}
-                aria-label="Favoritos"
-              >
-                <FavoriteIcon fontSize="medium" />
-                {favoritosCount > 0 && (
-                  <Box
-                    sx={{
-                      minWidth: 18,
-                      height: 18,
-                      bgcolor: "#e53935",
-                      color: "#fff",
-                      borderRadius: "50%",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      px: 0.5,
-                      position: "absolute",
-                      top: 2,
-                      right: 2,
-                      border: "2px solid #fff",
-                    }}
-                  >
-                    {favoritosCount}
-                  </Box>
-                )}
-              </IconButton>
-            </Tooltip>
-            {/* Botão de histórico */}
-            <Tooltip title="Histórico" arrow>
-              <IconButton
-                component={Link}
-                to="/historico"
-                sx={{
-                  position: "relative",
-                  mx: 0.5,
-                  color: "#222", // preto discreto
-                  transition: "color 0.2s, background 0.2s",
-                  background: "transparent",
-                  borderRadius: 2,
-                  "&:hover": {
-                    background: "#f5f5f5", // cinza claro no hover
-                  },
-                }}
-                aria-label="Histórico"
-              >
-                <HistoryIcon fontSize="medium" />
-              </IconButton>
-            </Tooltip>
-            {/* Sair */}
-            <Button
-              variant="contained"
-              color="error"
-              size="medium"
-              startIcon={<LogoutIcon />}
-              sx={{
-                borderRadius: 2,
-                fontWeight: 700,
-                px: 2.5,
-                fontSize: 15,
-                background: "#e53935",
-                color: "#fff",
-                textTransform: "none",
-                letterSpacing: 0.5,
-                ml: 1,
-                transition: "background 0.2s",
-                "&:hover": {
-                  background: "#b71c1c",
-                },
-              }}
-              onClick={handleLogout}
-            >
-              Sair
-            </Button>
-            {/* Avatar + tipo de usuário */}
-            {usuario && (
+            {usuario ? (
               <>
+                {/* Dashboard sempre primeiro */}
+                <Button
+                  color="primary"
+                  component={Link}
+                  to="/dashboard"
+                  startIcon={
+                    <span style={{ fontWeight: 700, fontSize: 18 }}>📊</span>
+                  }
+                  sx={{
+                    fontWeight: 700,
+                    px: 2.5,
+                    py: 1,
+                    borderRadius: 2,
+                    background: "#fff",
+                    color: "#1976d2",
+                    boxShadow: "0 2px 8px #1976d222",
+                    textTransform: "none",
+                    fontSize: 15,
+                    letterSpacing: 0.5,
+                    ml: 1,
+                    border: "2px solid #1976d2",
+                    transition: "background 0.2s, color 0.2s, border 0.2s",
+                    "&:hover": {
+                      background: "#1976d2",
+                      color: "#fff",
+                      border: "2px solid #1565c0",
+                    },
+                  }}
+                >
+                  Dashboard
+                </Button>
+                {/* Cadastrar (comerciante) */}
+                {usuario?.tipo === "comerciante" && (
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    startIcon={<AddBusinessIcon />}
+                    sx={{
+                      borderRadius: 2,
+                      fontWeight: 700,
+                      px: 2.5,
+                      py: 1,
+                      fontSize: 15,
+                      background: "#fff",
+                      color: "#1976d2",
+                      boxShadow: "0 2px 8px #1976d222",
+                      textTransform: "none",
+                      letterSpacing: 0.5,
+                      ml: 1,
+                      border: "2px solid #1976d2",
+                      transition: "background 0.2s, color 0.2s, border 0.2s",
+                      "&:hover": {
+                        background: "#1976d2",
+                        color: "#fff",
+                        border: "2px solid #1565c0",
+                      },
+                    }}
+                    component={Link}
+                    to="/comercios/novo"
+                  >
+                    Cadastrar
+                  </Button>
+                )}
+                {/* Trocar tipo */}
+                <Button
+                  variant="outlined"
+                  size="medium"
+                  startIcon={<SwapHorizIcon />}
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    px: 2,
+                    fontSize: 15,
+                    border: "2px solid #1976d2",
+                    color: "#1976d2",
+                    background: "#fff",
+                    textTransform: "none",
+                    letterSpacing: 0.5,
+                    ml: 1,
+                    transition: "background 0.2s, color 0.2s, border 0.2s",
+                    "&:hover": {
+                      background: "#1976d2",
+                      color: "#fff",
+                      border: "2px solid #1565c0",
+                    },
+                  }}
+                  onClick={() => setOpenTrocaTipo(true)}
+                >
+                  Trocar tipo
+                </Button>
+                {/* Botão de favoritos */}
+                <Tooltip title="Meus favoritos" arrow>
+                  <IconButton
+                    component={Link}
+                    to="/favoritos"
+                    sx={{
+                      position: "relative",
+                      mx: 0.5,
+                      color: "#e53935",
+                      transition: "color 0.2s, background 0.2s",
+                      background:
+                        favoritosCount > 0
+                          ? "rgba(229,57,53,0.08)"
+                          : "transparent",
+                      "&:hover": {
+                        background: "#fff",
+                      },
+                    }}
+                    aria-label="Favoritos"
+                  >
+                    <FavoriteIcon fontSize="medium" />
+                    {favoritosCount > 0 && (
+                      <Box
+                        sx={{
+                          minWidth: 18,
+                          height: 18,
+                          bgcolor: "#e53935",
+                          color: "#fff",
+                          borderRadius: "50%",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          px: 0.5,
+                          position: "absolute",
+                          top: 2,
+                          right: 2,
+                          border: "2px solid #fff",
+                        }}
+                      >
+                        {favoritosCount}
+                      </Box>
+                    )}
+                  </IconButton>
+                </Tooltip>
+                {/* Botão de histórico */}
+                <Tooltip title="Histórico" arrow>
+                  <IconButton
+                    component={Link}
+                    to="/historico"
+                    sx={{
+                      position: "relative",
+                      mx: 0.5,
+                      color: "#222",
+                      transition: "color 0.2s, background 0.2s",
+                      background: "transparent",
+                      borderRadius: 2,
+                      "&:hover": {
+                        background: "#f5f5f5",
+                      },
+                    }}
+                    aria-label="Histórico"
+                  >
+                    <HistoryIcon fontSize="medium" />
+                  </IconButton>
+                </Tooltip>
+                {/* Sair */}
+                <Button
+                  variant="contained"
+                  color="error"
+                  size="medium"
+                  startIcon={<LogoutIcon />}
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 700,
+                    px: 2.5,
+                    fontSize: 15,
+                    background: "#e53935",
+                    color: "#fff",
+                    textTransform: "none",
+                    letterSpacing: 0.5,
+                    ml: 1,
+                    transition: "background 0.2s",
+                    "&:hover": {
+                      background: "#b71c1c",
+                    },
+                  }}
+                  onClick={handleLogout}
+                >
+                  Sair
+                </Button>
+                {/* Avatar + tipo de usuário */}
                 <Tooltip title={usuario?.nome || "Usuário"} arrow>
                   <Box
                     component={Link}
@@ -445,6 +444,27 @@ export default function Navbar() {
                   onTipoAtualizado={handleTipoAtualizado}
                 />
               </>
+            ) : (
+              <>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to="/login"
+                  sx={{ fontWeight: 700, ml: 1 }}
+                >
+                  Entrar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  component={Link}
+                  to="/registrar"
+                  sx={{ fontWeight: 700, ml: 1 }}
+                >
+                  Registrar
+                </Button>
+              </>
             )}
           </Box>
         </Toolbar>
@@ -460,4 +480,4 @@ export default function Navbar() {
       )}
     </>
   );
-}
+} 
