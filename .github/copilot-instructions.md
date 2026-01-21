@@ -20,15 +20,15 @@
 
 ## Padrões e Convenções do Projeto
 
-- **Feedback visual global**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (evite feedback local).
-- **Navegação protegida**: Páginas sensíveis exigem JWT, redirecionando para `/login` se ausente.
+- **Feedback visual global**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (evite feedback local). Exemplo: ao salvar um formulário, acione o loading global e exiba feedback via Snackbar.
+- **Navegação protegida**: Páginas sensíveis exigem JWT, redirecionando para `/login` se ausente. Veja exemplos em `MenuDrawer.jsx` e `BreadcrumbNav.jsx`.
 - **Formulários**: Padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
 - **Responsividade**: Mobile first, siga exemplos de `App.css` e componentes.
 - **Microinterações**: Animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
 - **Controllers e rotas**: Lógica em `src/controllers/`, rotas em `src/routes/`.
-- **Prisma Client**: Importe por controller, nunca global.
+- **Prisma Client**: Importe por controller, nunca global. Exemplo: cada controller importa seu próprio Prisma Client.
 - **Autenticação**: Middleware obrigatório em rotas protegidas (`middlewares/auth.js`).
-- **Uploads**: Imagens validadas por tipo/tamanho, salvas em `/uploads`.
+- **Uploads**: Imagens validadas por tipo/tamanho, salvas em `/uploads` (subpastas: `comercios/`, `produtos/`, `perfis/`).
 - **Redefinição de senha**: Veja `authController.js` e rotas em `routes/auth.js`.
 
 ## Integração Frontend ↔ Backend
@@ -46,6 +46,16 @@ await axios.post("http://localhost:3333/comercios", form, {
 1. Usuário logado acessa `/cadastro-comercio`.
 2. Formulário envia POST para `/comercios` (JWT no header).
 3. Backend valida, cria registro via Prisma, retorna dados.
+
+## Convenções Específicas Descobertas
+
+- **Feedback global obrigatório**: Não use feedback local em componentes, sempre utilize contexto global (`SnackbarContext.jsx`).
+- **JWT obrigatório em rotas protegidas**: Falta de token redireciona para `/login`.
+- **Uploads**: Use middlewares específicos para cada tipo de imagem (`uploadComercioImage.js`, `uploadProdutoImage.js`, `uploadPerfilImage.js`).
+- **Estrutura de controllers**: Cada controller lida apenas com sua entidade, sem lógica cruzada.
+- **Breadcrumbs e navegação**: Sempre utilize `BreadcrumbNav.jsx` para UX consistente.
+- **Migrations**: Sempre rode migrations antes de iniciar o backend.
+- **Prioridades de UX/UI**: Consulte e atualize `/frontend/TODO.md` para refletir o estado real do produto.
 
 ## Checklist de Deploy
 
