@@ -307,7 +307,26 @@ export default function MenuDrawer({
               color="primary"
               component={Link}
               to="/login"
-              sx={{ mb: 2, minWidth: 120, fontWeight: 700 }}
+              sx={{
+                mb: 2,
+                minWidth: 140,
+                fontWeight: 800,
+                px: 3,
+                py: 1.3,
+                borderRadius: 2.5,
+                fontSize: 17,
+                letterSpacing: 0.5,
+                boxShadow: "0 2px 8px #1976d222",
+                background: "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
+                color: "#fff",
+                textTransform: "none",
+                transition: "background 0.2s, color 0.2s",
+                "&:hover": {
+                  background:
+                    "linear-gradient(90deg, #43a047 60%, #1976d2 100%)",
+                  color: "#fff",
+                },
+              }}
               onClick={onClose}
             >
               Entrar
@@ -317,7 +336,25 @@ export default function MenuDrawer({
               color="secondary"
               component={Link}
               to="/registrar"
-              sx={{ minWidth: 120, fontWeight: 700 }}
+              sx={{
+                minWidth: 140,
+                fontWeight: 800,
+                px: 3,
+                py: 1.3,
+                borderRadius: 2.5,
+                fontSize: 17,
+                letterSpacing: 0.5,
+                border: "2px solid #43a047",
+                color: "#43a047",
+                background: "#fff",
+                textTransform: "none",
+                transition: "background 0.2s, color 0.2s, border 0.2s",
+                "&:hover": {
+                  background: "#43a047",
+                  color: "#fff",
+                  border: "2px solid #1976d2",
+                },
+              }}
               onClick={onClose}
             >
               Registrar

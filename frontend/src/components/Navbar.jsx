@@ -451,7 +451,26 @@ export default function Navbar() {
                   color="primary"
                   component={Link}
                   to="/login"
-                  sx={{ fontWeight: 700, ml: 1 }}
+                  sx={{
+                    fontWeight: 800,
+                    ml: 1.5,
+                    px: 3,
+                    py: 1.2,
+                    borderRadius: 2.5,
+                    fontSize: 16,
+                    letterSpacing: 0.5,
+                    boxShadow: "0 2px 8px #1976d222",
+                    background:
+                      "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
+                    color: "#fff",
+                    textTransform: "none",
+                    transition: "background 0.2s, color 0.2s",
+                    "&:hover": {
+                      background:
+                        "linear-gradient(90deg, #43a047 60%, #1976d2 100%)",
+                      color: "#fff",
+                    },
+                  }}
                 >
                   Entrar
                 </Button>
@@ -460,7 +479,25 @@ export default function Navbar() {
                   color="secondary"
                   component={Link}
                   to="/registrar"
-                  sx={{ fontWeight: 700, ml: 1 }}
+                  sx={{
+                    fontWeight: 800,
+                    ml: 1.5,
+                    px: 3,
+                    py: 1.2,
+                    borderRadius: 2.5,
+                    fontSize: 16,
+                    letterSpacing: 0.5,
+                    border: "2px solid #43a047",
+                    color: "#43a047",
+                    background: "#fff",
+                    textTransform: "none",
+                    transition: "background 0.2s, color 0.2s, border 0.2s",
+                    "&:hover": {
+                      background: "#43a047",
+                      color: "#fff",
+                      border: "2px solid #1976d2",
+                    },
+                  }}
                 >
                   Registrar
                 </Button>
@@ -480,4 +517,4 @@ export default function Navbar() {
       )}
     </>
   );
-} 
+}
