@@ -192,17 +192,18 @@ export default function Navbar() {
                   }
                   sx={{
                     fontWeight: 700,
-                    px: 2.5,
-                    py: 1,
-                    borderRadius: 2,
+                    px: 3,
+                    py: 1.2,
+                    borderRadius: 2.5,
                     background: "#fff",
                     color: "#1976d2",
                     boxShadow: "0 2px 8px #1976d222",
                     textTransform: "none",
-                    fontSize: 15,
+                    fontSize: 16,
                     letterSpacing: 0.5,
                     ml: 1,
                     border: "2px solid #1976d2",
+                    minHeight: 44,
                     transition: "background 0.2s, color 0.2s, border 0.2s",
                     "&:hover": {
                       background: "#1976d2",
@@ -220,11 +221,11 @@ export default function Navbar() {
                     size="medium"
                     startIcon={<AddBusinessIcon />}
                     sx={{
-                      borderRadius: 2,
+                      borderRadius: 2.5,
                       fontWeight: 700,
-                      px: 2.5,
-                      py: 1,
-                      fontSize: 15,
+                      px: 3,
+                      py: 1.2,
+                      fontSize: 16,
                       background: "#fff",
                       color: "#1976d2",
                       boxShadow: "0 2px 8px #1976d222",
@@ -232,6 +233,7 @@ export default function Navbar() {
                       letterSpacing: 0.5,
                       ml: 1,
                       border: "2px solid #1976d2",
+                      minHeight: 44,
                       transition: "background 0.2s, color 0.2s, border 0.2s",
                       "&:hover": {
                         background: "#1976d2",
@@ -251,16 +253,18 @@ export default function Navbar() {
                   size="medium"
                   startIcon={<SwapHorizIcon />}
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: 2.5,
                     fontWeight: 600,
-                    px: 2,
-                    fontSize: 15,
+                    px: 3,
+                    py: 1.2,
+                    fontSize: 16,
                     border: "2px solid #1976d2",
                     color: "#1976d2",
                     background: "#fff",
                     textTransform: "none",
                     letterSpacing: 0.5,
                     ml: 1,
+                    minHeight: 44,
                     transition: "background 0.2s, color 0.2s, border 0.2s",
                     "&:hover": {
                       background: "#1976d2",
@@ -346,15 +350,17 @@ export default function Navbar() {
                   size="medium"
                   startIcon={<LogoutIcon />}
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: 2.5,
                     fontWeight: 700,
-                    px: 2.5,
-                    fontSize: 15,
+                    px: 3,
+                    py: 1.2,
+                    fontSize: 16,
                     background: "#e53935",
                     color: "#fff",
                     textTransform: "none",
                     letterSpacing: 0.5,
                     ml: 1,
+                    minHeight: 44,
                     transition: "background 0.2s",
                     "&:hover": {
                       background: "#b71c1c",
@@ -464,6 +470,7 @@ export default function Navbar() {
                       "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
                     color: "#fff",
                     textTransform: "none",
+                    minHeight: 44,
                     transition: "background 0.2s, color 0.2s",
                     "&:hover": {
                       background:
@@ -491,6 +498,7 @@ export default function Navbar() {
                     color: "#43a047",
                     background: "#fff",
                     textTransform: "none",
+                    minHeight: 44,
                     transition: "background 0.2s, color 0.2s, border 0.2s",
                     "&:hover": {
                       background: "#43a047",
