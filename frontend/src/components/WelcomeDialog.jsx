@@ -14,10 +14,17 @@ export default function WelcomeDialog({ open, onClose }) {
       </DialogTitle>
       <DialogContent>
         <Typography variant="body1" sx={{ mb: 2, textAlign: "center" }}>
-          Aqui você pode explorar comércios locais, favoritar produtos, cadastrar seu negócio e muito mais. Aproveite as dicas e navegue pelo menu para conhecer todos os recursos!
+          Aqui você pode explorar comércios locais, favoritar produtos,
+          cadastrar seu negócio e muito mais. Aproveite as dicas e navegue pelo
+          menu para conhecer todos os recursos!
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
-          Dica: Use os filtros para encontrar rapidamente o que procura. Cadastre seu comércio para aparecer no mapa da cidade!
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center" }}
+        >
+          Dica: Use os filtros para encontrar rapidamente o que procura.
+          Cadastre seu comércio para aparecer no mapa da cidade!
         </Typography>
       </DialogContent>
       <DialogActions sx={{ justifyContent: "center", pb: 2 }}>

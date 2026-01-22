@@ -217,7 +217,9 @@ function App() {
     localStorage.setItem("hasSeenWelcome", "true");
   };
 
-  const WelcomeDialog = React.lazy(() => import("./components/WelcomeDialog.jsx"));
+  const WelcomeDialog = React.lazy(
+    () => import("./components/WelcomeDialog.jsx"),
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -231,7 +233,7 @@ function App() {
             <WelcomeDialog open={welcomeOpen} onClose={handleCloseWelcome} />
           </React.Suspense>
           <PageTransition locationKey={location.key}>
-            <Routes location={location}>
+            <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/registrar" element={<CadastroUsuario />} />
               <Route path="/esqueci-senha" element={<EsqueciSenha />} />
