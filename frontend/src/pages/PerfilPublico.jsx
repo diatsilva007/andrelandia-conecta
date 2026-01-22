@@ -13,9 +13,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import LoadingBackdrop from "../components/LoadingBackdrop";
 import GlobalSnackbar from "../components/GlobalSnackbar";
+import EditarPerfilDialog from "../components/EditarPerfilDialog";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const PerfilPublico = () => {
   const { id } = useParams();
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
+  const [editarOpen, setEditarOpen] = useState(false);
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -143,6 +147,29 @@ const PerfilPublico = () => {
           >
             {perfil.descricao || perfil.sobre || "Sem descrição cadastrada."}
           </Typography>
+          {/* Botão Editar Perfil - só para o próprio usuário */}
+          {usuarioLogado && String(usuarioLogado.id) === String(id) && (
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{
+                mb: 2,
+                borderRadius: 3,
+                fontWeight: 600,
+                px: 3,
+                boxShadow: 1,
+              }}
+              startIcon={<ManageAccountsIcon />}
+              onClick={() => setEditarOpen(true)}
+            >
+              Editar Perfil
+            </Button>
+          )}
+          <EditarPerfilDialog
+            open={editarOpen}
+            onClose={() => setEditarOpen(false)}
+            onSuccess={() => window.location.reload()}
+          />
           <Button
             variant="contained"
             color="primary"
