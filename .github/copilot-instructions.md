@@ -2,14 +2,14 @@
 
 > Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região. O objetivo é garantir UX profissional, integração segura e evolução rápida.
 
-## Visão Geral da Arquitetura
+## Arquitetura e Fluxos
 
 - **Frontend**: React (Vite), Material UI, animações (framer-motion), feedback global (`GlobalSnackbar`, `LoadingBackdrop`), navegação protegida (`BreadcrumbNav.jsx`, `MenuDrawer.jsx`), responsividade mobile-first (`App.css`).
 - **Backend**: Node.js, Express, Prisma ORM, PostgreSQL. Lógica em `src/controllers/`, rotas em `src/routes/`, autenticação JWT obrigatória (`middlewares/auth.js`).
 - **Integração**: REST com JWT no header. Uploads validados e salvos em `/uploads`.
 - **Banco de dados**: PostgreSQL, migrations via Prisma (`prisma/migrations/`).
 
-## Fluxo de Desenvolvimento
+## Workflows Essenciais
 
 1. Instale dependências em `/backend` e `/frontend`.
 2. Configure `.env` no backend (`DATABASE_URL`, `JWT_SECRET`).
@@ -20,7 +20,7 @@
 
 ## Padrões e Convenções do Projeto
 
-- **Feedback visual global**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (evite feedback local). Exemplo: ao salvar um formulário, acione o loading global e exiba feedback via Snackbar.
+- **Feedback global obrigatório**: Use sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (evite feedback local). Exemplo: ao salvar um formulário, acione o loading global e exiba feedback via Snackbar.
 - **Navegação protegida**: Páginas sensíveis exigem JWT, redirecionando para `/login` se ausente. Veja exemplos em `MenuDrawer.jsx` e `BreadcrumbNav.jsx`.
 - **Formulários**: Padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
 - **Responsividade**: Mobile first, siga exemplos de `App.css` e componentes.
@@ -41,13 +41,7 @@ await axios.post("http://localhost:3333/comercios", form, {
 });
 ```
 
-## Fluxos Típicos
-
-1. Usuário logado acessa `/cadastro-comercio`.
-2. Formulário envia POST para `/comercios` (JWT no header).
-3. Backend valida, cria registro via Prisma, retorna dados.
-
-## Convenções Específicas Descobertas
+## Convenções Descobertas
 
 - **Feedback global obrigatório**: Não use feedback local em componentes, sempre utilize contexto global (`SnackbarContext.jsx`).
 - **JWT obrigatório em rotas protegidas**: Falta de token redireciona para `/login`.
