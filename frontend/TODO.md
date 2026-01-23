@@ -17,7 +17,7 @@
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [ ] Mensagens de boas-vindas e dicas contextuais para novos usuários.
+- [ ] Mensagens de boas-vindas e dicas contextuais ao logar e cadastrar.
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
 
