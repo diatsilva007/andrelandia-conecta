@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext.jsx";
 
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import AnalyticCard from "../components/AnalyticCard.jsx";
@@ -28,12 +29,13 @@ import ComercioMap from "../components/ComercioMap.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
+  const { usuario } = useUser();
   const [openComercioDialog, setOpenComercioDialog] = useState(false);
   const [openProdutoDialog, setOpenProdutoDialog] = useState(false);
   const [openPerfilDialog, setOpenPerfilDialog] = useState(false);
   const [showComercios, setShowComercios] = useState(false);
   const [showProdutos, setShowProdutos] = useState(false);
-  const [usuario, setUsuario] = useState(null);
+  // Removido: usuario agora vem do contexto global
   const [stats, setStats] = useState({ comercios: 0, produtos: 0 });
   const [ultimosComercios, setUltimosComercios] = useState([]);
   const [todosComercios, setTodosComercios] = useState([]);
@@ -114,8 +116,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const userStr = localStorage.getItem("usuario");
-    if (userStr) setUsuario(JSON.parse(userStr));
     fetchStats();
   }, []);
 
@@ -158,8 +158,12 @@ export default function Dashboard() {
     // Exemplo: fetchChartData(e.target.value);
   };
 
+  useEffect(() => {
+    if (!usuario) {
+      navigate("/login");
+    }
+  }, [usuario, navigate]);
   if (!usuario) {
-    navigate("/login");
     return null;
   }
 

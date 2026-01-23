@@ -519,13 +519,14 @@ const ListaComercios = () => {
       {/* Grid de comércios */}
       <Grid
         container
-        spacing={{ xs: 2, sm: 3, md: 4 }}
+        columns={12}
+        spacing={2}
         justifyContent="center"
         alignItems="flex-start"
         sx={{ maxWidth: 1200, width: "100%", mx: "auto", mt: 0 }}
       >
         {comerciosFiltrados.length === 0 && (
-          <Grid item xs={12}>
+          <Grid gridColumn="span 12">
             <Box
               sx={{
                 display: "flex",
@@ -542,7 +543,10 @@ const ListaComercios = () => {
           </Grid>
         )}
         {comerciosFiltrados.map((comercio) => (
-          <Grid item xs={12} sm={6} md={4} key={comercio.id}>
+          <Grid
+            gridColumn={{ xs: "span 12", sm: "span 6", md: "span 4" }}
+            key={comercio.id}
+          >
             <AnimatedCard
               sx={{
                 position: "relative",

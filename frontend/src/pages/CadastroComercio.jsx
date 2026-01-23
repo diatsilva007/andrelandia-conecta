@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useUser } from "../contexts/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -16,10 +17,7 @@ import { LoadingContext } from "../App.jsx";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 
 export default function CadastroComercio() {
-  const [usuario] = useState(() => {
-    const userStr = localStorage.getItem("usuario");
-    return userStr ? JSON.parse(userStr) : null;
-  });
+  const { usuario } = useUser();
   // Estado do formulário
   const [form, setForm] = useState({
     nome: "",
@@ -45,8 +43,7 @@ export default function CadastroComercio() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || usuario?.tipo !== "comerciante") {
+    if (!usuario || usuario?.tipo !== "comerciante") {
       navigate("/login");
     }
   }, [navigate, usuario]);
