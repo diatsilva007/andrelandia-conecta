@@ -45,92 +45,9 @@ export default function MenuDrawer({
 }) {
   const { usuario: usuarioCtx } = useUser();
   const usuario = usuarioProp || usuarioCtx;
-  const [favoritosCount, setFavoritosCount] = useState(0);
-
-  useEffect(() => {
-    const updateCount = () => {
-      const favStr = localStorage.getItem("favoritos");
-      setFavoritosCount(favStr ? JSON.parse(favStr).length : 0);
-    };
-    updateCount();
-    window.addEventListener("storage", updateCount);
-    window.addEventListener("favoritos-updated", updateCount);
-    return () => {
-      window.removeEventListener("storage", updateCount);
-      window.removeEventListener("favoritos-updated", updateCount);
-    };
-  }, []);
   const location = useLocation();
   const [editarPerfilOpen, setEditarPerfilOpen] = useState(false);
   const [trocaTipoOpen, setTrocaTipoOpen] = useState(false);
-  const menuItems = [
-    { text: "Início", icon: <HomeIcon />, to: "/" },
-    usuario?.tipo === "comerciante"
-      ? {
-          text: "Cadastrar Comércio",
-          icon: <StoreIcon />,
-          to: "/comercios/novo",
-        }
-      : null,
-    { text: "Dashboard", icon: <ShoppingCartIcon />, to: "/dashboard" },
-    {
-      text: "Histórico",
-      icon: (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#1565c0"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <polyline points="12 6 12 12 16 14" />
-          </svg>
-        </Box>
-      ),
-      to: "/historico",
-    },
-    {
-      text: "Favoritos",
-      icon: (
-        <Box sx={{ position: "relative", display: "flex" }}>
-          <FavoriteBorderIcon sx={{ color: "#d32f2f" }} />
-          {favoritosCount > 0 && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: -6,
-                right: -8,
-                bgcolor: "#d32f2f",
-                color: "#fff",
-                borderRadius: "50%",
-                minWidth: 20,
-                height: 20,
-                fontSize: 13,
-                fontWeight: 700,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: 2,
-                zIndex: 2,
-                px: 0.7,
-              }}
-            >
-              {favoritosCount}
-            </Box>
-          )}
-        </Box>
-      ),
-      to: "/favoritos",
-    },
-  ].filter(Boolean);
-
-  // Ícone e cor para tipo de usuário
   const tipoChip =
     usuario?.tipo === "comerciante"
       ? {
@@ -143,225 +60,242 @@ export default function MenuDrawer({
           color: "primary",
           icon: <PersonIcon fontSize="small" />,
         };
-
+  const menuItems = [
+    { text: "Início", icon: <HomeIcon />, to: "/" },
+    usuario?.tipo === "comerciante"
+      ? {
+          text: "Cadastrar Comércio",
+          icon: <StoreIcon />,
+          to: "/comercios/novo",
+        }
+      : null,
+    { text: "Dashboard", icon: <ShoppingCartIcon />, to: "/dashboard" },
+    { text: "Histórico", icon: <ShoppingCartIcon />, to: "/historico" },
+    { text: "Favoritos", icon: <FavoriteBorderIcon />, to: "/favoritos" },
+  ];
   return (
-    <Drawer
-      anchor="left"
-      open={open}
-      onClose={onClose}
-      sx={{ zIndex: 1400 }}
-      PaperProps={{ sx: { zIndex: 1400 } }}
-    >
-      <Box sx={{ width: 260, pt: 4 }} role="presentation" onClick={onClose}>
-        {usuario ? (
-          <>
+    <>
+      {/* Dialogs fora do Drawer para não sumirem ao fechar o menu */}
+      <EditarPerfilDialog
+        open={editarPerfilOpen}
+        onClose={() => setEditarPerfilOpen(false)}
+        onSuccess={() => setEditarPerfilOpen(false)}
+      />
+      <TrocaTipoUsuarioDialog
+        open={trocaTipoOpen}
+        onClose={() => setTrocaTipoOpen(false)}
+        usuario={usuario}
+        onTipoAtualizado={(novoTipo) => {
+          // Atualiza localStorage
+          const userStr = localStorage.getItem("usuario");
+          if (userStr) {
+            const userObj = JSON.parse(userStr);
+            userObj.tipo = novoTipo;
+            localStorage.setItem("usuario", JSON.stringify(userObj));
+            setTrocaTipoOpen(false);
+            onClose && onClose(); // Fecha o Drawer
+            setTimeout(() => {
+              window.location.reload();
+            }, 250);
+          }
+        }}
+      />
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={onClose}
+        sx={{ zIndex: 1400 }}
+        PaperProps={{ sx: { zIndex: 1400 } }}
+      >
+        <Box sx={{ width: 260, pt: 4 }} role="presentation" onClick={onClose}>
+          {usuario ? (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  mb: 2,
+                }}
+              >
+                <Avatar
+                  src={
+                    usuario.imagem
+                      ? `http://localhost:3333${usuario.imagem}`
+                      : undefined
+                  }
+                  alt={usuario.nome}
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    mb: 1,
+                    bgcolor: "primary.main",
+                    fontWeight: 700,
+                    fontSize: 22,
+                  }}
+                >
+                  {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
+                </Avatar>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: 16,
+                    mb: 0.5,
+                    textAlign: "center",
+                  }}
+                >
+                  {usuario?.nome || "Usuário"}
+                </Typography>
+                <Chip
+                  label={tipoChip.label}
+                  color={tipoChip.color}
+                  icon={tipoChip.icon}
+                  size="small"
+                  sx={{ fontWeight: 600, fontSize: 13, mb: 1 }}
+                  aria-label={`Tipo de usuário: ${tipoChip.label}`}
+                />
+              </Box>
+              <Divider />
+              <List>
+                {menuItems.filter(Boolean).map((item) => (
+                  <ListItem key={item.text} disablePadding>
+                    <ListItemButton
+                      component={Link}
+                      to={item.to}
+                      selected={location.pathname === item.to}
+                      aria-current={
+                        location.pathname === item.to ? "page" : undefined
+                      }
+                      sx={
+                        location.pathname === item.to
+                          ? { bgcolor: "action.selected" }
+                          : {}
+                      }
+                    >
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.text} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClose && onClose();
+                      setTimeout(() => setEditarPerfilOpen(true), 300);
+                    }}
+                    aria-label="Editar Perfil"
+                    selected={false}
+                  >
+                    <ListItemIcon>
+                      <EditIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Editar Perfil" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClose && onClose();
+                      setTimeout(() => setTrocaTipoOpen(true), 300);
+                    }}
+                    aria-label="Trocar tipo de usuário"
+                    selected={false}
+                  >
+                    <ListItemIcon>
+                      <PersonIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Trocar tipo" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+              <Divider sx={{ my: 1 }} />
+              <List>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={onLogout} aria-label="Sair da conta">
+                    <ListItemIcon>
+                      <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Sair" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </>
+          ) : (
             <Box
               sx={{
+                p: 3,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                mb: 2,
               }}
             >
-              <Avatar
-                src={
-                  usuario.imagem
-                    ? `http://localhost:3333${usuario.imagem}`
-                    : undefined
-                }
-                alt={usuario.nome}
-                sx={{
-                  width: 56,
-                  height: 56,
-                  mb: 1,
-                  bgcolor: "primary.main",
-                  fontWeight: 700,
-                  fontSize: 22,
-                }}
-              >
-                {!usuario.imagem && usuario.nome?.charAt(0).toUpperCase()}
-              </Avatar>
-              <Typography
-                sx={{
-                  fontWeight: 700,
-                  fontSize: 16,
-                  mb: 0.5,
-                  textAlign: "center",
-                }}
-              >
-                {usuario?.nome || "Usuário"}
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
+                Bem-vindo!
               </Typography>
-              <Chip
-                label={tipoChip.label}
-                color={tipoChip.color}
-                icon={tipoChip.icon}
-                size="small"
-                sx={{ fontWeight: 600, fontSize: 13, mb: 1 }}
-                aria-label={`Tipo de usuário: ${tipoChip.label}`}
-              />
-            </Box>
-            <Divider />
-            <List>
-              {menuItems.map((item) => (
-                <ListItem key={item.text} disablePadding>
-                  <ListItemButton
-                    component={Link}
-                    to={item.to}
-                    selected={location.pathname === item.to}
-                    aria-current={
-                      location.pathname === item.to ? "page" : undefined
-                    }
-                    sx={
-                      location.pathname === item.to
-                        ? { bgcolor: "action.selected" }
-                        : {}
-                    }
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setEditarPerfilOpen(true);
-                  }}
-                  aria-label="Editar Perfil"
-                  selected={false}
-                >
-                  <ListItemIcon>
-                    <EditIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Editar Perfil" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setTrocaTipoOpen(true);
-                  }}
-                  aria-label="Trocar tipo de usuário"
-                  selected={false}
-                >
-                  <ListItemIcon>
-                    <PersonIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Trocar tipo" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-            <Divider sx={{ my: 1 }} />
-            <List>
-              <ListItem disablePadding>
-                <ListItemButton onClick={onLogout} aria-label="Sair da conta">
-                  <ListItemIcon>
-                    <ExitToAppIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Sair" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-            {/* Só renderiza dialogs se usuario estiver definido */}
-            <EditarPerfilDialog
-              open={editarPerfilOpen}
-              onClose={() => setEditarPerfilOpen(false)}
-              onSuccess={() => setEditarPerfilOpen(false)}
-            />
-            <TrocaTipoUsuarioDialog
-              open={trocaTipoOpen}
-              onClose={() => setTrocaTipoOpen(false)}
-              usuario={usuario}
-              onTipoAtualizado={(novoTipo) => {
-                // Atualiza localStorage
-                const userStr = localStorage.getItem("usuario");
-                if (userStr) {
-                  const userObj = JSON.parse(userStr);
-                  userObj.tipo = novoTipo;
-                  localStorage.setItem("usuario", JSON.stringify(userObj));
-                  setTrocaTipoOpen(false);
-                  onClose && onClose(); // Fecha o Drawer
-                  setTimeout(() => {
-                    window.location.reload();
-                  }, 250);
-                }
-              }}
-            />
-          </>
-        ) : (
-          <Box
-            sx={{
-              p: 3,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
-              Bem-vindo!
-            </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to="/login"
-              sx={{
-                mb: 2,
-                minWidth: 140,
-                fontWeight: 800,
-                px: 3,
-                py: 1.3,
-                borderRadius: 2.5,
-                fontSize: 17,
-                letterSpacing: 0.5,
-                boxShadow: "0 2px 8px #1976d222",
-                background: "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
-                color: "#fff",
-                textTransform: "none",
-                transition: "background 0.2s, color 0.2s",
-                "&:hover": {
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to="/login"
+                sx={{
+                  mb: 2,
+                  minWidth: 140,
+                  fontWeight: 800,
+                  px: 3,
+                  py: 1.3,
+                  borderRadius: 2.5,
+                  fontSize: 17,
+                  letterSpacing: 0.5,
+                  boxShadow: "0 2px 8px #1976d222",
                   background:
-                    "linear-gradient(90deg, #43a047 60%, #1976d2 100%)",
+                    "linear-gradient(90deg, #1976d2 60%, #43a047 100%)",
                   color: "#fff",
-                },
-              }}
-              onClick={onClose}
-            >
-              Entrar
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              component={Link}
-              to="/registrar"
-              sx={{
-                minWidth: 140,
-                fontWeight: 800,
-                px: 3,
-                py: 1.3,
-                borderRadius: 2.5,
-                fontSize: 17,
-                letterSpacing: 0.5,
-                border: "2px solid #43a047",
-                color: "#43a047",
-                background: "#fff",
-                textTransform: "none",
-                transition: "background 0.2s, color 0.2s, border 0.2s",
-                "&:hover": {
-                  background: "#43a047",
-                  color: "#fff",
-                  border: "2px solid #1976d2",
-                },
-              }}
-              onClick={onClose}
-            >
-              Registrar
-            </Button>
-          </Box>
-        )}
-      </Box>
-    </Drawer>
+                  textTransform: "none",
+                  transition: "background 0.2s, color 0.2s",
+                  "&:hover": {
+                    background:
+                      "linear-gradient(90deg, #43a047 60%, #1976d2 100%)",
+                    color: "#fff",
+                  },
+                }}
+                onClick={onClose}
+              >
+                Entrar
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                component={Link}
+                to="/registrar"
+                sx={{
+                  minWidth: 140,
+                  fontWeight: 800,
+                  px: 3,
+                  py: 1.3,
+                  borderRadius: 2.5,
+                  fontSize: 17,
+                  letterSpacing: 0.5,
+                  border: "2px solid #43a047",
+                  color: "#43a047",
+                  background: "#fff",
+                  textTransform: "none",
+                  transition: "background 0.2s, color 0.2s, border 0.2s",
+                  "&:hover": {
+                    background: "#43a047",
+                    color: "#fff",
+                    border: "2px solid #1976d2",
+                  },
+                }}
+                onClick={onClose}
+              >
+                Registrar
+              </Button>
+            </Box>
+          )}
+        </Box>
+      </Drawer>
+    </>
   );
 }
