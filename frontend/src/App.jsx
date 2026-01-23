@@ -18,6 +18,7 @@ import DetalheProduto from "./pages/DetalheProduto.jsx";
 import Favoritos from "./pages/Favoritos.jsx";
 
 import Navbar from "./components/Navbar.jsx";
+import WelcomeDialog from "./components/WelcomeDialog.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
 import EditarProduto from "./pages/EditarProduto.jsx";
 import PageTransition from "./components/PageTransition.jsx";
@@ -201,6 +202,22 @@ function App() {
   const location = useLocation();
   const { mode } = useThemeMode();
   const theme = getTheme(mode);
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
+
+  React.useEffect(() => {
+    // Exibe mensagem de boas-vindas apenas se nunca foi vista
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
+    if (usuario && !hasSeenWelcome) {
+      setWelcomeOpen(true);
+    }
+  }, []);
+
+  const handleCloseWelcome = () => {
+    setWelcomeOpen(false);
+    localStorage.setItem("hasSeenWelcome", "true");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -209,8 +226,9 @@ function App() {
           <LoadingBackdrop open={loading} />
           <GlobalSnackbar />
           <Navbar />
+          <WelcomeDialog open={welcomeOpen} onClose={handleCloseWelcome} />
           <PageTransition locationKey={location.key}>
-            <Routes location={location}>
+            <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/registrar" element={<CadastroUsuario />} />
               <Route path="/esqueci-senha" element={<EsqueciSenha />} />
