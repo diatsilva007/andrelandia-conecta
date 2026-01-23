@@ -18,6 +18,7 @@ import DetalheProduto from "./pages/DetalheProduto.jsx";
 import Favoritos from "./pages/Favoritos.jsx";
 
 import Navbar from "./components/Navbar.jsx";
+import WelcomeDialog from "./components/WelcomeDialog.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
 import EditarProduto from "./pages/EditarProduto.jsx";
 import PageTransition from "./components/PageTransition.jsx";
@@ -217,10 +218,6 @@ function App() {
     localStorage.setItem("hasSeenWelcome", "true");
   };
 
-  const WelcomeDialog = React.lazy(
-    () => import("./components/WelcomeDialog.jsx"),
-  );
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -229,9 +226,7 @@ function App() {
           <LoadingBackdrop open={loading} />
           <GlobalSnackbar />
           <Navbar />
-          <React.Suspense fallback={null}>
-            <WelcomeDialog open={welcomeOpen} onClose={handleCloseWelcome} />
-          </React.Suspense>
+          <WelcomeDialog open={welcomeOpen} onClose={handleCloseWelcome} />
           <PageTransition locationKey={location.key}>
             <Routes>
               <Route path="/login" element={<Login />} />
