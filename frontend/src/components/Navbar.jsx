@@ -141,8 +141,6 @@ export default function Navbar() {
             </Box>
             <Typography
               variant="h5"
-              component={Link}
-              to="/"
               aria-label="Ir para página inicial"
               sx={{
                 color: "#fff",
@@ -168,7 +166,9 @@ export default function Navbar() {
               }}
               tabIndex={0}
             >
-              Andrelândia Conecta
+              <span style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+                Andrelândia Conecta
+              </span>
             </Typography>
             <Box sx={{ ml: { xs: 0.5, md: 2 } }}>
               <ThemeToggleButton />
@@ -455,8 +455,7 @@ export default function Navbar() {
                 <Button
                   variant="contained"
                   color="primary"
-                  component={Link}
-                  to="/login"
+                  onClick={() => navigate("/login")}
                   sx={{
                     fontWeight: 800,
                     ml: 1.5,
@@ -484,8 +483,7 @@ export default function Navbar() {
                 <Button
                   variant="outlined"
                   color="secondary"
-                  component={Link}
-                  to="/registrar"
+                  onClick={() => navigate("/registrar")}
                   sx={{
                     fontWeight: 800,
                     ml: 1.5,
