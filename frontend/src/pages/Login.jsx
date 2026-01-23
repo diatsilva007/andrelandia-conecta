@@ -2,6 +2,7 @@ import VoltarButton from "../components/VoltarButton.jsx";
 import React, { useState, useContext } from "react";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import { LoadingContext } from "../App.jsx";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext.jsx";
 import axios from "axios";
