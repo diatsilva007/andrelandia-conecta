@@ -346,7 +346,7 @@ const PerfilPublico = () => {
                   <Grid container columns={12} spacing={2}>
                     {perfil.galeria.map((img, idx) => (
                       <Grid
-                        gridColumn={{ xs: "span 6", sm: "span 4" }}
+                        gridColumn="span 6"
                         key={idx}
                       >
                         <Card sx={{ boxShadow: 2 }}>
@@ -381,7 +381,7 @@ const PerfilPublico = () => {
                 {perfil.comercios?.length ? (
                   perfil.comercios.map((comercio) => (
                     <Grid
-                      gridColumn={{ xs: "span 12", sm: "span 6" }}
+                      gridColumn="span 12"
                       key={comercio.id}
                     >
                       <Card variant="outlined" sx={{ p: 1, boxShadow: 1 }}>

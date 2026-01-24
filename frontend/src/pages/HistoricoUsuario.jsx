@@ -43,6 +43,7 @@ const HistoricoUsuario = () => {
   return (
     <Grid
       container
+      columns={12}
       sx={{
         minHeight: "100vh",
         width: "100vw",
@@ -53,7 +54,7 @@ const HistoricoUsuario = () => {
         p: 0,
       }}
     >
-      <Grid item sx={{ width: "100%", maxWidth: 700 }}>
+      <Grid gridColumn="span 12" sx={{ width: "100%", maxWidth: 700 }}>
         <Typography
           variant="h4"
           fontWeight={700}
