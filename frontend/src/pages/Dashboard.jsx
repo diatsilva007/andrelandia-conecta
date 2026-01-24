@@ -270,8 +270,14 @@ export default function Dashboard() {
             </Button>
           </Box>
           {/* Cards de resumo de comércios e produtos */}
-          <Grid container spacing={2} mb={5} justifyContent="center">
-            <Grid item xs={12} sm={6}>
+          <Grid
+            container
+            spacing={2}
+            mb={5}
+            justifyContent="center"
+            columns={12}
+          >
+            <Grid gridColumn="span 6">
               <AnimatedCard
                 sx={{ bgcolor: "#e3f2fd", boxShadow: 2, borderRadius: 3 }}
               >
@@ -295,7 +301,7 @@ export default function Dashboard() {
                 </CardContent>
               </AnimatedCard>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid gridColumn="span 6">
               <AnimatedCard
                 sx={{ bgcolor: "#e8f5e9", boxShadow: 2, borderRadius: 3 }}
               >
