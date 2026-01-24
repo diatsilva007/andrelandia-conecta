@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Drawer,
   List,
@@ -22,20 +22,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import EditIcon from "@mui/icons-material/Edit";
 import BusinessIcon from "@mui/icons-material/Business";
 import { Link, useLocation } from "react-router-dom";
-import EditarPerfilDialog from "./EditarPerfilDialog.jsx";
 import { useUser } from "../contexts/UserContext.jsx";
-import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog.jsx";
 
-function stringAvatar(name) {
-  if (!name) return { children: <PersonIcon fontSize="large" /> };
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-  return { children: initials };
-}
+//
 
 export default function MenuDrawer({
   open,
@@ -46,8 +35,7 @@ export default function MenuDrawer({
   const { usuario: usuarioCtx } = useUser();
   const usuario = usuarioProp || usuarioCtx;
   const location = useLocation();
-  const [editarPerfilOpen, setEditarPerfilOpen] = useState(false);
-  const [trocaTipoOpen, setTrocaTipoOpen] = useState(false);
+  // Estados de diálogo agora controlados pelo componente pai
   const tipoChip =
     usuario?.tipo === "comerciante"
       ? {
@@ -73,6 +61,8 @@ export default function MenuDrawer({
     { text: "Histórico", icon: <ShoppingCartIcon />, to: "/historico" },
     { text: "Favoritos", icon: <FavoriteBorderIcon />, to: "/favoritos" },
   ];
+  // Funções para acionar diálogos via props
+  const { onEditarPerfil, onTrocaTipo } = arguments[0] || {};
   return (
     <Drawer
       anchor="left"
@@ -155,7 +145,8 @@ export default function MenuDrawer({
                 <ListItemButton
                   onClick={(e) => {
                     e.stopPropagation();
-                    setEditarPerfilOpen(true);
+                    onClose && onClose();
+                    onEditarPerfil && onEditarPerfil();
                   }}
                   aria-label="Editar Perfil"
                   selected={false}
@@ -170,7 +161,8 @@ export default function MenuDrawer({
                 <ListItemButton
                   onClick={(e) => {
                     e.stopPropagation();
-                    setTrocaTipoOpen(true);
+                    onClose && onClose();
+                    onTrocaTipo && onTrocaTipo();
                   }}
                   aria-label="Trocar tipo de usuário"
                   selected={false}
@@ -193,31 +185,7 @@ export default function MenuDrawer({
                 </ListItemButton>
               </ListItem>
             </List>
-            {/* Só renderiza dialogs se usuario estiver definido */}
-            <EditarPerfilDialog
-              open={editarPerfilOpen}
-              onClose={() => setEditarPerfilOpen(false)}
-              onSuccess={() => setEditarPerfilOpen(false)}
-            />
-            <TrocaTipoUsuarioDialog
-              open={trocaTipoOpen}
-              onClose={() => setTrocaTipoOpen(false)}
-              usuario={usuario}
-              onTipoAtualizado={(novoTipo) => {
-                // Atualiza localStorage
-                const userStr = localStorage.getItem("usuario");
-                if (userStr) {
-                  const userObj = JSON.parse(userStr);
-                  userObj.tipo = novoTipo;
-                  localStorage.setItem("usuario", JSON.stringify(userObj));
-                  setTrocaTipoOpen(false);
-                  onClose && onClose(); // Fecha o Drawer
-                  setTimeout(() => {
-                    window.location.reload();
-                  }, 250);
-                }
-              }}
-            />
+            {/* Diálogos agora são controlados e renderizados pelo componente pai */}
           </>
         ) : (
           <Box

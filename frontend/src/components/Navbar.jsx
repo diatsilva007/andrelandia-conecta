@@ -16,6 +16,7 @@ import ThemeToggleButton from "./ThemeToggleButton.jsx";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { useUser } from "../contexts/UserContext.jsx";
+import EditarPerfilDialog from "./EditarPerfilDialog.jsx";
 import TrocaTipoUsuarioDialog from "./TrocaTipoUsuarioDialog";
 import MenuDrawer from "./MenuDrawer";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
@@ -28,6 +29,7 @@ export default function Navbar() {
   const [favoritosCount, setFavoritosCount] = useState(0);
   const navigate = useNavigate();
   const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
+  const [openEditarPerfil, setOpenEditarPerfil] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -519,8 +521,22 @@ export default function Navbar() {
           onClose={() => setDrawerOpen(false)}
           usuario={usuario}
           onLogout={handleLogout}
+          onEditarPerfil={() => setOpenEditarPerfil(true)}
+          onTrocaTipo={() => setOpenTrocaTipo(true)}
         />
       )}
+      {/* Diálogos globais controlados pelo Navbar */}
+      <EditarPerfilDialog
+        open={openEditarPerfil}
+        onClose={() => setOpenEditarPerfil(false)}
+        onSuccess={() => setOpenEditarPerfil(false)}
+      />
+      <TrocaTipoUsuarioDialog
+        open={openTrocaTipo}
+        onClose={() => setOpenTrocaTipo(false)}
+        usuario={usuario}
+        onTipoAtualizado={handleTipoAtualizado}
+      />
     </>
   );
 }
