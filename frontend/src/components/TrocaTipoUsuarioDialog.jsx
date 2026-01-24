@@ -37,13 +37,13 @@ export default function TrocaTipoUsuarioDialog({
       const res = await axios.put(
         `http://localhost:3333/usuarios/${usuario.id}`,
         { tipo },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       onTipoAtualizado(res.data.tipo);
       onClose();
     } catch (err) {
       setErro(
-        err.response?.data?.error || "Erro ao atualizar tipo de usuário."
+        err.response?.data?.error || "Erro ao atualizar tipo de usuário.",
       );
     } finally {
       setLoading(false);
@@ -132,7 +132,7 @@ export default function TrocaTipoUsuarioDialog({
               onClick={handleSalvar}
               variant="contained"
               color="primary"
-              disabled={loading || tipo === usuario.tipo}
+              disabled={loading || !usuario || tipo === usuario?.tipo}
               sx={{
                 minWidth: 48,
                 minHeight: 48,
