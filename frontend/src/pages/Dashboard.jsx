@@ -55,6 +55,7 @@ export default function Dashboard() {
   const [chartTab, setChartTab] = useState(0);
   const [rankingProdutos, setRankingProdutos] = useState([]);
   const [periodo, setPeriodo] = useState("Semana");
+  const [comercioId, setComercioId] = useState(null);
   const navigate = useNavigate();
 
   // Função para buscar dados do backend
@@ -79,12 +80,37 @@ export default function Dashboard() {
     }
   };
 
+  // Busca o comércio do usuário logado (caso seja comerciante)
+  useEffect(() => {
+    async function fetchComercioUsuario() {
+      if (usuario?.tipo === "comerciante" && usuario?.id) {
+        try {
+          const res = await axios.get(
+            `http://localhost:3333/comercios?usuarioId=${usuario.id}`,
+          );
+          // Se retornar um array de comércios, pega o primeiro (ou ajuste conforme regra de negócio)
+          if (Array.isArray(res.data) && res.data.length > 0) {
+            setComercioId(res.data[0].id);
+          } else {
+            setComercioId(null);
+          }
+        } catch {
+          setComercioId(null);
+        }
+      } else {
+        setComercioId(null);
+      }
+    }
+    fetchComercioUsuario();
+  }, [usuario]);
+
+  // Ajusta fetchAnalytics para usar o id do comércio
   const fetchAnalytics = async () => {
+    if (!comercioId) return;
     setLoadingAnalytics(true);
     try {
-      // Exemplo: endpoint analítico (ajuste conforme backend)
       const res = await axios.get(
-        `http://localhost:3333/comercios/${usuario?.id}/analytics`,
+        `http://localhost:3333/comercios/${comercioId}/analytics`,
       );
       setAnalytics(res.data);
     } catch {
@@ -120,12 +146,13 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    if (usuario?.tipo === "comerciante") {
+    if (comercioId) {
       fetchAnalytics();
       fetchChartData();
       fetchRankingProdutos();
     }
-  }, [usuario]);
+    // eslint-disable-next-line
+  }, [comercioId]);
 
   // Recarrega dados se retornar de edição/cadastro com sucesso
   useEffect(() => {
