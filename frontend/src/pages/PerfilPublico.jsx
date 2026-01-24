@@ -345,10 +345,7 @@ const PerfilPublico = () => {
                   </Typography>
                   <Grid container columns={12} spacing={2}>
                     {perfil.galeria.map((img, idx) => (
-                      <Grid
-                        gridColumn="span 6"
-                        key={idx}
-                      >
+                      <Grid gridColumn="span 6" key={idx}>
                         <Card sx={{ boxShadow: 2 }}>
                           <CardContent sx={{ p: 1 }}>
                             <Avatar
@@ -380,10 +377,7 @@ const PerfilPublico = () => {
               <Grid container columns={12} spacing={2} sx={{ mt: 1 }}>
                 {perfil.comercios?.length ? (
                   perfil.comercios.map((comercio) => (
-                    <Grid
-                      gridColumn="span 12"
-                      key={comercio.id}
-                    >
+                    <Grid gridColumn="span 12" key={comercio.id}>
                       <Card variant="outlined" sx={{ p: 1, boxShadow: 1 }}>
                         <CardContent sx={{ textAlign: "center" }}>
                           <Avatar
