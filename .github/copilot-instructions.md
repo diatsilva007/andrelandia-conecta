@@ -1,12 +1,12 @@
 # Guia para Agentes de IA — Andrelândia Conecta
 
-> Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região. O objetivo é garantir UX profissional, integração segura e evolução rápida.
+Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região, com foco em UX profissional, integração segura e evolução rápida.
 
 ## Arquitetura e Fluxos
 
-- **Frontend**: React (Vite), Material UI, animações (framer-motion), feedback global (`GlobalSnackbar`, `LoadingBackdrop`), navegação protegida (`BreadcrumbNav.jsx`, `MenuDrawer.jsx`), responsividade mobile-first (`App.css`).
-- **Backend**: Node.js, Express, Prisma ORM, PostgreSQL. Lógica em `src/controllers/`, rotas em `src/routes/`, autenticação JWT obrigatória (`middlewares/auth.js`).
-- **Integração**: REST com JWT no header. Uploads validados e salvos em `/uploads`.
+- **Frontend** (`frontend/`): React (Vite), Material UI, animações (framer-motion), feedback global obrigatório (`GlobalSnackbar`, `LoadingBackdrop`, `SnackbarContext.jsx`), navegação protegida (`BreadcrumbNav.jsx`, `MenuDrawer.jsx`), responsividade mobile-first (`App.css`).
+- **Backend** (`backend/`): Node.js, Express, Prisma ORM, PostgreSQL. Lógica de negócio em `src/controllers/`, rotas em `src/routes/`, autenticação JWT obrigatória (`middlewares/auth.js`).
+- **Integração**: REST com JWT no header. Uploads validados e salvos em `/uploads` (subpastas: `comercios/`, `produtos/`, `perfis/`).
 - **Banco de dados**: PostgreSQL, migrations via Prisma (`prisma/migrations/`).
 
 ## Workflows Essenciais
@@ -20,36 +20,26 @@
 
 ## Padrões e Convenções do Projeto
 
-- **Feedback global obrigatório**: Use sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` (evite feedback local). Exemplo: ao salvar um formulário, acione o loading global e exiba feedback via Snackbar.
+- **Feedback global obrigatório**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e contexto global (`SnackbarContext.jsx`). Não utilize feedback local em componentes.
 - **Navegação protegida**: Páginas sensíveis exigem JWT, redirecionando para `/login` se ausente. Veja exemplos em `MenuDrawer.jsx` e `BreadcrumbNav.jsx`.
 - **Formulários**: Padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
 - **Responsividade**: Mobile first, siga exemplos de `App.css` e componentes.
 - **Microinterações**: Animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
-- **Controllers e rotas**: Lógica em `src/controllers/`, rotas em `src/routes/`.
-- **Prisma Client**: Importe por controller, nunca global. Exemplo: cada controller importa seu próprio Prisma Client.
+- **Controllers e rotas**: Cada controller lida apenas com sua entidade, sem lógica cruzada. Veja `src/controllers/` e `src/routes/`.
+- **Prisma Client**: Importe por controller, nunca global.
 - **Autenticação**: Middleware obrigatório em rotas protegidas (`middlewares/auth.js`).
-- **Uploads**: Imagens validadas por tipo/tamanho, salvas em `/uploads` (subpastas: `comercios/`, `produtos/`, `perfis/`).
+- **Uploads**: Use middlewares específicos para cada tipo de imagem (`uploadComercioImage.js`, `uploadProdutoImage.js`, `uploadPerfilImage.js`).
 - **Redefinição de senha**: Veja `authController.js` e rotas em `routes/auth.js`.
 
 ## Integração Frontend ↔ Backend
 
-Exemplo de requisição autenticada:
+Requisições autenticadas:
 
 ```js
 await axios.post("http://localhost:3333/comercios", form, {
   headers: { Authorization: `Bearer ${token}` },
 });
 ```
-
-## Convenções Descobertas
-
-- **Feedback global obrigatório**: Não use feedback local em componentes, sempre utilize contexto global (`SnackbarContext.jsx`).
-- **JWT obrigatório em rotas protegidas**: Falta de token redireciona para `/login`.
-- **Uploads**: Use middlewares específicos para cada tipo de imagem (`uploadComercioImage.js`, `uploadProdutoImage.js`, `uploadPerfilImage.js`).
-- **Estrutura de controllers**: Cada controller lida apenas com sua entidade, sem lógica cruzada.
-- **Breadcrumbs e navegação**: Sempre utilize `BreadcrumbNav.jsx` para UX consistente.
-- **Migrations**: Sempre rode migrations antes de iniciar o backend.
-- **Prioridades de UX/UI**: Consulte e atualize `/frontend/TODO.md` para refletir o estado real do produto.
 
 ## Checklist de Deploy
 
