@@ -141,3 +141,13 @@ export const removerComercio = async (req, res) => {
     res.status(500).json({ error: "Erro ao remover comércio." });
   }
 };
+
+// Handler para analytics do comércio (mock)
+export const analyticsComercio = async (req, res) => {
+  // Você pode evoluir para buscar dados reais do banco
+  res.json({
+    vendas: 0,
+    acessos: 0,
+    avaliacoes: 0,
+  });
+};

@@ -5,6 +5,7 @@ import {
   atualizarComercio,
   removerComercio,
   buscarComercioPorId,
+  analyticsComercio, // novo handler
 } from "../controllers/comercioController.js";
 
 const router = Router();
@@ -14,6 +15,7 @@ import { uploadComercioImage } from "../middlewares/uploadComercioImage.js";
 
 router.get("/", listarComercios);
 router.get("/:id", buscarComercioPorId);
+router.get("/:id/analytics", analyticsComercio); // nova rota
 router.post(
   "/",
   autenticarToken,
