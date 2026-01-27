@@ -374,6 +374,26 @@ export default function Dashboard() {
                     </span>
                   }
                   onClick={() => setShowComercios((v) => !v)}
+                  sx={{
+                    fontWeight: 700,
+                    borderRadius: 3,
+                    fontSize: 16,
+                    py: 1.2,
+                    boxShadow: showComercios ? 1 : 3,
+                    transition: "all 0.2s cubic-bezier(.4,0,.2,1)",
+                    "&:hover": showComercios
+                      ? {
+                          backgroundColor: "#1976d2",
+                          color: "#fff",
+                          borderColor: "#1976d2",
+                          boxShadow: 6,
+                        }
+                      : {
+                          backgroundColor: "#1565c0",
+                          color: "#fff",
+                          boxShadow: 6,
+                        },
+                  }}
                 >
                   {showComercios ? "Ocultar Comércios" : "Ver Comércios"}
                 </Button>
@@ -389,6 +409,20 @@ export default function Dashboard() {
                     </span>
                   }
                   onClick={() => setShowProdutos((v) => !v)}
+                  sx={{
+                    fontWeight: 700,
+                    borderRadius: 3,
+                    fontSize: 16,
+                    py: 1.2,
+                    boxShadow: showProdutos ? 1 : 3,
+                    transition: "all 0.2s cubic-bezier(.4,0,.2,1)",
+                    "&:hover": {
+                      backgroundColor: "#1565c0",
+                      color: "#fff",
+                      borderColor: "#1565c0",
+                      boxShadow: 6,
+                    },
+                  }}
                 >
                   {showProdutos ? "Ocultar Produtos" : "Ver Produtos"}
                 </Button>
