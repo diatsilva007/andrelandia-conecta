@@ -23,6 +23,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import BusinessIcon from "@mui/icons-material/Business";
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../contexts/UserContext.jsx";
+import { Skeleton } from "@mui/material";
 
 //
 
@@ -32,9 +33,60 @@ export default function MenuDrawer({
   onLogout,
   usuario: usuarioProp,
 }) {
-  const { usuario: usuarioCtx } = useUser();
+  const { usuario: usuarioCtx, loadingUser } = useUser();
   const usuario = usuarioProp || usuarioCtx;
   const location = useLocation();
+
+  // Enquanto restaura usuário, não renderiza nada (ou pode exibir um skeleton se quiser)
+  if (loadingUser) {
+    return (
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={onClose}
+        sx={{ zIndex: 1400 }}
+        PaperProps={{ sx: { zIndex: 1400 } }}
+      >
+        <Box sx={{ width: 260, pt: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
+            <Skeleton
+              variant="circular"
+              width={56}
+              height={56}
+              sx={{ mb: 1 }}
+            />
+            <Skeleton variant="text" width={120} height={28} sx={{ mb: 1 }} />
+            <Skeleton
+              variant="rectangular"
+              width={80}
+              height={24}
+              sx={{ mb: 2, borderRadius: 2 }}
+            />
+          </Box>
+          <Divider />
+          <List>
+            {[1, 2, 3, 4].map((i) => (
+              <ListItem key={i} disablePadding>
+                <ListItemButton disabled>
+                  <ListItemIcon>
+                    <Skeleton variant="circular" width={24} height={24} />
+                  </ListItemIcon>
+                  <Skeleton variant="text" width={90} height={24} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+    );
+  }
   // Estados de diálogo agora controlados pelo componente pai
   const tipoChip =
     usuario?.tipo === "comerciante"

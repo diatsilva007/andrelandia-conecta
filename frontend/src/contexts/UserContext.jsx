@@ -12,27 +12,33 @@ export function UserProvider({ children }) {
     const restoreUser = async () => {
       setLoadingUser(true);
       const localToken = localStorage.getItem("token");
+      // [DEBUG] console.log('[UserContext] Token encontrado no localStorage:', localToken);
       if (!localToken) {
         setUsuario(null);
         setToken(null);
         setLoadingUser(false);
+        // [DEBUG] console.log('[UserContext] Nenhum token encontrado. Usuário deslogado.');
         return;
       }
       try {
         const res = await fetch("http://localhost:3333/auth/me", {
           headers: { Authorization: `Bearer ${localToken}` },
         });
+        // [DEBUG] console.log('[UserContext] Resposta /auth/me:', res.status);
         if (!res.ok) throw new Error("Token inválido");
         const data = await res.json();
         setUsuario(data.usuario);
         setToken(localToken);
-      } catch (err) {
+        // [DEBUG] console.log('[UserContext] Usuário restaurado:', data.usuario);
+      } catch {
         setUsuario(null);
         setToken(null);
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
+        // [DEBUG] console.log('[UserContext] Erro ao restaurar usuário:', err);
       } finally {
         setLoadingUser(false);
+        // [DEBUG] console.log('[UserContext] loadingUser = false');
       }
     };
     restoreUser();
@@ -40,6 +46,8 @@ export function UserProvider({ children }) {
 
   // Atualiza localStorage sempre que usuario ou token mudar
   useEffect(() => {
+    // Só sincroniza localStorage se não estiver carregando
+    if (loadingUser) return;
     if (usuario) {
       localStorage.setItem("usuario", JSON.stringify(usuario));
     } else {
@@ -50,7 +58,7 @@ export function UserProvider({ children }) {
     } else {
       localStorage.removeItem("token");
     }
-  }, [usuario, token]);
+  }, [usuario, token, loadingUser]);
 
   // Função para login: salva usuário e token
   const login = (user, newToken) => {

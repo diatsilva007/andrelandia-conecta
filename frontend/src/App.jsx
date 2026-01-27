@@ -204,7 +204,9 @@ function App() {
   const { mode } = useThemeMode();
   const theme = getTheme(mode);
   const [welcomeOpen, setWelcomeOpen] = useState(false);
-  const { loadingUser } = useUser();
+  const { loadingUser, usuario } = useUser();
+  // [DEBUG] console.log('[App] usuario:', usuario);
+  // [DEBUG] console.log('[App] loadingUser:', loadingUser);
 
   React.useEffect(() => {
     // Exibe mensagem de boas-vindas apenas se nunca foi vista
@@ -222,6 +224,7 @@ function App() {
 
   // Suspense global para rotas protegidas
   if (loadingUser) {
+    // [DEBUG] console.log('[App] Exibindo loading global (loadingUser)');
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
