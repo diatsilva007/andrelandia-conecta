@@ -1,15 +1,15 @@
 # Guia para Agentes de IA — Andrelândia Conecta
 
-Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região, com foco em UX profissional, integração segura e evolução rápida.
+Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região. O foco é UX profissional, integração segura e evolução rápida, com padrões claros para agentes de IA.
 
-## Arquitetura e Fluxos
+## Arquitetura Geral
 
-- **Frontend** (`frontend/`): React (Vite), Material UI, animações (framer-motion), feedback global obrigatório (`GlobalSnackbar`, `LoadingBackdrop`, `SnackbarContext.jsx`), navegação protegida (`BreadcrumbNav.jsx`, `MenuDrawer.jsx`), responsividade mobile-first (`App.css`).
+- **Frontend** (`frontend/`): React (Vite), Material UI, animações (framer-motion). Feedback global obrigatório via `GlobalSnackbar`, `LoadingBackdrop` e contexto (`SnackbarContext.jsx`). Navegação protegida por JWT (`MenuDrawer.jsx`, `BreadcrumbNav.jsx`). Responsividade mobile-first (`App.css`).
 - **Backend** (`backend/`): Node.js, Express, Prisma ORM, PostgreSQL. Lógica de negócio em `src/controllers/`, rotas em `src/routes/`, autenticação JWT obrigatória (`middlewares/auth.js`).
-- **Integração**: REST com JWT no header. Uploads validados e salvos em `/uploads` (subpastas: `comercios/`, `produtos/`, `perfis/`).
+- **Integração**: REST, JWT no header. Uploads validados e salvos em `/uploads` (`comercios/`, `produtos/`, `perfis/`).
 - **Banco de dados**: PostgreSQL, migrations via Prisma (`prisma/migrations/`).
 
-## Workflows Essenciais
+## Fluxos Essenciais de Desenvolvimento
 
 1. Instale dependências em `/backend` e `/frontend`.
 2. Configure `.env` no backend (`DATABASE_URL`, `JWT_SECRET`).
@@ -18,10 +18,10 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 5. Inicie frontend: `npm run dev` em `/frontend`.
 6. Consulte `/frontend/TODO.md` para prioridades reais de UX/UI.
 
-## Padrões e Convenções do Projeto
+## Padrões e Convenções Específicas
 
-- **Feedback global obrigatório**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e contexto global (`SnackbarContext.jsx`). Não utilize feedback local em componentes.
-- **Navegação protegida**: Páginas sensíveis exigem JWT, redirecionando para `/login` se ausente. Veja exemplos em `MenuDrawer.jsx` e `BreadcrumbNav.jsx`.
+- **Feedback global**: Sempre use `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e `SnackbarContext.jsx`. Não use feedback local.
+- **Navegação protegida**: JWT obrigatório em páginas sensíveis. Redirecione para `/login` se ausente. Veja `MenuDrawer.jsx`, `BreadcrumbNav.jsx`.
 - **Formulários**: Padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
 - **Responsividade**: Mobile first, siga exemplos de `App.css` e componentes.
 - **Microinterações**: Animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
@@ -51,7 +51,7 @@ await axios.post("http://localhost:3333/comercios", form, {
 - Logs de erro/acesso configurados
 - Monitoramento básico (uptime, erros)
 
-## Dicas e Observações
+## Observações e Dicas
 
 - Use sempre componentes globais para feedback e loading
 - Siga padrões de responsividade e acessibilidade já implementados
