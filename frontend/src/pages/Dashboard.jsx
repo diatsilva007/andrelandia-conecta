@@ -29,7 +29,7 @@ import ComercioMap from "../components/ComercioMap.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
-  const { usuario } = useUser();
+  const { usuario, loadingUser } = useUser();
   const [openComercioDialog, setOpenComercioDialog] = useState(false);
   const [openProdutoDialog, setOpenProdutoDialog] = useState(false);
   const [openPerfilDialog, setOpenPerfilDialog] = useState(false);
@@ -186,10 +186,14 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (!usuario) {
+    if (!usuario && !loadingUser) {
       navigate("/login");
     }
-  }, [usuario, navigate]);
+  }, [usuario, loadingUser, navigate]);
+
+  if (loadingUser) {
+    return null;
+  }
   if (!usuario) {
     return null;
   }

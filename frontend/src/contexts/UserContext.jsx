@@ -5,14 +5,17 @@ const UserContext = createContext();
 export function UserProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
   const [token, setToken] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
 
   // Restaura usuário e token do localStorage ao iniciar
   useEffect(() => {
     const restoreUser = async () => {
+      setLoadingUser(true);
       const localToken = localStorage.getItem("token");
       if (!localToken) {
         setUsuario(null);
         setToken(null);
+        setLoadingUser(false);
         return;
       }
       try {
@@ -28,6 +31,8 @@ export function UserProvider({ children }) {
         setToken(null);
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
+      } finally {
+        setLoadingUser(false);
       }
     };
     restoreUser();
@@ -60,7 +65,9 @@ export function UserProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ usuario, token, setUsuario, login, logout }}>
+    <UserContext.Provider
+      value={{ usuario, token, setUsuario, login, logout, loadingUser }}
+    >
       {children}
     </UserContext.Provider>
   );

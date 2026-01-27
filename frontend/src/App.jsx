@@ -25,6 +25,7 @@ import PageTransition from "./components/PageTransition.jsx";
 import PerfilPublico from "./pages/PerfilPublico.jsx";
 import HistoricoUsuario from "./pages/HistoricoUsuario.jsx";
 import { useLocation } from "react-router-dom";
+import { useUser } from "./contexts/UserContext.jsx";
 
 function getTheme(mode) {
   return createTheme({
@@ -203,6 +204,7 @@ function App() {
   const { mode } = useThemeMode();
   const theme = getTheme(mode);
   const [welcomeOpen, setWelcomeOpen] = useState(false);
+  const { loadingUser } = useUser();
 
   React.useEffect(() => {
     // Exibe mensagem de boas-vindas apenas se nunca foi vista
@@ -217,6 +219,16 @@ function App() {
     setWelcomeOpen(false);
     localStorage.setItem("hasSeenWelcome", "true");
   };
+
+  // Suspense global para rotas protegidas
+  if (loadingUser) {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <LoadingBackdrop open={true} />
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>

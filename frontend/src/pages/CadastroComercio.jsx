@@ -14,10 +14,11 @@ import {
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import ImageUpload from "../components/ImageUpload.jsx";
 import { LoadingContext } from "../App.jsx";
+
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 
 export default function CadastroComercio() {
-  const { usuario } = useUser();
+  const { usuario, loadingUser } = useUser();
   // Estado do formulário
   const [form, setForm] = useState({
     nome: "",
@@ -43,10 +44,13 @@ export default function CadastroComercio() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!usuario || usuario?.tipo !== "comerciante") {
+    if ((!usuario || usuario?.tipo !== "comerciante") && !loadingUser) {
       navigate("/login");
     }
-  }, [navigate, usuario]);
+  }, [navigate, usuario, loadingUser]);
+  if (loadingUser) {
+    return null;
+  }
 
   const handleChange = (e) => {
     const novoForm = { ...form, [e.target.name]: e.target.value };
