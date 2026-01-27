@@ -232,220 +232,248 @@ export default function EditarComercio() {
   }
 
   return (
-    <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
-      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
-        <BreadcrumbNav
-          items={[{ label: "Início", to: "/" }, { label: "Editar Comércio" }]}
-        />
-      </Box>
-      <Paper
-        sx={{
-          p: { xs: 2, sm: 3, md: 4 },
-          maxWidth: 420,
-          mx: "auto",
-          width: "100%",
-          borderRadius: { xs: 2, sm: 3 },
-          boxShadow: 3,
-        }}
-      >
-        <Typography
-          variant="h5"
-          mb={2}
-          align="center"
-          fontWeight={700}
-          color="primary.main"
-          sx={{ letterSpacing: 1 }}
+    <Box
+      bgcolor="background.default"
+      minHeight="100vh"
+      width="100vw"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      sx={{ p: { xs: 1, sm: 2 } }}
+      role="main"
+      aria-label="Editar comércio"
+    >
+      <Box sx={{ width: "100%", maxWidth: 440 }}>
+        <Box sx={{ mb: 3 }}>
+          <BreadcrumbNav
+            items={[{ label: "Início", to: "/" }, { label: "Editar Comércio" }]}
+          />
+        </Box>
+        <Paper
+          sx={{
+            p: { xs: 4, sm: 5, md: 6 },
+            borderRadius: 4,
+            boxShadow: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            background: "#fff",
+            gap: 2,
+          }}
+          role="form"
+          aria-label="Formulário de edição de comércio"
         >
-          Editar Comércio
-        </Typography>
-        {erro && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {erro}
-          </Alert>
-        )}
-        {sucesso && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {sucesso}
-          </Alert>
-        )}
-        <form onSubmit={handleSubmit} autoComplete="off">
-          <ImageUpload
-            label="Imagem do comércio"
-            value={imagemPreview}
-            onChange={(file) => {
-              setForm((f) => ({ ...f, imagem: file }));
-              setImagemPreview(file ? URL.createObjectURL(file) : null);
-            }}
-          />
-          <TextField
-            label="Nome"
-            name="nome"
-            value={form.nome}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-            inputProps={{ maxLength: 60, "aria-label": "Nome do comércio" }}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            select
-            label="Categoria"
-            name="categoria"
-            value={form.categoria}
-            onChange={handleChange}
-            fullWidth
-            required={false}
-            sx={{ mb: 2 }}
-            helperText="Escolha a categoria principal do comércio"
-          >
-            <MenuItem value="">
-              <em>Selecione</em>
-            </MenuItem>
-            {categorias.map((cat) => (
-              <MenuItem key={cat} value={cat}>
-                {cat}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Descrição"
-            name="descricao"
-            value={form.descricao}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            minRows={2}
-            inputProps={{
-              maxLength: 200,
-              "aria-label": "Descrição do comércio",
-            }}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Logradouro"
-            name="logradouro"
-            value={form.logradouro}
-            onChange={handleChange}
-            fullWidth
-            sx={{ mb: 2 }}
-            placeholder="Rua, Avenida, etc."
-          />
-          <Box display="flex" gap={2} mb={2}>
-            <TextField
-              label="Número"
-              name="numero"
-              value={form.numero}
-              onChange={handleChange}
-              fullWidth
-              sx={{ mb: 2 }}
-              placeholder="123"
-            />
-            <TextField
-              label="Bairro"
-              name="bairro"
-              value={form.bairro}
-              onChange={handleChange}
-              fullWidth
-              sx={{ mb: 2 }}
-              placeholder="Centro"
-            />
-          </Box>
-          <Box display="flex" gap={2} mb={2}>
-            <TextField
-              label="Cidade"
-              name="cidade"
-              value={form.cidade}
-              onChange={handleChange}
-              fullWidth
-              sx={{ mb: 2 }}
-              placeholder="Andrelândia"
-            />
-            <TextField
-              label="Estado"
-              name="estado"
-              value={form.estado}
-              onChange={handleChange}
-              fullWidth
-              sx={{ mb: 2 }}
-              placeholder="MG"
-            />
-            <TextField
-              label="CEP"
-              name="cep"
-              value={form.cep}
-              onChange={handleChange}
-              fullWidth
-              sx={{ mb: 2 }}
-              placeholder="37300-000"
-            />
-          </Box>
-          <TextField
-            label="Telefone"
-            name="telefone"
-            value={form.telefone}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            inputProps={{ maxLength: 20, "aria-label": "Telefone do comércio" }}
-            sx={{ mb: 2 }}
-          />
-          <Box display="flex" gap={2} alignItems="center" mb={2}>
-            <TextField
-              label="Latitude"
-              name="latitude"
-              value={form.latitude || ""}
-              onChange={handleChange}
-              fullWidth
-              type="number"
-              inputProps={{ step: "any", "aria-label": "Latitude do comércio" }}
-              placeholder="-21.7417"
-            />
-            <TextField
-              label="Longitude"
-              name="longitude"
-              value={form.longitude || ""}
-              onChange={handleChange}
-              fullWidth
-              type="number"
-              inputProps={{
-                step: "any",
-                "aria-label": "Longitude do comércio",
-              }}
-              placeholder="-44.3111"
-            />
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={buscarCoordenadas}
-              sx={{ minWidth: 44, height: 56 }}
-            >
-              Buscar pelo endereço
-            </Button>
-          </Box>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
+          <Typography
+            variant="h4"
+            mb={2.5}
+            align="center"
+            fontWeight={800}
+            color="primary.main"
             sx={{
-              mt: 2,
-              fontWeight: 600,
-              fontSize: 16,
-              letterSpacing: 0.5,
-              borderRadius: 2,
+              letterSpacing: 1.5,
+              textShadow: "0 2px 8px #1976d222",
+              outline: "none",
             }}
-            aria-label="Salvar alterações do comércio"
+            tabIndex={0}
           >
-            Salvar
-          </Button>
-        </form>
-        <VoltarButton
-          label="Cancelar"
-          onClick={() => navigate(-1)}
-          sx={{ width: "100%", mt: 1 }}
-        />
-      </Paper>
+            Editar Comércio
+          </Typography>
+          {erro && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {erro}
+            </Alert>
+          )}
+          {sucesso && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {sucesso}
+            </Alert>
+          )}
+          <form onSubmit={handleSubmit} autoComplete="off">
+            <ImageUpload
+              label="Imagem do comércio"
+              value={imagemPreview}
+              onChange={(file) => {
+                setForm((f) => ({ ...f, imagem: file }));
+                setImagemPreview(file ? URL.createObjectURL(file) : null);
+              }}
+            />
+            <TextField
+              label="Nome"
+              name="nome"
+              value={form.nome}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+              inputProps={{ maxLength: 60, "aria-label": "Nome do comércio" }}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              select
+              label="Categoria"
+              name="categoria"
+              value={form.categoria}
+              onChange={handleChange}
+              fullWidth
+              required={false}
+              sx={{ mb: 2 }}
+              helperText="Escolha a categoria principal do comércio"
+            >
+              <MenuItem value="">
+                <em>Selecione</em>
+              </MenuItem>
+              {categorias.map((cat) => (
+                <MenuItem key={cat} value={cat}>
+                  {cat}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Descrição"
+              name="descricao"
+              value={form.descricao}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              minRows={2}
+              inputProps={{
+                maxLength: 200,
+                "aria-label": "Descrição do comércio",
+              }}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Logradouro"
+              name="logradouro"
+              value={form.logradouro}
+              onChange={handleChange}
+              fullWidth
+              sx={{ mb: 2 }}
+              placeholder="Rua, Avenida, etc."
+            />
+            <Box display="flex" gap={2} mb={2}>
+              <TextField
+                label="Número"
+                name="numero"
+                value={form.numero}
+                onChange={handleChange}
+                fullWidth
+                sx={{ mb: 2 }}
+                placeholder="123"
+              />
+              <TextField
+                label="Bairro"
+                name="bairro"
+                value={form.bairro}
+                onChange={handleChange}
+                fullWidth
+                sx={{ mb: 2 }}
+                placeholder="Centro"
+              />
+            </Box>
+            <Box display="flex" gap={2} mb={2}>
+              <TextField
+                label="Cidade"
+                name="cidade"
+                value={form.cidade}
+                onChange={handleChange}
+                fullWidth
+                sx={{ mb: 2 }}
+                placeholder="Andrelândia"
+              />
+              <TextField
+                label="Estado"
+                name="estado"
+                value={form.estado}
+                onChange={handleChange}
+                fullWidth
+                sx={{ mb: 2 }}
+                placeholder="MG"
+              />
+              <TextField
+                label="CEP"
+                name="cep"
+                value={form.cep}
+                onChange={handleChange}
+                fullWidth
+                sx={{ mb: 2 }}
+                placeholder="37300-000"
+              />
+            </Box>
+            <TextField
+              label="Telefone"
+              name="telefone"
+              value={form.telefone}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              inputProps={{
+                maxLength: 20,
+                "aria-label": "Telefone do comércio",
+              }}
+              sx={{ mb: 2 }}
+            />
+            <Box display="flex" gap={2} alignItems="center" mb={2}>
+              <TextField
+                label="Latitude"
+                name="latitude"
+                value={form.latitude || ""}
+                onChange={handleChange}
+                fullWidth
+                type="number"
+                inputProps={{
+                  step: "any",
+                  "aria-label": "Latitude do comércio",
+                }}
+                placeholder="-21.7417"
+              />
+              <TextField
+                label="Longitude"
+                name="longitude"
+                value={form.longitude || ""}
+                onChange={handleChange}
+                fullWidth
+                type="number"
+                inputProps={{
+                  step: "any",
+                  "aria-label": "Longitude do comércio",
+                }}
+                placeholder="-44.3111"
+              />
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={buscarCoordenadas}
+                sx={{ minWidth: 44, height: 56 }}
+              >
+                Buscar pelo endereço
+              </Button>
+            </Box>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                mt: 2,
+                fontWeight: 600,
+                fontSize: 16,
+                letterSpacing: 0.5,
+                borderRadius: 2,
+              }}
+              aria-label="Salvar alterações do comércio"
+            >
+              Salvar
+            </Button>
+          </form>
+
+          <VoltarButton
+            label="Cancelar"
+            onClick={() => navigate(-1)}
+            sx={{ width: "100%", mt: 1 }}
+          />
+        </Paper>
+      </Box>
     </Box>
   );
 }
