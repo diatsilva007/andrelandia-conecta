@@ -2,25 +2,25 @@
 
 Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG e região. O foco é UX profissional, integração segura e evolução rápida, com padrões claros para agentes de IA.
 
-## Arquitetura e Fluxos
+## Visão Geral da Arquitetura
 
 - **Frontend** (`frontend/`):
   - React (Vite), Material UI, animações com framer-motion.
-  - Feedback global obrigatório: use sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e `SnackbarContext.jsx` (nunca feedback local).
+  - Feedback global obrigatório: utilize sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e `SnackbarContext.jsx` para qualquer mensagem ao usuário (nunca feedback local ou isolado).
   - Navegação protegida por JWT: redirecione para `/login` se não autenticado. Veja exemplos em `MenuDrawer.jsx` e `BreadcrumbNav.jsx`.
   - Responsividade mobile-first: siga padrões de `App.css` e componentes.
-  - Microinterações: utilize animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
+  - Microinterações: use animações suaves em botões, cards, modais e navegação (`PageTransition.jsx`, `AnimatedCard.jsx`).
   - Formulários: padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
-  - Prioridades e tarefas reais: consulte sempre `/frontend/TODO.md`.
+  - Prioridades e tarefas reais: consulte sempre [`frontend/TODO.md`](../frontend/TODO.md).
 
 - **Backend** (`backend/`):
   - Node.js, Express, Prisma ORM, PostgreSQL.
-  - Lógica de negócio em `src/controllers/`, rotas em `src/routes/`.
-  - Cada controller lida apenas com sua entidade (sem lógica cruzada).
-  - Prisma Client: importe por controller, nunca global.
-  - Autenticação JWT obrigatória em rotas sensíveis (`middlewares/auth.js`).
-  - Uploads: middlewares específicos para cada tipo de imagem (`uploadComercioImage.js`, `uploadProdutoImage.js`, `uploadPerfilImage.js`).
-  - Redefinição de senha: veja `authController.js` e rotas em `routes/auth.js`.
+  - Lógica de negócio em [`src/controllers/`](../backend/src/controllers/), rotas em [`src/routes/`](../backend/src/routes/).
+  - Cada controller lida apenas com sua entidade (sem lógica cruzada entre controllers).
+  - Prisma Client: importe localmente por controller, nunca global.
+  - Autenticação JWT obrigatória em rotas sensíveis ([`middlewares/auth.js`](../backend/src/middlewares/auth.js)).
+  - Uploads: middlewares específicos para cada tipo de imagem ([`uploadComercioImage.js`](../backend/src/middlewares/uploadComercioImage.js), [`uploadProdutoImage.js`](../backend/src/middlewares/uploadProdutoImage.js), [`uploadPerfilImage.js`](../backend/src/middlewares/uploadPerfilImage.js)).
+  - Redefinição de senha: veja [`authController.js`](../backend/src/controllers/authController.js) e rotas em [`routes/auth.js`](../backend/src/routes/auth.js).
 
 - **Integração**:
   - REST, JWT no header. Exemplo:
@@ -32,7 +32,7 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
   - Uploads salvos em `/uploads/{comercios, produtos, perfis}`.
 
 - **Banco de dados**:
-  - PostgreSQL, migrations via Prisma (`prisma/migrations/`).
+  - PostgreSQL, migrations via Prisma ([`prisma/migrations/`](../backend/prisma/migrations/)).
   - Para atualizar o schema: `npx prisma migrate dev` em `/backend`.
 
 ## Workflows Essenciais
@@ -42,7 +42,7 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 3. Rode migrations Prisma: `npx prisma migrate dev` em `/backend`.
 4. Inicie backend: `npm run dev` em `/backend`.
 5. Inicie frontend: `npm run dev` em `/frontend`.
-6. Consulte `/frontend/TODO.md` para prioridades reais de UX/UI.
+6. Consulte [`frontend/TODO.md`](../frontend/TODO.md) para prioridades reais de UX/UI.
 
 ## Convenções e Padrões Específicos
 
@@ -54,7 +54,15 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 - Responsividade e acessibilidade: siga exemplos existentes
 - Microinterações: use componentes animados já implementados
 
-## Deploy
+## Exemplos e Dicas Práticas
+
+- Para adicionar um novo tipo de upload, crie um middleware dedicado em [`src/middlewares/`](../backend/src/middlewares/).
+- Para feedback visual, sempre utilize o contexto global de snackbar (`SnackbarContext.jsx`).
+- Para proteger rotas, siga o padrão de uso do middleware JWT em [`src/middlewares/auth.js`](../backend/src/middlewares/auth.js).
+- Para criar novas entidades, siga o padrão controller/route já existente (ex: [`comercioController.js`](../backend/src/controllers/comercioController.js) e [`comercio.js`](../backend/src/routes/comercio.js)).
+- Para microinterações, utilize componentes animados já presentes em [`components/`](../frontend/src/components/).
+
+## Deploy e Manutenção
 
 - Scripts de build/teste: `npm run dev`, `npm start`
 - Migrations aplicadas e banco consistente
