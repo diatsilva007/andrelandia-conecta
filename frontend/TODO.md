@@ -3,7 +3,6 @@
 ### Melhorias em andamento/próximas tarefas
 
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
-- [ ] Refatorar componentes para máxima reusabilidade
 - [ ] Adicionar onboarding, tooltips e mensagens de ajuda
 - [ ] Implementar CI/CD (GitHub Actions)
 - [ ] Documentação técnica e de API (Swagger/OpenAPI)
@@ -12,6 +11,7 @@
 - [ ] Internacionalização (i18n) e suporte multilíngue
 - [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
+- [ ] Refatorar componentes para máxima reusabilidade
 
 ## Funcionalidades sugeridas (Frontend)
 
