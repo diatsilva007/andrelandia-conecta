@@ -28,8 +28,10 @@ import FormControl from "@mui/material/FormControl";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
+import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
 
 const ListaComercios = () => {
   const navigate = useNavigate();
@@ -52,8 +54,10 @@ const ListaComercios = () => {
   const [comercioExcluir, setComercioExcluir] = useState(null);
   const { setSnackbar } = useSnackbar();
   // Carregar comércios da API
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function fetchComercios() {
+      setLoading(true);
       try {
         const res = await fetch("http://localhost:3333/comercios");
         const data = await res.json();
@@ -64,6 +68,8 @@ const ListaComercios = () => {
           message: "Erro ao carregar comércios",
           severity: "error",
         });
+      } finally {
+        setLoading(false);
       }
     }
     fetchComercios();
@@ -525,7 +531,9 @@ const ListaComercios = () => {
         alignItems="flex-start"
         sx={{ maxWidth: 1200, width: "100%", mx: "auto", mt: 0 }}
       >
-        {comerciosFiltrados.length === 0 && (
+        {loading ? (
+          <ComercioSkeletonList count={4} />
+        ) : comerciosFiltrados.length === 0 ? (
           <Grid gridColumn="span 12">
             <Box
               sx={{
@@ -541,10 +549,9 @@ const ListaComercios = () => {
               </Typography>
             </Box>
           </Grid>
-        )}
-        {comerciosFiltrados.map((comercio) => (
-          <Grid gridColumn="span 12" key={comercio.id}>
-            <AnimatedCard
+        ) : comerciosFiltrados.map((comercio) => (
+            <Grid gridColumn="span 12" key={comercio.id}>
+              <AnimatedCard
               sx={{
                 position: "relative",
                 borderRadius: { xs: 2, sm: 3, md: 4 },
