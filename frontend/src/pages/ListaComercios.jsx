@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { useNavigate } from "react-router-dom";
@@ -51,29 +51,12 @@ const ListaComercios = () => {
   const [precoRange, setPrecoRange] = useState([0, 1000]);
   const [avaliacaoMin, setAvaliacaoMin] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
+  // Lazy loading (infinite scroll)
+  const ITEMS_PER_PAGE = 10;
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const sentinelRef = useRef(null);
   const [comercioExcluir, setComercioExcluir] = useState(null);
   const { setSnackbar } = useSnackbar();
-  // Carregar comércios da API
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    async function fetchComercios() {
-      setLoading(true);
-      try {
-        const res = await fetch("http://localhost:3333/comercios");
-        const data = await res.json();
-        setComercios(data);
-      } catch {
-        setSnackbar({
-          open: true,
-          message: "Erro ao carregar comércios",
-          severity: "error",
-        });
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchComercios();
-  }, [setSnackbar]);
 
   // Função para remover acentos
   function normalizar(str) {
@@ -140,6 +123,54 @@ const ListaComercios = () => {
       buscaMatch && categoriaMatch && localizacaoMatch && precoOk && avaliacaoOk
     );
   });
+
+  // Carregar comércios da API
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function fetchComercios() {
+      setLoading(true);
+      try {
+        const res = await fetch("http://localhost:3333/comercios");
+        const data = await res.json();
+        setComercios(data);
+      } catch {
+        setSnackbar({
+          open: true,
+          message: "Erro ao carregar comércios",
+          severity: "error",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchComercios();
+  }, [setSnackbar]);
+
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [busca, localizacaoFiltro, categoriaFiltro, precoRange, avaliacaoMin]);
+
+  useEffect(() => {
+    const currentSentinel = sentinelRef.current;
+    if (!currentSentinel) return;
+
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) =>
+            Math.min(prev + ITEMS_PER_PAGE, comerciosFiltrados.length),
+          );
+        }
+      },
+      { rootMargin: "100px" },
+    );
+
+    observer.observe(currentSentinel);
+
+    return () => {
+      if (currentSentinel) observer.unobserve(currentSentinel);
+    };
+  }, [comerciosFiltrados.length]);
 
   // Exclusão real via API
   const handleDelete = async (id) => {
@@ -550,7 +581,7 @@ const ListaComercios = () => {
             </Box>
           </Grid>
         ) : (
-          comerciosFiltrados.map((comercio) => (
+          comerciosFiltrados.slice(0, visibleCount).map((comercio) => (
             <Grid gridColumn="span 12" key={comercio.id}>
               <AnimatedCard
                 sx={{
@@ -854,6 +885,9 @@ const ListaComercios = () => {
               </AnimatedCard>
             </Grid>
           ))
+        )}
+        {visibleCount < comerciosFiltrados.length && (
+          <div ref={sentinelRef} style={{ height: 1 }} />
         )}
       </Grid>
       {/* Dialog de confirmação */}
