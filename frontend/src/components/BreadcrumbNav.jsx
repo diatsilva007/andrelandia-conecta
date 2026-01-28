@@ -69,6 +69,14 @@ export default function BreadcrumbNav({ items }) {
             color="inherit"
             onClick={() => navigate(item.to)}
             sx={{ cursor: "pointer", fontWeight: 500 }}
+            tabIndex={0}
+            aria-label={`Ir para ${item.label}`}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") navigate(item.to);
+            }}
+            onFocus={(e) => (e.target.style.outline = "2px solid #1976d2")}
+            onBlur={(e) => (e.target.style.outline = "none")}
+            role="link"
           >
             {item.label}
           </Link>
@@ -76,7 +84,7 @@ export default function BreadcrumbNav({ items }) {
           <Typography key={item.label} color="text.primary" fontWeight={600}>
             {item.label}
           </Typography>
-        )
+        ),
       )}
     </Breadcrumbs>
   );

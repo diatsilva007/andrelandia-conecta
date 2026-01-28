@@ -168,7 +168,18 @@ export default function Navbar() {
               }}
               tabIndex={0}
             >
-              <span style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/")}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") navigate("/");
+                }}
+                aria-label="Ir para página inicial"
+                role="link"
+                onFocus={(e) => (e.target.style.outline = "2px solid #1976d2")}
+                onBlur={(e) => (e.target.style.outline = "none")}
+              >
                 Andrelândia Conecta
               </span>
             </Typography>

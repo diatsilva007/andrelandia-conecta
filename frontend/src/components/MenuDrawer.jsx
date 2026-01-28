@@ -122,8 +122,20 @@ export default function MenuDrawer({
       onClose={onClose}
       sx={{ zIndex: 1400 }}
       PaperProps={{ sx: { zIndex: 1400 } }}
+      ModalProps={{
+        onRendered: () => {
+          // Foca no Drawer ao abrir para acessibilidade
+          const drawer = document.querySelector('[role="presentation"]');
+          if (drawer) drawer.focus();
+        },
+      }}
     >
-      <Box sx={{ width: 260, pt: 4 }} role="presentation" onClick={onClose}>
+      <Box
+        sx={{ width: 260, pt: 4 }}
+        role="presentation"
+        tabIndex={-1}
+        onClick={onClose}
+      >
         {usuario ? (
           <>
             <Box
