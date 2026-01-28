@@ -2,7 +2,6 @@
 
 ### Melhorias em andamento/próximas tarefas
 
-- [ ] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
 - [ ] Refatorar componentes para máxima reusabilidade
 - [ ] Adicionar onboarding, tooltips e mensagens de ajuda
@@ -120,6 +119,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Integração com mapas (Google Maps/Leaflet) para localização de comércios
 - [x] Compartilhamento social (WhatsApp, Facebook, Instagram)
 - [x] Personalização e empatia: modo escuro/claro.
+- [x] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 
