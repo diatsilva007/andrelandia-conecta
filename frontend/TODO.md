@@ -9,7 +9,6 @@
 - [ ] Analytics de uso (Google Analytics, Matomo ou Plausible)
 - [ ] Monitoramento de erros (Sentry, LogRocket)
 - [ ] Internacionalização (i18n) e suporte multilíngue
-- [ ] Skeleton loading e lazy loading de listas
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
 - [ ] Refatorar componentes para máxima reusabilidade
 
@@ -120,6 +119,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Compartilhamento social (WhatsApp, Facebook, Instagram)
 - [x] Personalização e empatia: modo escuro/claro.
 - [x] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
+- [x] Skeleton loading e lazy loading de listas
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 
