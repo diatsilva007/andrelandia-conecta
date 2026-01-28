@@ -549,310 +549,312 @@ const ListaComercios = () => {
               </Typography>
             </Box>
           </Grid>
-        ) : comerciosFiltrados.map((comercio) => (
+        ) : (
+          comerciosFiltrados.map((comercio) => (
             <Grid gridColumn="span 12" key={comercio.id}>
               <AnimatedCard
-              sx={{
-                position: "relative",
-                borderRadius: { xs: 2, sm: 3, md: 4 },
-                boxShadow: 6,
-                bgcolor: "#fff",
-                transition: "box-shadow 0.3s, transform 0.2s",
-                cursor: "pointer",
-                "&:hover": {
-                  boxShadow: 12,
-                  transform: "translateY(-6px) scale(1.03)",
-                },
-                minHeight: { xs: 240, sm: 260, md: 280 }, // Mais espaço vertical
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                p: { xs: 1.5, sm: 2 },
-              }}
-              onClick={() => navigate(`/comercios/${comercio.id}`)}
-              aria-label={`Ver detalhes do comércio ${comercio.nome}`}
-            >
-              <CardContent sx={{ pb: 4, position: "relative" }}>
-                {/* Botão Visualizar e Favoritar lado a lado */}
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  justifyContent="center"
-                  gap={2}
-                  px={2}
-                  pb={1.5}
-                  mb={{ xs: 1.5, sm: 2 }}
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    fullWidth={false}
-                    sx={{
-                      borderRadius: 2.5,
-                      minWidth: 48,
-                      minHeight: 44,
-                      px: 2.5,
-                      py: 1.2,
-                      fontSize: 16,
-                      fontWeight: 700,
-                      boxShadow: 2,
-                      letterSpacing: 0.5,
-                      background: "#1565c0",
-                      color: "#fff",
-                      transition: "background 0.22s, box-shadow 0.22s",
-                      "&:hover": {
-                        background: "#1976d2",
-                        color: "#fff",
-                        boxShadow: 4,
-                      },
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/comercios/${comercio.id}`);
-                    }}
+                sx={{
+                  position: "relative",
+                  borderRadius: { xs: 2, sm: 3, md: 4 },
+                  boxShadow: 6,
+                  bgcolor: "#fff",
+                  transition: "box-shadow 0.3s, transform 0.2s",
+                  cursor: "pointer",
+                  "&:hover": {
+                    boxShadow: 12,
+                    transform: "translateY(-6px) scale(1.03)",
+                  },
+                  minHeight: { xs: 240, sm: 260, md: 280 }, // Mais espaço vertical
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  p: { xs: 1.5, sm: 2 },
+                }}
+                onClick={() => navigate(`/comercios/${comercio.id}`)}
+                aria-label={`Ver detalhes do comércio ${comercio.nome}`}
+              >
+                <CardContent sx={{ pb: 4, position: "relative" }}>
+                  {/* Botão Visualizar e Favoritar lado a lado */}
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={2}
+                    px={2}
+                    pb={1.5}
+                    mb={{ xs: 1.5, sm: 2 }}
                   >
-                    Visualizar
-                  </Button>
-                  <FavoriteButton
-                    item={{
-                      id: comercio.id,
-                      tipo: "comercio",
-                      nome: comercio.nome,
-                      descricao: comercio.descricao,
-                      link: `/comercios/${comercio.id}`,
-                      imagem: comercio.imagem || "",
-                    }}
-                    sx={{
-                      position: "absolute",
-                      top: 12,
-                      right: 12,
-                      zIndex: 2,
-                      fontSize: 28,
-                      p: 0.5,
-                      color: "#f50057",
-                    }}
-                  />
-                </Box>
-                {/* Botão Visualizar removido, agora só existe o conjunto com Favoritar */}
-                <Box display="flex" alignItems="center" gap={2} mb={2}>
-                  {comercio.imagem ? (
-                    <img
-                      src={
-                        comercio.imagem.startsWith("/uploads")
-                          ? `http://localhost:3333${comercio.imagem}`
-                          : comercio.imagem
-                      }
-                      alt={comercio.nome}
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: "50%",
-                        objectFit: "cover",
-                        border: "2px solid #1976d2",
-                      }}
-                    />
-                  ) : (
-                    <Avatar
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      fullWidth={false}
                       sx={{
-                        bgcolor: "primary.main",
+                        borderRadius: 2.5,
+                        minWidth: 48,
+                        minHeight: 44,
+                        px: 2.5,
+                        py: 1.2,
+                        fontSize: 16,
                         fontWeight: 700,
-                        width: 44,
-                        height: 44,
-                        fontSize: 22,
+                        boxShadow: 2,
+                        letterSpacing: 0.5,
+                        background: "#1565c0",
+                        color: "#fff",
+                        transition: "background 0.22s, box-shadow 0.22s",
+                        "&:hover": {
+                          background: "#1976d2",
+                          color: "#fff",
+                          boxShadow: 4,
+                        },
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/comercios/${comercio.id}`);
                       }}
                     >
-                      {comercio.nome?.[0]?.toUpperCase() || "?"}
-                    </Avatar>
-                  )}
+                      Visualizar
+                    </Button>
+                    <FavoriteButton
+                      item={{
+                        id: comercio.id,
+                        tipo: "comercio",
+                        nome: comercio.nome,
+                        descricao: comercio.descricao,
+                        link: `/comercios/${comercio.id}`,
+                        imagem: comercio.imagem || "",
+                      }}
+                      sx={{
+                        position: "absolute",
+                        top: 12,
+                        right: 12,
+                        zIndex: 2,
+                        fontSize: 28,
+                        p: 0.5,
+                        color: "#f50057",
+                      }}
+                    />
+                  </Box>
+                  {/* Botão Visualizar removido, agora só existe o conjunto com Favoritar */}
+                  <Box display="flex" alignItems="center" gap={2} mb={2}>
+                    {comercio.imagem ? (
+                      <img
+                        src={
+                          comercio.imagem.startsWith("/uploads")
+                            ? `http://localhost:3333${comercio.imagem}`
+                            : comercio.imagem
+                        }
+                        alt={comercio.nome}
+                        style={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                          border: "2px solid #1976d2",
+                        }}
+                      />
+                    ) : (
+                      <Avatar
+                        sx={{
+                          bgcolor: "primary.main",
+                          fontWeight: 700,
+                          width: 44,
+                          height: 44,
+                          fontSize: 22,
+                        }}
+                      >
+                        {comercio.nome?.[0]?.toUpperCase() || "?"}
+                      </Avatar>
+                    )}
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight={700}
+                      color="primary.main"
+                      sx={{ flex: 1, fontSize: 20, letterSpacing: 0.5 }}
+                    >
+                      {comercio.nome}
+                    </Typography>
+                  </Box>
                   <Typography
-                    variant="subtitle1"
-                    fontWeight={700}
-                    color="primary.main"
-                    sx={{ flex: 1, fontSize: 20, letterSpacing: 0.5 }}
+                    variant="body2"
+                    color="text.secondary"
+                    mb={1}
+                    sx={{ fontSize: 16 }}
                   >
-                    {comercio.nome}
+                    {comercio.descricao}
                   </Typography>
-                </Box>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  mb={1}
-                  sx={{ fontSize: 16 }}
-                >
-                  {comercio.descricao}
-                </Typography>
-                {comercio.categoria && (
-                  <Typography
-                    variant="caption"
-                    color="primary"
-                    sx={{
-                      fontWeight: 700,
-                      background: "#e3f2fd",
-                      borderRadius: 2,
-                      px: 1.5,
-                      py: 0.5,
-                      fontSize: 14,
-                      display: "inline-block",
-                      mb: 1,
-                      mt: 0.5,
-                      letterSpacing: 0.5,
-                    }}
-                  >
-                    {comercio.categoria}
-                  </Typography>
-                )}
-                {/* Faixa de preço */}
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ fontSize: 15, mt: 0.5 }}
-                >
-                  <strong>Preço:</strong>{" "}
-                  {getFaixaPreco(comercio.produtos) ? (
-                    `R$${getFaixaPreco(comercio.produtos)[0]} - R$${
-                      getFaixaPreco(comercio.produtos)[1]
-                    }`
-                  ) : (
-                    <em>sem produtos</em>
+                  {comercio.categoria && (
+                    <Typography
+                      variant="caption"
+                      color="primary"
+                      sx={{
+                        fontWeight: 700,
+                        background: "#e3f2fd",
+                        borderRadius: 2,
+                        px: 1.5,
+                        py: 0.5,
+                        fontSize: 14,
+                        display: "inline-block",
+                        mb: 1,
+                        mt: 0.5,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      {comercio.categoria}
+                    </Typography>
                   )}
-                </Typography>
-                {/* Média de avaliação */}
-                <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+                  {/* Faixa de preço */}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontSize: 15, mt: 0.5 }}
+                  >
+                    <strong>Preço:</strong>{" "}
+                    {getFaixaPreco(comercio.produtos) ? (
+                      `R$${getFaixaPreco(comercio.produtos)[0]} - R$${
+                        getFaixaPreco(comercio.produtos)[1]
+                      }`
+                    ) : (
+                      <em>sem produtos</em>
+                    )}
+                  </Typography>
+                  {/* Média de avaliação */}
+                  <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 15 }}
+                    >
+                      <strong>Avaliação:</strong>
+                    </Typography>
+                    <Rating
+                      value={getMediaAvaliacao(comercio.avaliacoes) || 0}
+                      precision={0.1}
+                      readOnly
+                      size="small"
+                      sx={{ fontSize: 20 }}
+                    />
+                    <Typography variant="caption" color="text.secondary">
+                      {getMediaAvaliacao(comercio.avaliacoes)
+                        ? getMediaAvaliacao(comercio.avaliacoes).toFixed(1)
+                        : "-"}
+                    </Typography>
+                  </Box>
                   <Typography
                     variant="body2"
                     color="text.secondary"
                     sx={{ fontSize: 15 }}
                   >
-                    <strong>Avaliação:</strong>
+                    <strong>Endereço:</strong>{" "}
+                    {comercio.endereco && comercio.endereco.trim() !== ""
+                      ? comercio.endereco
+                      : "Endereço não informado"}
                   </Typography>
-                  <Rating
-                    value={getMediaAvaliacao(comercio.avaliacoes) || 0}
-                    precision={0.1}
-                    readOnly
-                    size="small"
-                    sx={{ fontSize: 20 }}
-                  />
-                  <Typography variant="caption" color="text.secondary">
-                    {getMediaAvaliacao(comercio.avaliacoes)
-                      ? getMediaAvaliacao(comercio.avaliacoes).toFixed(1)
-                      : "-"}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontSize: 15 }}
+                  >
+                    <strong>Telefone:</strong> {comercio.telefone}
                   </Typography>
-                </Box>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ fontSize: 15 }}
-                >
-                  <strong>Endereço:</strong>{" "}
-                  {comercio.endereco && comercio.endereco.trim() !== ""
-                    ? comercio.endereco
-                    : "Endereço não informado"}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ fontSize: 15 }}
-                >
-                  <strong>Telefone:</strong> {comercio.telefone}
-                </Typography>
-              </CardContent>
-              {usuario?.tipo === "comerciante" && token && (
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: "column", sm: "row" }}
-                  alignItems={{ xs: "stretch", sm: "center" }}
-                  justifyContent="flex-end"
-                  gap={{ xs: 1, sm: 1.5 }}
-                  px={2}
-                  pb={2}
-                  mt={{ xs: 1.5, sm: 2 }}
-                >
-                  <Tooltip title="Editar">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="large"
-                      startIcon={<EditIcon sx={{ fontSize: 24 }} />}
-                      fullWidth={true}
-                      sx={{
-                        borderRadius: 2.5,
-                        minWidth: { xs: "100%", sm: 48 },
-                        minHeight: 44,
-                        px: { xs: 1.5, sm: 2.5 },
-                        py: { xs: 1, sm: 1.2 },
-                        fontSize: { xs: 15, sm: 16 },
-                        fontWeight: 700,
-                        backgroundColor: "#f5faff",
-                        color: "#1976d2",
-                        borderColor: "#1976d2",
-                        boxShadow: "0 2px 8px #1976d222",
-                        transition: "background 0.2s, box-shadow 0.2s",
-                        "&:hover": {
-                          backgroundColor: "#e3f2fd",
-                          color: "#1565c0",
-                          borderColor: "#1565c0",
-                          boxShadow: "0 4px 16px #1976d244",
-                        },
-                        "&:focus-visible": {
-                          outline: "2px solid #1976d2",
-                          outlineOffset: 2,
-                        },
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/comercios/${comercio.id}/editar`);
-                      }}
-                    >
-                      Editar
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="Excluir">
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      size="large"
-                      startIcon={<DeleteIcon sx={{ fontSize: 24 }} />}
-                      fullWidth={true}
-                      sx={{
-                        borderRadius: 2.5,
-                        minWidth: { xs: "100%", sm: 48 },
-                        minHeight: 44,
-                        px: { xs: 1.5, sm: 2.5 },
-                        py: { xs: 1, sm: 1.2 },
-                        fontSize: { xs: 15, sm: 16 },
-                        fontWeight: 700,
-                        backgroundColor: "#fff5f5",
-                        color: "#d32f2f",
-                        borderColor: "#d32f2f",
-                        boxShadow: "0 2px 8px #d32f2f22",
-                        transition: "background 0.2s, box-shadow 0.2s",
-                        "&:hover": {
-                          backgroundColor: "#ffebee",
-                          color: "#b71c1c",
-                          borderColor: "#b71c1c",
-                          boxShadow: "0 4px 16px #d32f2f44",
-                        },
-                        "&:focus-visible": {
-                          outline: "2px solid #d32f2f",
-                          outlineOffset: 2,
-                        },
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setComercioExcluir(comercio);
-                        setDialogOpen(true);
-                      }}
-                    >
-                      Excluir
-                    </Button>
-                  </Tooltip>
-                </Box>
-              )}
-            </AnimatedCard>
-          </Grid>
-        ))}
+                </CardContent>
+                {usuario?.tipo === "comerciante" && token && (
+                  <Box
+                    display="flex"
+                    flexDirection={{ xs: "column", sm: "row" }}
+                    alignItems={{ xs: "stretch", sm: "center" }}
+                    justifyContent="flex-end"
+                    gap={{ xs: 1, sm: 1.5 }}
+                    px={2}
+                    pb={2}
+                    mt={{ xs: 1.5, sm: 2 }}
+                  >
+                    <Tooltip title="Editar">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="large"
+                        startIcon={<EditIcon sx={{ fontSize: 24 }} />}
+                        fullWidth={true}
+                        sx={{
+                          borderRadius: 2.5,
+                          minWidth: { xs: "100%", sm: 48 },
+                          minHeight: 44,
+                          px: { xs: 1.5, sm: 2.5 },
+                          py: { xs: 1, sm: 1.2 },
+                          fontSize: { xs: 15, sm: 16 },
+                          fontWeight: 700,
+                          backgroundColor: "#f5faff",
+                          color: "#1976d2",
+                          borderColor: "#1976d2",
+                          boxShadow: "0 2px 8px #1976d222",
+                          transition: "background 0.2s, box-shadow 0.2s",
+                          "&:hover": {
+                            backgroundColor: "#e3f2fd",
+                            color: "#1565c0",
+                            borderColor: "#1565c0",
+                            boxShadow: "0 4px 16px #1976d244",
+                          },
+                          "&:focus-visible": {
+                            outline: "2px solid #1976d2",
+                            outlineOffset: 2,
+                          },
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/comercios/${comercio.id}/editar`);
+                        }}
+                      >
+                        Editar
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="Excluir">
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="large"
+                        startIcon={<DeleteIcon sx={{ fontSize: 24 }} />}
+                        fullWidth={true}
+                        sx={{
+                          borderRadius: 2.5,
+                          minWidth: { xs: "100%", sm: 48 },
+                          minHeight: 44,
+                          px: { xs: 1.5, sm: 2.5 },
+                          py: { xs: 1, sm: 1.2 },
+                          fontSize: { xs: 15, sm: 16 },
+                          fontWeight: 700,
+                          backgroundColor: "#fff5f5",
+                          color: "#d32f2f",
+                          borderColor: "#d32f2f",
+                          boxShadow: "0 2px 8px #d32f2f22",
+                          transition: "background 0.2s, box-shadow 0.2s",
+                          "&:hover": {
+                            backgroundColor: "#ffebee",
+                            color: "#b71c1c",
+                            borderColor: "#b71c1c",
+                            boxShadow: "0 4px 16px #d32f2f44",
+                          },
+                          "&:focus-visible": {
+                            outline: "2px solid #d32f2f",
+                            outlineOffset: 2,
+                          },
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setComercioExcluir(comercio);
+                          setDialogOpen(true);
+                        }}
+                      >
+                        Excluir
+                      </Button>
+                    </Tooltip>
+                  </Box>
+                )}
+              </AnimatedCard>
+            </Grid>
+          ))
+        )}
       </Grid>
       {/* Dialog de confirmação */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
