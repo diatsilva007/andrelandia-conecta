@@ -53,7 +53,6 @@
   - [] Testar visual em diferentes tamanhos de tela.
 
 - Filtros avançados + busca instantânea (2 a 3 dias)
-  - [] Implementar filtros por categoria, preço, avaliação, localização, etc.
   - [] Adicionar campo de busca que filtra resultados em tempo real.
   - [] Garantir integração dos filtros com a paginação.
 
@@ -120,6 +119,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [x] Skeleton loading e lazy loading de listas
 - [X] Mensagens de boas-vindas e dicas contextuais ao logar.
+- [x] Implementar filtros por categoria, preço, avaliação, localização, etc.
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 
