@@ -2,7 +2,6 @@
 
 ### Melhorias em andamento/próximas tarefas
 
-- [ ] Expandir testes automatizados (unitários, integração, e2e)
 - [ ] Adicionar onboarding, tooltips e mensagens de ajuda
 - [ ] Implementar CI/CD (GitHub Actions)
 - [ ] Documentação técnica e de API (Swagger/OpenAPI)
@@ -11,10 +10,10 @@
 - [ ] Internacionalização (i18n) e suporte multilíngue
 - [ ] Componentes acessíveis customizados (inputs, selects, modais)
 - [ ] Refatorar componentes para máxima reusabilidade
+- [ ] Expandir testes automatizados (unitários, integração, e2e)
 
 ## Funcionalidades sugeridas (Frontend)
 
-- [ ] Mensagens de boas-vindas e dicas contextuais ao logar e cadastrar.
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
 
@@ -120,6 +119,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Personalização e empatia: modo escuro/claro.
 - [x] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [x] Skeleton loading e lazy loading de listas
+- [X] Mensagens de boas-vindas e dicas contextuais ao logar.
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 
