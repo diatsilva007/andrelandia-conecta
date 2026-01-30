@@ -1,10 +1,27 @@
 // Listar todos os produtos
 export const listarProdutos = async (req, res) => {
   try {
-    const produtos = await prisma.produto.findMany({
-      include: { comercio: true },
-    });
-    res.json(produtos);
+    // Suporte a paginação via query params
+    const { offset = 0, limit = 10, comercioId } = req.query;
+    const skip = Number(offset) || 0;
+    const take = Number(limit) || 10;
+
+    // Filtro opcional por comercioId
+    const where = comercioId ? { comercioId: Number(comercioId) } : {};
+
+    // Busca paginada
+    const [produtos, total] = await Promise.all([
+      prisma.produto.findMany({
+        skip,
+        take,
+        where,
+        include: { comercio: true },
+        orderBy: { id: "desc" },
+      }),
+      prisma.produto.count({ where }),
+    ]);
+
+    res.json({ data: produtos, total });
   } catch (error) {
     res.status(500).json({ error: "Erro ao listar produtos." });
   }
