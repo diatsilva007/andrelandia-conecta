@@ -124,15 +124,21 @@ export default function Dashboard() {
     }
   };
 
-  const fetchChartData = async () => {
-    // Exemplo: buscar dados reais do backend
-    // Aqui, mock para demonstração
-    setChartData({
-      vendas: [5, 8, 12, 7, 10, 15, 9],
-      acessos: [20, 30, 25, 40, 35, 50, 45],
-      avaliacoes: [1, 2, 1, 3, 2, 4, 3],
-      labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
-    });
+  const fetchChartData = async (periodoAtual = periodo) => {
+    if (!comercioId) return;
+    try {
+      const res = await axios.get(
+        `http://localhost:3333/comercios/${comercioId}/analytics-detalhado?periodo=${periodoAtual}`,
+      );
+      setChartData({
+        vendas: res.data.vendas,
+        acessos: res.data.acessos,
+        avaliacoes: res.data.avaliacoes,
+        labels: res.data.labels,
+      });
+    } catch {
+      setChartData({ vendas: [], acessos: [], avaliacoes: [], labels: [] });
+    }
   };
 
   const fetchRankingProdutos = async () => {
@@ -152,11 +158,11 @@ export default function Dashboard() {
   useEffect(() => {
     if (comercioId) {
       fetchAnalytics();
-      fetchChartData();
+      fetchChartData(periodo);
       fetchRankingProdutos();
     }
     // eslint-disable-next-line
-  }, [comercioId]);
+  }, [comercioId, periodo]);
 
   // Recarrega dados se retornar de edição/cadastro com sucesso
   useEffect(() => {
@@ -185,8 +191,7 @@ export default function Dashboard() {
 
   const handlePeriodoChange = (e) => {
     setPeriodo(e.target.value);
-    // Aqui você pode disparar nova busca de dados conforme o período selecionado
-    // Exemplo: fetchChartData(e.target.value);
+    fetchChartData(e.target.value);
   };
 
   useEffect(() => {

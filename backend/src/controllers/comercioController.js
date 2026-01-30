@@ -165,3 +165,58 @@ export const analyticsComercio = async (req, res) => {
     avaliacoes: 0,
   });
 };
+
+// Analytics detalhado para gráficos (por período)
+export const analyticsComercioDetalhado = async (req, res) => {
+  // Parâmetros: periodo = 'semana' | 'mes' | 'ano' (default: semana)
+  // Retorna arrays para cada métrica por dia
+  const { id } = req.params;
+  const { periodo = "semana" } = req.query;
+  try {
+    // Mock: 7 dias para semana, 30 para mês, 12 para ano
+    let labels = [];
+    let vendas = [];
+    let acessos = [];
+    let avaliacoes = [];
+    if (periodo === "semana") {
+      labels = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+      vendas = [2, 4, 1, 3, 5, 2, 6];
+      acessos = [10, 20, 15, 25, 30, 18, 22];
+      avaliacoes = [0, 1, 0, 2, 1, 0, 1];
+    } else if (periodo === "mes") {
+      labels = Array.from({ length: 30 }, (_, i) => `${i + 1}`);
+      vendas = Array.from({ length: 30 }, () => Math.floor(Math.random() * 6));
+      acessos = Array.from({ length: 30 }, () =>
+        Math.floor(Math.random() * 40),
+      );
+      avaliacoes = Array.from({ length: 30 }, () =>
+        Math.floor(Math.random() * 3),
+      );
+    } else if (periodo === "ano") {
+      labels = [
+        "Jan",
+        "Fev",
+        "Mar",
+        "Abr",
+        "Mai",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Set",
+        "Out",
+        "Nov",
+        "Dez",
+      ];
+      vendas = Array.from({ length: 12 }, () => Math.floor(Math.random() * 30));
+      acessos = Array.from({ length: 12 }, () =>
+        Math.floor(Math.random() * 100),
+      );
+      avaliacoes = Array.from({ length: 12 }, () =>
+        Math.floor(Math.random() * 10),
+      );
+    }
+    res.json({ labels, vendas, acessos, avaliacoes });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar analytics detalhado." });
+  }
+};
