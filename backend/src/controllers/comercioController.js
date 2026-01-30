@@ -19,8 +19,7 @@ export const buscarComercioPorId = async (req, res) => {
   }
 };
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({});
 
 export const listarComercios = async (req, res) => {
   try {

@@ -27,6 +27,7 @@ model Comercio {
   usuarioId Int
   produtos  Produto[]
   avaliacoes Avaliacao[]
+  pedidos   Pedido[]
   criadoEm  DateTime   @default(now())
 }
 model Avaliacao {
@@ -49,6 +50,7 @@ model Produto {
   comercio   Comercio @relation(fields: [comercioId], references: [id], onDelete: Cascade)
   comercioId Int
   criadoEm   DateTime @default(now())
+  itensPedido ItemPedido[]
 }
 
 model Usuario {
@@ -61,7 +63,30 @@ model Usuario {
   descricao String?    // Descrição/sobre do usuário
   avaliacoes Avaliacao[]
   comercios Comercio[]
+  pedidos   Pedido[]
   criadoEm  DateTime   @default(now())
   resetToken        String?   // Token para redefinição de senha
   resetTokenExpires DateTime? // Expiração do token
+}
+
+// Modelo de Pedido (venda)
+model Pedido {
+  id         Int         @id @default(autoincrement())
+  usuario    Usuario     @relation(fields: [usuarioId], references: [id])
+  usuarioId  Int
+  comercio   Comercio    @relation(fields: [comercioId], references: [id])
+  comercioId Int
+  itens      ItemPedido[]
+  criadoEm   DateTime    @default(now())
+}
+
+// Itens do pedido (produtos vendidos)
+model ItemPedido {
+  id        Int      @id @default(autoincrement())
+  pedido    Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  pedidoId  Int
+  produto   Produto  @relation(fields: [produtoId], references: [id])
+  produtoId Int
+  quantidade Int     @default(1)
+  precoUnitario Float
 }

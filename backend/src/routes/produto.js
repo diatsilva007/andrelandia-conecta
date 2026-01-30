@@ -4,6 +4,8 @@ import {
   criarProduto,
   atualizarProduto,
   removerProduto,
+  produtosMaisVendidos,
+  produtosMaisAvaliados,
 } from "../controllers/produtoController.js";
 
 import { autenticarToken } from "../middlewares/auth.js";
@@ -12,18 +14,19 @@ import { uploadProdutoImage } from "../middlewares/uploadProdutoImage.js";
 const router = Router();
 
 router.get("/", listarProdutos);
+router.get("/mais-vendidos", produtosMaisVendidos);
+router.get("/mais-avaliados", produtosMaisAvaliados);
 router.get("/:id", async (req, res, next) => {
   // Controller buscarProdutoPorId
-  const { buscarProdutoPorId } = await import(
-    "../controllers/produtoController.js"
-  );
+  const { buscarProdutoPorId } =
+    await import("../controllers/produtoController.js");
   return buscarProdutoPorId(req, res, next);
 });
 router.post(
   "/",
   autenticarToken,
   uploadProdutoImage.single("imagem"),
-  criarProduto
+  criarProduto,
 );
 router.put("/:id", autenticarToken, atualizarProduto);
 router.delete("/:id", autenticarToken, removerProduto);

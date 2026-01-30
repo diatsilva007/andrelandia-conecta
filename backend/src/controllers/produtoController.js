@@ -43,8 +43,7 @@ export const buscarProdutoPorId = async (req, res) => {
   }
 };
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({});
 
 export const criarProduto = async (req, res) => {
   try {
@@ -75,6 +74,69 @@ export const criarProduto = async (req, res) => {
   }
 };
 // ...existing code...
+// Produtos mais vendidos por período
+export const produtosMaisVendidos = async (req, res) => {
+  const { periodo = "semana", limit = 5 } = req.query;
+  // Determina o intervalo de datas
+  let dataInicio = new Date();
+  if (periodo === "semana") dataInicio.setDate(dataInicio.getDate() - 7);
+  else if (periodo === "mes") dataInicio.setMonth(dataInicio.getMonth() - 1);
+  else if (periodo === "ano")
+    dataInicio.setFullYear(dataInicio.getFullYear() - 1);
+  try {
+    const produtos = await prisma.itemPedido.groupBy({
+      by: ["produtoId"],
+      where: { pedido: { criadoEm: { gte: dataInicio } } },
+      _sum: { quantidade: true },
+      orderBy: { _sum: { quantidade: "desc" } },
+      take: Number(limit),
+    });
+    // Buscar detalhes dos produtos
+    const ids = produtos.map((p) => p.produtoId);
+    const detalhes = await prisma.produto.findMany({
+      where: { id: { in: ids } },
+    });
+    // Juntar info
+    const resultado = produtos.map((p) => ({
+      ...detalhes.find((d) => d.id === p.produtoId),
+      vendidos: p._sum.quantidade || 0,
+    }));
+    res.json(resultado);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar produtos mais vendidos." });
+  }
+};
+
+// Produtos mais avaliados por período
+export const produtosMaisAvaliados = async (req, res) => {
+  const { periodo = "semana", limit = 5 } = req.query;
+  let dataInicio = new Date();
+  if (periodo === "semana") dataInicio.setDate(dataInicio.getDate() - 7);
+  else if (periodo === "mes") dataInicio.setMonth(dataInicio.getMonth() - 1);
+  else if (periodo === "ano")
+    dataInicio.setFullYear(dataInicio.getFullYear() - 1);
+  try {
+    // Supondo que Avaliacao tenha produtoId (se não, precisa adaptar)
+    const avaliacoes = await prisma.avaliacao.groupBy({
+      by: ["produtoId"],
+      where: { criadoEm: { gte: dataInicio } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: Number(limit),
+    });
+    const ids = avaliacoes.map((a) => a.produtoId).filter(Boolean);
+    const detalhes = await prisma.produto.findMany({
+      where: { id: { in: ids } },
+    });
+    const resultado = avaliacoes.map((a) => ({
+      ...detalhes.find((d) => d.id === a.produtoId),
+      avaliacoes: a._count.id || 0,
+    }));
+    res.json(resultado);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar produtos mais avaliados." });
+  }
+};
 
 export const atualizarProduto = async (req, res) => {
   try {
