@@ -64,16 +64,18 @@ export default function Dashboard() {
   const fetchStats = async () => {
     try {
       const [comRes, prodRes] = await Promise.all([
-        axios.get("http://localhost:3333/comercios"),
-        axios.get("http://localhost:3333/produtos"),
+        axios.get("http://localhost:3333/comercios?offset=0&limit=1000"),
+        axios.get("http://localhost:3333/produtos?offset=0&limit=1000"),
       ]);
+      const comerciosArr = comRes.data.data || [];
+      const produtosArr = prodRes.data.data || [];
       setStats({
-        comercios: comRes.data.length,
-        produtos: prodRes.data.length,
+        comercios: comerciosArr.length,
+        produtos: produtosArr.length,
       });
-      setTodosComercios(comRes.data);
-      setUltimosComercios(comRes.data.slice(-3).reverse());
-      setUltimosProdutos(prodRes.data.slice(-3).reverse());
+      setTodosComercios(comerciosArr);
+      setUltimosComercios(comerciosArr.slice(-3).reverse());
+      setUltimosProdutos(produtosArr.slice(-3).reverse());
     } catch {
       setStats({ comercios: 0, produtos: 0 });
       setTodosComercios([]);
