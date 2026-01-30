@@ -36,6 +36,9 @@ import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
 const ListaComercios = () => {
   const navigate = useNavigate();
   const [comercios, setComercios] = useState([]);
+  const [totalComercios, setTotalComercios] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [busca, setBusca] = useState("");
   const [categoriaFiltro, setCategoriaFiltro] = useState("");
   const [localizacaoFiltro, setLocalizacaoFiltro] = useState("");
@@ -53,7 +56,6 @@ const ListaComercios = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   // Lazy loading (infinite scroll)
   const ITEMS_PER_PAGE = 10;
-  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const sentinelRef = useRef(null);
   const [comercioExcluir, setComercioExcluir] = useState(null);
   const { setSnackbar } = useSnackbar();
@@ -124,15 +126,31 @@ const ListaComercios = () => {
     );
   });
 
-  // Carregar comércios da API
+  // Carregar comércios da API (paginado)
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    async function fetchComercios() {
-      setLoading(true);
+    let ignore = false;
+    async function fetchComercios(reset = false) {
+      if (reset) {
+        setLoading(true);
+        setOffset(0);
+      } else {
+        setIsFetchingMore(true);
+      }
       try {
-        const res = await fetch("http://localhost:3333/comercios");
+        const res = await fetch(
+          `http://localhost:3333/comercios?offset=${reset ? 0 : offset}&limit=${ITEMS_PER_PAGE}`,
+        );
         const data = await res.json();
-        setComercios(Array.isArray(data) ? data : data.data || []);
+        if (ignore) return;
+        setTotalComercios(data.total || 0);
+        if (reset) {
+          setComercios(data.data || []);
+          setOffset(ITEMS_PER_PAGE);
+        } else {
+          setComercios((prev) => [...prev, ...(data.data || [])]);
+          setOffset((prev) => prev + ITEMS_PER_PAGE);
+        }
       } catch {
         setSnackbar({
           open: true,
@@ -141,36 +159,65 @@ const ListaComercios = () => {
         });
       } finally {
         setLoading(false);
+        setIsFetchingMore(false);
       }
     }
-    fetchComercios();
-  }, [setSnackbar]);
+    // Reset ao trocar filtros/busca
+    fetchComercios(true);
+    return () => {
+      ignore = true;
+    };
+  }, [
+    setSnackbar,
+    busca,
+    localizacaoFiltro,
+    categoriaFiltro,
+    precoRange,
+    avaliacaoMin,
+  ]);
 
-  useEffect(() => {
-    setVisibleCount(ITEMS_PER_PAGE);
-  }, [busca, localizacaoFiltro, categoriaFiltro, precoRange, avaliacaoMin]);
+  // Função para buscar mais (scroll infinito)
+  const fetchMoreComercios = () => {
+    if (comercios.length < totalComercios && !isFetchingMore && !loading) {
+      // Busca próxima página
+      (async () => {
+        await new Promise((r) => setTimeout(r, 200)); // delay para UX
+        await fetch(
+          `http://localhost:3333/comercios?offset=${offset}&limit=${ITEMS_PER_PAGE}`,
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            setComercios((prev) => [...prev, ...(data.data || [])]);
+            setOffset((prev) => prev + ITEMS_PER_PAGE);
+          })
+          .catch(() => {
+            setSnackbar({
+              open: true,
+              message: "Erro ao carregar mais comércios",
+              severity: "error",
+            });
+          })
+          .finally(() => setIsFetchingMore(false));
+      })();
+    }
+  };
 
   useEffect(() => {
     const currentSentinel = sentinelRef.current;
     if (!currentSentinel) return;
-
     const observer = new window.IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCount((prev) =>
-            Math.min(prev + ITEMS_PER_PAGE, comerciosFiltrados.length),
-          );
+          fetchMoreComercios();
         }
       },
       { rootMargin: "100px" },
     );
-
     observer.observe(currentSentinel);
-
     return () => {
       if (currentSentinel) observer.unobserve(currentSentinel);
     };
-  }, [comerciosFiltrados.length]);
+  }, [comercios.length, totalComercios, isFetchingMore, loading]);
 
   // Exclusão real via API
   const handleDelete = async (id) => {
@@ -581,7 +628,7 @@ const ListaComercios = () => {
             </Box>
           </Grid>
         ) : (
-          comerciosFiltrados.slice(0, visibleCount).map((comercio) => (
+          comerciosFiltrados.map((comercio) => (
             <Grid gridColumn="span 12" key={comercio.id}>
               <AnimatedCard
                 sx={{
@@ -886,7 +933,7 @@ const ListaComercios = () => {
             </Grid>
           ))
         )}
-        {visibleCount < comerciosFiltrados.length && (
+        {comercios.length < totalComercios && (
           <div ref={sentinelRef} style={{ height: 1 }} />
         )}
       </Grid>
