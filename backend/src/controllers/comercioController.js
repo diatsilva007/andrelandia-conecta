@@ -24,19 +24,33 @@ const prisma = new PrismaClient();
 
 export const listarComercios = async (req, res) => {
   try {
-    const comercios = await prisma.comercio.findMany({
-      include: {
-        produtos: true,
-        avaliacoes: true,
-      },
-    });
+    // Suporte a paginação via query params
+    const { offset = 0, limit = 10 } = req.query;
+    const skip = Number(offset) || 0;
+    const take = Number(limit) || 10;
+
+    // Busca paginada
+    const [comercios, total] = await Promise.all([
+      prisma.comercio.findMany({
+        skip,
+        take,
+        include: {
+          produtos: true,
+          avaliacoes: true,
+        },
+        orderBy: { id: "desc" },
+      }),
+      prisma.comercio.count(),
+    ]);
+
     // Corrige tipos para o frontend (Leaflet exige número)
     const comerciosCorrigidos = comercios.map((com) => ({
       ...com,
       latitude: com.latitude !== null ? Number(com.latitude) : null,
       longitude: com.longitude !== null ? Number(com.longitude) : null,
     }));
-    res.json(comerciosCorrigidos);
+
+    res.json({ data: comerciosCorrigidos, total });
   } catch (error) {
     res.status(500).json({ error: "Erro ao listar comércios." });
   }

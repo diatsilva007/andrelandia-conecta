@@ -132,7 +132,7 @@ const ListaComercios = () => {
       try {
         const res = await fetch("http://localhost:3333/comercios");
         const data = await res.json();
-        setComercios(data);
+        setComercios(Array.isArray(data) ? data : data.data || []);
       } catch {
         setSnackbar({
           open: true,

@@ -4,7 +4,7 @@ export default function ComercioSkeletonList({ count = 4 }) {
   return (
     <>
       {Array.from({ length: count }).map((_, idx) => (
-        <Grid item xs={12} key={idx}>
+        <Grid key={idx}>
           <Box
             sx={{
               borderRadius: { xs: 2, sm: 3, md: 4 },
