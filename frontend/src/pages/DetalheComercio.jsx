@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Rating, TextField } from "@mui/material";
+import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
+// Skeleton para produtos (reutiliza o de comércio, mas pode ser customizado depois)
+function ProdutoSkeletonList({ count = 4 }) {
+  return <ComercioSkeletonList count={count} />;
+}
 import { useNavigate, useParams, Link } from "react-router-dom";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import VoltarButton from "../components/VoltarButton.jsx";
@@ -74,6 +79,70 @@ export default function DetalheComercio() {
   const [excluindoAvaliacao, setExcluindoAvaliacao] = useState(false);
   // Para exclusão de produto
   const [excluindo, setExcluindo] = useState(false);
+
+  // Scroll infinito produtos
+  const [produtos, setProdutos] = useState([]);
+  const [produtosTotal, setProdutosTotal] = useState(0);
+  const [produtosLoading, setProdutosLoading] = useState(false);
+  const [produtosOffset, setProdutosOffset] = useState(0);
+  const produtosLimit = 8;
+  const produtosHasMore = produtos.length < produtosTotal;
+  const produtosSentinelRef = useRef();
+
+  // Buscar produtos paginados
+  const fetchProdutos = useCallback(
+    async (reset = false) => {
+      setProdutosLoading(true);
+      try {
+        const resp = await axios.get(
+          `http://localhost:3333/produtos?comercioId=${id}&offset=${reset ? 0 : produtosOffset}&limit=${produtosLimit}`,
+        );
+        if (reset) {
+          setProdutos(resp.data.data);
+        } else {
+          setProdutos((prev) => [...prev, ...resp.data.data]);
+        }
+        setProdutosTotal(resp.data.total);
+        setProdutosOffset((prev) => prev + produtosLimit);
+      } catch {
+        if (reset) setProdutos([]);
+      } finally {
+        setProdutosLoading(false);
+      }
+    },
+    [id, produtosOffset],
+  );
+
+  // Reset produtos ao trocar de comércio
+  useEffect(() => {
+    setProdutos([]);
+    setProdutosOffset(0);
+    setProdutosTotal(0);
+    fetchProdutos(true);
+    // eslint-disable-next-line
+  }, [id]);
+
+  // IntersectionObserver para scroll infinito
+  useEffect(() => {
+    if (!produtosHasMore || produtosLoading) return;
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchProdutos();
+        }
+      },
+      { threshold: 1 },
+    );
+    const sentinel = produtosSentinelRef.current;
+    if (sentinel) {
+      observer.observe(sentinel);
+    }
+    return () => {
+      if (sentinel) {
+        observer.unobserve(sentinel);
+      }
+    };
+  }, [produtosHasMore, produtosLoading, fetchProdutos]);
 
   // Buscar comércio
   const fetchComercio = () => {
@@ -597,241 +666,246 @@ export default function DetalheComercio() {
             justifyContent: "center",
           }}
         >
-          {comercio.produtos && comercio.produtos.length > 0 ? (
-            comercio.produtos.map((produto) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                key={produto.id}
-                sx={{ display: "flex", justifyContent: "center" }}
+          {produtos.map((produto) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              key={produto.id}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <Card
+                sx={{
+                  borderRadius: 3,
+                  boxShadow: 2,
+                  minHeight: { xs: 180, sm: 220, md: 240 },
+                  maxHeight: { xs: 260, sm: 280, md: 320 },
+                  width: { xs: "100%", sm: 320, md: 340, lg: 340 },
+                  maxWidth: { xs: "100%", sm: 340, md: 360, lg: 360 },
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  backgroundColor: "#fafbfc",
+                  p: { xs: 1.5, sm: 2 },
+                  boxSizing: "border-box",
+                  mx: "auto",
+                  transition: "box-shadow 0.2s, transform 0.2s",
+                  ":hover": { boxShadow: 6, transform: "scale(1.015)" },
+                }}
               >
-                <Card
-                  sx={{
-                    borderRadius: 3,
-                    boxShadow: 2,
-                    minHeight: { xs: 180, sm: 220, md: 240 },
-                    maxHeight: { xs: 260, sm: 280, md: 320 },
-                    width: { xs: "100%", sm: 320, md: 340, lg: 340 },
-                    maxWidth: { xs: "100%", sm: 340, md: 360, lg: 360 },
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    backgroundColor: "#fafbfc",
-                    p: { xs: 1.5, sm: 2 },
-                    boxSizing: "border-box",
-                    mx: "auto",
-                    transition: "box-shadow 0.2s, transform 0.2s",
-                    ":hover": { boxShadow: 6, transform: "scale(1.015)" },
-                  }}
-                >
-                  <CardContent sx={{ p: 0 }}>
-                    <Box display="flex" alignItems="center" gap={2} mb={1}>
-                      <Avatar
-                        sx={{
-                          bgcolor: "secondary.main",
-                          fontWeight: 700,
-                          width: 40,
-                          height: 40,
-                          fontSize: 20,
-                        }}
-                      >
-                        {produto.nome?.[0]?.toUpperCase() || "?"}
-                      </Avatar>
-                      <Box>
-                        <Typography
-                          variant="subtitle1"
-                          fontWeight={600}
-                          color="primary.main"
-                          sx={{ letterSpacing: 0.5 }}
-                        >
-                          {produto.nome}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          mb={0.5}
-                          sx={{ fontWeight: 400 }}
-                        >
-                          {produto.descricao}
-                        </Typography>
-                      </Box>
-                      {/* Botão de favoritos para produto */}
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          top: 12,
-                          right: 12,
-                          zIndex: 2,
-                        }}
-                      >
-                        <FavoriteButton
-                          item={{
-                            id: produto.id,
-                            tipo: "produto",
-                            nome: produto.nome,
-                            descricao: produto.descricao,
-                            link: `/produtos/${produto.id}`,
-                            imagem: produto.imagem || "",
-                          }}
-                          sx={{ fontSize: 28, p: 0.5, color: "#f50057" }}
-                        />
-                      </Box>
-                    </Box>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ fontWeight: 500 }}
+                <CardContent sx={{ p: 0 }}>
+                  <Box display="flex" alignItems="center" gap={2} mb={1}>
+                    <Avatar
+                      sx={{
+                        bgcolor: "secondary.main",
+                        fontWeight: 700,
+                        width: 40,
+                        height: 40,
+                        fontSize: 20,
+                      }}
                     >
-                      <b>Preço:</b> R$ {produto.preco.toFixed(2)}
-                    </Typography>
-                    <Box display="flex" justifyContent="flex-end" mt={2}>
-                      <Tooltip title="Visualizar produto" arrow>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          sx={{
-                            borderRadius: 2,
-                            minWidth: { xs: 36, sm: 48 },
-                            px: { xs: 1.5, sm: 2 },
-                            py: { xs: 0.8, sm: 1.2 },
-                            fontSize: { xs: 14, sm: 16 },
-                            fontWeight: 600,
-                            backgroundColor: "#1976d2",
-                            color: "#fff",
-                            boxShadow: "0 2px 8px #1976d222",
-                            transition: "background 0.2s, box-shadow 0.2s",
-                            "&:hover": {
-                              backgroundColor: "#1565c0",
-                              color: "#fff",
-                              boxShadow: "0 4px 16px #1976d244",
-                            },
-                            "&:focus-visible": {
-                              outline: "2px solid #1976d2",
-                              outlineOffset: 2,
-                            },
-                          }}
-                          onClick={() => navigate(`/produtos/${produto.id}`)}
-                          aria-label={`Visualizar produto ${produto.nome}`}
-                        >
-                          Visualizar
-                        </Button>
-                      </Tooltip>
+                      {produto.nome?.[0]?.toUpperCase() || "?"}
+                    </Avatar>
+                    <Box>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight={600}
+                        color="primary.main"
+                        sx={{ letterSpacing: 0.5 }}
+                      >
+                        {produto.nome}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        mb={0.5}
+                        sx={{ fontWeight: 400 }}
+                      >
+                        {produto.descricao}
+                      </Typography>
                     </Box>
-                  </CardContent>
-                  {token && (
+                    {/* Botão de favoritos para produto */}
                     <Box
-                      display="flex"
-                      gap={{ xs: 0.5, sm: 1 }}
-                      flexDirection={{ xs: "column", sm: "row" }}
-                      alignItems={{ xs: "stretch", sm: "center" }}
-                      justifyContent="flex-end"
-                      px={2}
-                      pb={2}
+                      sx={{
+                        position: "absolute",
+                        top: 12,
+                        right: 12,
+                        zIndex: 2,
+                      }}
                     >
-                      <Tooltip title="Editar produto">
+                      <FavoriteButton
+                        item={{
+                          id: produto.id,
+                          tipo: "produto",
+                          nome: produto.nome,
+                          descricao: produto.descricao,
+                          link: `/produtos/${produto.id}`,
+                          imagem: produto.imagem || "",
+                        }}
+                        sx={{ fontSize: 28, p: 0.5, color: "#f50057" }}
+                      />
+                    </Box>
+                  </Box>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontWeight: 500 }}
+                  >
+                    <b>Preço:</b> R$ {produto.preco.toFixed(2)}
+                  </Typography>
+                  <Box display="flex" justifyContent="flex-end" mt={2}>
+                    <Tooltip title="Visualizar produto" arrow>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        sx={{
+                          borderRadius: 2,
+                          minWidth: { xs: 36, sm: 48 },
+                          px: { xs: 1.5, sm: 2 },
+                          py: { xs: 0.8, sm: 1.2 },
+                          fontSize: { xs: 14, sm: 16 },
+                          fontWeight: 600,
+                          backgroundColor: "#1976d2",
+                          color: "#fff",
+                          boxShadow: "0 2px 8px #1976d222",
+                          transition: "background 0.2s, box-shadow 0.2s",
+                          "&:hover": {
+                            backgroundColor: "#1565c0",
+                            color: "#fff",
+                            boxShadow: "0 4px 16px #1976d244",
+                          },
+                          "&:focus-visible": {
+                            outline: "2px solid #1976d2",
+                            outlineOffset: 2,
+                          },
+                        }}
+                        onClick={() => navigate(`/produtos/${produto.id}`)}
+                        aria-label={`Visualizar produto ${produto.nome}`}
+                      >
+                        Visualizar
+                      </Button>
+                    </Tooltip>
+                  </Box>
+                </CardContent>
+                {token && (
+                  <Box
+                    display="flex"
+                    gap={{ xs: 0.5, sm: 1 }}
+                    flexDirection={{ xs: "column", sm: "row" }}
+                    alignItems={{ xs: "stretch", sm: "center" }}
+                    justifyContent="flex-end"
+                    px={2}
+                    pb={2}
+                  >
+                    <Tooltip title="Editar produto">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        startIcon={<EditIcon />}
+                        sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/produtos/${produto.id}/editar`);
+                        }}
+                      >
+                        Editar
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="Excluir produto">
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        startIcon={<DeleteIcon />}
+                        sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setProdutoExcluir(produto);
+                          setDialogOpen(true);
+                        }}
+                        disabled={excluindo}
+                      >
+                        Excluir
+                      </Button>
+                    </Tooltip>
+                    {/* Dialog de confirmação de exclusão */}
+                    <Dialog
+                      open={dialogOpen}
+                      onClose={() => setDialogOpen(false)}
+                    >
+                      <DialogTitle>Confirmar exclusão</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          Tem certeza que deseja excluir o produto "
+                          {produtoExcluir?.nome}"?
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
                         <Button
-                          variant="outlined"
-                          color="primary"
-                          size="small"
-                          startIcon={<EditIcon />}
-                          sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/produtos/${produto.id}/editar`);
-                          }}
-                        >
-                          Editar
-                        </Button>
-                      </Tooltip>
-                      <Tooltip title="Excluir produto">
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          size="small"
-                          startIcon={<DeleteIcon />}
-                          sx={{ borderRadius: 2, minWidth: 0, px: 1 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setProdutoExcluir(produto);
-                            setDialogOpen(true);
-                          }}
+                          onClick={() => setDialogOpen(false)}
                           disabled={excluindo}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          onClick={async () => {
+                            if (!produtoExcluir) return;
+                            setExcluindo(true);
+                            try {
+                              const token = localStorage.getItem("token");
+                              await axios.delete(
+                                `http://localhost:3333/produtos/${produtoExcluir.id}`,
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                  },
+                                },
+                              );
+                              setSnackbar({
+                                open: true,
+                                message: "Produto excluído com sucesso!",
+                                severity: "success",
+                              });
+                              setDialogOpen(false);
+                              setProdutoExcluir(null);
+                              setProdutos([]);
+                              setProdutosOffset(0);
+                              setProdutosTotal(0);
+                              fetchProdutos(true);
+                            } catch (err) {
+                              setSnackbar({
+                                open: true,
+                                message:
+                                  err.response?.data?.error ||
+                                  "Erro ao excluir produto",
+                                severity: "error",
+                              });
+                            } finally {
+                              setExcluindo(false);
+                            }
+                          }}
+                          color="error"
+                          variant="contained"
+                          disabled={excluindo}
+                          aria-label="Confirmar exclusão do produto"
                         >
                           Excluir
                         </Button>
-                      </Tooltip>
-                      {/* Dialog de confirmação de exclusão */}
-                      <Dialog
-                        open={dialogOpen}
-                        onClose={() => setDialogOpen(false)}
-                      >
-                        <DialogTitle>Confirmar exclusão</DialogTitle>
-                        <DialogContent>
-                          <DialogContentText>
-                            Tem certeza que deseja excluir o produto "
-                            {produtoExcluir?.nome}"?
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button
-                            onClick={() => setDialogOpen(false)}
-                            disabled={excluindo}
-                          >
-                            Cancelar
-                          </Button>
-                          <Button
-                            onClick={async () => {
-                              if (!produtoExcluir) return;
-                              setExcluindo(true);
-                              try {
-                                const token = localStorage.getItem("token");
-                                await axios.delete(
-                                  `http://localhost:3333/produtos/${produtoExcluir.id}`,
-                                  {
-                                    headers: {
-                                      Authorization: `Bearer ${token}`,
-                                    },
-                                  },
-                                );
-                                setSnackbar({
-                                  open: true,
-                                  message: "Produto excluído com sucesso!",
-                                  severity: "success",
-                                });
-                                setDialogOpen(false);
-                                setProdutoExcluir(null);
-                                fetchComercio();
-                              } catch (err) {
-                                setSnackbar({
-                                  open: true,
-                                  message:
-                                    err.response?.data?.error ||
-                                    "Erro ao excluir produto",
-                                  severity: "error",
-                                });
-                              } finally {
-                                setExcluindo(false);
-                              }
-                            }}
-                            color="error"
-                            variant="contained"
-                            disabled={excluindo}
-                            aria-label="Confirmar exclusão do produto"
-                          >
-                            Excluir
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </Box>
-                  )}
-                </Card>
-              </Grid>
-            ))
-          ) : (
+                      </DialogActions>
+                    </Dialog>
+                  </Box>
+                )}
+              </Card>
+            </Grid>
+          ))}
+          {produtosLoading && <ProdutoSkeletonList count={4} />}
+          {/* Sentinel para scroll infinito */}
+          <div ref={produtosSentinelRef} style={{ height: 1 }} />
+          {produtos.length === 0 && !produtosLoading && (
             <Typography
               variant="body2"
               color="text.secondary"
