@@ -92,7 +92,7 @@ export default function Login() {
             style={{
               width: 84,
               height: 84,
-              marginBottom: 8,
+              marginBottom: 16,
               borderRadius: 50,
               boxShadow: "0 2px 8px #1976d222",
             }}
@@ -101,7 +101,7 @@ export default function Login() {
             variant="h5"
             fontWeight={800}
             color="primary.main"
-            sx={{ letterSpacing: 1 }}
+            sx={{ letterSpacing: 1, mb: 2 }}
           >
             Andrelândia Conecta
           </Typography>
@@ -123,7 +123,9 @@ export default function Login() {
               fontSize: 16,
               color: "#1976d2",
               minHeight: 28,
+              marginTop: 8,
               marginBottom: 8,
+              display: "block",
             }}
           />
         </Box>
