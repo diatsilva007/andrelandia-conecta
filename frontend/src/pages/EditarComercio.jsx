@@ -460,6 +460,13 @@ export default function EditarComercio() {
                 fontSize: 16,
                 letterSpacing: 0.5,
                 borderRadius: 2,
+                transition: "background 0.2s",
+                backgroundColor: "primary.main",
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                  color: "#fff",
+                  boxShadow: 4,
+                },
               }}
               aria-label="Salvar alterações do comércio"
             >

@@ -8,19 +8,21 @@ import {
   Button,
   TextField,
   Typography,
-  Alert,
   Paper,
+  Alert,
 } from "@mui/material";
+import VoltarButton from "../components/VoltarButton.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditarProduto() {
-  const { id } = useParams(); // id do produto
+  const { id } = useParams();
   const [form, setForm] = useState({ nome: "", preco: "", descricao: "" });
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const { setSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const { setOpen } = useContext(LoadingContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -41,7 +43,10 @@ export default function EditarProduto() {
         });
       })
       .catch(() => setErro("Produto não encontrado."))
-      .finally(() => setOpen(false));
+      .finally(() => {
+        setOpen(false);
+        setLoading(false);
+      });
   }, [id, navigate, setOpen]);
 
   const handleChange = (e) => {
@@ -60,7 +65,7 @@ export default function EditarProduto() {
         { ...form, preco: parseFloat(form.preco) },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       setSucesso("Produto atualizado com sucesso!");
       setSnackbar({
@@ -82,104 +87,147 @@ export default function EditarProduto() {
     }
   };
 
-  return (
-    <Box bgcolor="background.default" minHeight="100vh" py={{ xs: 2, sm: 4 }}>
-      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
-        <BreadcrumbNav
-          items={[{ label: "Início", to: "/" }, { label: "Editar Produto" }]}
-        />
-      </Box>
-      <Paper
-        sx={{
-          p: { xs: 2, sm: 3, md: 4 },
-          maxWidth: 420,
-          mx: "auto",
-          width: "100%",
-          borderRadius: { xs: 2, sm: 3 },
-          boxShadow: 3,
-        }}
-      >
-        <Typography
-          variant="h5"
-          mb={2}
-          align="center"
-          fontWeight={700}
-          color="primary.main"
-          sx={{ letterSpacing: 1 }}
-        >
-          Editar Produto
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={8}>
+        <Typography variant="h6" color="text.secondary">
+          Carregando...
         </Typography>
-        <form onSubmit={handleSubmit} autoComplete="off">
-          <TextField
-            label="Nome"
-            name="nome"
-            value={form.nome}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-            inputProps={{ maxLength: 60, "aria-label": "Nome do produto" }}
-            sx={{ mb: 2 }}
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      bgcolor="background.default"
+      minHeight="100vh"
+      width="100vw"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      sx={{ p: { xs: 1, sm: 2 } }}
+      role="main"
+      aria-label="Editar produto"
+    >
+      <Box sx={{ width: "100%", maxWidth: 440 }}>
+        <Box sx={{ mb: 3 }}>
+          <BreadcrumbNav
+            items={[{ label: "Início", to: "/" }, { label: "Editar Produto" }]}
           />
-          <TextField
-            label="Preço"
-            name="preco"
-            value={form.preco}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-            type="number"
-            inputProps={{
-              min: 0,
-              step: 0.01,
-              "aria-label": "Preço do produto",
+        </Box>
+        <Paper
+          sx={{
+            p: { xs: 4, sm: 5, md: 6 },
+            borderRadius: 4,
+            boxShadow: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            background: "#fff",
+            gap: 2,
+          }}
+          role="form"
+          aria-label="Formulário de edição de produto"
+        >
+          <Typography
+            variant="h4"
+            mb={2.5}
+            align="center"
+            fontWeight={800}
+            color="primary.main"
+            sx={{
+              letterSpacing: 1.5,
+              textShadow: "0 2px 8px #1976d222",
+              outline: "none",
             }}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Descrição"
-            name="descricao"
-            value={form.descricao}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            multiline
-            minRows={2}
-            inputProps={{
-              maxLength: 200,
-              "aria-label": "Descrição do produto",
-            }}
-            sx={{ mb: 2 }}
-          />
+            tabIndex={0}
+          >
+            Editar Produto
+          </Typography>
           {erro && (
-            <Alert severity="error" sx={{ mt: 2 }}>
+            <Alert severity="error" sx={{ mb: 2 }}>
               {erro}
             </Alert>
           )}
           {sucesso && (
-            <Alert severity="success" sx={{ mt: 2 }}>
+            <Alert severity="success" sx={{ mb: 2 }}>
               {sucesso}
             </Alert>
           )}
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{
-              mt: 2,
-              fontWeight: 600,
-              fontSize: 16,
-              letterSpacing: 0.5,
-              borderRadius: 2,
-            }}
-            aria-label="Salvar alterações do produto"
-          >
-            Salvar
-          </Button>
-        </form>
-      </Paper>
+          <form onSubmit={handleSubmit} autoComplete="off">
+            <TextField
+              label="Nome"
+              name="nome"
+              value={form.nome}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              required
+              inputProps={{ maxLength: 60, "aria-label": "Nome do produto" }}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Preço"
+              name="preco"
+              value={form.preco}
+              onChange={handleChange}
+              fullWidth
+              required
+              margin="normal"
+              type="number"
+              inputProps={{
+                min: 0,
+                step: 0.01,
+                "aria-label": "Preço do produto",
+              }}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Descrição"
+              name="descricao"
+              value={form.descricao}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              multiline
+              minRows={2}
+              inputProps={{
+                maxLength: 200,
+                "aria-label": "Descrição do produto",
+              }}
+              sx={{ mb: 2 }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                mt: 2,
+                fontWeight: 600,
+                fontSize: 16,
+                letterSpacing: 0.5,
+                borderRadius: 2,
+                transition: "background 0.2s",
+                backgroundColor: "primary.main",
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                  color: "#fff",
+                  boxShadow: 4,
+                },
+              }}
+              aria-label="Salvar alterações do produto"
+            >
+              Salvar
+            </Button>
+          </form>
+          <VoltarButton
+            label="Cancelar"
+            onClick={() => navigate(-1)}
+            sx={{ width: "100%", mt: 1 }}
+          />
+        </Paper>
+      </Box>
     </Box>
   );
 }
