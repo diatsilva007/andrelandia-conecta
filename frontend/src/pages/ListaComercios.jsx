@@ -269,7 +269,6 @@ const ListaComercios = () => {
         <BreadcrumbNav items={[{ label: "Início" }]} />
       </Box>
       {/* Banner */}
-      {/* Banner centralizado */}
       <Box
         sx={{
           width: "100%",
