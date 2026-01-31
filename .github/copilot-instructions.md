@@ -1,17 +1,17 @@
 # Guia para Agentes de IA — Andrelândia Conecta
 
-> Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG. O foco é UX profissional, integração segura e evolução rápida, com padrões claros para agentes de IA.
+Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG. O foco é UX profissional, integração segura e evolução rápida, com padrões claros para agentes de IA.
 
-## Arquitetura e Fluxos
+## Visão Geral da Arquitetura
 
 - **Frontend** (`frontend/`):
   - React (Vite), Material UI, animações com framer-motion.
-  - Feedback global obrigatório: use sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e `SnackbarContext.jsx` para mensagens ao usuário (nunca feedback local).
+  - Feedback global obrigatório: utilize sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e `SnackbarContext.jsx` para mensagens ao usuário (nunca feedback local).
   - Navegação protegida por JWT: redirecione para `/login` se não autenticado. Veja exemplos em `MenuDrawer.jsx` e `BreadcrumbNav.jsx`.
   - Responsividade mobile-first: siga padrões de `App.css` e componentes.
   - Microinterações: utilize `PageTransition.jsx`, `AnimatedCard.jsx` e outros componentes animados.
   - Formulários: padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
-  - Prioridades reais e bugs: consulte sempre [`frontend/TODO.md`](../frontend/TODO.md).
+  - Prioridades e bugs reais: consulte sempre [`frontend/TODO.md`](../frontend/TODO.md).
 
 - **Backend** (`backend/`):
   - Node.js, Express, Prisma ORM, PostgreSQL.
