@@ -322,12 +322,24 @@ export default function EditarComercio() {
               <MenuItem value="">
                 <em>Selecione</em>
               </MenuItem>
-              {categorias.map((cat) => (
+              {categoriasComercio.map((cat) => (
                 <MenuItem key={cat} value={cat}>
                   {cat}
                 </MenuItem>
               ))}
             </TextField>
+            {form.categoria === "Outro (especificar)" && (
+              <TextField
+                label="Categoria personalizada"
+                value={categoriaPersonalizada}
+                onChange={(e) => setCategoriaPersonalizada(e.target.value)}
+                fullWidth
+                required
+                sx={{ mb: 2 }}
+                inputProps={{ maxLength: 40 }}
+                helperText="Digite a categoria do comércio"
+              />
+            )}
             <TextField
               label="Descrição"
               name="descricao"

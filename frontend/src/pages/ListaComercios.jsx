@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +35,7 @@ import FavoriteButton from "../components/FavoriteButton.jsx";
 import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
 
 const ListaComercios = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [comercios, setComercios] = useState([]);
   const [totalComercios, setTotalComercios] = useState(0);
@@ -128,45 +130,43 @@ const ListaComercios = () => {
 
   // Carregar comércios da API (paginado)
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    let ignore = false;
-    async function fetchComercios(reset = false) {
-      if (reset) {
-        setLoading(true);
-        setOffset(0);
-      } else {
-        setIsFetchingMore(true);
-      }
-      try {
-        const res = await fetch(
-          `http://localhost:3333/comercios?offset=${reset ? 0 : offset}&limit=${ITEMS_PER_PAGE}`,
-        );
-        const data = await res.json();
-        if (ignore) return;
-        setTotalComercios(data.total || 0);
-        if (reset) {
-          setComercios(data.data || []);
-          setOffset(ITEMS_PER_PAGE);
-        } else {
-          setComercios((prev) => [...prev, ...(data.data || [])]);
-          setOffset((prev) => prev + ITEMS_PER_PAGE);
-        }
-      } catch {
-        setSnackbar({
-          open: true,
-          message: "Erro ao carregar comércios",
-          severity: "error",
-        });
-      } finally {
-        setLoading(false);
-        setIsFetchingMore(false);
-      }
+  // Função para carregar comércios (precisa ser acessível em outros efeitos)
+  const fetchComercios = async (reset = false) => {
+    if (reset) {
+      setLoading(true);
+      setOffset(0);
+    } else {
+      setIsFetchingMore(true);
     }
-    // Reset ao trocar filtros/busca
+    try {
+      const res = await fetch(
+        `http://localhost:3333/comercios?offset=${reset ? 0 : offset}&limit=${ITEMS_PER_PAGE}`,
+      );
+      const data = await res.json();
+      setTotalComercios(data.total || 0);
+      if (reset) {
+        setComercios(data.data || []);
+        setOffset(ITEMS_PER_PAGE);
+      } else {
+        setComercios((prev) => [...prev, ...(data.data || [])]);
+        setOffset((prev) => prev + ITEMS_PER_PAGE);
+      }
+    } catch {
+      setSnackbar({
+        open: true,
+        message: "Erro ao carregar comércios",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+      setIsFetchingMore(false);
+    }
+  };
+
+  // Reset ao trocar filtros/busca
+  useEffect(() => {
     fetchComercios(true);
-    return () => {
-      ignore = true;
-    };
+    // eslint-disable-next-line
   }, [
     setSnackbar,
     busca,
@@ -175,6 +175,15 @@ const ListaComercios = () => {
     precoRange,
     avaliacaoMin,
   ]);
+
+  // Recarrega ao detectar sucesso na navegação (ex: após cadastro)
+  useEffect(() => {
+    if (location.state && location.state.sucesso) {
+      fetchComercios(true);
+      window.history.replaceState({}, document.title);
+    }
+    // eslint-disable-next-line
+  }, [location.state]);
 
   // Função para buscar mais (scroll infinito)
   const fetchMoreComercios = () => {

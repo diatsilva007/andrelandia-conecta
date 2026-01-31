@@ -1,3 +1,5 @@
+import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
+import ImageUpload from "../components/ImageUpload.jsx";
 import React, { useState, useEffect, useContext } from "react";
 import { useUser } from "../contexts/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
@@ -11,11 +13,10 @@ import {
   Button,
   MenuItem,
 } from "@mui/material";
-import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
-import ImageUpload from "../components/ImageUpload.jsx";
-import { LoadingContext } from "../App.jsx";
-
+import { categoriasComercio } from "../assets/categories.js";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
+import { LoadingContext } from "../App.jsx";
+// ...existing code...
 
 export default function CadastroComercio() {
   const { usuario, loadingUser } = useUser();
@@ -36,6 +37,8 @@ export default function CadastroComercio() {
   });
   // Estado da imagem
   const [imagem, setImagem] = useState(null);
+  // Categoria personalizada
+  const [categoriaPersonalizada, setCategoriaPersonalizada] = useState("");
   // Estado de feedback visual
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -84,22 +87,40 @@ export default function CadastroComercio() {
     }
   };
 
-  // Categorias sugeridas (pode ser expandido futuramente)
-  const categorias = [
-    "Alimentação",
-    "Vestuário",
-    "Serviços",
-    "Saúde",
-    "Educação",
-    "Beleza",
-    "Tecnologia",
-    "Outros",
-  ];
-
   const handleSubmit = async (e) => {
+    // Se selecionou "Outro (especificar)", usa a categoria personalizada
+    const categoriaFinal =
+      form.categoria === "Outro (especificar)"
+        ? categoriaPersonalizada.trim()
+        : form.categoria;
+    if (
+      form.categoria === "Outro (especificar)" &&
+      !categoriaPersonalizada.trim()
+    ) {
+      setErro("Por favor, especifique a categoria do comércio.");
+      setSnackbar({
+        open: true,
+        message: "Por favor, especifique a categoria do comércio.",
+        severity: "warning",
+      });
+      return;
+    }
     e.preventDefault();
     setErro("");
     setSucesso("");
+    // Validação: exige latitude e longitude
+    if (!form.latitude || !form.longitude) {
+      setErro(
+        "Preencha corretamente o endereço para localizar o comércio no mapa.",
+      );
+      setSnackbar({
+        open: true,
+        message:
+          "Preencha corretamente o endereço para localizar o comércio no mapa.",
+        severity: "warning",
+      });
+      return;
+    }
     setOpen(true);
     try {
       const token = localStorage.getItem("token");
@@ -107,11 +128,16 @@ export default function CadastroComercio() {
       const enderecoCompleto = `${form.logradouro}, ${form.numero} - ${form.bairro}, ${form.cidade} - ${form.estado}, CEP: ${form.cep}`;
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) => {
-        formData.append(key, value);
+        if (key === "categoria") {
+          formData.append("categoria", categoriaFinal);
+        } else if (key === "latitude" || key === "longitude") {
+          if (value !== undefined && value !== null && value !== "") {
+            formData.append(key, String(Number(value)));
+          }
+        } else {
+          formData.append(key, value);
+        }
       });
-      // Garante que latitude/longitude sejam enviados
-      if (form.latitude) formData.set("latitude", form.latitude);
-      if (form.longitude) formData.set("longitude", form.longitude);
       formData.append("endereco", enderecoCompleto);
       if (imagem) {
         formData.append("imagem", imagem, "comercio.jpg");
@@ -128,6 +154,8 @@ export default function CadastroComercio() {
         message: "Comércio cadastrado com sucesso!",
         severity: "success",
       });
+      // Dispara evento global para atualizar Dashboard (e mapa)
+      localStorage.setItem("refresh_dashboard", Date.now());
       setTimeout(
         () =>
           navigate("/", {
@@ -247,12 +275,24 @@ export default function CadastroComercio() {
                 <MenuItem value="">
                   <em>Selecione</em>
                 </MenuItem>
-                {categorias.map((cat) => (
+                {categoriasComercio.map((cat) => (
                   <MenuItem key={cat} value={cat}>
                     {cat}
                   </MenuItem>
                 ))}
               </TextField>
+              {form.categoria === "Outro (especificar)" && (
+                <TextField
+                  label="Categoria personalizada"
+                  value={categoriaPersonalizada}
+                  onChange={(e) => setCategoriaPersonalizada(e.target.value)}
+                  fullWidth
+                  required
+                  sx={{ mt: 2, background: "#f7fafd", borderRadius: 2 }}
+                  inputProps={{ maxLength: 40 }}
+                  helperText="Digite a categoria do comércio"
+                />
+              )}
               <TextField
                 label="Logradouro"
                 name="logradouro"
@@ -339,6 +379,14 @@ export default function CadastroComercio() {
                 py: 1.5,
                 boxShadow: "0 2px 8px #1976d222",
                 textTransform: "none",
+                backgroundColor: (theme) => theme.palette.primary.main,
+                color: "#fff",
+                transition: "background 0.2s",
+                "&:hover": {
+                  backgroundColor: (theme) => theme.palette.primary.dark,
+                  color: "#fff",
+                  boxShadow: 4,
+                },
               }}
             >
               Cadastrar

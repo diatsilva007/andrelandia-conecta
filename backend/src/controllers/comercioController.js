@@ -75,6 +75,10 @@ export const criarComercio = async (req, res) => {
       latitude,
       "Longitude recebida:",
       longitude,
+      "Tipo latitude:",
+      typeof latitude,
+      "Tipo longitude:",
+      typeof longitude,
     );
     let imagemUrl = null;
     if (req.file) {
