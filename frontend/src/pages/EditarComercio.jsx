@@ -18,6 +18,7 @@ import {
 import ImageUpload from "../components/ImageUpload.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import VoltarButton from "../components/VoltarButton.jsx";
+import { categoriasComercio } from "../assets/categories.js";
 
 export default function EditarComercio() {
   const [loadingCoords, setLoadingCoords] = useState(false);
@@ -25,6 +26,7 @@ export default function EditarComercio() {
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [imagemPreview, setImagemPreview] = useState(null);
+  const [categoriaPersonalizada, setCategoriaPersonalizada] = useState("");
   const [categorias] = useState([
     "Alimentação",
     "Vestuário",
@@ -120,6 +122,13 @@ export default function EditarComercio() {
             cep = match[6] || "";
           }
         }
+        // Corrige categoria personalizada
+        let categoria = comercio.categoria;
+        let categoriaPersonalizadaValue = "";
+        if (categoria && !categoriasComercio.includes(categoria)) {
+          categoriaPersonalizadaValue = categoria;
+          categoria = "Outro (especificar)";
+        }
         setForm((prev) => ({
           ...prev,
           ...comercio,
@@ -129,7 +138,9 @@ export default function EditarComercio() {
           cidade,
           estado,
           cep,
+          categoria,
         }));
+        setCategoriaPersonalizada(categoriaPersonalizadaValue);
         setImagemPreview(
           comercio.imagem ? `http://localhost:3333${comercio.imagem}` : null,
         );
@@ -175,6 +186,24 @@ export default function EditarComercio() {
   };
 
   const handleSubmit = async (e) => {
+    // Se selecionou "Outro (especificar)", usa a categoria personalizada
+    const categoriaFinal =
+      form.categoria === "Outro (especificar)"
+        ? categoriaPersonalizada.trim()
+        : form.categoria;
+    if (
+      form.categoria === "Outro (especificar)" &&
+      !categoriaPersonalizada.trim()
+    ) {
+      setErro("Por favor, especifique a categoria do comércio.");
+      setSnackbar({
+        open: true,
+        message: "Por favor, especifique a categoria do comércio.",
+        severity: "warning",
+      });
+      setOpen(false);
+      return;
+    }
     e.preventDefault();
     setErro("");
     setSucesso("");
@@ -187,7 +216,11 @@ export default function EditarComercio() {
       );
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) => {
-        if (key !== "imagem") formData.append(key, value);
+        if (key === "categoria") {
+          formData.append("categoria", categoriaFinal);
+        } else if (key !== "imagem") {
+          formData.append(key, value);
+        }
       });
       formData.append("endereco", enderecoCompleto);
       if (form.imagem) formData.append("imagem", form.imagem);
