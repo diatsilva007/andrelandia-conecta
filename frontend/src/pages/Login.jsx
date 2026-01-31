@@ -84,6 +84,38 @@ export default function Login() {
         mx="auto"
         sx={{ transition: "box-shadow 0.2s" }}
       >
+        <Box mb={3} textAlign="center">
+          <img
+            src="/public/andrelandia-conecta-logo.png"
+            alt="Andrelândia Conecta"
+            style={{
+              width: 84,
+              height: 84,
+              marginBottom: 8,
+              borderRadius: 50,
+              boxShadow: "0 2px 8px #1976d222",
+            }}
+          />
+          <Typography
+            variant="h5"
+            fontWeight={800}
+            color="primary.main"
+            sx={{ letterSpacing: 1 }}
+          >
+            Andrelândia Conecta
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            sx={{ mt: 0.5, mb: 1.5 }}
+          >
+            Sua ponte com o comércio local de Andrelândia/MG e região
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+            Descubra comércios, produtos, promoções e apoie negócios da sua
+            cidade.
+          </Typography>
+        </Box>
         <Typography
           variant="h5"
           mb={{ xs: 2, sm: 3 }}
