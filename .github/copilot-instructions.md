@@ -2,7 +2,7 @@
 
 > Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG. O foco é UX profissional, integração segura e evolução rápida, com padrões claros para agentes de IA.
 
-## Visão Geral da Arquitetura
+## Arquitetura e Fluxos
 
 - **Frontend** (`frontend/`):
   - React (Vite), Material UI, animações com framer-motion.
@@ -11,7 +11,7 @@
   - Responsividade mobile-first: siga padrões de `App.css` e componentes.
   - Microinterações: utilize `PageTransition.jsx`, `AnimatedCard.jsx` e outros componentes animados.
   - Formulários: padronizados, loading global, breadcrumbs (`BreadcrumbNav.jsx`).
-  - Prioridades reais: consulte sempre [`frontend/TODO.md`](../frontend/TODO.md).
+  - Prioridades reais e bugs: consulte sempre [`frontend/TODO.md`](../frontend/TODO.md).
 
 - **Backend** (`backend/`):
   - Node.js, Express, Prisma ORM, PostgreSQL.
@@ -44,7 +44,7 @@
 5. Inicie frontend: `npm run dev` em `/frontend`.
 6. Consulte [`frontend/TODO.md`](../frontend/TODO.md) para prioridades reais de UX/UI.
 
-## Convenções e Padrões Específicos
+## Padrões e Convenções Específicas
 
 - Feedback global obrigatório (nunca local)
 - JWT obrigatório em páginas/rotas sensíveis
@@ -70,8 +70,6 @@
 - JWT: sempre no header Authorization.
 - Prioridades e bugs: consulte [`frontend/TODO.md`](../frontend/TODO.md).
 
-## Observações
+---
 
-- Siga sempre os padrões já implementados.
-- Consulte exemplos reais antes de criar novos fluxos.
-- Seções pouco claras ou incompletas? Peça feedback para refinar as instruções!
+> Siga sempre os padrões já implementados. Consulte exemplos reais antes de criar novos fluxos. Seções pouco claras ou incompletas? Peça feedback para refinar as instruções!
