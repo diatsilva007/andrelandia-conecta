@@ -3,6 +3,7 @@ import ImageUpload from "../components/ImageUpload.jsx";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import { LoadingContext } from "../App.jsx";
+import VoltarButton from "../components/VoltarButton.jsx";
 import axios from "axios";
 import {
   Box,
@@ -57,7 +58,7 @@ export default function CadastroProduto() {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       setSucesso("Produto cadastrado com sucesso!");
       setSnackbar({
@@ -85,124 +86,136 @@ export default function CadastroProduto() {
       minHeight="100vh"
       width="100vw"
       display="flex"
-      alignItems="center"
       justifyContent="center"
-      px={{ xs: 1, sm: 2 }}
-      py={{ xs: 2, sm: 4 }}
-      // Espaçamento padrão para separar da navbar
-      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
+      alignItems="center"
+      sx={{ p: { xs: 1, sm: 2 } }}
       role="main"
       aria-label="Cadastro de novo produto"
     >
-      <Box sx={{ maxWidth: 420, mx: "auto", mb: 3 }}>
-        <BreadcrumbNav
-          items={[{ label: "Início", to: "/" }, { label: "Novo Produto" }]}
-        />
-      </Box>
-      <Paper
-        sx={{
-          p: { xs: 2, sm: 3, md: 4 },
-          maxWidth: 420,
-          mx: "auto",
-          width: "100%",
-          borderRadius: { xs: 2, sm: 3 },
-          boxShadow: 3,
-        }}
-        role="form"
-        aria-label="Formulário de cadastro de produto"
-      >
-        <Typography
-          variant="h5"
-          mb={2}
-          align="center"
-          fontWeight={700}
-          color="primary.main"
-          sx={{ letterSpacing: 1, outline: "none" }}
-          tabIndex={0}
-        >
-          Cadastrar Novo Produto
-        </Typography>
-        {erro && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {erro}
-          </Alert>
-        )}
-        {sucesso && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {sucesso}
-          </Alert>
-        )}
-        <form
-          onSubmit={handleSubmit}
-          autoComplete="off"
+      <Box sx={{ width: "100%", maxWidth: 440 }}>
+        <Box sx={{ mb: 3 }}>
+          <BreadcrumbNav
+            items={[{ label: "Início", to: "/" }, { label: "Novo Produto" }]}
+          />
+        </Box>
+        <Paper
+          sx={{
+            p: { xs: 4, sm: 5, md: 6 },
+            borderRadius: 4,
+            boxShadow: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            background: "#fff",
+            gap: 2,
+          }}
+          role="form"
           aria-label="Formulário de cadastro de produto"
-          tabIndex={0}
         >
-          <ImageUpload
-            label="Imagem do produto"
-            onChange={setImagem}
-            value={null}
-          />
-          <TextField
-            label="Nome"
-            name="nome"
-            value={form.nome}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-            inputProps={{ maxLength: 60, "aria-label": "Nome do produto" }}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Preço"
-            name="preco"
-            value={form.preco}
-            onChange={handleChange}
-            type="number"
-            fullWidth
-            required
-            margin="normal"
-            inputProps={{
-              min: 0,
-              step: 0.01,
-              "aria-label": "Preço do produto",
-            }}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Descrição"
-            name="descricao"
-            value={form.descricao}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            multiline
-            minRows={2}
-            inputProps={{
-              maxLength: 200,
-              "aria-label": "Descrição do produto",
-            }}
-            sx={{ mb: 2 }}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
+          <Typography
+            variant="h4"
+            mb={2.5}
+            align="center"
+            fontWeight={800}
+            color="primary.main"
             sx={{
-              mt: 2,
-              fontWeight: 600,
-              fontSize: 16,
-              letterSpacing: 0.5,
-              borderRadius: 2,
+              letterSpacing: 1.5,
+              textShadow: "0 2px 8px #1976d222",
+              outline: "none",
             }}
-            aria-label="Cadastrar produto"
+            tabIndex={0}
           >
-            Cadastrar
-          </Button>
-        </form>
-      </Paper>
+            Cadastrar Novo Produto
+          </Typography>
+          {erro && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {erro}
+            </Alert>
+          )}
+          {sucesso && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {sucesso}
+            </Alert>
+          )}
+          <form onSubmit={handleSubmit} autoComplete="off">
+            <ImageUpload
+              label="Imagem do produto"
+              onChange={setImagem}
+              value={null}
+            />
+            <TextField
+              label="Nome"
+              name="nome"
+              value={form.nome}
+              onChange={handleChange}
+              fullWidth
+              required
+              margin="normal"
+              inputProps={{ maxLength: 60, "aria-label": "Nome do produto" }}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Preço"
+              name="preco"
+              value={form.preco}
+              onChange={handleChange}
+              fullWidth
+              required
+              margin="normal"
+              type="number"
+              inputProps={{
+                min: 0,
+                step: 0.01,
+                "aria-label": "Preço do produto",
+              }}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Descrição"
+              name="descricao"
+              value={form.descricao}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              multiline
+              minRows={2}
+              inputProps={{
+                maxLength: 200,
+                "aria-label": "Descrição do produto",
+              }}
+              sx={{ mb: 2 }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                mt: 2,
+                fontWeight: 600,
+                fontSize: 16,
+                letterSpacing: 0.5,
+                borderRadius: 2,
+                transition: "background 0.2s",
+                backgroundColor: "primary.main",
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                  color: "#fff",
+                  boxShadow: 4,
+                },
+              }}
+              aria-label="Cadastrar produto"
+            >
+              Cadastrar
+            </Button>
+          </form>
+          <VoltarButton
+            label="Cancelar"
+            onClick={() => navigate(-1)}
+            sx={{ width: "100%", mt: 1 }}
+          />
+        </Paper>
+      </Box>
     </Box>
   );
 }
