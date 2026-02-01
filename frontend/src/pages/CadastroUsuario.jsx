@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import LetterGlitch from "../components/LetterGlitch.jsx";
 import {
   Tooltip,
   Dialog,
@@ -51,7 +52,7 @@ export default function CadastroUsuario() {
   function validarSenha(senha) {
     // Pelo menos 8 caracteres, 1 maiúscula, 1 minúscula, 1 número, 1 símbolo
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/.test(
-      senha
+      senha,
     );
   }
 
@@ -111,15 +112,32 @@ export default function CadastroUsuario() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        bgcolor: "background.default",
+        position: "relative",
+        overflow: "hidden",
         px: { xs: 1, sm: 2 },
         py: { xs: 2, sm: 4 },
-        // Espaçamento padrão para separar da navbar
-        paddingTop: { xs: 8, sm: 10, md: 12 }, // 64px, 80px, 96px
+        paddingTop: { xs: 8, sm: 10, md: 12 },
       }}
       role="main"
       aria-label="Cadastro de novo usuário"
     >
+      {/* Background LetterGlitch */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+        }}
+      >
+        <LetterGlitch
+          glitchSpeed={50}
+          centerVignette={true}
+          outerVignette={false}
+          smooth={true}
+        />
+      </Box>
       <Paper
         sx={{
           p: { xs: 2, sm: 3, md: 5 },
@@ -129,6 +147,10 @@ export default function CadastroUsuario() {
           boxShadow: 6,
           mx: "auto",
           transition: "box-shadow 0.2s",
+          position: "relative",
+          zIndex: 1,
+          bgcolor: "rgba(255,255,255,0.85)",
+          backdropFilter: "blur(12px)",
         }}
         role="form"
         aria-label="Formulário de cadastro de usuário"
