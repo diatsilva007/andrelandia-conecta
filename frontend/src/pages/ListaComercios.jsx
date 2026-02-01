@@ -32,7 +32,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
+
 import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
+import Aurora from "../components/Aurora";
 
 const ListaComercios = () => {
   const location = useLocation();
@@ -263,8 +265,29 @@ const ListaComercios = () => {
         bgcolor: "background.default",
         px: { xs: 1, sm: 2, md: 6 },
         py: 0,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Aurora Background - camada absoluta, não interfere no conteúdo */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <Aurora
+          colorStops={["#1976d2", "#43a047", "#5227FF"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={1}
+        />
+      </Box>
       <Box sx={{ width: "100%", maxWidth: 1200, mt: 2, mb: 1 }}>
         <BreadcrumbNav items={[{ label: "Início" }]} />
       </Box>
