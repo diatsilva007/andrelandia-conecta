@@ -13,7 +13,7 @@
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
 
 ## Funcionalidades sugeridas (Frontend)
-
+- [ ] Adicionar um carrousel de fotos dos comércios que forem sendo adicionados, e se possível ir atualizando as fotos do carrousel automaticamente. De acordo que os comércios são adicionados.
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
 
