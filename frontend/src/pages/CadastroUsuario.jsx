@@ -322,6 +322,19 @@ export default function CadastroUsuario() {
               fontWeight: 700,
               fontSize: { xs: 15, sm: 17 },
               py: 1.2,
+              borderRadius: 3,
+              boxShadow: 3,
+              letterSpacing: 0.5,
+              transition: "all 0.18s cubic-bezier(.4,0,.2,1)",
+              "&:hover": {
+                boxShadow: 6,
+                backgroundColor: "primary.dark",
+                color: "#fff",
+              },
+              "&:focus-visible": {
+                outline: "2px solid #1976d2",
+                outlineOffset: 2,
+              },
             }}
             aria-label="Cadastrar usuário"
           >
