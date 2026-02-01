@@ -6,7 +6,7 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 
 - **Frontend** (`frontend/`):
   - React (Vite), Material UI, animações com framer-motion.
-  - Feedback global obrigatório: utilize sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e `SnackbarContext.jsx` para mensagens ao usuário (nunca feedback local).
+  - Feedback global obrigatório: use sempre `setSnackbar`, `GlobalSnackbar`, `LoadingBackdrop` e `SnackbarContext.jsx` para mensagens ao usuário (nunca feedback local).
   - Navegação protegida por JWT: redirecione para `/login` se não autenticado. Veja exemplos em `MenuDrawer.jsx` e `BreadcrumbNav.jsx`.
   - Responsividade mobile-first: siga padrões de `App.css` e componentes.
   - Microinterações: utilize `PageTransition.jsx`, `AnimatedCard.jsx` e outros componentes animados.
