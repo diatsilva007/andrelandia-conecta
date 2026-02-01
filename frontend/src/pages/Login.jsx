@@ -1,5 +1,6 @@
 import VoltarButton from "../components/VoltarButton.jsx";
 import TextType from "../components/TextType.jsx";
+import GridScan from "../components/GridScan.jsx";
 import React, { useState, useContext } from "react";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import { LoadingContext } from "../App.jsx";
@@ -72,9 +73,35 @@ export default function Login() {
       bgcolor="background.default"
       px={{ xs: 1, sm: 2 }}
       py={{ xs: 2, sm: 4 }}
-      // Espaçamento padrão para separar da navbar
-      paddingTop={{ xs: 8, sm: 10, md: 12 }} // 64px, 80px, 96px
+      paddingTop={{ xs: 8, sm: 10, md: 12 }}
+      position="relative"
+      overflow="hidden"
     >
+      {/* Background GridScan */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <GridScan
+          sensitivity={0.55}
+          lineThickness={1}
+          linesColor="#392e4e"
+          gridScale={0.1}
+          scanColor="#FF9FFC"
+          scanOpacity={0.4}
+          enablePost
+          bloomIntensity={0.6}
+          chromaticAberration={0.002}
+          noiseIntensity={0.01}
+        />
+      </Box>
+      {/* Conteúdo principal */}
       <Box
         maxWidth={{ xs: 340, sm: 400, md: 420 }}
         width="100%"
@@ -83,7 +110,7 @@ export default function Login() {
         borderRadius={3}
         bgcolor="#fff"
         mx="auto"
-        sx={{ transition: "box-shadow 0.2s" }}
+        sx={{ transition: "box-shadow 0.2s", position: "relative", zIndex: 1 }}
       >
         <Box mb={3} textAlign="center">
           <img
