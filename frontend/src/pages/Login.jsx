@@ -85,7 +85,6 @@ export default function Login() {
           width: "100vw",
           height: "100vh",
           zIndex: 0,
-          pointerEvents: "none",
         }}
       >
         <GridScan
