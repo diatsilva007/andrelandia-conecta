@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useUser } from "../contexts/UserContext.jsx";
 import { useLocation } from "react-router-dom";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
@@ -46,14 +47,8 @@ const ListaComercios = () => {
   const [busca, setBusca] = useState("");
   const [categoriaFiltro, setCategoriaFiltro] = useState("");
   const [localizacaoFiltro, setLocalizacaoFiltro] = useState("");
+  const { usuario, loadingUser } = useUser();
   const [token] = useState(localStorage.getItem("token"));
-  const [usuario] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("usuario"));
-    } catch {
-      return null;
-    }
-  });
   // Filtros avançados
   const [precoRange, setPrecoRange] = useState([0, 1000]);
   const [avaliacaoMin, setAvaliacaoMin] = useState(0);
@@ -164,7 +159,9 @@ const ListaComercios = () => {
 
   // Reset ao trocar filtros/busca
   useEffect(() => {
-    fetchComercios(true);
+    if (!loadingUser) {
+      fetchComercios(true);
+    }
     // eslint-disable-next-line
   }, [
     setSnackbar,
@@ -174,6 +171,7 @@ const ListaComercios = () => {
     precoRange,
     avaliacaoMin,
     location.pathname, // recarrega ao acessar/voltar para a página
+    loadingUser,
   ]);
 
   // Recarrega ao detectar sucesso na navegação (ex: após cadastro)
@@ -252,6 +250,9 @@ const ListaComercios = () => {
       });
     }
   };
+  if (loadingUser) {
+    return <ComercioSkeletonList count={4} />;
+  }
   return (
     <Box
       sx={{
