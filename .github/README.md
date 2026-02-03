@@ -149,3 +149,4 @@ Este projeto está sob a licença MIT.
 - Autor: Diogo Ataide Silva
 - Email: diogo.ataidee@gmail.com
 - [LinkedIn](https://www.linkedin.com/in/diatsilva)
+- [Portfolio](https://www.diogoataide.dev)
