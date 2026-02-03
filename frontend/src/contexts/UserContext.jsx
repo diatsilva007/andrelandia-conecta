@@ -62,8 +62,29 @@ export function UserProvider({ children }) {
 
   // Função para login: salva usuário e token
   const login = (user, newToken) => {
-    setUsuario(user);
-    setToken(newToken);
+    setLoadingUser(true);
+    localStorage.setItem("token", newToken);
+    // Força restauração do usuário após login
+    fetch("http://localhost:3333/auth/me", {
+      headers: { Authorization: `Bearer ${newToken}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Token inválido");
+        return res.json();
+      })
+      .then((data) => {
+        setUsuario(data.usuario);
+        setToken(newToken);
+      })
+      .catch(() => {
+        setUsuario(null);
+        setToken(null);
+        localStorage.removeItem("token");
+        localStorage.removeItem("usuario");
+      })
+      .finally(() => {
+        setLoadingUser(false);
+      });
   };
 
   // Função para logout: limpa usuário e token

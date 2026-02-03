@@ -251,7 +251,8 @@ const ListaComercios = () => {
     }
   };
   if (loadingUser) {
-    return <ComercioSkeletonList count={4} />;
+    // Não renderiza nada enquanto o contexto do usuário não estiver pronto
+    return null;
   }
   return (
     <Box
