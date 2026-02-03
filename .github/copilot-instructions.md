@@ -1,4 +1,3 @@
-
 # Guia para Agentes de IA — Andrelândia Conecta
 
 Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG. O foco é UX profissional, integração segura e evolução rápida, com padrões claros para agentes de IA.
