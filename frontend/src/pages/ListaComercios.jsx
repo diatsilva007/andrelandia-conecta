@@ -631,6 +631,33 @@ const ListaComercios = () => {
           />
         </Box>
       </Box>
+      {/* Título e descrição dos cards */}
+      <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", mt: 2, mb: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography 
+          variant="h4" 
+          fontWeight={700} 
+          color="primary.main" 
+          gutterBottom
+          align="center"
+          sx={{ width: '100%' }}
+        >
+          Comércios cadastrados
+        </Typography>
+        <Typography 
+          variant="body1" 
+          color="text.secondary" 
+          sx={{ 
+            mb: 2, 
+            maxWidth: { xs: '95vw', sm: 700, md: 900 }, 
+            textAlign: 'center', 
+            mx: 'auto',
+            fontSize: { xs: 15, sm: 17 },
+            lineHeight: 1.4
+          }}
+        >
+          Veja abaixo os estabelecimentos disponíveis na plataforma. Use os filtros para refinar sua busca.
+        </Typography>
+      </Box>
       {/* Grid de comércios */}
       <Grid
         container
