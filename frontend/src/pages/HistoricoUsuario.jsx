@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -20,6 +21,7 @@ const HistoricoUsuario = () => {
   const [error, setError] = useState("");
   const [tab, setTab] = useState(0);
 
+  const location = useLocation();
   useEffect(() => {
     setLoading(true);
     axios
@@ -34,7 +36,7 @@ const HistoricoUsuario = () => {
         setError("Não foi possível carregar o histórico.");
         setLoading(false);
       });
-  }, []);
+  }, [location.pathname]);
 
   if (loading) return <LoadingBackdrop open />;
   if (error) return <GlobalSnackbar message={error} severity="error" open />;

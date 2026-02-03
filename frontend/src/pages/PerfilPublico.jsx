@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   Box,
   Avatar,
@@ -18,6 +18,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const PerfilPublico = () => {
   const { id } = useParams();
+  const location = useLocation();
   const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
   const [editarOpen, setEditarOpen] = useState(false);
   const [perfil, setPerfil] = useState(null);
@@ -36,7 +37,7 @@ const PerfilPublico = () => {
         setError("Não foi possível carregar o perfil público.");
         setLoading(false);
       });
-  }, [id]);
+  }, [id, location.pathname]);
 
   const compartilharPerfil = () => {
     const url = window.location.href;

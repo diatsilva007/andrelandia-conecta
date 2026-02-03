@@ -5,7 +5,7 @@ import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
 function ProdutoSkeletonList({ count = 4 }) {
   return <ComercioSkeletonList count={count} />;
 }
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import VoltarButton from "../components/VoltarButton.jsx";
 import axios from "axios";
@@ -33,6 +33,7 @@ import AnimatedCard from "../components/AnimatedCard.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 
 export default function DetalheComercio() {
+  const location = useLocation();
   // Compartilhamento profissional
   const compartilharComercio = () => {
     const url = window.location.href;
@@ -165,7 +166,7 @@ export default function DetalheComercio() {
     fetchComercio();
     fetchAvaliacoes();
     // eslint-disable-next-line
-  }, [id]);
+  }, [id, location.pathname]);
   // Enviar avaliação
   const handleEnviarAvaliacao = async (e) => {
     e.preventDefault();

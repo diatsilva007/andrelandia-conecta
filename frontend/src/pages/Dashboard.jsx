@@ -153,7 +153,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (comercioId) {

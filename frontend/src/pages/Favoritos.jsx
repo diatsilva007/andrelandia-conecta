@@ -6,9 +6,10 @@ import StoreIcon from "@mui/icons-material/Store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Favoritos() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [favoritos, setFavoritos] = useState([]);
 
@@ -25,7 +26,7 @@ export default function Favoritos() {
       window.removeEventListener("storage", loadFavoritos);
       window.removeEventListener("favoritos-updated", loadFavoritos);
     };
-  }, []);
+  }, [location.pathname]);
 
   // Função para atualizar favoritos imediatamente após clique
   const handleFavoriteToggle = (item) => {

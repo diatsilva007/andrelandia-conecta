@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
@@ -16,6 +16,7 @@ import VoltarButton from "../components/VoltarButton.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 
 export default function DetalheProduto() {
+  const location = useLocation();
   const { id } = useParams();
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,7 @@ export default function DetalheProduto() {
       .then((res) => setProduto(res.data))
       .catch(() => setProduto(null))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, location.pathname]);
 
   if (loading)
     return (
