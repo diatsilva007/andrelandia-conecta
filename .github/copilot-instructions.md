@@ -1,3 +1,4 @@
+
 # Guia para Agentes de IA — Andrelândia Conecta
 
 Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG. O foco é UX profissional, integração segura e evolução rápida, com padrões claros para agentes de IA.
@@ -21,19 +22,6 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
   - Autenticação JWT obrigatória em rotas sensíveis ([`middlewares/auth.js`](../backend/src/middlewares/auth.js)).
   - Uploads: middlewares específicos para cada tipo de imagem ([`uploadComercioImage.js`](../backend/src/middlewares/uploadComercioImage.js), [`uploadProdutoImage.js`](../backend/src/middlewares/uploadProdutoImage.js), [`uploadPerfilImage.js`](../backend/src/middlewares/uploadPerfilImage.js)).
   - Redefinição de senha: veja [`authController.js`](../backend/src/controllers/authController.js) e rotas em [`routes/auth.js`](../backend/src/routes/auth.js).
-
-- **Integração**:
-  - REST, JWT no header. Exemplo:
-    ```js
-    await axios.post("http://localhost:3333/comercios", form, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    ```
-  - Uploads salvos em `/uploads/{comercios, produtos, perfis}`.
-
-- **Banco de dados**:
-  - PostgreSQL, migrations via Prisma ([`prisma/migrations/`](../backend/prisma/migrations/)).
-  - Para atualizar o schema: `npx prisma migrate dev` em `/backend`.
 
 ## Workflows Essenciais
 
@@ -69,6 +57,11 @@ Este monorepo implementa uma plataforma para gestão e visibilidade do comércio
 - Uploads: arquivos salvos em `/uploads/{comercios, produtos, perfis}`.
 - JWT: sempre no header Authorization.
 - Prioridades e bugs: consulte [`frontend/TODO.md`](../frontend/TODO.md).
+
+## Logs e Monitoramento
+
+- Logs estruturados e monitoramento são desejados (veja [`frontend/TODO.md`](../frontend/TODO.md)), mas atualmente o backend só possui logs básicos de erro via `console.error`.
+- Para implementar logs estruturados, utilize Winston ou Morgan no backend, seguindo o padrão de um middleware dedicado.
 
 ---
 
