@@ -13,6 +13,7 @@ import {
   Button,
   MenuItem,
 } from "@mui/material";
+import VoltarButton from "../components/VoltarButton.jsx";
 import { categoriasComercio } from "../assets/categories.js";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import { LoadingContext } from "../App.jsx";
@@ -371,7 +372,6 @@ export default function CadastroComercio() {
               color="primary"
               fullWidth
               sx={{
-                mt: 2,
                 fontWeight: 700,
                 fontSize: 18,
                 letterSpacing: 0.5,
@@ -391,6 +391,11 @@ export default function CadastroComercio() {
             >
               Cadastrar
             </Button>
+            <VoltarButton
+              label="Cancelar"
+              onClick={() => navigate(-1)}
+              sx={{ width: "100%", mt: 2 }}
+            />
           </form>
         </Paper>
       </Box>
