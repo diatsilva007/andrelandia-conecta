@@ -72,17 +72,14 @@ const ListaComercios = () => {
       .toLowerCase();
   }
 
-  // Categorias sugeridas (pode ser expandido futuramente)
-  const categorias = [
-    "Alimentação",
-    "Vestuário",
-    "Serviços",
-    "Saúde",
-    "Educação",
-    "Beleza",
-    "Tecnologia",
-    "Outros",
-  ];
+  // Categorias dinâmicas extraídas dos comércios carregados
+  const categorias = Array.from(
+    new Set(
+      comercios
+        .map((c) => c.categoria)
+        .filter((cat) => cat && typeof cat === "string" && cat.trim() !== ""),
+    ),
+  ).sort((a, b) => a.localeCompare(b, "pt-BR"));
 
   // Utilidades para preço e avaliação
   function getFaixaPreco(produtos) {
