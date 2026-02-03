@@ -173,6 +173,7 @@ const ListaComercios = () => {
     categoriaFiltro,
     precoRange,
     avaliacaoMin,
+    location.pathname, // recarrega ao acessar/voltar para a página
   ]);
 
   // Recarrega ao detectar sucesso na navegação (ex: após cadastro)
