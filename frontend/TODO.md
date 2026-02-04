@@ -3,24 +3,16 @@
 ### Melhorias UX para Formulários de Cadastro de Comércio
 
 - [ ] Inputs profissionais para cada campo do cadastro de comércio:
-  - Nome: capitalização automática, limite de caracteres, validação de duplicidade
-  - Categoria: autocomplete com sugestões
-  - Endereço: autocomplete (Google/Mapbox), máscara de CEP, campos separados
-  - Telefone: máscara dinâmica (99) 99999-9999, validação de DDD
-  - Descrição: limite e contador de caracteres
-  - Imagem: preview, compressão automática, validação de formato
-  - Latitude/Longitude: seleção via mapa interativo
-  - E-mail: validação de formato, sugestão de domínios
+- [ ] Nome: capitalização automática, limite de caracteres, validação de duplicidade
+- [ ] Categoria: autocomplete com sugestões
+- [ ] Endereço: autocomplete (Google/Mapbox), máscara de CEP, campos separados
+- [ ] Telefone: máscara dinâmica (99) 99999-9999, validação de DDD
+- [ ] Descrição: limite e contador de caracteres
+- [ ] Imagem: preview, compressão automática, validação de formato
+- [ ] Latitude/Longitude: seleção via mapa interativo
+- [ ] E-mail: validação de formato, sugestão de domínios
 - [ ] Utilizar react-input-mask, Material UI Autocomplete, react-hook-form, react-dropzone, react-leaflet
 - [ ] Microinterações: feedback visual imediato, skeleton loading, tooltips explicativos
-- [ ] Exemplo de máscara de telefone:
-  ```jsx
-  <InputMask mask="(99) 99999-9999" value={telefone} onChange={handleChange}>
-    {(inputProps) => <TextField {...inputProps} label="Telefone" required />}
-  </InputMask>
-  ```
-
----
 
 ### Melhorias em andamento/próximas tarefas
 
