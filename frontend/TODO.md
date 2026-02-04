@@ -1,5 +1,27 @@
 # TODO - Andrelândia Conecta
 
+### Melhorias UX para Formulários de Cadastro de Comércio
+
+- [ ] Inputs profissionais para cada campo do cadastro de comércio:
+  - Nome: capitalização automática, limite de caracteres, validação de duplicidade
+  - Categoria: autocomplete com sugestões
+  - Endereço: autocomplete (Google/Mapbox), máscara de CEP, campos separados
+  - Telefone: máscara dinâmica (99) 99999-9999, validação de DDD
+  - Descrição: limite e contador de caracteres
+  - Imagem: preview, compressão automática, validação de formato
+  - Latitude/Longitude: seleção via mapa interativo
+  - E-mail: validação de formato, sugestão de domínios
+- [ ] Utilizar react-input-mask, Material UI Autocomplete, react-hook-form, react-dropzone, react-leaflet
+- [ ] Microinterações: feedback visual imediato, skeleton loading, tooltips explicativos
+- [ ] Exemplo de máscara de telefone:
+  ```jsx
+  <InputMask mask="(99) 99999-9999" value={telefone} onChange={handleChange}>
+    {(inputProps) => <TextField {...inputProps} label="Telefone" required />}
+  </InputMask>
+  ```
+
+---
+
 ### Melhorias em andamento/próximas tarefas
 
 - [ ] Adicionar onboarding, tooltips e mensagens de ajuda
@@ -13,6 +35,7 @@
 - [ ] Expandir testes automatizados (unitários, integração, e2e)
 
 ## Funcionalidades sugeridas (Frontend)
+
 - [ ] Adicionar um carrousel de fotos dos comércios que forem sendo adicionados, e se possível ir atualizando as fotos do carrousel automaticamente. De acordo que os comércios são adicionados.
 - [ ] Notificações em tempo real (WebSocket ou polling)
 - [ ] PWA: suporte a instalação e funcionamento offline
@@ -118,7 +141,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Personalização e empatia: modo escuro/claro.
 - [x] Revisar acessibilidade (a11y): navegação por teclado, ARIA, contraste, foco visível
 - [x] Skeleton loading e lazy loading de listas
-- [X] Mensagens de boas-vindas e dicas contextuais ao logar.
+- [x] Mensagens de boas-vindas e dicas contextuais ao logar.
 - [x] Implementar filtros por categoria, preço, avaliação, localização, etc.
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
