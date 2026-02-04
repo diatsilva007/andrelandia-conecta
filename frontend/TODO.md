@@ -6,8 +6,6 @@
 - [ ] Nome: capitalização automática, limite de caracteres, validação de duplicidade
 - [ ] Categoria: autocomplete com sugestões
 - [ ] Endereço: autocomplete (Google/Mapbox), máscara de CEP, campos separados
-- [ ] Telefone: máscara dinâmica (99) 99999-9999, validação de DDD
-- [ ] Descrição: limite e contador de caracteres
 - [ ] Imagem: preview, compressão automática, validação de formato
 - [ ] Latitude/Longitude: seleção via mapa interativo
 - [ ] E-mail: validação de formato, sugestão de domínios
@@ -135,6 +133,8 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Skeleton loading e lazy loading de listas
 - [x] Mensagens de boas-vindas e dicas contextuais ao logar.
 - [x] Implementar filtros por categoria, preço, avaliação, localização, etc.
+- [x] Telefone: máscara dinâmica (99) 99999-9999, validação de DDD
+- [x] Descrição: limite e contador de caracteres
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 

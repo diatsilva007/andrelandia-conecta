@@ -12,7 +12,9 @@ import {
   Alert,
   Button,
   MenuItem,
+  InputAdornment,
 } from "@mui/material";
+// import InputMask from "react-input-mask";
 import VoltarButton from "../components/VoltarButton.jsx";
 import { categoriasComercio } from "../assets/categories.js";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
@@ -57,7 +59,26 @@ export default function CadastroComercio() {
   }
 
   const handleChange = (e) => {
-    const novoForm = { ...form, [e.target.name]: e.target.value };
+    let value = e.target.value;
+    const name = e.target.name;
+    // Capitalização automática para nome
+    if (name === "nome") {
+      value = value.replace(/\b\w/g, (l) => l.toUpperCase());
+      value = value.slice(0, 60);
+    }
+    // Limite de caracteres para descrição
+    if (name === "descricao") {
+      value = value.slice(0, 200);
+    }
+    // CEP: só números no estado
+    if (name === "cep") {
+      value = value.replace(/\D/g, "").slice(0, 8);
+    }
+    // Telefone: só números no estado
+    if (name === "telefone") {
+      value = value.replace(/\D/g, "").slice(0, 11);
+    }
+    const novoForm = { ...form, [name]: value };
     setForm(novoForm);
     // Se o campo alterado for parte do endereço, busca coordenadas automaticamente
     const camposEndereco = [
@@ -68,9 +89,9 @@ export default function CadastroComercio() {
       "estado",
       "cep",
     ];
-    if (camposEndereco.includes(e.target.name)) {
+    if (camposEndereco.includes(name)) {
       const enderecoCompleto = `${novoForm.logradouro}, ${novoForm.numero} - ${novoForm.bairro}, ${novoForm.cidade} - ${novoForm.estado}, CEP: ${novoForm.cep}`;
-      if (enderecoCompleto.replace(/[,\-CEP: ]/g, "").length > 0) {
+      if (enderecoCompleto.replace(/[,-CEP: ]/g, "").length > 0) {
         axios
           .get(
             `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`,
@@ -179,226 +200,241 @@ export default function CadastroComercio() {
 
   return (
     <Box
-      bgcolor="background.default"
-      minHeight="100vh"
-      width="100vw"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      sx={{ p: { xs: 1, sm: 2 } }}
-      role="main"
-      aria-label="Cadastro de novo comércio"
+      sx={{
+        bgcolor: "background.default",
+        minHeight: "100vh",
+        width: "100vw",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        py: { xs: 2, sm: 4 },
+      }}
     >
-      <Box sx={{ width: "100%", maxWidth: 440 }}>
-        <Box sx={{ mb: 3 }}>
-          <BreadcrumbNav
-            items={[
-              { label: "Início", to: "/" },
-              { label: "Cadastrar Comércio" },
-            ]}
-          />
-        </Box>
-        <Paper
-          sx={{
-            p: { xs: 4, sm: 5, md: 6 },
-            borderRadius: 4,
-            boxShadow: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            background: "#fff",
-            gap: 2,
-          }}
-          role="form"
-          aria-label="Formulário de cadastro de comércio"
+      <BreadcrumbNav
+        items={[
+          { label: "Comércios", to: "/comercios" },
+          { label: "Cadastrar" },
+        ]}
+      />
+      <Paper
+        elevation={3}
+        sx={{
+          width: "100%",
+          maxWidth: 400,
+          mt: { xs: 2, sm: 3 },
+          mb: 3,
+          px: { xs: 1.5, sm: 2.5 },
+          py: { xs: 2, sm: 2.5 },
+          borderRadius: 3,
+          boxShadow: "0 2px 12px #0001",
+          background: (theme) => theme.palette.background.paper,
+        }}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+          color="primary.main"
+          gutterBottom
+          align="center"
+          sx={{ fontSize: 22 }}
         >
-          <Typography
-            variant="h4"
-            mb={2.5}
-            align="center"
-            fontWeight={800}
-            color="primary.main"
-            sx={{
-              letterSpacing: 1.5,
-              textShadow: "0 2px 8px #1976d222",
-              outline: "none",
-            }}
-            tabIndex={0}
+          Cadastro de Comércio
+        </Typography>
+        {erro && (
+          <Alert severity="error" sx={{ mb: 1.5 }}>
+            {erro}
+          </Alert>
+        )}
+        {sucesso && (
+          <Alert severity="success" sx={{ mb: 1.5 }}>
+            {sucesso}
+          </Alert>
+        )}
+        <Box
+          component="form"
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit}
+          sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}
+        >
+          <ImageUpload
+            label="Imagem do comércio"
+            onChange={setImagem}
+            value={null}
+          />
+          <TextField
+            label="Nome do Comércio"
+            name="nome"
+            value={form.nome}
+            onChange={handleChange}
+            fullWidth
+            required
+            size="small"
+            inputProps={{ maxLength: 60 }}
+            helperText={`${form.nome.length}/60 caracteres`}
+          />
+          <TextField
+            select
+            label="Categoria"
+            name="categoria"
+            value={form.categoria}
+            onChange={handleChange}
+            fullWidth
+            required
+            size="small"
           >
-            Cadastrar Novo Comércio
-          </Typography>
-          {erro && (
-            <Alert severity="error" sx={{ mb: 2, width: "100%" }}>
-              {erro}
-            </Alert>
-          )}
-          {sucesso && (
-            <Alert severity="success" sx={{ mb: 2, width: "100%" }}>
-              {sucesso}
-            </Alert>
-          )}
-          <form
-            onSubmit={handleSubmit}
-            autoComplete="off"
-            style={{ width: "100%" }}
-            aria-label="Formulário de cadastro de comércio"
-            tabIndex={0}
-          >
-            <ImageUpload
-              label="Imagem do comércio"
-              onChange={setImagem}
-              value={null}
-            />
+            {categoriasComercio.map((cat) => (
+              <MenuItem key={cat} value={cat}>
+                {cat}
+              </MenuItem>
+            ))}
+          </TextField>
+          {form.categoria === "Outro (especificar)" && (
             <TextField
-              label="Nome do comércio"
-              name="nome"
-              value={form.nome}
-              onChange={handleChange}
+              label="Especifique a categoria"
+              value={categoriaPersonalizada}
+              onChange={(e) => setCategoriaPersonalizada(e.target.value)}
               fullWidth
               required
-              margin="normal"
-              inputProps={{ maxLength: 60 }}
-              helperText="Máx. 60 caracteres"
-              sx={{ mb: 2, background: "#f7fafd", borderRadius: 2 }}
+              size="small"
+              inputProps={{ maxLength: 40 }}
             />
-            <Box sx={{ mb: 2 }}>
-              <TextField
-                select
-                label="Categoria"
-                name="categoria"
-                value={form.categoria}
-                onChange={handleChange}
-                fullWidth
-                required={false}
-                sx={{ background: "#f7fafd", borderRadius: 2 }}
-                helperText="Escolha a categoria principal do comércio"
-              >
-                <MenuItem value="">
-                  <em>Selecione</em>
-                </MenuItem>
-                {categoriasComercio.map((cat) => (
-                  <MenuItem key={cat} value={cat}>
-                    {cat}
-                  </MenuItem>
-                ))}
-              </TextField>
-              {form.categoria === "Outro (especificar)" && (
-                <TextField
-                  label="Categoria personalizada"
-                  value={categoriaPersonalizada}
-                  onChange={(e) => setCategoriaPersonalizada(e.target.value)}
-                  fullWidth
-                  required
-                  sx={{ mt: 2, background: "#f7fafd", borderRadius: 2 }}
-                  inputProps={{ maxLength: 40 }}
-                  helperText="Digite a categoria do comércio"
-                />
-              )}
-              <TextField
-                label="Logradouro"
-                name="logradouro"
-                value={form.logradouro}
-                onChange={handleChange}
-                fullWidth
-                sx={{ mb: 2 }}
-                placeholder="Rua, Avenida, etc."
-              />
-              <Box display="flex" gap={2} mb={2}>
-                <TextField
-                  label="Número"
-                  name="numero"
-                  value={form.numero}
-                  onChange={handleChange}
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  placeholder="123"
-                />
-                <TextField
-                  label="Bairro"
-                  name="bairro"
-                  value={form.bairro}
-                  onChange={handleChange}
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  placeholder="Centro"
-                />
-              </Box>
-              <Box display="flex" gap={2} mb={2}>
-                <TextField
-                  label="Cidade"
-                  name="cidade"
-                  value={form.cidade}
-                  onChange={handleChange}
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  placeholder="Andrelândia"
-                />
-                <TextField
-                  label="Estado"
-                  name="estado"
-                  value={form.estado}
-                  onChange={handleChange}
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  placeholder="MG"
-                />
-                <TextField
-                  label="CEP"
-                  name="cep"
-                  value={form.cep}
-                  onChange={handleChange}
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  placeholder="37300-000"
-                />
-              </Box>
-            </Box>
-            {/* Removido bloco de atributos JSX soltos após <Box> */}
-            {/* Campo antigo de endereço removido */}
+          )}
+          <TextField
+            label="Descrição"
+            name="descricao"
+            value={form.descricao}
+            onChange={handleChange}
+            fullWidth
+            multiline
+            rows={2}
+            size="small"
+            inputProps={{ maxLength: 200 }}
+            helperText={`${form.descricao.length}/200 caracteres`}
+          />
+          {/* Grupo de Endereço */}
+          <Typography
+            variant="subtitle2"
+            fontWeight={600}
+            color="text.secondary"
+            sx={{ mt: 1, mb: 0.5 }}
+          >
+            Endereço
+          </Typography>
+          <Box sx={{ display: "flex", gap: 1 }}>
             <TextField
-              label="Telefone"
-              name="telefone"
-              value={form.telefone}
+              label="Logradouro"
+              name="logradouro"
+              value={form.logradouro}
               onChange={handleChange}
-              fullWidth
-              margin="normal"
-              inputProps={{ maxLength: 20 }}
-              helperText="Ex: (35) 99999-9999"
-              sx={{ mb: 2, background: "#f7fafd", borderRadius: 2 }}
+              required
+              size="small"
+              sx={{ flex: 2 }}
             />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{
-                fontWeight: 700,
-                fontSize: 18,
-                letterSpacing: 0.5,
-                borderRadius: 3,
-                py: 1.5,
-                boxShadow: "0 2px 8px #1976d222",
-                textTransform: "none",
-                backgroundColor: (theme) => theme.palette.primary.main,
+            <TextField
+              label="Número"
+              name="numero"
+              value={form.numero}
+              onChange={handleChange}
+              required
+              size="small"
+              sx={{ flex: 1, minWidth: 80 }}
+            />
+          </Box>
+          <TextField
+            label="Bairro"
+            name="bairro"
+            value={form.bairro}
+            onChange={handleChange}
+            required
+            size="small"
+          />
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <TextField
+              label="Cidade"
+              name="cidade"
+              value={form.cidade}
+              onChange={handleChange}
+              required
+              size="small"
+              sx={{ flex: 2 }}
+            />
+            <TextField
+              label="Estado"
+              name="estado"
+              value={form.estado}
+              onChange={handleChange}
+              required
+              size="small"
+              sx={{ flex: 1, minWidth: 60 }}
+            />
+          </Box>
+          <TextField
+            label="CEP"
+            name="cep"
+            value={
+              form.cep.length > 5
+                ? form.cep.replace(/(\d{5})(\d{1,3})/, "$1-$2")
+                : form.cep
+            }
+            onChange={handleChange}
+            required
+            size="small"
+            inputProps={{
+              maxLength: 9,
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            helperText="Formato: 99999-999"
+          />
+          <TextField
+            label="Telefone"
+            name="telefone"
+            value={
+              form.telefone.length > 0
+                ? form.telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3")
+                : form.telefone
+            }
+            onChange={handleChange}
+            fullWidth
+            required
+            size="small"
+            inputProps={{ maxLength: 15, inputMode: "tel", pattern: "[0-9]*" }}
+            helperText="Formato: (99) 99999-9999"
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              fontWeight: 600,
+              fontSize: 15,
+              letterSpacing: 0.3,
+              borderRadius: 2,
+              py: 1,
+              mt: 0.5,
+              textTransform: "none",
+              backgroundColor: (theme) => theme.palette.primary.main,
+              color: "#fff",
+              transition: "background 0.2s",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.primary.dark,
                 color: "#fff",
-                transition: "background 0.2s",
-                "&:hover": {
-                  backgroundColor: (theme) => theme.palette.primary.dark,
-                  color: "#fff",
-                  boxShadow: 4,
-                },
-              }}
-            >
-              Cadastrar
-            </Button>
-            <VoltarButton
-              label="Cancelar"
-              onClick={() => navigate(-1)}
-              sx={{ width: "100%", mt: 2 }}
-            />
-          </form>
-        </Paper>
-      </Box>
+                boxShadow: 2,
+              },
+            }}
+          >
+            Cadastrar
+          </Button>
+          <VoltarButton
+            label="Cancelar"
+            onClick={() => navigate(-1)}
+            sx={{ width: "100%", mt: 0.5 }}
+          />
+        </Box>
+      </Paper>
     </Box>
   );
 }
