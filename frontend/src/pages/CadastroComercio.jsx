@@ -1,6 +1,85 @@
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import ImageUpload from "../components/ImageUpload.jsx";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMapEvents,
+  useMap,
+} from "react-leaflet";
+// Componente para centralizar o mapa quando latitude/longitude mudam
+function MapAutoCenter({ latitude, longitude }) {
+  const map = useMap();
+  React.useEffect(() => {
+    if (latitude && longitude) {
+      map.setView([Number(latitude), Number(longitude)], map.getZoom(), {
+        animate: true,
+      });
+    }
+  }, [latitude, longitude, map]);
+  return null;
+}
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+// Ícone customizado para o marcador do comércio
+const comercioIcon = new L.Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
+  shadowSize: [41, 41],
+});
+
+function LocationSelector({ latitude, longitude, onChange }) {
+  // Componente para capturar clique no mapa
+  useMapEvents({
+    click(e) {
+      onChange(e.latlng);
+    },
+  });
+  return null;
+}
 import React, { useState, useEffect, useContext } from "react";
+// Função utilitária para comprimir imagem
+function compressImage(file, maxWidth = 600, maxHeight = 600, quality = 0.7) {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith("image/")) return reject("Arquivo não é imagem");
+    const img = new window.Image();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxWidth || height > maxHeight) {
+        const scale = Math.min(maxWidth / width, maxHeight / height);
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const compressed = new File([blob], file.name, { type: blob.type });
+            resolve(compressed);
+          } else {
+            reject("Falha ao comprimir imagem");
+          }
+        },
+        file.type === "image/png" ? "image/png" : "image/jpeg",
+        quality,
+      );
+    };
+    img.onerror = reject;
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 import { useUser } from "../contexts/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -41,6 +120,7 @@ export default function CadastroComercio() {
   });
   // Estado da imagem
   const [imagem, setImagem] = useState(null);
+  const [imagemErro, setImagemErro] = useState("");
   // Categoria personalizada
   const [categoriaPersonalizada, setCategoriaPersonalizada] = useState("");
   // Estado de feedback visual
@@ -81,7 +161,7 @@ export default function CadastroComercio() {
     }
     const novoForm = { ...form, [name]: value };
     setForm(novoForm);
-    // Se o campo alterado for parte do endereço, busca coordenadas automaticamente
+    // Busca coordenadas só se todos os campos principais estiverem preenchidos
     const camposEndereco = [
       "logradouro",
       "numero",
@@ -91,8 +171,17 @@ export default function CadastroComercio() {
       "cep",
     ];
     if (camposEndereco.includes(name)) {
-      const enderecoCompleto = `${novoForm.logradouro}, ${novoForm.numero} - ${novoForm.bairro}, ${novoForm.cidade} - ${novoForm.estado}, CEP: ${novoForm.cep}`;
-      if (enderecoCompleto.replace(/[,-CEP: ]/g, "").length > 0) {
+      const { logradouro, numero, bairro, cidade, estado, cep } = novoForm;
+      if (
+        logradouro &&
+        numero &&
+        bairro &&
+        cidade &&
+        estado &&
+        cep &&
+        cep.length === 8
+      ) {
+        const enderecoCompleto = `${logradouro}, ${numero} - ${bairro}, ${cidade} - ${estado}, ${cep}`;
         axios
           .get(
             `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`,
@@ -104,8 +193,26 @@ export default function CadastroComercio() {
                 latitude: res.data[0].lat,
                 longitude: res.data[0].lon,
               }));
+            } else {
+              setForm((f) => ({ ...f, latitude: "", longitude: "" }));
+              setSnackbar({
+                open: true,
+                message: "Endereço não localizado no mapa. Verifique os dados.",
+                severity: "warning",
+              });
             }
+          })
+          .catch(() => {
+            setForm((f) => ({ ...f, latitude: "", longitude: "" }));
+            setSnackbar({
+              open: true,
+              message: "Erro ao buscar localização do endereço.",
+              severity: "error",
+            });
           });
+      } else {
+        // Se algum campo for apagado, limpa a localização
+        setForm((f) => ({ ...f, latitude: "", longitude: "" }));
       }
     }
   };
@@ -259,11 +366,67 @@ export default function CadastroComercio() {
           onSubmit={handleSubmit}
           sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}
         >
+          <Box sx={{ mb: 0.5, display: "flex", alignItems: "center", gap: 1 }}>
+            <span style={{ fontSize: 14, color: "#666" }}>
+              Imagem do comércio (JPG, PNG ou WebP, até 5MB)
+            </span>
+          </Box>
           <ImageUpload
             label="Imagem do comércio"
-            onChange={setImagem}
+            onChange={async (file) => {
+              setImagemErro("");
+              if (!file) {
+                setImagem(null);
+                return;
+              }
+              // Validação de formato
+              const formatosPermitidos = [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+              ];
+              if (!formatosPermitidos.includes(file.type)) {
+                setImagem(null);
+                setImagemErro(
+                  "Formato de imagem não suportado. Envie JPG, PNG ou WebP.",
+                );
+                return;
+              }
+              // Validação de tamanho (opcional, 5MB)
+              if (file.size > 5 * 1024 * 1024) {
+                setImagem(null);
+                setImagemErro("A imagem deve ter no máximo 5MB.");
+                return;
+              }
+              // Compressão automática
+              try {
+                const comprimida = await compressImage(file);
+                setImagem(comprimida);
+              } catch (err) {
+                setImagem(null);
+                setImagemErro("Erro ao processar a imagem. Tente outra.");
+              }
+            }}
             value={null}
           />
+          {imagemErro && (
+            <Alert
+              severity="error"
+              sx={{
+                mt: 1,
+                mb: 0.5,
+                px: 2,
+                py: 1,
+                alignItems: "center",
+                fontSize: 15,
+                borderRadius: 2,
+                boxShadow: 1,
+                maxWidth: 360,
+              }}
+            >
+              {imagemErro}
+            </Alert>
+          )}
           <TextField
             label="Nome do Comércio"
             name="nome"
@@ -317,6 +480,76 @@ export default function CadastroComercio() {
             helperText={`${form.descricao.length}/200 caracteres`}
           />
           {/* Grupo de Endereço */}
+          {/* Seletor de localização no mapa */}
+          <Typography
+            variant="subtitle2"
+            fontWeight={600}
+            color="text.secondary"
+            sx={{ mt: 2, mb: 0.5 }}
+          >
+            Localização no mapa
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              height: 220,
+              mb: 1,
+              borderRadius: 2,
+              overflow: "hidden",
+              boxShadow: 1,
+            }}
+          >
+            <MapContainer
+              center={[
+                form.latitude ? Number(form.latitude) : -21.7417,
+                form.longitude ? Number(form.longitude) : -44.3111,
+              ]}
+              zoom={15}
+              style={{ height: 220, width: "100%" }}
+              scrollWheelZoom={true}
+            >
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              {/* Centraliza o mapa automaticamente ao atualizar endereço */}
+              <MapAutoCenter
+                latitude={form.latitude}
+                longitude={form.longitude}
+              />
+              {/* Permite ajuste manual clicando no mapa */}
+              <LocationSelector
+                latitude={form.latitude}
+                longitude={form.longitude}
+                onChange={({ lat, lng }) =>
+                  setForm((f) => ({ ...f, latitude: lat, longitude: lng }))
+                }
+              />
+              {form.latitude && form.longitude && (
+                <Marker
+                  position={[Number(form.latitude), Number(form.longitude)]}
+                  icon={comercioIcon}
+                />
+              )}
+            </MapContainer>
+          </Box>
+          <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
+            <TextField
+              label="Latitude"
+              name="latitude"
+              value={form.latitude}
+              onChange={handleChange}
+              size="small"
+              fullWidth
+              inputProps={{ inputMode: "decimal", pattern: "[0-9.-]*" }}
+            />
+            <TextField
+              label="Longitude"
+              name="longitude"
+              value={form.longitude}
+              onChange={handleChange}
+              size="small"
+              fullWidth
+              inputProps={{ inputMode: "decimal", pattern: "[0-9.-]*" }}
+            />
+          </Box>
           <Typography
             variant="subtitle2"
             fontWeight={600}
