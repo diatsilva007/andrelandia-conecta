@@ -5,7 +5,6 @@
 - [ ] Inputs profissionais para cada campo do cadastro de comércio:
 - [ ] Nome: capitalização automática, limite de caracteres, validação de duplicidade
 - [ ] Endereço: autocomplete (Google/Mapbox), máscara de CEP, campos separados
-- [ ] Latitude/Longitude: seleção via mapa interativo
 - [ ] E-mail: validação de formato, sugestão de domínios
 - [ ] Utilizar react-input-mask, Material UI Autocomplete, react-hook-form, react-dropzone, react-leaflet
 - [ ] Microinterações: feedback visual imediato, skeleton loading, tooltips explicativos
@@ -135,6 +134,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Descrição: limite e contador de caracteres
 - [x] Categoria: autocomplete com sugestões
 - [x] Imagem: preview, compressão automática, validação de formato
+- [x] Latitude/Longitude: seleção via mapa interativo
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 

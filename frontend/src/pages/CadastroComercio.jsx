@@ -108,6 +108,7 @@ export default function CadastroComercio() {
     nome: "",
     categoria: "",
     descricao: "",
+    email: "",
     logradouro: "",
     numero: "",
     bairro: "",
@@ -118,6 +119,16 @@ export default function CadastroComercio() {
     latitude: "",
     longitude: "",
   });
+  // Estado para erro de e-mail
+  const [emailErro, setEmailErro] = useState("");
+  // Sugestão de domínios
+  const dominiosPopulares = [
+    "gmail.com",
+    "outlook.com",
+    "hotmail.com",
+    "yahoo.com",
+    "icloud.com",
+  ];
   // Estado da imagem
   const [imagem, setImagem] = useState(null);
   const [imagemErro, setImagemErro] = useState("");
@@ -158,6 +169,15 @@ export default function CadastroComercio() {
     // Telefone: só números no estado
     if (name === "telefone") {
       value = value.replace(/\D/g, "").slice(0, 11);
+    }
+    // Validação de e-mail
+    if (name === "email") {
+      setEmailErro("");
+      // Regex simples para e-mail
+      const emailValido = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
+      if (value && !emailValido) {
+        setEmailErro("E-mail inválido");
+      }
     }
     const novoForm = { ...form, [name]: value };
     setForm(novoForm);
@@ -427,6 +447,39 @@ export default function CadastroComercio() {
               {imagemErro}
             </Alert>
           )}
+          {/* Campo de e-mail com sugestões de domínio */}
+          <Autocomplete
+            freeSolo
+            options={
+              form.email && form.email.includes("@")
+                ? dominiosPopulares
+                    .filter((dom) => dom.startsWith(form.email.split("@")[1]))
+                    .map((dom) => form.email.split("@")[0] + "@" + dom)
+                : []
+            }
+            inputValue={form.email}
+            onInputChange={(_, newInput) => {
+              handleChange({ target: { name: "email", value: newInput } });
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="E-mail (opcional)"
+                name="email"
+                size="small"
+                fullWidth
+                error={!!emailErro}
+                helperText={
+                  form.email
+                    ? emailErro || "Informe um e-mail válido para contato"
+                    : "Se desejar, informe um e-mail para contato"
+                }
+                autoComplete="email"
+                sx={{ mb: 1 }}
+              />
+            )}
+          />
+          {/* ...existing code... */}
           <TextField
             label="Nome do Comércio"
             name="nome"
