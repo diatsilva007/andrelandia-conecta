@@ -14,7 +14,8 @@ import {
   MenuItem,
   InputAdornment,
 } from "@mui/material";
-// import InputMask from "react-input-mask";
+import Autocomplete from "@mui/material/Autocomplete";
+
 import VoltarButton from "../components/VoltarButton.jsx";
 import { categoriasComercio } from "../assets/categories.js";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
@@ -274,22 +275,24 @@ export default function CadastroComercio() {
             inputProps={{ maxLength: 60 }}
             helperText={`${form.nome.length}/60 caracteres`}
           />
-          <TextField
-            select
-            label="Categoria"
-            name="categoria"
+          <Autocomplete
+            options={categoriasComercio}
             value={form.categoria}
-            onChange={handleChange}
+            onChange={(_, newValue) => {
+              handleChange({
+                target: {
+                  name: "categoria",
+                  value: newValue || "",
+                },
+              });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="Categoria" required size="small" />
+            )}
             fullWidth
-            required
-            size="small"
-          >
-            {categoriasComercio.map((cat) => (
-              <MenuItem key={cat} value={cat}>
-                {cat}
-              </MenuItem>
-            ))}
-          </TextField>
+            disableClearable
+            freeSolo={false}
+          />
           {form.categoria === "Outro (especificar)" && (
             <TextField
               label="Especifique a categoria"
