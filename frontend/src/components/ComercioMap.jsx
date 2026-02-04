@@ -82,6 +82,26 @@ export default function ComercioMap({ comercios = [] }) {
                     >
                       Tel: {com.telefone || "Não informado"}
                     </Typography>
+                    {com.email && (
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        fontSize={13}
+                        sx={{ mt: 0.5, textAlign: "right" }}
+                      >
+                        <span style={{ marginRight: 4 }}>E-mail:</span>
+                        <a
+                          href={`mailto:${com.email}`}
+                          style={{
+                            color: "#1976d2",
+                            textDecoration: "underline",
+                            wordBreak: "break-all",
+                          }}
+                        >
+                          {com.email}
+                        </a>
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
               </Popup>

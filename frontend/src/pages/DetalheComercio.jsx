@@ -354,6 +354,21 @@ export default function DetalheComercio() {
             <Typography variant="body2" color="text.secondary" mb={1}>
               <b>Telefone:</b> {comercio.telefone}
             </Typography>
+            {comercio.email && (
+              <Typography variant="body2" color="text.secondary" mb={1}>
+                <b>E-mail:</b>{" "}
+                <a
+                  href={`mailto:${comercio.email}`}
+                  style={{
+                    color: "#1976d2",
+                    textDecoration: "underline",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {comercio.email}
+                </a>
+              </Typography>
+            )}
             <Box display="flex" gap={2} mb={1}>
               {comercio.telefone && (
                 <Button
