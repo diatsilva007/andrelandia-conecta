@@ -4,7 +4,6 @@
 
 - [ ] Inputs profissionais para cada campo do cadastro de comércio:
 - [ ] Nome: capitalização automática, limite de caracteres, validação de duplicidade
-- [ ] Categoria: autocomplete com sugestões
 - [ ] Endereço: autocomplete (Google/Mapbox), máscara de CEP, campos separados
 - [ ] Imagem: preview, compressão automática, validação de formato
 - [ ] Latitude/Longitude: seleção via mapa interativo
@@ -135,6 +134,7 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 - [x] Implementar filtros por categoria, preço, avaliação, localização, etc.
 - [x] Telefone: máscara dinâmica (99) 99999-9999, validação de DDD
 - [x] Descrição: limite e contador de caracteres
+- [x] Categoria: autocomplete com sugestões
 
 > Marque cada item conforme for validando. Quando todos estiverem completos, o projeto estará pronto para produção!
 
