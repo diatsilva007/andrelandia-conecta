@@ -82,10 +82,11 @@ export function UserProvider({ children }) {
     }
   };
 
-  // Função para logout: limpa usuário e token
   const logout = () => {
     setUsuario(null);
     setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
   };
 
   return (
