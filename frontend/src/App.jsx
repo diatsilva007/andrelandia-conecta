@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { ThemeProviderCustom, useThemeMode } from "./contexts/ThemeContext.jsx";
 import LoadingBackdrop from "./components/LoadingBackdrop.jsx";
-import React, { createContext, useState } from "react";
+import React, { useState } from "react";
 import { SnackbarProvider } from "./components/SnackbarContext.jsx";
 import GlobalSnackbar from "./components/GlobalSnackbar.jsx";
 import Login from "./pages/Login.jsx";
@@ -16,8 +16,8 @@ import EsqueciSenha from "./pages/EsqueciSenha.jsx";
 import RedefinirSenha from "./pages/RedefinirSenha.jsx";
 import DetalheProduto from "./pages/DetalheProduto.jsx";
 import Favoritos from "./pages/Favoritos.jsx";
-
 import Navbar from "./components/Navbar.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import WelcomeDialog from "./components/WelcomeDialog.jsx";
 import EditarComercio from "./pages/EditarComercio.jsx";
 import EditarProduto from "./pages/EditarProduto.jsx";
@@ -26,6 +26,11 @@ import PerfilPublico from "./pages/PerfilPublico.jsx";
 import HistoricoUsuario from "./pages/HistoricoUsuario.jsx";
 import { useLocation } from "react-router-dom";
 import { useUser } from "./contexts/UserContext.jsx";
+// Contexto para loading global
+export const LoadingContext = React.createContext({
+  open: false,
+  setOpen: () => {},
+});
 
 function getTheme(mode) {
   return createTheme({
@@ -195,9 +200,6 @@ function getTheme(mode) {
   });
 }
 
-// Contexto para loading global
-export const LoadingContext = createContext({ open: false, setOpen: () => {} });
-
 function App() {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
@@ -251,23 +253,72 @@ function App() {
                 path="/redefinir-senha/:token"
                 element={<RedefinirSenha />}
               />
-              <Route
-                path="/comercios/:id/editar"
-                element={<EditarComercio />}
-              />
-              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/" element={<ListaComercios />} />
               <Route path="/comercios/:id" element={<DetalheComercio />} />
-              <Route path="/comercios/novo" element={<CadastroComercio />} />
+              <Route
+                path="/comercios/:id/editar"
+                element={
+                  <ProtectedRoute>
+                    <EditarComercio />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/comercios/novo"
+                element={
+                  <ProtectedRoute>
+                    <CadastroComercio />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/comercios/:id/produtos/novo"
-                element={<CadastroProduto />}
+                element={
+                  <ProtectedRoute>
+                    <CadastroProduto />
+                  </ProtectedRoute>
+                }
               />
-              <Route path="/produtos/:id/editar" element={<EditarProduto />} />
-              <Route path="/produtos/:id" element={<DetalheProduto />} />
-              <Route path="/favoritos" element={<Favoritos />} />
-              <Route path="/perfil/:id" element={<PerfilPublico />} />
-              <Route path="/historico" element={<HistoricoUsuario />} />
+              <Route
+                path="/produtos/:id/editar"
+                element={
+                  <ProtectedRoute>
+                    <EditarProduto />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/favoritos"
+                element={
+                  <ProtectedRoute>
+                    <Favoritos />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/perfil/:id"
+                element={
+                  <ProtectedRoute>
+                    <PerfilPublico />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/historico"
+                element={
+                  <ProtectedRoute>
+                    <HistoricoUsuario />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </PageTransition>
         </LoadingContext.Provider>

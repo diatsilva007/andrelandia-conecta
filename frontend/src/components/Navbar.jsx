@@ -25,7 +25,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import HistoryIcon from "@mui/icons-material/History";
 
 export default function Navbar() {
-  const { usuario, logout, setUsuario } = useUser();
+  const { usuario, logout, setUsuario, loadingUser } = useUser();
   const [favoritosCount, setFavoritosCount] = useState(0);
   const navigate = useNavigate();
   const [openTrocaTipo, setOpenTrocaTipo] = useState(false);
@@ -56,6 +56,26 @@ export default function Navbar() {
   const handleTipoAtualizado = (novoTipo) => {
     setUsuario((prev) => ({ ...prev, tipo: novoTipo }));
   };
+
+  if (loadingUser) {
+    // Exibe loading global enquanto contexto do usuário está carregando
+    return (
+      <AppBar position="fixed" sx={{ minHeight: 56, zIndex: 1201 }}>
+        <Toolbar
+          sx={{
+            minHeight: 56,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <span style={{ color: "#fff", fontWeight: 600, fontSize: 18 }}>
+            Carregando usuário...
+          </span>
+        </Toolbar>
+      </AppBar>
+    );
+  }
 
   return (
     <>
