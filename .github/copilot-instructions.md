@@ -1,198 +1,71 @@
-# Guia para Agentes de IA — Andrelândia Conecta
+# Guia Rápido para Agentes de IA — Andrelândia Conecta
 
-Este monorepo implementa uma plataforma para gestão e visibilidade do comércio local de Andrelândia/MG. O foco é UX profissional, integração segura e evolução rápida.
+> **Este repositório é um monorepo para uma plataforma de gestão e visibilidade do comércio local de Andrelândia/MG.**
 
-## Arquitetura e Fluxo de Dados
+## Arquitetura e Fluxo
 
-**Stack:** React (Vite) + Material UI + Express + Prisma + PostgreSQL
+- **Frontend:** React (Vite), Material UI, framer-motion, react-router-dom, react-leaflet
+  - Consome API REST em `http://localhost:3333`
+  - Autenticação JWT (`Authorization: Bearer <token>`) — token restaurado via `/auth/me` em `UserContext.jsx`
+  - Feedback global: use `SnackbarContext.jsx` (`setSnackbar`) e loading global com `<LoadingBackdrop />`
+  - Navegação protegida: redirecione para `/login` se não autenticado
+  - Sempre use `<BreadcrumbNav />` em páginas internas
+  - Microinterações: `<AnimatedCard>`, `<PageTransition>` (não crie animações inline)
 
-**Frontend → Backend:**
+- **Backend:** Express, Prisma, PostgreSQL
+  - Cada controller importa **sua própria** instância de `PrismaClient` (nunca singleton global)
+    - Exemplo: `import { PrismaClient } from "@prisma/client"; const prisma = new PrismaClient();`
+  - Controllers são isolados por entidade (ex: `comercioController.js` só lida com Comércio)
+  - Uploads: cada entidade tem middleware dedicado (`uploadComercioImage.js`, etc.)
+  - Rotas protegidas: sempre use `autenticarToken` e injete `req.usuario`
+  - Paginação padrão: utilize `offset`/`limit` e retorne `{ data, total }`
 
-- Frontend consome API REST em `http://localhost:3333`
-- Autenticação via JWT no header `Authorization: Bearer <token>`
-- Estado global de usuário via `UserContext.jsx` (restaura token do localStorage em `/auth/me`)
-- Feedback visual via `SnackbarContext.jsx` (componente `components/SnackbarContext.jsx`)
+## Fluxos de Desenvolvimento
 
-**Backend → Database:**
+- **Iniciar ambiente:**
+  - Backend: `cd backend && npm install && npx prisma migrate dev && npm run dev`
+  - Frontend: `cd frontend && npm install && npm run dev`
+  - Use tasks do VS Code: `Dev Backend` e `Dev Frontend`
 
-- Prisma ORM gerencia schema em `backend/prisma/schema.prisma`
-- **CRÍTICO:** Cada controller importa seu próprio `PrismaClient` localmente (nunca singleton global)
-- Exemplo: `backend/src/controllers/comercioController.js` linha 22: `import { PrismaClient } from "@prisma/client";`
+- **Nova migration:**
+  - Edite `backend/prisma/schema.prisma`
+  - Rode: `npx prisma migrate dev --name nome_migracao`
 
-**Entidades principais:** Comercio, Produto, Usuario, Avaliacao, Pedido, ItemPedido
+- **Adicionar novo modelo:**
+  1.  Edite o schema
+  2.  Rode migration
+  3.  Crie controller em `src/controllers/`
+  4.  Crie rota em `src/routes/`
+  5.  Registre em `src/index.js`
 
-## Padrões Obrigatórios
+## Convenções e Padrões
 
-### Frontend
-
-1. **Feedback global (NUNCA local):**
-
-   ```jsx
-   const { setSnackbar } = useSnackbar();
-   setSnackbar({ open: true, message: "Sucesso!", severity: "success" });
-   ```
-
-   Veja `ListaComercios.jsx` linha 60 e 149-152.
-
-2. **Loading global:**
-   Use `<LoadingBackdrop open={loading} />` para operações assíncronas. Exemplo: `PerfilPublico.jsx` linha 14 e 52.
-
-3. **Navegação protegida:**
-
-   ```jsx
-   const { usuario, loadingUser } = useUser();
-   useEffect(() => {
-     if (!loadingUser && !usuario) navigate("/login");
-   }, [usuario, loadingUser]);
-   ```
-
-4. **Breadcrumbs:**
-   Sempre inclua `<BreadcrumbNav items={...} />` em páginas internas. Exemplo: `ListaComercios.jsx`.
-
-5. **Animações:**
-   Use `<AnimatedCard>`, `<PageTransition>` para microinterações. Nunca crie animações inline.
-
-### Backend
-
-1. **Controller isolado por entidade:**
-   - `comercioController.js` → apenas lógica de Comercio
-   - `produtoController.js` → apenas lógica de Produto
-   - NÃO cruze lógica entre controllers
-
-2. **Prisma Client local:**
-
-   ```javascript
-   import { PrismaClient } from "@prisma/client";
-   const prisma = new PrismaClient({});
-   ```
-
-   Cada controller deve ter sua própria instância (padrão atual).
-
-3. **Uploads dedicados:**
-   - Comercio: `uploadComercioImage.js` → salva em `uploads/comercios/`
-   - Produto: `uploadProdutoImage.js` → salva em `uploads/produtos/`
-   - Perfil: `uploadPerfilImage.js` → salva em `uploads/perfis/`
-     Rota: `.single("imagem")` + `req.file.filename`
-
-4. **Rotas protegidas:**
-
-   ```javascript
-   router.post("/", autenticarToken, uploadXXX.single("imagem"), criarXXX);
-   ```
-
-   Middleware `auth.js` valida JWT e injeta `req.usuario`.
-
-5. **Paginação padrão:**
-   ```javascript
-   const { offset = 0, limit = 10 } = req.query;
-   const [data, total] = await Promise.all([
-     prisma.xxx.findMany({ skip: Number(offset), take: Number(limit) }),
-     prisma.xxx.count(),
-   ]);
-   res.json({ data, total });
-   ```
-   Veja `comercioController.js` linha 6-28 e `produtoController.js` linha 1-26.
-
-## Workflows Críticos
-
-**Desenvolvimento:**
-
-```powershell
-# Backend (porta 3333)
-cd backend
-npm install
-# Configure .env: DATABASE_URL, JWT_SECRET
-npx prisma migrate dev
-npm run dev
-
-# Frontend (porta 5173)
-cd frontend
-npm install
-npm run dev
-```
-
-**Tasks do VS Code:**
-
-- `Dev Backend` → roda nodemon em `/backend`
-- `Dev Frontend` → roda Vite em `/frontend`
-
-**Nova migration:**
-
-```powershell
-cd backend
-npx prisma migrate dev --name adiciona_campo_x
-```
-
-**Adicionar novo modelo:**
-
-1. Edite `backend/prisma/schema.prisma`
-2. Rode `npx prisma migrate dev --name novo_modelo`
-3. Crie controller dedicado em `backend/src/controllers/`
-4. Crie rotas em `backend/src/routes/`
-5. Registre em `backend/src/index.js`
-
-## Integrações e Dependências
-
-**Frontend:**
-
-- `react-router-dom` → navegação SPA
-- `@mui/material` → componentes UI
-- `framer-motion` → animações (PageTransition, AnimatedCard)
-- `axios` → chamadas HTTP (configure base URL para produção)
-- `react-leaflet` → mapas (latitude/longitude em Comercio)
-
-**Backend:**
-
-- `express` → API REST
-- `@prisma/client` → ORM
-- `bcryptjs` → hash de senhas
-- `jsonwebtoken` → autenticação
-- `multer` → upload de arquivos
-- `cors` → habilita requests cross-origin
-
-**Redefinição de senha:**
-
-1. POST `/auth/esqueci-senha` → gera token e salva em `Usuario.resetToken`
-2. POST `/auth/redefinir-senha/:token` → valida token e atualiza senha
-3. Veja `authController.js` linhas 32-68.
-
-## Prioridades e Bugs
-
-Consulte sempre [`frontend/TODO.md`](../frontend/TODO.md) para:
-
-- Melhorias de UX/UI em andamento
-- Bugs reportados
-- Features planejadas (onboarding, analytics, CI/CD)
-
-## Convenções de Código
-
-- **Não** use `console.log` em produção (use `console.error` para erros)
-- Variáveis em camelCase, componentes em PascalCase
+- Feedback e loading **sempre globais** (nunca locais)
+- Nunca use `console.log` em produção (apenas `console.error` para erros)
+- Variáveis camelCase, componentes PascalCase
 - Sempre valide `req.usuario` em rotas protegidas
-- Normalize strings com `normalize("NFD").replace(/[\u0300-\u036f]/g, "")` para buscas
-- Tipos numéricos no Prisma: converta explicitamente (`Number(id)`, `parseFloat(preco)`)
-- Coordenadas geográficas: valide `latitude`/`longitude` como `Float?` no schema
+- Normalize strings para buscas: `normalize("NFD").replace(/[\u0300-\u036f]/g, "")`
+- Converta tipos numéricos explicitamente (`Number(id)`, `parseFloat(preco)`)
+- Coordenadas: valide `latitude`/`longitude` como `Float?` no Prisma
+
+## Integrações e Exemplos
+
+- Veja exemplos reais em:
+  - `frontend/src/components/ListaComercios.jsx` (feedback, loading, breadcrumbs)
+  - `backend/src/controllers/comercioController.js` (paginação, uso local do Prisma)
+  - `backend/src/middlewares/uploadComercioImage.js` (upload dedicado)
 
 ## Troubleshooting
 
-**"Token inválido ou expirado":**
+- **Token inválido:** cheque `JWT_SECRET` e fluxo de restauração em `/auth/me`
+- **Prisma Client não inicializado:** rode `npx prisma generate` em `/backend`
+- **Uploads falham:** confira middleware correto e permissões em `uploads/`
+- **Dúvidas de padrões:** busque exemplos nos arquivos existentes antes de propor novo padrão
 
-- Verifique `JWT_SECRET` no `.env`
-- UserContext restaura token em `/auth/me` (linha 12-46)
+## Referências
 
-**"Prisma Client não inicializado":**
-
-- Rode `npx prisma generate` em `/backend`
-
-**Upload falha:**
-
-- Confirme middleware correto (`uploadComercioImage`, `uploadProdutoImage`, `uploadPerfilImage`)
-- Verifique permissões da pasta `uploads/`
-
-**Duplicação de Prisma Client:**
-
-- Confirme que cada controller instancia localmente (não importe de arquivo compartilhado)
+- [frontend/TODO.md](../frontend/TODO.md): melhorias, bugs e features planejadas
 
 ---
 
-> **Antes de criar novos padrões**, busque exemplos em arquivos existentes. Para mudanças estruturais, proponha primeiro e aguarde aprovação.
+> **Mantenha este guia conciso e atualizado. Foque em instruções práticas e exemplos reais do projeto.**
