@@ -61,30 +61,25 @@ export function UserProvider({ children }) {
   }, [usuario, token, loadingUser]);
 
   // Função para login: salva usuário e token
-  const login = (user, newToken) => {
+  const login = async (user, newToken) => {
     setLoadingUser(true);
     localStorage.setItem("token", newToken);
-    // Força restauração do usuário após login
-    fetch("http://localhost:3333/auth/me", {
-      headers: { Authorization: `Bearer ${newToken}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Token inválido");
-        return res.json();
-      })
-      .then((data) => {
-        setUsuario(data.usuario);
-        setToken(newToken);
-      })
-      .catch(() => {
-        setUsuario(null);
-        setToken(null);
-        localStorage.removeItem("token");
-        localStorage.removeItem("usuario");
-      })
-      .finally(() => {
-        setLoadingUser(false);
+    try {
+      const res = await fetch("http://localhost:3333/auth/me", {
+        headers: { Authorization: `Bearer ${newToken}` },
       });
+      if (!res.ok) throw new Error("Token inválido");
+      const data = await res.json();
+      setUsuario(data.usuario);
+      setToken(newToken);
+    } catch {
+      setUsuario(null);
+      setToken(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("usuario");
+    } finally {
+      setLoadingUser(false);
+    }
   };
 
   // Função para logout: limpa usuário e token

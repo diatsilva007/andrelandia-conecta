@@ -159,9 +159,8 @@ const ListaComercios = () => {
 
   // Reset ao trocar filtros/busca
   useEffect(() => {
-    if (!loadingUser) {
-      fetchComercios(true);
-    }
+    if (loadingUser) return;
+    fetchComercios(true);
     // eslint-disable-next-line
   }, [
     setSnackbar,
@@ -173,6 +172,20 @@ const ListaComercios = () => {
     location.pathname, // recarrega ao acessar/voltar para a página
     loadingUser,
   ]);
+
+  // Exibe loading global enquanto contexto do usuário está carregando
+  if (loadingUser) {
+    return (
+      <Box
+        minHeight="60vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <span>Carregando...</span>
+      </Box>
+    );
+  }
 
   // Recarrega ao detectar sucesso na navegação (ex: após cadastro)
   useEffect(() => {

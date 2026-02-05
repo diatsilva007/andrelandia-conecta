@@ -47,7 +47,7 @@ export default function Login() {
         email,
         senha,
       });
-      login(res.data.usuario, res.data.token);
+      await login(res.data.usuario, res.data.token);
       setSnackbar({
         open: true,
         message: "Login realizado com sucesso!",
