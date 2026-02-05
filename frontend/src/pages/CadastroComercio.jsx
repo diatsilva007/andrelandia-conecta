@@ -142,11 +142,25 @@ export default function CadastroComercio() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if ((!usuario || usuario?.tipo !== "comerciante") && !loadingUser) {
+    if (!loadingUser && (!usuario || usuario?.tipo !== "comerciante")) {
       navigate("/login");
     }
   }, [navigate, usuario, loadingUser]);
   if (loadingUser) {
+    return (
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span>Carregando...</span>
+      </div>
+    );
+  }
+  if (!usuario || usuario?.tipo !== "comerciante") {
     return null;
   }
 

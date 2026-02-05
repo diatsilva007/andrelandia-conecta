@@ -1,4 +1,6 @@
 import { useEffect, useState, useContext } from "react";
+import { useUser } from "../contexts/UserContext.jsx";
+import LoadingBackdrop from "../components/LoadingBackdrop";
 // import axios from "axios";
 // ...existing code...
 import { useSnackbar } from "../components/SnackbarContext.jsx";
@@ -68,13 +70,7 @@ export default function EditarComercio() {
       setLoadingCoords(false);
     }
   };
-  const [usuario] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("usuario"));
-    } catch {
-      return null;
-    }
-  });
+  const { usuario, loadingUser } = useUser();
   const { id } = useParams();
   const [form, setForm] = useState({
     nome: "",
@@ -92,7 +88,8 @@ export default function EditarComercio() {
     longitude: "",
   });
   useEffect(() => {
-    if (!localStorage.getItem("token") || usuario?.tipo !== "comerciante") {
+    if (loadingUser) return;
+    if (!usuario || usuario?.tipo !== "comerciante") {
       navigate("/login");
       return;
     }
@@ -150,7 +147,7 @@ export default function EditarComercio() {
         setLoading(false);
         setOpen(false);
       });
-  }, [id, setOpen, navigate, usuario]);
+  }, [id, setOpen, navigate, usuario, loadingUser]);
 
   const handleChange = (e) => {
     const novoForm = { ...form, [e.target.name]: e.target.value };
@@ -256,12 +253,18 @@ export default function EditarComercio() {
     }
   };
 
+  if (loadingUser) {
+    return <LoadingBackdrop open />;
+  }
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" mt={8}>
         <CircularProgress />
       </Box>
     );
+  }
+  if (!usuario || usuario?.tipo !== "comerciante") {
+    return null;
   }
 
   return (
