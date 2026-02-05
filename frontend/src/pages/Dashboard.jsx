@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CadastroComercioDialog from "../components/CadastroComercioDialog.jsx";
 import CadastroProdutoDialog from "../components/CadastroProdutoDialog.jsx";
@@ -17,9 +17,7 @@ import {
   Tab,
 } from "@mui/material";
 import AnimatedCard from "../components/AnimatedCard.jsx";
-import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext.jsx";
-
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
 import AnalyticCard from "../components/AnalyticCard.jsx";
 import AnalyticLineChart from "../components/AnalyticLineChart.jsx";
@@ -196,16 +194,23 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!usuario && !loadingUser) {
-      // [DEBUG] console.log('[Dashboard] Redirecionando para login. usuario:', usuario, 'loadingUser:', loadingUser);
       navigate("/login");
     }
   }, [usuario, loadingUser, navigate]);
 
   if (loadingUser) {
-    return null;
-  }
-  if (!usuario) {
-    return null;
+    return (
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span>Carregando...</span>
+      </div>
+    );
   }
 
   return (
