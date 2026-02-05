@@ -254,7 +254,18 @@ export default function EditarComercio() {
   };
 
   if (loadingUser) {
-    return <LoadingBackdrop open />;
+    return (
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span>Carregando...</span>
+      </div>
+    );
   }
   if (loading) {
     return (
@@ -264,6 +275,7 @@ export default function EditarComercio() {
     );
   }
   if (!usuario || usuario?.tipo !== "comerciante") {
+    navigate("/login");
     return null;
   }
 

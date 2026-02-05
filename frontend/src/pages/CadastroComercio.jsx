@@ -146,6 +146,7 @@ export default function CadastroComercio() {
       navigate("/login");
     }
   }, [navigate, usuario, loadingUser]);
+
   if (loadingUser) {
     return (
       <div
@@ -161,6 +162,8 @@ export default function CadastroComercio() {
     );
   }
   if (!usuario || usuario?.tipo !== "comerciante") {
+    // Redireciona para login se não autenticado ou não for comerciante
+    navigate("/login");
     return null;
   }
 
