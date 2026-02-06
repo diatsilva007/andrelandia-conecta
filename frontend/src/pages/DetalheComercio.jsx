@@ -33,6 +33,34 @@ import AnimatedCard from "../components/AnimatedCard.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 
 export default function DetalheComercio() {
+  const [dialogExcluirOpen, setDialogExcluirOpen] = useState(false);
+  const [excluindoComercio, setExcluindoComercio] = useState(false);
+  // Função para excluir comércio
+  const handleExcluirComercio = async () => {
+    setExcluindoComercio(true);
+    try {
+      await axios.delete(`http://localhost:3333/comercios/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setSnackbar({
+        open: true,
+        message: "Comércio excluído com sucesso!",
+        severity: "success",
+      });
+      setTimeout(() => {
+        navigate("/", { state: { sucesso: "Comércio excluído com sucesso!" } });
+      }, 1000);
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.error || "Erro ao excluir comércio",
+        severity: "error",
+      });
+    } finally {
+      setExcluindoComercio(false);
+      setDialogExcluirOpen(false);
+    }
+  };
   const location = useLocation();
   // Compartilhamento profissional
   const compartilharComercio = () => {
@@ -479,34 +507,101 @@ export default function DetalheComercio() {
             </Tooltip>
           )}
           {token && (
-            <Tooltip title="Editar comércio">
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<EditIcon />}
-                sx={{
-                  outline: "none",
-                  ":focus": { boxShadow: 3 },
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.1,
-                  fontSize: { xs: 15, sm: 16 },
-                  borderRadius: 3,
-                  borderWidth: 2,
-                  borderColor: "#1976d2",
-                  transition: "box-shadow 0.2s, border 0.2s",
-                  ":hover": {
-                    borderColor: "#1565c0",
-                    boxShadow: 6,
-                  },
-                }}
-                onClick={() => navigate(`/comercios/${id}/editar`)}
-                aria-label="Editar comércio"
-                tabIndex={0}
+            <>
+              <Tooltip title="Editar comércio">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<EditIcon />}
+                  sx={{
+                    outline: "none",
+                    ":focus": { boxShadow: 3 },
+                    fontWeight: 600,
+                    px: 2.5,
+                    py: 1.1,
+                    fontSize: { xs: 15, sm: 16 },
+                    borderRadius: 3,
+                    borderWidth: 2,
+                    borderColor: "#1976d2",
+                    transition: "box-shadow 0.2s, border 0.2s",
+                    ":hover": {
+                      borderColor: "#1565c0",
+                      boxShadow: 6,
+                    },
+                  }}
+                  onClick={() => navigate(`/comercios/${id}/editar`)}
+                  aria-label="Editar comércio"
+                  tabIndex={0}
+                >
+                  Editar
+                </Button>
+              </Tooltip>
+              <Tooltip title="Excluir comércio">
+                <Button
+                  variant="outlined"
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  sx={{
+                    outline: "none",
+                    ":focus": { boxShadow: 3 },
+                    fontWeight: 600,
+                    px: 2.5,
+                    py: 1.1,
+                    fontSize: { xs: 15, sm: 16 },
+                    borderRadius: 3,
+                    borderWidth: 2,
+                    borderColor: "#d32f2f",
+                    transition: "box-shadow 0.2s, border 0.2s",
+                    ":hover": {
+                      borderColor: "#b71c1c",
+                      boxShadow: 6,
+                    },
+                  }}
+                  onClick={() => setDialogExcluirOpen(true)}
+                  aria-label="Excluir comércio"
+                  tabIndex={0}
+                  disabled={excluindoComercio}
+                >
+                  Excluir
+                </Button>
+              </Tooltip>
+              <Dialog
+                open={dialogExcluirOpen}
+                onClose={() => setDialogExcluirOpen(false)}
               >
-                Editar
-              </Button>
-            </Tooltip>
+                <DialogTitle>Confirmar exclusão</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Tem certeza que deseja excluir este comércio? Esta ação não
+                    poderá ser desfeita.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => setDialogExcluirOpen(false)}
+                    color="primary"
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    onClick={handleExcluirComercio}
+                    color="error"
+                    autoFocus
+                    disabled={excluindoComercio}
+                    sx={{
+                      borderRadius: 2,
+                      minWidth: 48,
+                      minHeight: 48,
+                      px: 2,
+                      py: 1.2,
+                      fontSize: 16,
+                    }}
+                  >
+                    {excluindoComercio ? "Excluindo..." : "Excluir"}
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </>
           )}
         </Box>
       </Box>
