@@ -175,19 +175,29 @@ const ListaComercios = () => {
   }, [loadingUser]);
 
   // Reset ao trocar filtros/busca
-  useEffect(() => {
-    if (!loadingUser) {
-      fetchComercios(true);
-    }
-    // eslint-disable-next-line
-  }, [
-    setSnackbar,
+  // Reset ao trocar filtros/busca, mas não no carregamento inicial
+  const filtrosAtivos = [
     busca,
     localizacaoFiltro,
     categoriaFiltro,
     precoRange,
     avaliacaoMin,
-  ]);
+  ].join("|");
+  const [filtrosIniciados, setFiltrosIniciados] = useState(false);
+
+  useEffect(() => {
+    if (!loadingUser && filtrosIniciados) {
+      fetchComercios(true);
+    }
+    // eslint-disable-next-line
+  }, [filtrosAtivos, loadingUser, setSnackbar]);
+
+  // Marca filtros como iniciados após o carregamento inicial
+  useEffect(() => {
+    if (!loadingUser) {
+      setFiltrosIniciados(true);
+    }
+  }, [loadingUser]);
 
   // Recarrega ao detectar sucesso na navegação (ex: após cadastro)
   useEffect(() => {
