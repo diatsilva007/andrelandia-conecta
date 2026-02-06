@@ -30,13 +30,14 @@ export default function Login() {
   const { setSnackbar } = useSnackbar();
 
   // Redireciona se já estiver logado (apenas se não está na página de login)
+  const { usuario, loadingUser } = useUser();
   React.useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // Se já está na página de login, não redireciona
-      if (window.location.pathname === "/login") return;
+    if (!loadingUser && usuario && window.location.pathname === "/login") {
       navigate("/");
     }
-  }, [navigate]);
+  }, [usuario, loadingUser, navigate]);
+
+  const [aguardaLogin, setAguardaLogin] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +54,7 @@ export default function Login() {
         message: "Login realizado com sucesso!",
         severity: "success",
       });
-      navigate("/");
+      setAguardaLogin(true);
     } catch (err) {
       const msg = err.response?.data?.error || "Erro ao fazer login";
       setErro(msg);
@@ -62,6 +63,14 @@ export default function Login() {
       setOpen(false);
     }
   };
+
+  // Navega para a página principal apenas após loadingUser ficar false
+  useEffect(() => {
+    if (aguardaLogin && !loadingUser) {
+      navigate("/");
+      setAguardaLogin(false);
+    }
+  }, [aguardaLogin, loadingUser, navigate]);
 
   return (
     <Box

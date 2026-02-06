@@ -128,13 +128,6 @@ const ListaComercios = () => {
   const [erroCarregamento, setErroCarregamento] = useState("");
   // Função para carregar comércios (precisa ser acessível em outros efeitos)
   const fetchComercios = async (reset = false) => {
-    if (reset) {
-      setLoading(true);
-      setOffset(0);
-      setErroCarregamento("");
-    } else {
-      setIsFetchingMore(true);
-    }
     try {
       const res = await fetch(
         `http://localhost:3333/comercios?offset=${reset ? 0 : offset}&limit=${ITEMS_PER_PAGE}`,
@@ -164,6 +157,24 @@ const ListaComercios = () => {
       setIsFetchingMore(false);
     }
   };
+
+  // Carregamento inicial e ao trocar filtros
+  useEffect(() => {
+    if (!loadingUser) {
+      fetchComercios(true);
+    }
+    // eslint-disable-next-line
+  }, [
+    loadingUser,
+    busca,
+    localizacaoFiltro,
+    categoriaFiltro,
+    precoRange,
+    avaliacaoMin,
+    setSnackbar,
+    offset,
+    ITEMS_PER_PAGE,
+  ]);
 
   // Reset ao trocar filtros/busca
   // Carregamento inicial após login/contexto pronto
