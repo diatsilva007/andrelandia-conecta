@@ -16,6 +16,11 @@ import {
   Alert,
   CircularProgress,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import ImageUpload from "../components/ImageUpload.jsx";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,6 +28,37 @@ import VoltarButton from "../components/VoltarButton.jsx";
 import { categoriasComercio } from "../assets/categories.js";
 
 export default function EditarComercio() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [excluindo, setExcluindo] = useState(false);
+  // Função para excluir comércio
+  const handleExcluir = async () => {
+    setExcluindo(true);
+    setErro("");
+    try {
+      await axios.delete(`http://localhost:3333/comercios/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setSnackbar({
+        open: true,
+        message: "Comércio excluído com sucesso!",
+        severity: "success",
+      });
+      setTimeout(() => {
+        navigate("/", { state: { sucesso: "Comércio excluído com sucesso!" } });
+      }, 1000);
+    } catch (err) {
+      const msg = err.response?.data?.error || "Erro ao excluir comércio";
+      setErro(msg);
+      setSnackbar({
+        open: true,
+        message: msg,
+        severity: "error",
+      });
+    } finally {
+      setExcluindo(false);
+      setDialogOpen(false);
+    }
+  };
   const [loadingCoords, setLoadingCoords] = useState(false);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
@@ -345,170 +381,8 @@ export default function EditarComercio() {
                 setImagemPreview(file ? URL.createObjectURL(file) : null);
               }}
             />
-            <TextField
-              label="Nome"
-              name="nome"
-              value={form.nome}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-              required
-              inputProps={{ maxLength: 60, "aria-label": "Nome do comércio" }}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              select
-              label="Categoria"
-              name="categoria"
-              value={form.categoria}
-              onChange={handleChange}
-              fullWidth
-              required={false}
-              sx={{ mb: 2 }}
-              helperText="Escolha a categoria principal do comércio"
-            >
-              <MenuItem value="">
-                <em>Selecione</em>
-              </MenuItem>
-              {categoriasComercio.map((cat) => (
-                <MenuItem key={cat} value={cat}>
-                  {cat}
-                </MenuItem>
-              ))}
-            </TextField>
-            {form.categoria === "Outro (especificar)" && (
-              <TextField
-                label="Categoria personalizada"
-                value={categoriaPersonalizada}
-                onChange={(e) => setCategoriaPersonalizada(e.target.value)}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-                inputProps={{ maxLength: 40 }}
-                helperText="Digite a categoria do comércio"
-              />
-            )}
-            <TextField
-              label="Descrição"
-              name="descricao"
-              value={form.descricao}
-              onChange={handleChange}
-              fullWidth
-              multiline
-              minRows={2}
-              inputProps={{
-                maxLength: 200,
-                "aria-label": "Descrição do comércio",
-              }}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              label="Logradouro"
-              name="logradouro"
-              value={form.logradouro}
-              onChange={handleChange}
-              fullWidth
-              sx={{ mb: 2 }}
-              placeholder="Rua, Avenida, etc."
-            />
-            <Box display="flex" gap={2} mb={2}>
-              <TextField
-                label="Número"
-                name="numero"
-                value={form.numero}
-                onChange={handleChange}
-                fullWidth
-                sx={{ mb: 2 }}
-                placeholder="123"
-              />
-              <TextField
-                label="Bairro"
-                name="bairro"
-                value={form.bairro}
-                onChange={handleChange}
-                fullWidth
-                sx={{ mb: 2 }}
-                placeholder="Centro"
-              />
-            </Box>
-            <Box display="flex" gap={2} mb={2}>
-              <TextField
-                label="Cidade"
-                name="cidade"
-                value={form.cidade}
-                onChange={handleChange}
-                fullWidth
-                sx={{ mb: 2 }}
-                placeholder="Andrelândia"
-              />
-              <TextField
-                label="Estado"
-                name="estado"
-                value={form.estado}
-                onChange={handleChange}
-                fullWidth
-                sx={{ mb: 2 }}
-                placeholder="MG"
-              />
-              <TextField
-                label="CEP"
-                name="cep"
-                value={form.cep}
-                onChange={handleChange}
-                fullWidth
-                sx={{ mb: 2 }}
-                placeholder="37300-000"
-              />
-            </Box>
-            <TextField
-              label="Telefone"
-              name="telefone"
-              value={form.telefone}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-              inputProps={{
-                maxLength: 20,
-                "aria-label": "Telefone do comércio",
-              }}
-              sx={{ mb: 2 }}
-            />
-            <Box display="flex" gap={2} alignItems="center" mb={2}>
-              <TextField
-                label="Latitude"
-                name="latitude"
-                value={form.latitude || ""}
-                onChange={handleChange}
-                fullWidth
-                type="number"
-                inputProps={{
-                  step: "any",
-                  "aria-label": "Latitude do comércio",
-                }}
-                placeholder="-21.7417"
-              />
-              <TextField
-                label="Longitude"
-                name="longitude"
-                value={form.longitude || ""}
-                onChange={handleChange}
-                fullWidth
-                type="number"
-                inputProps={{
-                  step: "any",
-                  "aria-label": "Longitude do comércio",
-                }}
-                placeholder="-44.3111"
-              />
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={buscarCoordenadas}
-                sx={{ minWidth: 44, height: 56 }}
-              >
-                Buscar pelo endereço
-              </Button>
-            </Box>
+            {/* ...campos do formulário... */}
+            {/* ...existing code... */}
             <Button
               type="submit"
               variant="contained"
@@ -534,11 +408,56 @@ export default function EditarComercio() {
             </Button>
           </form>
 
+          {/* Botão de exclusão */}
+          <Button
+            variant="outlined"
+            color="error"
+            fullWidth
+            sx={{ mt: 2, fontWeight: 700, borderRadius: 2 }}
+            onClick={() => setDialogOpen(true)}
+            disabled={excluindo}
+            aria-label="Excluir comércio"
+          >
+            Excluir comércio
+          </Button>
+
           <VoltarButton
             label="Cancelar"
             onClick={() => navigate(-1)}
             sx={{ width: "100%", mt: 1 }}
           />
+
+          {/* Dialog de confirmação de exclusão */}
+          <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+            <DialogTitle>Confirmar exclusão</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Tem certeza que deseja excluir este comércio? Esta ação não
+                poderá ser desfeita.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDialogOpen(false)} color="primary">
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleExcluir}
+                color="error"
+                autoFocus
+                disabled={excluindo}
+                sx={{
+                  borderRadius: 2,
+                  minWidth: 48,
+                  minHeight: 48,
+                  px: 2,
+                  py: 1.2,
+                  fontSize: 16,
+                }}
+              >
+                {excluindo ? "Excluindo..." : "Excluir"}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Paper>
       </Box>
     </Box>
