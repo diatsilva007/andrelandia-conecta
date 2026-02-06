@@ -456,6 +456,29 @@ const ListaComercios = () => {
         )}
       </Box>
 
+      {/* Título e explicação dos filtros */}
+      <Box sx={{ width: "100%", maxWidth: 900, mx: "auto", mt: 2, mb: 1 }}>
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          color="primary.main"
+          gutterBottom
+          align="center"
+        >
+          Encontre o comércio ideal para você
+        </Typography>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          align="center"
+          sx={{ mb: 2 }}
+        >
+          Utilize os filtros abaixo para refinar sua busca. Você pode pesquisar
+          por nome, categoria, localização, faixa de preço e avaliação mínima.
+          Combine diferentes filtros para encontrar exatamente o que procura
+          entre os comércios cadastrados em Andrelândia/MG e região.
+        </Typography>
+      </Box>
       {/* Busca e filtros avançados */}
       <Box
         sx={{
