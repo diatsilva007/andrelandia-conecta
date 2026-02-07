@@ -136,6 +136,16 @@ const ListaComercios = () => {
   // Carregar comércios da API (paginado)
   const [loading, setLoading] = useState(true);
   const [erroCarregamento, setErroCarregamento] = useState("");
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => setLoadingTimeout(true), 10000);
+      return () => clearTimeout(timer);
+    } else {
+      setLoadingTimeout(false);
+    }
+  }, [loading]);
   // Função para carregar comércios (precisa ser acessível em outros efeitos)
   const fetchComercios = async (reset = false) => {
     try {
@@ -300,6 +310,48 @@ const ListaComercios = () => {
         }}
       >
         <LoadingBackdrop open />
+        {loadingTimeout && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 2000,
+              bgcolor: "rgba(0,0,0,0.7)",
+            }}
+          >
+            <Box
+              bgcolor="white"
+              borderRadius={3}
+              boxShadow={4}
+              px={4}
+              py={3}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              gap={2}
+            >
+              <Typography variant="h6" color="error" fontWeight={700}>
+                O carregamento está demorando...
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Verifique sua conexão ou tente novamente.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => window.location.reload()}
+              >
+                Tentar novamente
+              </Button>
+            </Box>
+          </Box>
+        )}
         <Box
           sx={{
             position: "absolute",
