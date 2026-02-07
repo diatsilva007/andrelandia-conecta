@@ -112,8 +112,14 @@ const ListaComercios = () => {
       normalizar(c.endereco || "").includes(normalizar(localizacaoFiltro));
     // Filtro de preço
     const faixa = getFaixaPreco(c.produtos);
-    const precoOk =
-      !faixa || (faixa[1] >= precoRange[0] && faixa[0] <= precoRange[1]);
+    // Se o filtro está no valor padrão, exibe comércios sem produtos
+    const filtroAbrangente =
+      precoRange[0] === precoMinGlobal && precoRange[1] === precoMaxGlobal;
+    const precoOk = filtroAbrangente
+      ? true // Exibe todos, inclusive sem produtos
+      : !faixa
+        ? false
+        : faixa[1] >= precoRange[0] && faixa[0] <= precoRange[1];
     // Filtro de avaliação
     const media = getMediaAvaliacao(c.avaliacoes);
     const avaliacaoOk =
