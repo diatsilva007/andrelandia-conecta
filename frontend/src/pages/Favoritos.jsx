@@ -92,9 +92,12 @@ export default function Favoritos() {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: { xs: "center", md: "flex-start" },
           mb: { xs: 2, md: 4 },
           gap: 2,
+          maxWidth: 700,
+          mx: { xs: "auto", md: "auto" },
+          pl: { xs: 0, md: 4 },
         }}
       >
         <Tooltip title="Voltar" arrow>
@@ -108,7 +111,8 @@ export default function Favoritos() {
               }
             }}
             sx={{
-              mr: 2,
+              mr: { xs: 2, md: 3 },
+              ml: { xs: 0, md: 0 },
               width: 48,
               height: 48,
               bgcolor: "#f5f5f5",
@@ -117,6 +121,9 @@ export default function Favoritos() {
               boxShadow: "0 2px 8px #1976d222",
               fontSize: 28,
               transition: "background 0.2s, color 0.2s",
+              position: "relative",
+              left: 0,
+              top: 0,
               "&:hover": {
                 bgcolor: "primary.main",
                 color: "#fff",
