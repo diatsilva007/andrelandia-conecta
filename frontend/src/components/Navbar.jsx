@@ -329,30 +329,36 @@ export default function Navbar() {
                     }}
                     aria-label="Favoritos"
                   >
-                    <FavoriteIcon fontSize="medium" />
-                    {favoritosCount > 0 && (
-                      <Box
-                        sx={{
-                          minWidth: 18,
-                          height: 18,
-                          bgcolor: "#e53935",
-                          color: "#fff",
-                          borderRadius: "50%",
-                          fontSize: 11,
-                          fontWeight: 700,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          px: 0.5,
-                          position: "absolute",
-                          top: 2,
-                          right: 2,
-                          border: "2px solid #fff",
-                        }}
-                      >
-                        {favoritosCount}
-                      </Box>
-                    )}
+                    <Box sx={{ position: "relative" }}>
+                      <FavoriteIcon
+                        fontSize="medium"
+                        sx={{ color: "#e53935" }}
+                      />
+                      {favoritosCount > 0 && (
+                        <Box
+                          sx={{
+                            minWidth: 16,
+                            height: 16,
+                            bgcolor: "#e53935",
+                            color: "#fff",
+                            borderRadius: "50%",
+                            fontSize: 10,
+                            fontWeight: 700,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            px: 0.5,
+                            position: "absolute",
+                            top: -4,
+                            right: -8,
+                            border: "2px solid #fff",
+                            zIndex: 2,
+                          }}
+                        >
+                          {favoritosCount}
+                        </Box>
+                      )}
+                    </Box>
                   </IconButton>
                 </Tooltip>
                 {/* Botão de histórico */}

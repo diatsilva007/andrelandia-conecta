@@ -357,6 +357,8 @@ const ListaComercios = () => {
   return (
     <>
       {/* Loading do contexto do usuário */}
+      {/* Aurora background effect */}
+      <Aurora />
       {loadingUser ? (
         <Box
           sx={{
