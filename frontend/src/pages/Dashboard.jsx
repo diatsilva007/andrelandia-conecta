@@ -198,18 +198,70 @@ export default function Dashboard() {
     }
   }, [usuario, loadingUser, navigate]);
 
+  const [erroDashboard, setErroDashboard] = useState("");
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+  useEffect(() => {
+    if (loadingUser) {
+      const timer = setTimeout(() => setLoadingTimeout(true), 10000);
+      return () => clearTimeout(timer);
+    } else {
+      setLoadingTimeout(false);
+    }
+  }, [loadingUser]);
+
+  // Exibe loading ou erro
   if (loadingUser) {
     return (
-      <div
-        style={{
-          minHeight: "60vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+      <Box
+        minHeight="100vh"
+        width="100vw"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        position="relative"
       >
         <span>Carregando...</span>
-      </div>
+        {loadingTimeout && (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            width="100vw"
+            height="100vh"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            zIndex={2000}
+            bgcolor="rgba(0,0,0,0.7)"
+          >
+            <Box
+              bgcolor="white"
+              borderRadius={3}
+              boxShadow={4}
+              px={4}
+              py={3}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              gap={2}
+            >
+              <Typography variant="h6" color="error" fontWeight={700}>
+                O carregamento está demorando...
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Verifique sua conexão ou tente novamente.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => window.location.reload()}
+              >
+                Tentar novamente
+              </Button>
+            </Box>
+          </Box>
+        )}
+      </Box>
     );
   }
 
