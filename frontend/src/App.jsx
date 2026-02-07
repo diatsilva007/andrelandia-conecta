@@ -295,6 +295,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/produtos/:id" element={<DetalheProduto />} />
               <Route
                 path="/favoritos"
                 element={
