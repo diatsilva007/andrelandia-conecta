@@ -358,7 +358,6 @@ const ListaComercios = () => {
     <>
       {/* Loading do contexto do usuário */}
       {/* Aurora background effect */}
-      <Aurora />
       {loadingUser ? (
         <Box
           sx={{
@@ -386,6 +385,7 @@ const ListaComercios = () => {
             overflow: "hidden",
           }}
         >
+          <Aurora />
           {/* Feedback de erro de carregamento */}
           {erroCarregamento && (
             <Box
