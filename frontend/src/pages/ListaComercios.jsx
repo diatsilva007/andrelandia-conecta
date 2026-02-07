@@ -1,3 +1,5 @@
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import LoadingBackdrop from "../components/LoadingBackdrop";
 import React, { useState, useRef, useEffect } from "react";
 import { useUser } from "../contexts/UserContext.jsx";
@@ -33,12 +35,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import AnimatedCard from "../components/AnimatedCard.jsx";
+import Chip from "@mui/material/Chip";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 
 import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
 import Aurora from "../components/Aurora";
 
 const ListaComercios = () => {
+  const [incluirSemProdutos, setIncluirSemProdutos] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const [comercios, setComercios] = useState([]);
@@ -112,11 +116,11 @@ const ListaComercios = () => {
       normalizar(c.endereco || "").includes(normalizar(localizacaoFiltro));
     // Filtro de preço
     const faixa = getFaixaPreco(c.produtos);
-    // Se o filtro está no valor padrão, exibe comércios sem produtos
+    // Se o filtro está no valor padrão, exibe comércios sem produtos se o checkbox estiver marcado
     const filtroAbrangente =
       precoRange[0] === precoMinGlobal && precoRange[1] === precoMaxGlobal;
     const precoOk = filtroAbrangente
-      ? true // Exibe todos, inclusive sem produtos
+      ? incluirSemProdutos || !!faixa // Exibe todos se marcado, senão só com produtos
       : !faixa
         ? false
         : faixa[1] >= precoRange[0] && faixa[0] <= precoRange[1];
@@ -765,6 +769,21 @@ const ListaComercios = () => {
                     sx={{ mt: 1 }}
                     aria-label="Filtrar por faixa de preço"
                   />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={incluirSemProdutos}
+                        onChange={(e) =>
+                          setIncluirSemProdutos(e.target.checked)
+                        }
+                        color="primary"
+                        size="small"
+                        sx={{ ml: 1 }}
+                      />
+                    }
+                    label="Incluir comércios sem produtos"
+                    sx={{ mt: 1, fontWeight: 500 }}
+                  />
                 </Box>
                 <Box sx={{ minWidth: 180, px: 2 }}>
                   <Typography
@@ -1028,7 +1047,20 @@ const ListaComercios = () => {
                                 getFaixaPreco(comercio.produtos)[1]
                               }`
                             ) : (
-                              <em>sem produtos</em>
+                              <Box display="flex" alignItems="center" gap={1}>
+                                <em>sem produtos</em>
+                                <Chip
+                                  label="Sem produtos"
+                                  color="warning"
+                                  size="small"
+                                  sx={{
+                                    fontWeight: 700,
+                                    bgcolor: "#fff8e1",
+                                    color: "#ff9800",
+                                    borderRadius: 1,
+                                  }}
+                                />
+                              </Box>
                             )}
                           </Typography>
                           {/* Média de avaliação */}
