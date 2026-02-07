@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Drawer,
   List,
@@ -36,6 +36,22 @@ export default function MenuDrawer({
   const { usuario: usuarioCtx, loadingUser } = useUser();
   const usuario = usuarioProp || usuarioCtx;
   const location = useLocation();
+
+  // Badge de favoritos
+  const [favoritosCount, setFavoritosCount] = useState(0);
+  useEffect(() => {
+    const updateCount = () => {
+      const favStr = localStorage.getItem("favoritos");
+      setFavoritosCount(favStr ? JSON.parse(favStr).length : 0);
+    };
+    updateCount();
+    window.addEventListener("storage", updateCount);
+    window.addEventListener("favoritos-updated", updateCount);
+    return () => {
+      window.removeEventListener("storage", updateCount);
+      window.removeEventListener("favoritos-updated", updateCount);
+    };
+  }, []);
 
   // Enquanto restaura usuário, não renderiza nada (ou pode exibir um skeleton se quiser)
   if (loadingUser) {
@@ -111,7 +127,40 @@ export default function MenuDrawer({
       : null,
     { text: "Dashboard", icon: <ShoppingCartIcon />, to: "/dashboard" },
     { text: "Histórico", icon: <ShoppingCartIcon />, to: "/historico" },
-    { text: "Favoritos", icon: <FavoriteBorderIcon />, to: "/favoritos" },
+    {
+      // Item de favoritos com badge
+      text: "Favoritos",
+      icon: (
+        <Box sx={{ position: "relative" }}>
+          <FavoriteBorderIcon sx={{ color: "#e53935" }} />
+          {favoritosCount > 0 && (
+            <Box
+              sx={{
+                minWidth: 16,
+                height: 16,
+                bgcolor: "#e53935",
+                color: "#fff",
+                borderRadius: "50%",
+                fontSize: 10,
+                fontWeight: 700,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                px: 0.5,
+                position: "absolute",
+                top: -4,
+                right: -8,
+                border: "2px solid #fff",
+                zIndex: 2,
+              }}
+            >
+              {favoritosCount}
+            </Box>
+          )}
+        </Box>
+      ),
+      to: "/favoritos",
+    },
   ];
   // Funções para acionar diálogos via props
   const { onEditarPerfil, onTrocaTipo } = arguments[0] || {};
