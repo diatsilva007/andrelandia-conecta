@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import FavoriteButton from "../components/FavoriteButton.jsx";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Button,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import { CardMedia, Chip, Avatar } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StoreIcon from "@mui/icons-material/Store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AnimatedCard from "../components/AnimatedCard.jsx";
@@ -61,23 +69,57 @@ export default function Favoritos() {
         bgcolor: "background.default",
         px: { xs: 2, sm: 3, md: 6 },
         py: 0,
-        pt: { xs: 12, sm: 14, md: 16 }, // Mais espaço abaixo da navbar
+        pt: { xs: 12, sm: 14, md: 16 },
       }}
     >
-      {/* Breadcrumb removido para visual mais limpo */}
-      <Typography
-        variant="h4"
-        fontWeight={800}
-        mb={2}
-        align="center"
-        sx={{
-          letterSpacing: 1.2,
-          color: "primary.main",
-          textShadow: "0 2px 8px #0002",
-        }}
-      >
-        Meus Favoritos
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Tooltip title="Voltar" arrow>
+          <IconButton
+            aria-label="Voltar"
+            onClick={() => {
+              if (window.history.length > 2) {
+                navigate(-1);
+              } else {
+                navigate("/");
+              }
+            }}
+            sx={{
+              mr: 2,
+              width: 48,
+              height: 48,
+              bgcolor: "#f5f5f5",
+              color: "primary.main",
+              borderRadius: 2.5,
+              boxShadow: "0 2px 8px #1976d222",
+              fontSize: 28,
+              transition: "background 0.2s, color 0.2s",
+              "&:hover": {
+                bgcolor: "primary.main",
+                color: "#fff",
+              },
+              "&:focus": {
+                outline: "2px solid #1976d2",
+              },
+            }}
+            tabIndex={0}
+          >
+            <ArrowBackIcon sx={{ fontSize: 28 }} />
+          </IconButton>
+        </Tooltip>
+        <Typography
+          variant="h4"
+          fontWeight={800}
+          align="left"
+          sx={{
+            letterSpacing: 1.2,
+            color: "primary.main",
+            textShadow: "0 2px 8px #0002",
+            flex: 1,
+          }}
+        >
+          Meus Favoritos
+        </Typography>
+      </Box>
       {favoritos.length === 0 ? (
         <Box sx={{ textAlign: "center", mt: 8, mb: 6 }}>
           <Avatar
