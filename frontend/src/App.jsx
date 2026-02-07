@@ -206,7 +206,7 @@ function App() {
   const { mode } = useThemeMode();
   const theme = getTheme(mode);
   const [welcomeOpen, setWelcomeOpen] = useState(false);
-  const { loadingUser, usuario } = useUser();
+  const { loadingUser } = useUser();
   // [DEBUG] console.log('[App] usuario:', usuario);
   // [DEBUG] console.log('[App] loadingUser:', loadingUser);
 

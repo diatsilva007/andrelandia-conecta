@@ -33,6 +33,17 @@ import AnimatedCard from "../components/AnimatedCard.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 
 export default function DetalheComercio() {
+  const [loading, setLoading] = useState(true);
+  // Timeout para loading
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => setLoadingTimeout(true), 10000);
+      return () => clearTimeout(timer);
+    } else {
+      setLoadingTimeout(false);
+    }
+  }, [loading]);
   const [dialogExcluirOpen, setDialogExcluirOpen] = useState(false);
   const [excluindoComercio, setExcluindoComercio] = useState(false);
   // Função para excluir comércio
@@ -84,7 +95,6 @@ export default function DetalheComercio() {
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const [comercio, setComercio] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [avaliacoes, setAvaliacoes] = useState([]);
   const [novaAvaliacao, setNovaAvaliacao] = useState({
     nota: 0,
@@ -226,8 +236,54 @@ export default function DetalheComercio() {
 
   if (loading)
     return (
-      <Box display="flex" justifyContent="center" mt={8}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+        position="relative"
+      >
         <CircularProgress />
+        {loadingTimeout && (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            width="100vw"
+            height="100vh"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            zIndex={2000}
+            bgcolor="rgba(0,0,0,0.7)"
+          >
+            <Box
+              bgcolor="white"
+              borderRadius={3}
+              boxShadow={4}
+              px={4}
+              py={3}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              gap={2}
+            >
+              <Typography variant="h6" color="error" fontWeight={700}>
+                O carregamento está demorando...
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Verifique sua conexão ou tente novamente.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => window.location.reload()}
+              >
+                Tentar novamente
+              </Button>
+            </Box>
+          </Box>
+        )}
       </Box>
     );
   if (!comercio)
