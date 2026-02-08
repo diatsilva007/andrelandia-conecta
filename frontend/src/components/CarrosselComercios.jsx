@@ -33,7 +33,7 @@ export default function CarrosselComercios() {
         );
         const json = await res.json();
         if (isMounted) setComercios(json.data || []);
-      } catch (e) {
+      } catch {
         // Pode usar SnackbarContext para feedback de erro
       } finally {
         if (isMounted) setLoading(false);
@@ -50,7 +50,7 @@ export default function CarrosselComercios() {
 
   // Setas customizadas
   function Arrow(props) {
-    const { className, style, onClick, direction } = props;
+    const { className, onClick, direction } = props;
     return (
       <Box
         className={className}
