@@ -3,6 +3,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import LoadingBackdrop from "../components/LoadingBackdrop";
 import React, { useState, useRef, useEffect } from "react";
 import { useUser } from "../contexts/UserContext.jsx";
+import TextType from "../components/TextType.jsx";
 import { useLocation } from "react-router-dom";
 import { useSnackbar } from "../components/SnackbarContext.jsx";
 import BreadcrumbNav from "../components/BreadcrumbNav.jsx";
@@ -568,7 +569,25 @@ const ListaComercios = () => {
                     textAlign: "center",
                   }}
                 >
-                  Visibilidade e gestão para o comércio local
+                  <TextType
+                    text={[
+                      "Visibilidade e gestão para o comércio local",
+                      "Conecte-se com novos clientes",
+                      "Impulsione seu negócio em Andrelândia",
+                      "Divulgação gratuita para comerciantes",
+                      "Gestão fácil e centralizada",
+                    ]}
+                    typingSpeed={70}
+                    showCursor={true}
+                    cursorCharacter="|"
+                    className="typewriter-effect"
+                    style={{
+                      color: "#e0f2f1",
+                      fontWeight: 500,
+                      fontSize: "1.1rem",
+                      textAlign: "center",
+                    }}
+                  />
                 </Typography>
                 <Typography
                   variant="body1"
@@ -585,12 +604,24 @@ const ListaComercios = () => {
                     lineHeight: 1.6,
                   }}
                 >
-                  Plataforma para conectar, divulgar e fortalecer os negócios de
-                  Andrelândia/MG e região.
-                  <br />
-                  <b style={{ display: "inline-block", marginTop: 16 }}>
-                    Cadastre seu comércio e faça parte dessa rede!
-                  </b>
+                  <TextType
+                    text={[
+                      "Plataforma para conectar, divulgar e fortalecer os negócios de Andrelândia/MG e região.",
+                      "Cadastre seu comércio e faça parte dessa rede!",
+                      "Aumente sua visibilidade local",
+                      "Seja encontrado por novos clientes",
+                    ]}
+                    typingSpeed={70}
+                    showCursor={true}
+                    cursorCharacter="|"
+                    className="typewriter-effect"
+                    style={{
+                      color: "#fff",
+                      fontWeight: 500,
+                      fontSize: "1rem",
+                      textAlign: "center",
+                    }}
+                  />
                 </Typography>
                 {usuario?.tipo === "comerciante" && (
                   <Button
