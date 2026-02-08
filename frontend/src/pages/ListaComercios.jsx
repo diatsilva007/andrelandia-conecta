@@ -41,6 +41,7 @@ import FavoriteButton from "../components/FavoriteButton.jsx";
 
 import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
 import Aurora from "../components/Aurora";
+import TrueFocus from "../components/TrueFocus";
 
 const ListaComercios = () => {
   const [incluirSemProdutos, setIncluirSemProdutos] = useState(true);
@@ -533,27 +534,28 @@ const ListaComercios = () => {
                     }}
                   />
                 </Box>
-                <Typography
-                  variant="h1"
+                <TrueFocus
+                  sentence="Andrelândia Conecta"
+                  manualMode={false}
+                  blurAmount={5}
+                  borderColor="#ffd600"
+                  glowColor="rgba(255, 214, 0, 0.7)"
+                  animationDuration={0.5}
+                  pauseBetweenAnimations={1}
+                  fontSize="2.8rem"
                   fontWeight={800}
-                  mb={2}
-                  align="center"
-                  sx={(theme) => ({
+                  style={{
                     color: "#fff",
                     zIndex: 1,
                     textShadow: "0 2px 8px #0002",
                     letterSpacing: 1,
-                    fontFamily: theme.typography.fontFamily,
-                    fontSize: { xs: "2.1rem", sm: "2.8rem", md: "3.2rem" },
+                    fontFamily: "inherit",
                     lineHeight: 1.18,
-                    maxWidth: { xs: "95vw", sm: 600, md: 700 },
-                    mx: "auto",
-                    wordBreak: "break-word",
-                    px: { xs: 1, sm: 0 },
-                  })}
-                >
-                  Andrelândia Conecta
-                </Typography>
+                    maxWidth: "95vw",
+                    marginBottom: "24px",
+                    marginTop: "0",
+                  }}
+                />
                 <Typography
                   variant="h6"
                   fontWeight={500}
@@ -1099,26 +1101,19 @@ const ListaComercios = () => {
                             {comercio.descricao}
                           </Typography>
                           {comercio.categoria && (
-                            <Typography
-                              variant="caption"
+                            <Chip
+                              label={comercio.categoria}
                               color="primary"
+                              size="small"
                               sx={{
                                 fontWeight: 700,
-                                background: "#e3f2fd",
-                                borderRadius: 2,
-                                px: 1.5,
-                                py: 0.5,
-                                fontSize: 14,
-                                display: "inline-block",
+                                bgcolor: "#e3f2fd",
+                                color: "#1976d2",
+                                borderRadius: 1,
                                 mb: 1,
-                                mt: 0.5,
-                                letterSpacing: 0.5,
                               }}
-                            >
-                              {comercio.categoria}
-                            </Typography>
+                            />
                           )}
-                          {/* Faixa de preço */}
                           <Typography
                             variant="body2"
                             color="text.secondary"
