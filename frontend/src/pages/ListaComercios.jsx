@@ -38,6 +38,7 @@ import StoreIcon from "@mui/icons-material/Store";
 
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import Chip from "@mui/material/Chip";
+import CarrosselComercios from "../components/CarrosselComercios.jsx";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 
 import ComercioSkeletonList from "../components/ComercioSkeletonList.jsx";
@@ -664,6 +665,8 @@ const ListaComercios = () => {
                   </Button>
                 )}
               </Box>
+              {/* Carrossel de Comercios */}
+              <CarrosselComercios />
 
               {/* Título e explicação dos filtros */}
               <Box
