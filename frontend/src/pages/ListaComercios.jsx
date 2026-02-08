@@ -34,6 +34,7 @@ import FormControl from "@mui/material/FormControl";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import StoreIcon from "@mui/icons-material/Store";
 
 import AnimatedCard from "../components/AnimatedCard.jsx";
 import Chip from "@mui/material/Chip";
@@ -628,24 +629,34 @@ const ListaComercios = () => {
                 {usuario?.tipo === "comerciante" && (
                   <Button
                     variant="contained"
-                    color="secondary"
                     size="large"
+                    startIcon={<StoreIcon sx={{ fontSize: 28 }} />}
                     sx={{
-                      borderRadius: 4,
+                      borderRadius: 5,
                       fontWeight: 700,
                       minWidth: 48,
                       minHeight: 48,
                       px: 5,
                       py: 2,
                       fontSize: 18,
-                      boxShadow: "0 2px 8px #43a04733",
-                      transition: "background 0.2s, box-shadow 0.2s",
+                      background:
+                        "linear-gradient(90deg, #ffd600 0%, #43a047 100%)",
+                      color: "#1a237e",
+                      boxShadow: "0 2px 12px #ffd60055",
+                      transition:
+                        "background 0.3s, box-shadow 0.3s, transform 0.2s",
+                      zIndex: 1,
+                      letterSpacing: 0.5,
                       "&:hover": {
                         background:
-                          "linear-gradient(90deg, #1565c0 0%, #388e3c 100%)",
-                        boxShadow: "0 4px 16px #43a04733",
+                          "linear-gradient(90deg, #fffde7 0%, #a5d6a7 100%)",
+                        color: "#388e3c",
+                        boxShadow: "0 4px 24px #ffd60088",
+                        transform: "scale(1.04)",
                       },
-                      zIndex: 1,
+                      "&:active": {
+                        transform: "scale(0.98)",
+                      },
                     }}
                     onClick={() => navigate("/comercios/novo")}
                   >
