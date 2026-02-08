@@ -140,6 +140,27 @@ Tempo total estimado: 5 a 6 dias úteis para todas as melhorias.
 
 # Checklist de Prontidão para Produção (Deploy)
 
+## Dicas para Deploy Gratuito e Ferramentas Sem Custo
+
+Você pode colocar o projeto no ar sem custos, usando serviços gratuitos para cada etapa:
+
+- **Frontend:** Vercel, Netlify ou GitHub Pages (React/Vite)
+- **Backend:** Heroku, Railway, Render (Node/Express, plano free)
+- **Banco de dados:** PostgreSQL gratuito em Railway, Render ou Heroku (limite de uso)
+- **CI/CD:** GitHub Actions (gratuito para projetos públicos)
+- **Monitoramento básico:** UptimeRobot (free), logs locais, Prometheus/Grafana open source
+- **Analytics:** Google Analytics (gratuito)
+- **Monitoramento de erros:** Sentry (plano free), LogRocket (free limitado)
+- **Documentação:** README no GitHub, Swagger/OpenAPI open source
+- **Testes:** Jest, Supertest, React Testing Library (gratuitos)
+- **Variáveis de ambiente:** `.env` local e nos serviços gratuitos
+
+Essas opções são suficientes para MVP, testes e primeiros usuários. Só será necessário investir se o projeto escalar ou atingir limites dos planos gratuitos.
+
+Recomendo priorizar o checklist de produção, usar serviços gratuitos e migrar para planos pagos apenas quando houver demanda.
+
+Se precisar de um fluxo de deploy gratuito ou configuração dessas ferramentas, posso ajudar!
+
 ## Funcionalidades
 
 - [ ] Login, cadastro e autenticação JWT funcionando
